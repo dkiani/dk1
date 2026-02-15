@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daniel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  :root {
+    --bg: #0a0a0a;
+    --fg: #e8e8e8;
+    --muted: #4a4a4a;
+    --accent: #888;
+    --hover: #ffffff;
+    --font: 'JetBrains Mono', 'IBM Plex Mono', monospace;
+  }
+
+  html, body {
+    height: 100%;
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--font);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow: hidden;
+  }
+
+  /* subtle noise texture */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 256px 256px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* very faint grid */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: 
+      linear-gradient(rgba(255,255,255,0.012) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.012) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  main {
+    position: relative;
+    z-index: 1;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 clamp(2rem, 8vw, 8rem);
+  }
+
+  .content {
+    max-width: 600px;
+  }
+
+  /* name */
+  h1 {
+    font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    margin-bottom: 1.2rem;
+    opacity: 0;
+    animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  /* tagline */
+  .tagline {
+    font-size: clamp(0.72rem, 1.1vw, 0.82rem);
+    font-weight: 300;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 3rem;
+    opacity: 0;
+    animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.15s forwards;
+  }
+
+  .tagline span {
+    color: var(--accent);
+  }
+
+  /* divider */
+  .divider {
+    width: 32px;
+    height: 1px;
+    background: var(--muted);
+    margin-bottom: 2rem;
+    opacity: 0;
+    animation: fadeWidth 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.35s forwards;
+    transform-origin: left;
+  }
+
+  /* links */
+  nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+    opacity: 0;
+    animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.45s forwards;
+  }
+
+  nav a {
+    font-size: clamp(0.72rem, 1vw, 0.8rem);
+    font-weight: 300;
+    color: var(--accent);
+    text-decoration: none;
+    letter-spacing: 0.04em;
+    transition: color 0.3s ease, letter-spacing 0.3s ease;
+    width: fit-content;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  nav a::before {
+    content: '';
+    display: inline-block;
+    width: 0px;
+    height: 1px;
+    background: var(--hover);
+    transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  nav a:hover {
+    color: var(--hover);
+    letter-spacing: 0.06em;
+  }
+
+  nav a:hover::before {
+    width: 16px;
+  }
+
+  /* bottom status line */
+  .status {
+    position: fixed;
+    bottom: 2rem;
+    left: clamp(2rem, 8vw, 8rem);
+    font-size: 0.6rem;
+    font-weight: 300;
+    color: var(--muted);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    opacity: 0;
+    animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.7s forwards;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .status .dot {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: #2a9d2a;
+    animation: pulse 3s ease-in-out infinite;
+  }
+
+  /* cursor blink on name */
+  .cursor {
+    display: inline-block;
+    width: 2px;
+    height: 1.1em;
+    background: var(--fg);
+    margin-left: 4px;
+    vertical-align: text-bottom;
+    animation: blink 1.2s step-end infinite;
+    opacity: 0.6;
+  }
+
+  @keyframes fadeUp {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fadeWidth {
+    from {
+      opacity: 0;
+      width: 0;
+    }
+    to {
+      opacity: 1;
+      width: 32px;
+    }
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 0; }
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 1; }
+  }
+
+  /* selection */
+  ::selection {
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--hover);
+  }
+
+  @media (max-width: 480px) {
+    main {
+      padding: 0 2rem;
+    }
+    .status {
+      left: 2rem;
+    }
+  }
+</style>
+</head>
+<body>
+  <main>
+    <div class="content">
+      <h1>daniel<span class="cursor"></span></h1>
+      <p class="tagline">trader <span>·</span> builder <span>·</span> designer</p>
+      <div class="divider"></div>
+      <nav>
+        <a href="#">twitter</a>
+        <a href="#">github</a>
+        <a href="#">projects</a>
+        <a href="#">contact</a>
+      </nav>
+    </div>
+  </main>
+  <div class="status">
+    <span class="dot"></span>
+    <span>available for work</span>
+  </div>
+</body>
+</html>
