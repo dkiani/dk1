@@ -140,7 +140,7 @@
     height: 100%;
     display: flex;
     flex-direction: column;
-    padding: 2rem 0;
+    padding: 4rem 0 2rem;
     position: fixed;
     right: 0;
     top: 0;
@@ -557,22 +557,22 @@
 </div>
 
 <script>
-// ─── Compact node positions (centered around 350,300) ───
+// ─── Compact node positions (shifted left, centered around 220,300) ───
 const nodes = {
-  center:     { id:'center',     x:350, y:300, label:'Daniel',           type:'center' },
-  info:       { id:'info',       x:365, y:225, label:'Information',      shape:'circle-filled', parent:'center' },
-  trading:    { id:'trading',    x:260, y:250, label:'Trading &',        label2:'Markets',    num:'1', section:'trading' },
-  ventures:   { id:'ventures',   x:450, y:255, label:'Ventures',         num:'2', section:'ventures' },
-  contentEd:  { id:'contentEd',  x:265, y:370, label:'Content &',        label2:'Education',  num:'3', section:'contentEd' },
-  gallery:    { id:'gallery',    x:440, y:365, label:'Gallery',           num:'4', section:'gallery' },
-  futures:    { id:'futures',    x:185, y:200, label:'Futures',           label2:'Trading',    shape:'diamond',  parent:'trading',  detail:'futures' },
-  indicators: { id:'indicators', x:185, y:310, label:'Custom',           label2:'Indicators', shape:'square',   parent:'trading',  detail:'indicators' },
-  valkri:     { id:'valkri',     x:530, y:200, label:'Valkri',           shape:'triangle', parent:'ventures', detail:'valkri' },
-  algotraderx:{ id:'algotraderx',x:540, y:310, label:'AlgoTraderX',     shape:'square',   parent:'ventures', detail:'algotraderx' },
-  chatbots:   { id:'chatbots',   x:520, y:380, label:'AI Chatbot',       label2:'Solutions',  shape:'triangle', parent:'ventures', detail:'chatbots' },
-  youtube:    { id:'youtube',    x:190, y:420, label:'Education',        label2:'Series',     shape:'square',   parent:'contentEd',detail:'youtube' },
-  brands:     { id:'brands',     x:490, y:430, label:'Brand',            label2:'Systems',    shape:'square',   parent:'gallery',  detail:'brands' },
-  interfaces: { id:'interfaces', x:380, y:440, label:'Interface',        label2:'Design',     shape:'square',   parent:'gallery',  detail:'interfaces' },
+  center:     { id:'center',     x:220, y:300, label:'Daniel',           type:'center' },
+  info:       { id:'info',       x:235, y:225, label:'Information',      shape:'circle-filled', parent:'center' },
+  trading:    { id:'trading',    x:130, y:250, label:'Trading &',        label2:'Markets',    num:'1', section:'trading' },
+  ventures:   { id:'ventures',   x:320, y:255, label:'Ventures',         num:'2', section:'ventures' },
+  contentEd:  { id:'contentEd',  x:135, y:370, label:'Content &',        label2:'Education',  num:'3', section:'contentEd' },
+  gallery:    { id:'gallery',    x:310, y:365, label:'Gallery',           num:'4', section:'gallery' },
+  futures:    { id:'futures',    x:55,  y:200, label:'Futures',           label2:'Trading',    shape:'diamond',  parent:'trading',  detail:'futures' },
+  indicators: { id:'indicators', x:55,  y:310, label:'Custom',           label2:'Indicators', shape:'square',   parent:'trading',  detail:'indicators' },
+  valkri:     { id:'valkri',     x:400, y:200, label:'Valkri',           shape:'triangle', parent:'ventures', detail:'valkri' },
+  algotraderx:{ id:'algotraderx',x:410, y:310, label:'AlgoTraderX',     shape:'square',   parent:'ventures', detail:'algotraderx' },
+  chatbots:   { id:'chatbots',   x:390, y:380, label:'AI Chatbot',       label2:'Solutions',  shape:'triangle', parent:'ventures', detail:'chatbots' },
+  youtube:    { id:'youtube',    x:60,  y:420, label:'Education',        label2:'Series',     shape:'square',   parent:'contentEd',detail:'youtube' },
+  brands:     { id:'brands',     x:360, y:430, label:'Brand',            label2:'Systems',    shape:'square',   parent:'gallery',  detail:'brands' },
+  interfaces: { id:'interfaces', x:250, y:440, label:'Interface',        label2:'Design',     shape:'square',   parent:'gallery',  detail:'interfaces' },
 };
 
 const edges = [
