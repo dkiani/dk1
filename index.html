@@ -1,256 +1,720 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Daniel</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
 <style>
-  *, *::before, *::after {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
   :root {
+    --font: 'JetBrains Mono', monospace;
+    --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  [data-theme="dark"] {
     --bg: #0a0a0a;
-    --fg: #e8e8e8;
-    --muted: #4a4a4a;
-    --accent: #888;
+    --fg: #d4d4d4;
+    --muted: #525252;
+    --dim: #3a3a3a;
+    --border: #1f1f1f;
+    --accent: #a0a0a0;
     --hover: #ffffff;
-    --font: 'JetBrains Mono', 'IBM Plex Mono', monospace;
+    --panel-bg: #111111;
+    --panel-border: #1e1e1e;
+    --node-stroke: #3a3a3a;
+    --node-text: #808080;
+    --line-color: #2a2a2a;
+    --line-dash: #1e1e1e;
+    --center-fill: #e85d2a;
+    --year-color: #333;
+    --item-hover: #181818;
+  }
+
+  [data-theme="light"] {
+    --bg: #f0ede8;
+    --fg: #1a1a1a;
+    --muted: #8a8a8a;
+    --dim: #b0aca6;
+    --border: #ddd9d4;
+    --accent: #555;
+    --hover: #000000;
+    --panel-bg: #ffffff;
+    --panel-border: #e5e2dd;
+    --node-stroke: #bbb8b2;
+    --node-text: #777;
+    --line-color: #ccc9c3;
+    --line-dash: #d5d2cd;
+    --center-fill: #e85d2a;
+    --year-color: #c0bdb7;
+    --item-hover: #f7f5f2;
   }
 
   html, body {
     height: 100%;
+    overflow: hidden;
     background: var(--bg);
     color: var(--fg);
     font-family: var(--font);
     -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+    transition: background 0.5s var(--ease), color 0.5s var(--ease);
+  }
+
+  ::selection { background: rgba(128,128,128,0.15); }
+
+  .layout { display: flex; height: 100%; position: relative; }
+
+  /* ─── Graph ─── */
+  .graph-area {
+    flex: 1;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     overflow: hidden;
   }
 
-  /* subtle noise texture */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
-    background-repeat: repeat;
-    background-size: 256px 256px;
-    pointer-events: none;
-    z-index: 0;
+  .graph-area svg { width: 100%; height: 100%; position: absolute; top: 0; left: 0; }
+
+  .node-group { cursor: pointer; }
+  .node-group:hover .node-shape { stroke: var(--fg); }
+  .node-group:hover .node-label { fill: var(--fg); }
+  .node-group.active .node-shape { stroke: var(--fg); }
+  .node-group.active .node-label { fill: var(--fg); }
+
+  .node-shape {
+    fill: none;
+    stroke: var(--node-stroke);
+    stroke-width: 1;
+    transition: stroke 0.3s, fill 0.3s;
   }
 
-  /* very faint grid */
-  body::after {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image: 
-      linear-gradient(rgba(255,255,255,0.012) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,0.012) 1px, transparent 1px);
-    background-size: 60px 60px;
-    pointer-events: none;
-    z-index: 0;
+  .node-shape.filled { fill: var(--node-stroke); }
+
+  .node-label {
+    font-family: var(--font);
+    font-size: 11px;
+    font-weight: 400;
+    fill: var(--node-text);
+    text-anchor: middle;
+    transition: fill 0.3s;
   }
 
-  main {
-    position: relative;
-    z-index: 1;
+  .edge-line {
+    stroke: var(--line-color);
+    stroke-width: 1;
+    fill: none;
+    transition: stroke 0.3s;
+  }
+
+  .edge-line.dashed {
+    stroke: var(--line-dash);
+    stroke-dasharray: 4 4;
+  }
+
+  .center-dot {
+    fill: var(--center-fill);
+    cursor: pointer;
+    transition: r 0.3s var(--ease);
+  }
+
+  .center-dot:hover { r: 10; }
+
+  .center-label {
+    font-family: var(--font);
+    font-size: 12px;
+    font-weight: 400;
+    fill: var(--fg);
+    text-anchor: middle;
+    transition: fill 0.3s;
+  }
+
+  /* ─── Sidebar ─── */
+  .sidebar {
+    width: 340px;
+    min-width: 340px;
     height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    padding: 0 clamp(2rem, 8vw, 8rem);
+    padding: 2rem 0;
+    position: relative;
+    z-index: 10;
   }
 
-  .content {
-    max-width: 600px;
+  .panel {
+    background: var(--panel-bg);
+    border: 1px solid var(--panel-border);
+    border-radius: 2px;
+    margin: 0 1.5rem;
+    flex: 0 1 auto;
+    overflow-y: auto;
+    max-height: calc(100vh - 6rem);
+    transition: background 0.5s var(--ease), border-color 0.5s var(--ease);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
   }
 
-  /* name */
-  h1 {
-    font-size: clamp(1.6rem, 3.5vw, 2.4rem);
-    font-weight: 400;
-    letter-spacing: -0.02em;
-    line-height: 1;
-    margin-bottom: 1.2rem;
-    opacity: 0;
-    animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  }
+  .panel::-webkit-scrollbar { width: 0; }
 
-  /* tagline */
-  .tagline {
-    font-size: clamp(0.72rem, 1.1vw, 0.82rem);
-    font-weight: 300;
-    color: var(--muted);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    margin-bottom: 3rem;
-    opacity: 0;
-    animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.15s forwards;
-  }
+  .panel-section { border-bottom: 1px dashed var(--panel-border); transition: border-color 0.5s var(--ease); }
+  .panel-section:last-child { border-bottom: none; }
 
-  .tagline span {
-    color: var(--accent);
-  }
-
-  /* divider */
-  .divider {
-    width: 32px;
-    height: 1px;
-    background: var(--muted);
-    margin-bottom: 2rem;
-    opacity: 0;
-    animation: fadeWidth 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.35s forwards;
-    transform-origin: left;
-  }
-
-  /* links */
-  nav {
-    display: flex;
-    flex-direction: column;
-    gap: 0.65rem;
-    opacity: 0;
-    animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.45s forwards;
-  }
-
-  nav a {
-    font-size: clamp(0.72rem, 1vw, 0.8rem);
-    font-weight: 300;
-    color: var(--accent);
-    text-decoration: none;
-    letter-spacing: 0.04em;
-    transition: color 0.3s ease, letter-spacing 0.3s ease;
-    width: fit-content;
+  .section-header {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    justify-content: space-between;
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.2s;
   }
 
-  nav a::before {
-    content: '';
-    display: inline-block;
-    width: 0px;
-    height: 1px;
-    background: var(--hover);
-    transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  .section-header:hover { background: var(--item-hover); }
+
+  .section-header-left { display: flex; align-items: center; gap: 0.6rem; }
+
+  .section-icon {
+    width: 10px; height: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px;
+    color: var(--muted);
+    transition: color 0.3s;
   }
 
-  nav a:hover {
-    color: var(--hover);
+  .section-icon.dot { width: 8px; height: 8px; border-radius: 50%; background: var(--center-fill); }
+
+  .section-name {
+    font-size: 0.68rem;
+    font-weight: 500;
     letter-spacing: 0.06em;
+    text-transform: uppercase;
   }
 
-  nav a:hover::before {
+  .section-toggle {
+    font-size: 0.75rem;
+    color: var(--muted);
+    font-weight: 300;
     width: 16px;
+    text-align: center;
+    transition: color 0.3s;
   }
 
-  /* bottom status line */
-  .status {
-    position: fixed;
-    bottom: 2rem;
-    left: clamp(2rem, 8vw, 8rem);
-    font-size: 0.6rem;
+  .section-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s var(--ease);
+  }
+
+  .section-content.open { max-height: 800px; }
+
+  .section-body { padding: 0 1rem 1rem; }
+
+  .section-desc {
+    font-size: 0.62rem;
     font-weight: 300;
     color: var(--muted);
-    letter-spacing: 0.12em;
+    line-height: 1.7;
+    margin-bottom: 1rem;
+    padding-left: 0.2rem;
+  }
+
+  .section-desc i { font-style: italic; }
+
+  .year-label {
+    font-size: 0.58rem;
+    font-weight: 400;
+    color: var(--year-color);
+    letter-spacing: 0.08em;
     text-transform: uppercase;
-    opacity: 0;
-    animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.7s forwards;
+    padding: 0.5rem 0 0.2rem;
+    transition: color 0.3s;
+  }
+
+  .item {
+    padding: 0.5rem 0;
+    cursor: pointer;
+    transition: padding-left 0.3s var(--ease);
+  }
+
+  .item:hover { padding-left: 0.3rem; }
+  .item:hover .item-title { color: var(--hover); }
+
+  .item-marker { font-size: 0.55rem; color: var(--dim); margin-bottom: 0.1rem; }
+
+  .item-title { font-size: 0.72rem; font-weight: 400; transition: color 0.2s; }
+
+  .item-sub {
+    font-size: 0.58rem;
+    font-weight: 300;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-top: 0.05rem;
+  }
+
+  /* ─── Detail View ─── */
+  .detail-view { display: none; }
+  .detail-view.active { display: block; }
+
+  .detail-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px dashed var(--panel-border);
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .detail-header:hover { background: var(--item-hover); }
+
+  .detail-back {
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
     display: flex;
     align-items: center;
     gap: 0.6rem;
   }
 
-  .status .dot {
-    width: 4px;
-    height: 4px;
-    border-radius: 50%;
-    background: #2a9d2a;
-    animation: pulse 3s ease-in-out infinite;
+  .detail-close { font-size: 0.75rem; color: var(--muted); cursor: pointer; }
+  .detail-close:hover { color: var(--hover); }
+
+  .detail-section-label {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px dashed var(--panel-border);
   }
 
-  /* cursor blink on name */
-  .cursor {
-    display: inline-block;
-    width: 2px;
-    height: 1.1em;
-    background: var(--fg);
-    margin-left: 4px;
-    vertical-align: text-bottom;
-    animation: blink 1.2s step-end infinite;
-    opacity: 0.6;
+  .detail-section-label .section-name { font-size: 0.65rem; }
+
+  .detail-section-close {
+    margin-left: auto;
+    font-size: 0.7rem;
+    color: var(--muted);
+    cursor: pointer;
   }
 
-  @keyframes fadeUp {
-    from {
-      opacity: 0;
-      transform: translateY(12px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+  .detail-section-close:hover { color: var(--hover); }
+
+  .detail-body { padding: 1rem; }
+  .detail-title { font-size: 0.78rem; font-weight: 400; margin-bottom: 0.15rem; }
+
+  .detail-subtitle {
+    font-size: 0.6rem;
+    font-weight: 300;
+    color: var(--muted);
+    letter-spacing: 0.03em;
+    margin-bottom: 0.8rem;
   }
 
-  @keyframes fadeWidth {
-    from {
-      opacity: 0;
-      width: 0;
-    }
-    to {
-      opacity: 1;
-      width: 32px;
-    }
+  .detail-text {
+    font-size: 0.65rem;
+    font-weight: 300;
+    color: var(--accent);
+    line-height: 1.75;
   }
 
-  @keyframes blink {
-    0%, 100% { opacity: 0.6; }
-    50% { opacity: 0; }
+  .detail-connections {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem 1rem;
+    border-top: 1px dashed var(--panel-border);
+    cursor: pointer;
+    margin-top: 0.5rem;
   }
 
-  @keyframes pulse {
-    0%, 100% { opacity: 0.4; }
-    50% { opacity: 1; }
+  .detail-connections:hover { background: var(--item-hover); }
+
+  .detail-connections-left {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.62rem;
+    font-weight: 400;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
   }
 
-  /* selection */
-  ::selection {
-    background: rgba(255, 255, 255, 0.08);
-    color: var(--hover);
+  /* ─── Theme Toggle ─── */
+  .theme-toggle {
+    position: fixed;
+    top: 1.5rem;
+    right: 1.5rem;
+    z-index: 100;
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: var(--font);
+    font-size: 0.55rem;
+    letter-spacing: 0.06em;
+    padding: 0.3rem 0.6rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-transform: uppercase;
   }
 
-  @media (max-width: 480px) {
-    main {
-      padding: 0 2rem;
-    }
-    .status {
-      left: 2rem;
-    }
+  .theme-toggle:hover { color: var(--hover); border-color: var(--accent); }
+
+  /* ─── Responsive ─── */
+  @media (max-width: 900px) {
+    .layout { flex-direction: column; }
+    .graph-area { height: 45vh; min-height: 280px; }
+    .sidebar { width: 100%; min-width: 100%; padding: 0; flex: 1; overflow-y: auto; }
+    .panel { margin: 0.5rem 1rem; max-height: none; }
+    .theme-toggle { top: 0.8rem; right: 0.8rem; }
   }
 </style>
 </head>
 <body>
-  <main>
-    <div class="content">
-      <h1>daniel<span class="cursor"></span></h1>
-      <p class="tagline">trader <span>·</span> builder <span>·</span> designer</p>
-      <div class="divider"></div>
-      <nav>
-        <a href="#">twitter</a>
-        <a href="#">github</a>
-        <a href="#">projects</a>
-        <a href="#">contact</a>
-      </nav>
-    </div>
-  </main>
-  <div class="status">
-    <span class="dot"></span>
-    <span>available for work</span>
+
+<button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">Light</button>
+
+<div class="layout">
+
+  <div class="graph-area">
+    <svg id="graph" viewBox="0 0 700 600" preserveAspectRatio="xMidYMid meet"></svg>
   </div>
+
+  <div class="sidebar">
+    <div class="panel" id="panel">
+
+      <div id="indexView">
+
+        <!-- INDEX -->
+        <div class="panel-section">
+          <div class="section-header" onclick="toggleSection('index')">
+            <div class="section-header-left">
+              <div class="section-icon dot"></div>
+              <span class="section-name">Index</span>
+            </div>
+            <div class="section-toggle" id="toggle-index">−</div>
+          </div>
+          <div class="section-content open" id="content-index">
+            <div class="section-body">
+              <p class="section-desc">Daniel is a trader, technologist, and designer. His work spans algorithmic trading, venture building, and creative production — bridging markets, software, and visual design into cohesive systems — <a href="#" style="color:var(--fg);border-bottom:1px solid var(--border);text-decoration:none;">more information</a>.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- TRADING -->
+        <div class="panel-section">
+          <div class="section-header" onclick="toggleSection('trading')">
+            <div class="section-header-left">
+              <div class="section-icon" style="color:var(--muted);">◆</div>
+              <span class="section-name">Trading & Markets</span>
+            </div>
+            <div class="section-toggle" id="toggle-trading">+</div>
+          </div>
+          <div class="section-content" id="content-trading">
+            <div class="section-body">
+              <p class="section-desc"><i>i.</i>&ensp;Active engagement with financial markets through discretionary and systematic approaches, focusing on futures and algorithmic execution.</p>
+              <div class="year-label">Currently</div>
+              <div class="item" onclick="showDetail('futures')">
+                <div class="item-title">Futures Trading</div>
+                <div class="item-sub">Nasdaq E-mini / Discretionary & ICT</div>
+              </div>
+              <div class="item" onclick="showDetail('indicators')">
+                <div class="item-title">Custom Indicators</div>
+                <div class="item-sub">TradingView / Pine Script Tools</div>
+              </div>
+              <div class="year-label">2025</div>
+              <div class="item" onclick="showDetail('propfirm')">
+                <div class="item-title">Prop Firm Evaluations</div>
+                <div class="item-sub">Funded Trading Accounts</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- VENTURES -->
+        <div class="panel-section">
+          <div class="section-header" onclick="toggleSection('ventures')">
+            <div class="section-header-left">
+              <div class="section-icon" style="color:var(--muted);">▲</div>
+              <span class="section-name">Ventures</span>
+            </div>
+            <div class="section-toggle" id="toggle-ventures">+</div>
+          </div>
+          <div class="section-content" id="content-ventures">
+            <div class="section-body">
+              <p class="section-desc"><i>i.</i>&ensp;Companies and platforms built at the intersection of artificial intelligence, financial technology, and automation.</p>
+              <div class="year-label">Currently</div>
+              <div class="item" onclick="showDetail('valkri')">
+                <div class="item-marker">*</div>
+                <div class="item-title">Valkri</div>
+                <div class="item-sub">AI-Powered Algorithmic Hedge Fund</div>
+              </div>
+              <div class="item" onclick="showDetail('algotraderx')">
+                <div class="item-title">AlgoTraderX</div>
+                <div class="item-sub">Trade Execution Automation Platform</div>
+              </div>
+              <div class="item" onclick="showDetail('chatbots')">
+                <div class="item-title">AI Chatbot Solutions</div>
+                <div class="item-sub">Customer Support & Sales Automation</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CONTENT -->
+        <div class="panel-section">
+          <div class="section-header" onclick="toggleSection('contentEd')">
+            <div class="section-header-left">
+              <div class="section-icon" style="color:var(--muted);">■</div>
+              <span class="section-name">Content & Education</span>
+            </div>
+            <div class="section-toggle" id="toggle-contentEd">+</div>
+          </div>
+          <div class="section-content" id="content-contentEd">
+            <div class="section-body">
+              <p class="section-desc"><i>i.</i>&ensp;Educational resources and media focused on trading methodology, risk management, and market psychology.</p>
+              <div class="year-label">Currently</div>
+              <div class="item" onclick="showDetail('youtube')">
+                <div class="item-title">Trading Education Series</div>
+                <div class="item-sub">YouTube / Beginner to Advanced</div>
+              </div>
+              <div class="item" onclick="showDetail('analysis')">
+                <div class="item-title">Market Analysis</div>
+                <div class="item-sub">Technical Breakdowns & Commentary</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- GALLERY -->
+        <div class="panel-section">
+          <div class="section-header" onclick="toggleSection('gallery')">
+            <div class="section-header-left">
+              <div class="section-icon" style="color:var(--muted);">●</div>
+              <span class="section-name">Gallery</span>
+            </div>
+            <div class="section-toggle" id="toggle-gallery">+</div>
+          </div>
+          <div class="section-content" id="content-gallery">
+            <div class="section-body">
+              <p class="section-desc"><i>i.</i>&ensp;Visual work, interfaces, and design explorations across digital and creative mediums.</p>
+              <div class="year-label">2025</div>
+              <div class="item" onclick="showDetail('brands')">
+                <div class="item-title">Brand Systems</div>
+                <div class="item-sub">Identity & Visual Language</div>
+              </div>
+              <div class="item" onclick="showDetail('interfaces')">
+                <div class="item-title">Interface Design</div>
+                <div class="item-sub">Dashboards & Product UI</div>
+              </div>
+              <div class="item" onclick="showDetail('creative')">
+                <div class="item-title">Creative Direction</div>
+                <div class="item-sub">Digital & Mixed Media</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Detail View -->
+      <div id="detailView" class="detail-view">
+        <div class="detail-header" onclick="backToIndex()">
+          <div class="detail-back">
+            <div class="section-icon dot"></div>
+            <span>INDEX</span>
+          </div>
+          <div class="detail-close">←</div>
+        </div>
+        <div class="detail-section-label">
+          <div class="section-icon" id="detailSectionIcon" style="color:var(--muted);">▲</div>
+          <span class="section-name" id="detailSectionName">VENTURE</span>
+          <div class="detail-section-close" onclick="backToIndex()">✕</div>
+        </div>
+        <div class="detail-body">
+          <div class="detail-title" id="detailTitle"></div>
+          <div class="detail-subtitle" id="detailSubtitle"></div>
+          <p class="detail-text" id="detailText"></p>
+        </div>
+        <div class="detail-connections" onclick="backToIndex()">
+          <div class="detail-connections-left">
+            <span>⇄</span>
+            <span>Connections</span>
+          </div>
+          <div class="section-toggle">+</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<script>
+const nodes = {
+  center:     { id:'center',     x:340, y:300, label:'Daniel',           type:'center' },
+  info:       { id:'info',       x:370, y:160, label:'Information',      shape:'circle-filled', parent:'center' },
+  trading:    { id:'trading',    x:190, y:200, label:'Trading &',        label2:'Markets',    num:'1', section:'trading' },
+  ventures:   { id:'ventures',   x:510, y:220, label:'Ventures',         num:'2', section:'ventures' },
+  contentEd:  { id:'contentEd',  x:200, y:430, label:'Content &',        label2:'Education',  num:'3', section:'contentEd' },
+  gallery:    { id:'gallery',    x:490, y:430, label:'Gallery',           num:'4', section:'gallery' },
+  futures:    { id:'futures',    x:75,  y:130, label:'Futures',           label2:'Trading',    shape:'diamond',  parent:'trading',  detail:'futures' },
+  indicators: { id:'indicators', x:80,  y:300, label:'Custom',           label2:'Indicators', shape:'square',   parent:'trading',  detail:'indicators' },
+  valkri:     { id:'valkri',     x:610, y:130, label:'Valkri',           shape:'triangle', parent:'ventures', detail:'valkri' },
+  algotraderx:{ id:'algotraderx',x:630, y:310, label:'AlgoTraderX',     shape:'square',   parent:'ventures', detail:'algotraderx' },
+  chatbots:   { id:'chatbots',   x:600, y:400, label:'AI Chatbot',       label2:'Solutions',  shape:'triangle', parent:'ventures', detail:'chatbots' },
+  youtube:    { id:'youtube',    x:75,  y:510, label:'Education',        label2:'Series',     shape:'square',   parent:'contentEd',detail:'youtube' },
+  brands:     { id:'brands',     x:540, y:540, label:'Brand',            label2:'Systems',    shape:'square',   parent:'gallery',  detail:'brands' },
+  interfaces: { id:'interfaces', x:400, y:550, label:'Interface',        label2:'Design',     shape:'square',   parent:'gallery',  detail:'interfaces' },
+};
+
+const edges = [
+  { from:'center', to:'trading',   type:'solid' },
+  { from:'center', to:'ventures',  type:'solid' },
+  { from:'center', to:'contentEd', type:'solid' },
+  { from:'center', to:'gallery',   type:'solid' },
+  { from:'center', to:'info',      type:'solid' },
+  { from:'trading',   to:'futures',     type:'dashed' },
+  { from:'trading',   to:'indicators',  type:'dashed' },
+  { from:'ventures',  to:'valkri',      type:'dashed' },
+  { from:'ventures',  to:'algotraderx', type:'dashed' },
+  { from:'ventures',  to:'chatbots',    type:'dashed' },
+  { from:'contentEd', to:'youtube',     type:'dashed' },
+  { from:'gallery',   to:'brands',      type:'dashed' },
+  { from:'gallery',   to:'interfaces',  type:'dashed' },
+];
+
+const details = {
+  futures:    { section:'TRADING', icon:'◆', title:'Futures Trading',        subtitle:'Nasdaq E-mini / Discretionary & ICT',    text:'Active discretionary trading of Nasdaq E-mini futures using ICT methodology and Smart Money Concepts. Focus on precision entries, institutional order flow, and SMT divergence analysis.' },
+  indicators: { section:'TRADING', icon:'◆', title:'Custom Indicators',      subtitle:'TradingView / Pine Script Tools',         text:'Development of proprietary technical indicators and strategy scripts for TradingView using Pine Script. Tools built for multi-timeframe analysis, alert automation, and visual market structure mapping.' },
+  propfirm:  { section:'TRADING', icon:'◆', title:'Prop Firm Evaluations',  subtitle:'Funded Trading Accounts',                text:'Systematic approach to passing prop firm evaluations through disciplined risk management and consistent execution methodology.' },
+  valkri:    { section:'VENTURE', icon:'▲', title:'Valkri',                 subtitle:'AI-Powered Algorithmic Hedge Fund',       text:'An AI-driven quantitative hedge fund deploying algorithmic trading strategies with exceptional performance metrics. Built on proprietary machine learning models for market prediction and execution.' },
+  algotraderx:{ section:'VENTURE', icon:'▲', title:'AlgoTraderX',           subtitle:'Trade Execution Automation Platform',     text:'A trade execution automation platform enabling users to configure and mechanically execute trading parameters while maintaining full account control.' },
+  chatbots:  { section:'VENTURE', icon:'▲', title:'AI Chatbot Solutions',   subtitle:'Customer Support & Sales Automation',     text:'Building and deploying intelligent customer support and sales chatbots for businesses, with attention to legal compliance and conversational design.' },
+  youtube:   { section:'CONTENT', icon:'■', title:'Trading Education Series',subtitle:'YouTube / Beginner to Advanced',        text:'Comprehensive educational content covering trading methodology from foundational concepts through advanced techniques including ICT, risk management, and trading psychology.' },
+  analysis:  { section:'CONTENT', icon:'■', title:'Market Analysis',         subtitle:'Technical Breakdowns & Commentary',      text:'Regular technical analysis and market commentary providing insights on market structure, key levels, and potential trade setups.' },
+  brands:    { section:'GALLERY', icon:'●', title:'Brand Systems',           subtitle:'Identity & Visual Language',             text:'Design of cohesive brand identities including logos, color systems, typography, and visual guidelines for technology and finance ventures.' },
+  interfaces:{ section:'GALLERY', icon:'●', title:'Interface Design',        subtitle:'Dashboards & Product UI',               text:'Dark-themed, terminal-inspired interface design for trading platforms, dashboards, and financial technology products.' },
+  creative:  { section:'GALLERY', icon:'●', title:'Creative Direction',      subtitle:'Digital & Mixed Media',                 text:'Explorations in digital design, visual aesthetics, and creative production across various mediums.' },
+};
+
+// ─── Render ───
+const svg = document.getElementById('graph');
+const ns = 'http://www.w3.org/2000/svg';
+
+function el(tag, attrs) {
+  const e = document.createElementNS(ns, tag);
+  for (const [k,v] of Object.entries(attrs)) e.setAttribute(k, v);
+  return e;
+}
+
+edges.forEach(e => {
+  const f = nodes[e.from], t = nodes[e.to];
+  svg.appendChild(el('line', {
+    x1:f.x, y1:f.y, x2:t.x, y2:t.y,
+    class: 'edge-line' + (e.type==='dashed'?' dashed':'')
+  }));
+});
+
+Object.values(nodes).forEach(n => {
+  if (n.type === 'center') {
+    const dot = el('circle', { cx:n.x, cy:n.y, r:8, class:'center-dot' });
+    dot.onclick = () => backToIndex();
+    svg.appendChild(dot);
+    const lbl = el('text', { x:n.x, y:n.y+24, class:'center-label' });
+    lbl.textContent = n.label;
+    svg.appendChild(lbl);
+    return;
+  }
+
+  const g = el('g', { class:'node-group', 'data-node':n.id });
+
+  if (n.num) {
+    g.appendChild(el('circle', { cx:n.x, cy:n.y, r:12, class:'node-shape' }));
+    const num = el('text', { x:n.x, y:n.y+3.5, class:'node-label', 'text-anchor':'middle', 'font-size':'9' });
+    num.textContent = n.num;
+    g.appendChild(num);
+  } else if (n.shape === 'triangle') {
+    const s = 10;
+    g.appendChild(el('polygon', { points:`${n.x},${n.y-s} ${n.x-s},${n.y+s*0.7} ${n.x+s},${n.y+s*0.7}`, class:'node-shape' }));
+  } else if (n.shape === 'square') {
+    const s = 9;
+    g.appendChild(el('rect', { x:n.x-s, y:n.y-s, width:s*2, height:s*2, class:'node-shape' }));
+  } else if (n.shape === 'diamond') {
+    const s = 10;
+    g.appendChild(el('polygon', { points:`${n.x},${n.y-s} ${n.x+s},${n.y} ${n.x},${n.y+s} ${n.x-s},${n.y}`, class:'node-shape' }));
+  } else if (n.shape === 'circle-filled') {
+    g.appendChild(el('circle', { cx:n.x, cy:n.y, r:6, class:'node-shape filled' }));
+  }
+
+  const ly = n.num ? n.y+28 : n.y + (n.shape==='triangle'?24:22);
+  const lbl = el('text', { x:n.x, y:ly, class:'node-label' });
+  lbl.textContent = n.label;
+  g.appendChild(lbl);
+
+  if (n.label2) {
+    const lbl2 = el('text', { x:n.x, y:ly+14, class:'node-label' });
+    lbl2.textContent = n.label2;
+    g.appendChild(lbl2);
+  }
+
+  g.onclick = () => {
+    document.querySelectorAll('.node-group').forEach(e => e.classList.remove('active'));
+    g.classList.add('active');
+    if (n.section) toggleSection(n.section, true);
+    else if (n.detail) showDetail(n.detail);
+  };
+
+  svg.appendChild(g);
+});
+
+// ─── Sidebar Logic ───
+function toggleSection(id, forceOpen) {
+  const content = document.getElementById('content-' + id);
+  const toggle = document.getElementById('toggle-' + id);
+  if (!content) return;
+
+  if (forceOpen || !content.classList.contains('open')) {
+    content.classList.add('open');
+    if (toggle) toggle.textContent = '−';
+  } else {
+    content.classList.remove('open');
+    if (toggle) toggle.textContent = '+';
+  }
+}
+
+function showDetail(id) {
+  const d = details[id];
+  if (!d) return;
+  document.getElementById('indexView').style.display = 'none';
+  document.getElementById('detailView').classList.add('active');
+  document.getElementById('detailSectionIcon').textContent = d.icon;
+  document.getElementById('detailSectionName').textContent = d.section;
+  document.getElementById('detailTitle').textContent = d.title;
+  document.getElementById('detailSubtitle').textContent = d.subtitle;
+  document.getElementById('detailText').textContent = d.text;
+}
+
+function backToIndex() {
+  document.getElementById('indexView').style.display = 'block';
+  document.getElementById('detailView').classList.remove('active');
+  document.querySelectorAll('.node-group').forEach(e => e.classList.remove('active'));
+}
+
+function toggleTheme() {
+  const html = document.documentElement;
+  const btn = document.getElementById('themeBtn');
+  if (html.getAttribute('data-theme') === 'dark') {
+    html.setAttribute('data-theme', 'light');
+    btn.textContent = 'Dark';
+  } else {
+    html.setAttribute('data-theme', 'dark');
+    btn.textContent = 'Light';
+  }
+}
+</script>
+
 </body>
 </html>
