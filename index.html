@@ -68,12 +68,14 @@
 
   /* ─── Graph ─── */
   .graph-area {
-    flex: 1;
-    position: relative;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
+    z-index: 1;
   }
 
   .graph-area svg { width: 100%; height: 100%; position: absolute; top: 0; left: 0; }
@@ -139,7 +141,9 @@
     display: flex;
     flex-direction: column;
     padding: 2rem 0;
-    position: relative;
+    position: fixed;
+    right: 0;
+    top: 0;
     z-index: 10;
   }
 
@@ -365,8 +369,8 @@
   /* ─── Responsive ─── */
   @media (max-width: 900px) {
     .layout { flex-direction: column; }
-    .graph-area { height: 45vh; min-height: 280px; }
-    .sidebar { width: 100%; min-width: 100%; padding: 0; flex: 1; overflow-y: auto; }
+    .graph-area { position: fixed; width: 100%; height: 100%; }
+    .sidebar { width: 100%; min-width: 100%; padding: 0; position: fixed; bottom: 0; top: auto; height: auto; max-height: 55vh; overflow-y: auto; }
     .panel { margin: 0.5rem 1rem; max-height: none; }
     .theme-toggle { top: 0.8rem; right: 0.8rem; }
   }
@@ -553,21 +557,22 @@
 </div>
 
 <script>
+// ─── Compact node positions (centered around 350,300) ───
 const nodes = {
-  center:     { id:'center',     x:340, y:300, label:'Daniel',           type:'center' },
-  info:       { id:'info',       x:370, y:160, label:'Information',      shape:'circle-filled', parent:'center' },
-  trading:    { id:'trading',    x:190, y:200, label:'Trading &',        label2:'Markets',    num:'1', section:'trading' },
-  ventures:   { id:'ventures',   x:510, y:220, label:'Ventures',         num:'2', section:'ventures' },
-  contentEd:  { id:'contentEd',  x:200, y:430, label:'Content &',        label2:'Education',  num:'3', section:'contentEd' },
-  gallery:    { id:'gallery',    x:490, y:430, label:'Gallery',           num:'4', section:'gallery' },
-  futures:    { id:'futures',    x:75,  y:130, label:'Futures',           label2:'Trading',    shape:'diamond',  parent:'trading',  detail:'futures' },
-  indicators: { id:'indicators', x:80,  y:300, label:'Custom',           label2:'Indicators', shape:'square',   parent:'trading',  detail:'indicators' },
-  valkri:     { id:'valkri',     x:610, y:130, label:'Valkri',           shape:'triangle', parent:'ventures', detail:'valkri' },
-  algotraderx:{ id:'algotraderx',x:630, y:310, label:'AlgoTraderX',     shape:'square',   parent:'ventures', detail:'algotraderx' },
-  chatbots:   { id:'chatbots',   x:600, y:400, label:'AI Chatbot',       label2:'Solutions',  shape:'triangle', parent:'ventures', detail:'chatbots' },
-  youtube:    { id:'youtube',    x:75,  y:510, label:'Education',        label2:'Series',     shape:'square',   parent:'contentEd',detail:'youtube' },
-  brands:     { id:'brands',     x:540, y:540, label:'Brand',            label2:'Systems',    shape:'square',   parent:'gallery',  detail:'brands' },
-  interfaces: { id:'interfaces', x:400, y:550, label:'Interface',        label2:'Design',     shape:'square',   parent:'gallery',  detail:'interfaces' },
+  center:     { id:'center',     x:350, y:300, label:'Daniel',           type:'center' },
+  info:       { id:'info',       x:365, y:225, label:'Information',      shape:'circle-filled', parent:'center' },
+  trading:    { id:'trading',    x:260, y:250, label:'Trading &',        label2:'Markets',    num:'1', section:'trading' },
+  ventures:   { id:'ventures',   x:450, y:255, label:'Ventures',         num:'2', section:'ventures' },
+  contentEd:  { id:'contentEd',  x:265, y:370, label:'Content &',        label2:'Education',  num:'3', section:'contentEd' },
+  gallery:    { id:'gallery',    x:440, y:365, label:'Gallery',           num:'4', section:'gallery' },
+  futures:    { id:'futures',    x:185, y:200, label:'Futures',           label2:'Trading',    shape:'diamond',  parent:'trading',  detail:'futures' },
+  indicators: { id:'indicators', x:185, y:310, label:'Custom',           label2:'Indicators', shape:'square',   parent:'trading',  detail:'indicators' },
+  valkri:     { id:'valkri',     x:530, y:200, label:'Valkri',           shape:'triangle', parent:'ventures', detail:'valkri' },
+  algotraderx:{ id:'algotraderx',x:540, y:310, label:'AlgoTraderX',     shape:'square',   parent:'ventures', detail:'algotraderx' },
+  chatbots:   { id:'chatbots',   x:520, y:380, label:'AI Chatbot',       label2:'Solutions',  shape:'triangle', parent:'ventures', detail:'chatbots' },
+  youtube:    { id:'youtube',    x:190, y:420, label:'Education',        label2:'Series',     shape:'square',   parent:'contentEd',detail:'youtube' },
+  brands:     { id:'brands',     x:490, y:430, label:'Brand',            label2:'Systems',    shape:'square',   parent:'gallery',  detail:'brands' },
+  interfaces: { id:'interfaces', x:380, y:440, label:'Interface',        label2:'Design',     shape:'square',   parent:'gallery',  detail:'interfaces' },
 };
 
 const edges = [
@@ -600,7 +605,7 @@ const details = {
   creative:  { section:'GALLERY', icon:'●', title:'Creative Direction',      subtitle:'Digital & Mixed Media',                 text:'Explorations in digital design, visual aesthetics, and creative production across various mediums.' },
 };
 
-// ─── Render ───
+// ─── Render (animated) ───
 const svg = document.getElementById('graph');
 const ns = 'http://www.w3.org/2000/svg';
 
@@ -610,52 +615,68 @@ function el(tag, attrs) {
   return e;
 }
 
-edges.forEach(e => {
-  const f = nodes[e.from], t = nodes[e.to];
-  svg.appendChild(el('line', {
-    x1:f.x, y1:f.y, x2:t.x, y2:t.y,
-    class: 'edge-line' + (e.type==='dashed'?' dashed':'')
-  }));
+// Store base positions & assign random drift parameters per node
+Object.values(nodes).forEach(n => {
+  n.baseX = n.x;
+  n.baseY = n.y;
+  n.driftAmpX = 3 + Math.random() * 8;
+  n.driftAmpY = 3 + Math.random() * 8;
+  n.driftSpeedX = 0.3 + Math.random() * 0.6;
+  n.driftSpeedY = 0.3 + Math.random() * 0.6;
+  n.driftPhaseX = Math.random() * Math.PI * 2;
+  n.driftPhaseY = Math.random() * Math.PI * 2;
 });
 
+// Create edge elements (will be updated each frame)
+const edgeEls = edges.map(e => {
+  const line = el('line', { x1:0, y1:0, x2:0, y2:0, class:'edge-line' + (e.type==='dashed'?' dashed':'') });
+  svg.appendChild(line);
+  return { def: e, el: line };
+});
+
+// Create node elements with group transforms
+const nodeEls = {};
 Object.values(nodes).forEach(n => {
   if (n.type === 'center') {
-    const dot = el('circle', { cx:n.x, cy:n.y, r:8, class:'center-dot' });
+    const g = el('g', { 'data-node': n.id });
+    const dot = el('circle', { cx:0, cy:0, r:8, class:'center-dot' });
     dot.onclick = () => backToIndex();
-    svg.appendChild(dot);
-    const lbl = el('text', { x:n.x, y:n.y+24, class:'center-label' });
+    g.appendChild(dot);
+    const lbl = el('text', { x:0, y:24, class:'center-label' });
     lbl.textContent = n.label;
-    svg.appendChild(lbl);
+    g.appendChild(lbl);
+    svg.appendChild(g);
+    nodeEls[n.id] = { group: g, node: n };
     return;
   }
 
   const g = el('g', { class:'node-group', 'data-node':n.id });
 
   if (n.num) {
-    g.appendChild(el('circle', { cx:n.x, cy:n.y, r:12, class:'node-shape' }));
-    const num = el('text', { x:n.x, y:n.y+3.5, class:'node-label', 'text-anchor':'middle', 'font-size':'9' });
+    g.appendChild(el('circle', { cx:0, cy:0, r:12, class:'node-shape' }));
+    const num = el('text', { x:0, y:3.5, class:'node-label', 'text-anchor':'middle', 'font-size':'9' });
     num.textContent = n.num;
     g.appendChild(num);
   } else if (n.shape === 'triangle') {
     const s = 10;
-    g.appendChild(el('polygon', { points:`${n.x},${n.y-s} ${n.x-s},${n.y+s*0.7} ${n.x+s},${n.y+s*0.7}`, class:'node-shape' }));
+    g.appendChild(el('polygon', { points:`0,${-s} ${-s},${s*0.7} ${s},${s*0.7}`, class:'node-shape' }));
   } else if (n.shape === 'square') {
     const s = 9;
-    g.appendChild(el('rect', { x:n.x-s, y:n.y-s, width:s*2, height:s*2, class:'node-shape' }));
+    g.appendChild(el('rect', { x:-s, y:-s, width:s*2, height:s*2, class:'node-shape' }));
   } else if (n.shape === 'diamond') {
     const s = 10;
-    g.appendChild(el('polygon', { points:`${n.x},${n.y-s} ${n.x+s},${n.y} ${n.x},${n.y+s} ${n.x-s},${n.y}`, class:'node-shape' }));
+    g.appendChild(el('polygon', { points:`0,${-s} ${s},0 0,${s} ${-s},0`, class:'node-shape' }));
   } else if (n.shape === 'circle-filled') {
-    g.appendChild(el('circle', { cx:n.x, cy:n.y, r:6, class:'node-shape filled' }));
+    g.appendChild(el('circle', { cx:0, cy:0, r:6, class:'node-shape filled' }));
   }
 
-  const ly = n.num ? n.y+28 : n.y + (n.shape==='triangle'?24:22);
-  const lbl = el('text', { x:n.x, y:ly, class:'node-label' });
+  const ly = n.num ? 28 : (n.shape==='triangle' ? 24 : 22);
+  const lbl = el('text', { x:0, y:ly, class:'node-label' });
   lbl.textContent = n.label;
   g.appendChild(lbl);
 
   if (n.label2) {
-    const lbl2 = el('text', { x:n.x, y:ly+14, class:'node-label' });
+    const lbl2 = el('text', { x:0, y:ly+14, class:'node-label' });
     lbl2.textContent = n.label2;
     g.appendChild(lbl2);
   }
@@ -668,7 +689,71 @@ Object.values(nodes).forEach(n => {
   };
 
   svg.appendChild(g);
+  nodeEls[n.id] = { group: g, node: n };
 });
+
+// ─── Mouse tracking for subtle interaction ───
+let mouseX = -1000, mouseY = -1000;
+const graphArea = document.querySelector('.graph-area');
+
+graphArea.addEventListener('mousemove', e => {
+  const rect = svg.getBoundingClientRect();
+  const svgW = 700, svgH = 600;
+  mouseX = ((e.clientX - rect.left) / rect.width) * svgW;
+  mouseY = ((e.clientY - rect.top) / rect.height) * svgH;
+});
+
+graphArea.addEventListener('mouseleave', () => {
+  mouseX = -1000;
+  mouseY = -1000;
+});
+
+// ─── Animation loop ───
+function animate(time) {
+  const t = time * 0.001;
+
+  Object.values(nodes).forEach(n => {
+    // Sinusoidal drift
+    let dx = Math.sin(t * n.driftSpeedX + n.driftPhaseX) * n.driftAmpX;
+    let dy = Math.cos(t * n.driftSpeedY + n.driftPhaseY) * n.driftAmpY;
+
+    // Add secondary slower wave for organic feel
+    dx += Math.sin(t * n.driftSpeedX * 0.4 + n.driftPhaseY) * n.driftAmpX * 0.5;
+    dy += Math.cos(t * n.driftSpeedY * 0.3 + n.driftPhaseX) * n.driftAmpY * 0.5;
+
+    // Mouse repulsion (subtle push away)
+    const mx = n.baseX + dx - mouseX;
+    const my = n.baseY + dy - mouseY;
+    const dist = Math.sqrt(mx * mx + my * my);
+    const repulseRadius = 120;
+    if (dist < repulseRadius && dist > 0) {
+      const force = (1 - dist / repulseRadius) * 25;
+      dx += (mx / dist) * force;
+      dy += (my / dist) * force;
+    }
+
+    n.x = n.baseX + dx;
+    n.y = n.baseY + dy;
+  });
+
+  // Update node group transforms
+  Object.values(nodeEls).forEach(({ group, node }) => {
+    group.setAttribute('transform', `translate(${node.x}, ${node.y})`);
+  });
+
+  // Update edge positions
+  edgeEls.forEach(({ def, el }) => {
+    const f = nodes[def.from], t = nodes[def.to];
+    el.setAttribute('x1', f.x);
+    el.setAttribute('y1', f.y);
+    el.setAttribute('x2', t.x);
+    el.setAttribute('y2', t.y);
+  });
+
+  requestAnimationFrame(animate);
+}
+
+requestAnimationFrame(animate);
 
 // ─── Sidebar Logic ───
 function toggleSection(id, forceOpen) {
