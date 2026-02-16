@@ -237,6 +237,8 @@
   .item:hover { padding-left: 0.3rem; }
   .item:hover .item-title { color: var(--hover); }
 
+  a.item { display: block; text-decoration: none; color: inherit; }
+
   .item.static { cursor: default; }
   .item.static:hover { padding-left: 0; }
   .item.static:hover .item-title { color: var(--fg); }
@@ -600,8 +602,9 @@
     .section-header { padding: 0.85rem 1rem; min-height: 44px; }
     .section-name { font-size: 0.72rem; }
     .section-toggle { font-size: 0.85rem; }
-    .item { padding: 0.6rem 0; min-height: 40px; display: flex; align-items: center; }
+    .item { padding: 0.6rem 0; min-height: 40px; display: flex; align-items: center; justify-content: space-between; }
     .item-title { font-size: 0.75rem; }
+    .item-sub { margin-top: 0; }
     .section-desc { font-size: 0.65rem; line-height: 1.8; }
 
     .theme-toggle {
@@ -722,23 +725,23 @@
                 <div class="item-title">Symba AI</div>
                 <div class="item-sub">2016</div>
               </div>
-              <a class="item" href="https://signal.nfx.com/firms/7feur-ventures" target="_blank" rel="noopener" style="display:block;text-decoration:none;color:inherit;">
+              <a class="item" href="https://signal.nfx.com/firms/7feur-ventures" target="_blank" rel="noopener">
                 <div class="item-title">7feur Ventures</div>
                 <div class="item-sub">2018</div>
               </a>
-              <a class="item" href="https://biolight.shop" target="_blank" rel="noopener" style="display:block;text-decoration:none;color:inherit;">
+              <a class="item" href="https://biolight.shop" target="_blank" rel="noopener">
                 <div class="item-title">BioLight</div>
                 <div class="item-sub">2019</div>
               </a>
-              <a class="item" href="https://x.com/hypremium?s=21" target="_blank" rel="noopener" style="display:block;text-decoration:none;color:inherit;">
+              <a class="item" href="https://x.com/hypremium?s=21" target="_blank" rel="noopener">
                 <div class="item-title">Hypremium</div>
                 <div class="item-sub">2019</div>
               </a>
-              <a class="item" href="https://noramp.io" target="_blank" rel="noopener" style="display:block;text-decoration:none;color:inherit;">
+              <a class="item" href="https://noramp.io" target="_blank" rel="noopener">
                 <div class="item-title">NoRamp</div>
                 <div class="item-sub">2022</div>
               </a>
-              <a class="item" href="https://valkri.ai" target="_blank" rel="noopener" style="display:block;text-decoration:none;color:inherit;">
+              <a class="item" href="https://valkri.ai" target="_blank" rel="noopener">
                 <div class="item-title">Valkri</div>
                 <div class="item-sub">2025</div>
               </a>
@@ -757,13 +760,13 @@
           </div>
           <div class="section-content" id="content-research">
             <div class="section-body">
-              <a class="item" href="https://patents.google.com/patent/WO2023283166A1/en" target="_blank" rel="noopener" style="display:block;text-decoration:none;color:inherit;">
+              <a class="item" href="https://patents.google.com/patent/WO2023283166A1/en" target="_blank" rel="noopener" >
                 <div class="item-title">BioLight Patent 20230012300</div>
               </a>
-              <a class="item" href="https://patents.google.com/patent/WO2023283164A1/en" target="_blank" rel="noopener" style="display:block;text-decoration:none;color:inherit;">
+              <a class="item" href="https://patents.google.com/patent/WO2023283164A1/en" target="_blank" rel="noopener" >
                 <div class="item-title">BioLight Patent 20230010922</div>
               </a>
-              <a class="item" href="https://erc721n.org/" target="_blank" rel="noopener" style="display:block;text-decoration:none;color:inherit;">
+              <a class="item" href="https://erc721n.org/" target="_blank" rel="noopener" >
                 <div class="item-title">ERC-721N: NoRamp</div>
               </a>
             </div>
