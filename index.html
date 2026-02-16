@@ -343,12 +343,14 @@
   .gallery-overlay {
     display: none;
     position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
+    top: -1px; left: -1px;
+    width: calc(100% + 2px); height: calc(100% + 2px);
     background: var(--bg);
     z-index: 50;
     overflow: hidden;
     cursor: crosshair;
+    border: none;
+    outline: none;
     transition: background 0.5s var(--ease);
   }
 
@@ -359,8 +361,8 @@
     top: 0; left: 0; right: 0;
     display: flex;
     align-items: center;
-    gap: 1rem;
-    padding: 1.2rem 1.5rem;
+    gap: 1.2rem;
+    padding: 1.5rem 1.8rem;
     z-index: 60;
     background: transparent;
     pointer-events: none;
@@ -1280,6 +1282,7 @@ const MAX_VISIBLE = 12;
 function openGallery() {
   const overlay = document.getElementById('galleryOverlay');
   overlay.classList.add('active');
+  document.getElementById('themeBtn').style.display = 'none';
   galleryActive = true;
   galleryCurrentIndex = 0;
   galleryZIndex = 1;
@@ -1292,6 +1295,7 @@ function openGallery() {
 
 function closeGallery() {
   document.getElementById('galleryOverlay').classList.remove('active');
+  document.getElementById('themeBtn').style.display = '';
   galleryActive = false;
   const canvas = document.getElementById('galleryCanvas');
   canvas.innerHTML = '';
