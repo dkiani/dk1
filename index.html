@@ -140,7 +140,8 @@
     height: 100%;
     display: flex;
     flex-direction: column;
-    padding: 4rem 0 2rem;
+    justify-content: center;
+    padding: 2rem 0;
     position: fixed;
     right: 0;
     top: 0;
@@ -154,7 +155,7 @@
     margin: 0 1.5rem;
     flex: 0 1 auto;
     overflow-y: auto;
-    max-height: calc(100vh - 6rem);
+    max-height: calc(100vh - 4rem);
     transition: background 0.5s var(--ease), border-color 0.5s var(--ease);
     box-shadow: 0 1px 3px rgba(0,0,0,0.04);
   }
@@ -225,16 +226,6 @@
 
   .section-desc i { font-style: italic; }
 
-  .year-label {
-    font-size: 0.58rem;
-    font-weight: 400;
-    color: var(--year-color);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    padding: 0.5rem 0 0.2rem;
-    transition: color 0.3s;
-  }
-
   .item {
     padding: 0.5rem 0;
     cursor: pointer;
@@ -244,7 +235,9 @@
   .item:hover { padding-left: 0.3rem; }
   .item:hover .item-title { color: var(--hover); }
 
-  .item-marker { font-size: 0.55rem; color: var(--dim); margin-bottom: 0.1rem; }
+  .item.static { cursor: default; }
+  .item.static:hover { padding-left: 0; }
+  .item.static:hover .item-title { color: var(--fg); }
 
   .item-title { font-size: 0.72rem; font-weight: 400; transition: color 0.2s; }
 
@@ -346,6 +339,173 @@
     text-transform: uppercase;
   }
 
+  /* ─── Gallery Overlay ─── */
+  .gallery-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: var(--bg);
+    z-index: 50;
+    overflow: hidden;
+    cursor: crosshair;
+    transition: background 0.5s var(--ease);
+  }
+
+  .gallery-overlay.active { display: block; }
+
+  .gallery-topbar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.2rem 1.5rem;
+    z-index: 60;
+    background: transparent;
+    pointer-events: none;
+  }
+
+  .gallery-topbar > * { pointer-events: auto; }
+
+  .gallery-btn {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: var(--font);
+    font-size: 0.55rem;
+    letter-spacing: 0.06em;
+    padding: 0.3rem 0.6rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-transform: uppercase;
+  }
+
+  .gallery-btn:hover { color: var(--hover); border-color: var(--accent); }
+
+  .gallery-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-left: auto;
+  }
+
+  .gallery-control-label {
+    font-size: 0.5rem;
+    font-weight: 400;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .gallery-control-value {
+    font-size: 0.55rem;
+    font-weight: 400;
+    color: var(--fg);
+    letter-spacing: 0.1em;
+    font-variant-numeric: tabular-nums;
+    min-width: 2.5rem;
+    text-align: center;
+  }
+
+  .gallery-counter {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    z-index: 60;
+    font-size: 0.55rem;
+    font-weight: 300;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    font-variant-numeric: tabular-nums;
+    pointer-events: none;
+  }
+
+  .gallery-hint {
+    position: fixed;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 55;
+    text-align: center;
+    color: var(--dim);
+    font-size: 0.6rem;
+    font-weight: 300;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    pointer-events: none;
+    transition: opacity 0.5s;
+    line-height: 2;
+  }
+
+  .gallery-trail-img {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+    width: 280px;
+    max-height: 360px;
+    object-fit: cover;
+    transition: opacity 0.15s ease-out;
+    transform: translate(-50%, -50%);
+  }
+
+  .gallery-trail-img.visible {
+    opacity: 1;
+    pointer-events: auto;
+    cursor: zoom-in;
+  }
+
+  .gallery-trail-img.fading {
+    opacity: 0;
+    transition: opacity 0.8s ease-out;
+  }
+
+  .gallery-empty-state {
+    position: fixed;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: var(--muted);
+    font-size: 0.65rem;
+    font-weight: 300;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    border: 1px dashed var(--border);
+    border-radius: 2px;
+    padding: 3rem 4rem;
+    gap: 0.8rem;
+    cursor: pointer;
+    transition: border-color 0.3s;
+    z-index: 55;
+  }
+
+  .gallery-empty-state:hover { border-color: var(--accent); }
+  .gallery-empty-icon { font-size: 1.5rem; color: var(--dim); margin-bottom: 0.5rem; }
+  .gallery-drop-hint { font-size: 0.55rem; color: var(--dim); }
+
+  /* ─── Lightbox ─── */
+  .lightbox {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.95);
+    z-index: 70;
+    cursor: zoom-out;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .lightbox.active { display: flex; }
+
+  .lightbox img {
+    max-width: 92vw;
+    max-height: 92vh;
+    object-fit: contain;
+  }
+
   /* ─── Theme Toggle ─── */
   .theme-toggle {
     position: fixed;
@@ -370,9 +530,10 @@
   @media (max-width: 900px) {
     .layout { flex-direction: column; }
     .graph-area { position: fixed; width: 100%; height: 100%; }
-    .sidebar { width: 100%; min-width: 100%; padding: 0; position: fixed; bottom: 0; top: auto; height: auto; max-height: 55vh; overflow-y: auto; }
+    .sidebar { width: 100%; min-width: 100%; padding: 0; position: fixed; bottom: 0; top: auto; height: auto; max-height: 55vh; overflow-y: auto; justify-content: flex-end; }
     .panel { margin: 0.5rem 1rem; max-height: none; }
     .theme-toggle { top: 0.8rem; right: 0.8rem; }
+    .gallery-trail-img { width: 180px; max-height: 240px; }
   }
 </style>
 </head>
@@ -398,41 +559,38 @@
               <div class="section-icon dot"></div>
               <span class="section-name">Index</span>
             </div>
-            <div class="section-toggle" id="toggle-index">−</div>
+            <div class="section-toggle" id="toggle-index">&minus;</div>
           </div>
           <div class="section-content open" id="content-index">
             <div class="section-body">
-              <p class="section-desc">Daniel is a trader, technologist, and designer. His work spans algorithmic trading, venture building, and creative production — bridging markets, software, and visual design into cohesive systems — <a href="#" style="color:var(--fg);border-bottom:1px solid var(--border);text-decoration:none;">more information</a>.</p>
+              <p class="section-desc">Daniel is an entrepreneur, researcher, and polymath. His work spans venture building, biotechnology, and diverse personal pursuits &mdash; bridging innovation, curiosity, and design into cohesive systems &mdash; <a href="#" style="color:var(--fg);border-bottom:1px solid var(--border);text-decoration:none;">more information</a>.</p>
             </div>
           </div>
         </div>
 
-        <!-- TRADING -->
+        <!-- HOBBIES -->
         <div class="panel-section">
-          <div class="section-header" onclick="toggleSection('trading')">
+          <div class="section-header" onclick="toggleSection('hobbies')">
             <div class="section-header-left">
-              <div class="section-icon" style="color:var(--muted);">◆</div>
-              <span class="section-name">Trading & Markets</span>
+              <div class="section-icon" style="color:var(--muted);">&#9830;</div>
+              <span class="section-name">Hobbies</span>
             </div>
-            <div class="section-toggle" id="toggle-trading">+</div>
+            <div class="section-toggle" id="toggle-hobbies">+</div>
           </div>
-          <div class="section-content" id="content-trading">
+          <div class="section-content" id="content-hobbies">
             <div class="section-body">
-              <p class="section-desc"><i>i.</i>&ensp;Active engagement with financial markets through discretionary and systematic approaches, focusing on futures and algorithmic execution.</p>
-              <div class="year-label">Currently</div>
-              <div class="item" onclick="showDetail('futures')">
-                <div class="item-title">Futures Trading</div>
-                <div class="item-sub">Nasdaq E-mini / Discretionary & ICT</div>
-              </div>
-              <div class="item" onclick="showDetail('indicators')">
-                <div class="item-title">Custom Indicators</div>
-                <div class="item-sub">TradingView / Pine Script Tools</div>
-              </div>
-              <div class="year-label">2025</div>
-              <div class="item" onclick="showDetail('propfirm')">
-                <div class="item-title">Prop Firm Evaluations</div>
-                <div class="item-sub">Funded Trading Accounts</div>
-              </div>
+              <div class="item static"><div class="item-title">Tennis</div></div>
+              <div class="item static"><div class="item-title">Piano</div></div>
+              <div class="item static"><div class="item-title">Golf</div></div>
+              <div class="item static"><div class="item-title">Jiu Jitsu</div></div>
+              <div class="item static"><div class="item-title">Muay Thai</div></div>
+              <div class="item static"><div class="item-title">Reading</div></div>
+              <div class="item static"><div class="item-title">Surfing</div></div>
+              <div class="item static"><div class="item-title">Sim Racing</div></div>
+              <div class="item static"><div class="item-title">Watches</div></div>
+              <div class="item static"><div class="item-title">Violin</div></div>
+              <div class="item static"><div class="item-title">Skiing</div></div>
+              <div class="item static"><div class="item-title">Chopping Wood</div></div>
             </div>
           </div>
         </div>
@@ -441,83 +599,83 @@
         <div class="panel-section">
           <div class="section-header" onclick="toggleSection('ventures')">
             <div class="section-header-left">
-              <div class="section-icon" style="color:var(--muted);">▲</div>
+              <div class="section-icon" style="color:var(--muted);">&#9650;</div>
               <span class="section-name">Ventures</span>
             </div>
             <div class="section-toggle" id="toggle-ventures">+</div>
           </div>
           <div class="section-content" id="content-ventures">
             <div class="section-body">
-              <p class="section-desc"><i>i.</i>&ensp;Companies and platforms built at the intersection of artificial intelligence, financial technology, and automation.</p>
-              <div class="year-label">Currently</div>
+              <div class="item" onclick="showDetail('symbaai')">
+                <div class="item-title">Symba AI</div>
+              </div>
+              <div class="item" onclick="showDetail('biolight')">
+                <div class="item-title">BioLight</div>
+              </div>
+              <div class="item" onclick="showDetail('hypremium')">
+                <div class="item-title">Hypremium</div>
+              </div>
+              <div class="item" onclick="showDetail('7feur')">
+                <div class="item-title">7feur Ventures</div>
+              </div>
+              <div class="item" onclick="showDetail('noramp')">
+                <div class="item-title">NoRamp</div>
+              </div>
               <div class="item" onclick="showDetail('valkri')">
-                <div class="item-marker">*</div>
                 <div class="item-title">Valkri</div>
-                <div class="item-sub">AI-Powered Algorithmic Hedge Fund</div>
-              </div>
-              <div class="item" onclick="showDetail('algotraderx')">
-                <div class="item-title">AlgoTraderX</div>
-                <div class="item-sub">Trade Execution Automation Platform</div>
-              </div>
-              <div class="item" onclick="showDetail('chatbots')">
-                <div class="item-title">AI Chatbot Solutions</div>
-                <div class="item-sub">Customer Support & Sales Automation</div>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- CONTENT -->
+        <!-- RESEARCH -->
         <div class="panel-section">
-          <div class="section-header" onclick="toggleSection('contentEd')">
+          <div class="section-header" onclick="toggleSection('research')">
             <div class="section-header-left">
-              <div class="section-icon" style="color:var(--muted);">■</div>
-              <span class="section-name">Content & Education</span>
+              <div class="section-icon" style="color:var(--muted);">&#9632;</div>
+              <span class="section-name">Research</span>
             </div>
-            <div class="section-toggle" id="toggle-contentEd">+</div>
+            <div class="section-toggle" id="toggle-research">+</div>
           </div>
-          <div class="section-content" id="content-contentEd">
+          <div class="section-content" id="content-research">
             <div class="section-body">
-              <p class="section-desc"><i>i.</i>&ensp;Educational resources and media focused on trading methodology, risk management, and market psychology.</p>
-              <div class="year-label">Currently</div>
-              <div class="item" onclick="showDetail('youtube')">
-                <div class="item-title">Trading Education Series</div>
-                <div class="item-sub">YouTube / Beginner to Advanced</div>
+              <div class="item" onclick="showDetail('patent1')">
+                <div class="item-title">BioLight Patent 20230012300</div>
               </div>
-              <div class="item" onclick="showDetail('analysis')">
-                <div class="item-title">Market Analysis</div>
-                <div class="item-sub">Technical Breakdowns & Commentary</div>
+              <div class="item" onclick="showDetail('patent2')">
+                <div class="item-title">BioLight Patent 20230010922</div>
               </div>
+              <div class="item" onclick="showDetail('erc721n')">
+                <div class="item-title">ERC-721N: NoRamp</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- WRITINGS -->
+        <div class="panel-section">
+          <div class="section-header" onclick="toggleSection('writings')">
+            <div class="section-header-left">
+              <div class="section-icon" style="color:var(--muted);">&#9671;</div>
+              <span class="section-name">Writings</span>
+            </div>
+            <div class="section-toggle" id="toggle-writings">+</div>
+          </div>
+          <div class="section-content" id="content-writings">
+            <div class="section-body">
+              <p class="section-desc"><i>i.</i>&ensp;Coming soon.</p>
             </div>
           </div>
         </div>
 
         <!-- GALLERY -->
         <div class="panel-section">
-          <div class="section-header" onclick="toggleSection('gallery')">
+          <div class="section-header" onclick="openGallery()">
             <div class="section-header-left">
-              <div class="section-icon" style="color:var(--muted);">●</div>
+              <div class="section-icon" style="color:var(--muted);">&#9679;</div>
               <span class="section-name">Gallery</span>
             </div>
-            <div class="section-toggle" id="toggle-gallery">+</div>
-          </div>
-          <div class="section-content" id="content-gallery">
-            <div class="section-body">
-              <p class="section-desc"><i>i.</i>&ensp;Visual work, interfaces, and design explorations across digital and creative mediums.</p>
-              <div class="year-label">2025</div>
-              <div class="item" onclick="showDetail('brands')">
-                <div class="item-title">Brand Systems</div>
-                <div class="item-sub">Identity & Visual Language</div>
-              </div>
-              <div class="item" onclick="showDetail('interfaces')">
-                <div class="item-title">Interface Design</div>
-                <div class="item-sub">Dashboards & Product UI</div>
-              </div>
-              <div class="item" onclick="showDetail('creative')">
-                <div class="item-title">Creative Direction</div>
-                <div class="item-sub">Digital & Mixed Media</div>
-              </div>
-            </div>
+            <div class="section-toggle">&rarr;</div>
           </div>
         </div>
 
@@ -530,12 +688,12 @@
             <div class="section-icon dot"></div>
             <span>INDEX</span>
           </div>
-          <div class="detail-close">←</div>
+          <div class="detail-close">&larr;</div>
         </div>
         <div class="detail-section-label">
-          <div class="section-icon" id="detailSectionIcon" style="color:var(--muted);">▲</div>
+          <div class="section-icon" id="detailSectionIcon" style="color:var(--muted);">&#9650;</div>
           <span class="section-name" id="detailSectionName">VENTURE</span>
-          <div class="detail-section-close" onclick="backToIndex()">✕</div>
+          <div class="detail-section-close" onclick="backToIndex()">&times;</div>
         </div>
         <div class="detail-body">
           <div class="detail-title" id="detailTitle"></div>
@@ -544,7 +702,7 @@
         </div>
         <div class="detail-connections" onclick="backToIndex()">
           <div class="detail-connections-left">
-            <span>⇄</span>
+            <span>&#8646;</span>
             <span>Connections</span>
           </div>
           <div class="section-toggle">+</div>
@@ -556,53 +714,73 @@
 
 </div>
 
+<!-- Gallery Overlay -->
+<div class="gallery-overlay" id="galleryOverlay">
+  <div class="gallery-topbar">
+    <button class="gallery-btn" onclick="closeGallery()">&larr; Back</button>
+    <button class="gallery-btn" onclick="uploadImages()">+ Add</button>
+    <div class="gallery-controls">
+      <span class="gallery-control-label">Threshold</span>
+      <button class="gallery-btn" onclick="adjustThreshold(-10)">&minus;</button>
+      <span class="gallery-control-value" id="thresholdValue">0080</span>
+      <button class="gallery-btn" onclick="adjustThreshold(10)">+</button>
+    </div>
+  </div>
+  <div id="galleryCanvas"></div>
+  <div class="gallery-hint" id="galleryHint">Move cursor to reveal images</div>
+  <div class="gallery-counter" id="galleryCounter">0000 / 0000</div>
+</div>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <img id="lightboxImg" src="" alt="">
+</div>
+
 <script>
-// ─── Compact node positions (shifted left, centered around 220,300) ───
+// ─── Node positions (shifted left, centered around 220,300) ───
 const nodes = {
-  center:     { id:'center',     x:220, y:300, label:'Daniel',           type:'center' },
-  info:       { id:'info',       x:235, y:225, label:'Information',      shape:'circle-filled', parent:'center' },
-  trading:    { id:'trading',    x:130, y:250, label:'Trading &',        label2:'Markets',    num:'1', section:'trading' },
-  ventures:   { id:'ventures',   x:320, y:255, label:'Ventures',         num:'2', section:'ventures' },
-  contentEd:  { id:'contentEd',  x:135, y:370, label:'Content &',        label2:'Education',  num:'3', section:'contentEd' },
-  gallery:    { id:'gallery',    x:310, y:365, label:'Gallery',           num:'4', section:'gallery' },
-  futures:    { id:'futures',    x:55,  y:200, label:'Futures',           label2:'Trading',    shape:'diamond',  parent:'trading',  detail:'futures' },
-  indicators: { id:'indicators', x:55,  y:310, label:'Custom',           label2:'Indicators', shape:'square',   parent:'trading',  detail:'indicators' },
-  valkri:     { id:'valkri',     x:400, y:200, label:'Valkri',           shape:'triangle', parent:'ventures', detail:'valkri' },
-  algotraderx:{ id:'algotraderx',x:410, y:310, label:'AlgoTraderX',     shape:'square',   parent:'ventures', detail:'algotraderx' },
-  chatbots:   { id:'chatbots',   x:390, y:380, label:'AI Chatbot',       label2:'Solutions',  shape:'triangle', parent:'ventures', detail:'chatbots' },
-  youtube:    { id:'youtube',    x:60,  y:420, label:'Education',        label2:'Series',     shape:'square',   parent:'contentEd',detail:'youtube' },
-  brands:     { id:'brands',     x:360, y:430, label:'Brand',            label2:'Systems',    shape:'square',   parent:'gallery',  detail:'brands' },
-  interfaces: { id:'interfaces', x:250, y:440, label:'Interface',        label2:'Design',     shape:'square',   parent:'gallery',  detail:'interfaces' },
+  center:   { id:'center',   x:220, y:300, label:'Daniel',       type:'center' },
+  info:     { id:'info',     x:250, y:218, label:'Information',  shape:'circle-filled', parent:'center' },
+  hobbies:  { id:'hobbies',  x:120, y:238, label:'Hobbies',      num:'1', section:'hobbies' },
+  ventures: { id:'ventures', x:330, y:242, label:'Ventures',      num:'2', section:'ventures' },
+  research: { id:'research', x:335, y:378, label:'Research',      num:'3', section:'research' },
+  writings: { id:'writings', x:115, y:375, label:'Writings',      num:'4', section:'writings' },
+  gallery:  { id:'gallery',  x:228, y:445, label:'Gallery',       num:'5', section:'gallery' },
+  tennis:   { id:'tennis',   x:45,  y:180, label:'Tennis',        shape:'diamond', parent:'hobbies' },
+  piano:    { id:'piano',    x:42,  y:298, label:'Piano',         shape:'square',  parent:'hobbies' },
+  symbaai:  { id:'symbaai',  x:420, y:190, label:'Symba AI',      shape:'triangle', parent:'ventures', detail:'symbaai' },
+  valkri:   { id:'valkri',   x:430, y:298, label:'Valkri',        shape:'square',   parent:'ventures', detail:'valkri' },
+  patent:   { id:'patent',   x:425, y:418, label:'Patent',        shape:'square',   parent:'research', detail:'patent1' },
+  erc:      { id:'erc',      x:385, y:455, label:'ERC-721N',      shape:'diamond',  parent:'research', detail:'erc721n' },
+  blog:     { id:'blog',     x:42,  y:430, label:'Blog',          shape:'square',   parent:'writings' },
 };
 
 const edges = [
-  { from:'center', to:'trading',   type:'solid' },
-  { from:'center', to:'ventures',  type:'solid' },
-  { from:'center', to:'contentEd', type:'solid' },
-  { from:'center', to:'gallery',   type:'solid' },
-  { from:'center', to:'info',      type:'solid' },
-  { from:'trading',   to:'futures',     type:'dashed' },
-  { from:'trading',   to:'indicators',  type:'dashed' },
-  { from:'ventures',  to:'valkri',      type:'dashed' },
-  { from:'ventures',  to:'algotraderx', type:'dashed' },
-  { from:'ventures',  to:'chatbots',    type:'dashed' },
-  { from:'contentEd', to:'youtube',     type:'dashed' },
-  { from:'gallery',   to:'brands',      type:'dashed' },
-  { from:'gallery',   to:'interfaces',  type:'dashed' },
+  { from:'center', to:'hobbies',  type:'solid' },
+  { from:'center', to:'ventures', type:'solid' },
+  { from:'center', to:'research', type:'solid' },
+  { from:'center', to:'writings', type:'solid' },
+  { from:'center', to:'gallery',  type:'solid' },
+  { from:'center', to:'info',     type:'solid' },
+  { from:'hobbies',  to:'tennis',   type:'dashed' },
+  { from:'hobbies',  to:'piano',    type:'dashed' },
+  { from:'ventures', to:'symbaai',  type:'dashed' },
+  { from:'ventures', to:'valkri',   type:'dashed' },
+  { from:'research', to:'patent',   type:'dashed' },
+  { from:'research', to:'erc',      type:'dashed' },
+  { from:'writings', to:'blog',     type:'dashed' },
 ];
 
 const details = {
-  futures:    { section:'TRADING', icon:'◆', title:'Futures Trading',        subtitle:'Nasdaq E-mini / Discretionary & ICT',    text:'Active discretionary trading of Nasdaq E-mini futures using ICT methodology and Smart Money Concepts. Focus on precision entries, institutional order flow, and SMT divergence analysis.' },
-  indicators: { section:'TRADING', icon:'◆', title:'Custom Indicators',      subtitle:'TradingView / Pine Script Tools',         text:'Development of proprietary technical indicators and strategy scripts for TradingView using Pine Script. Tools built for multi-timeframe analysis, alert automation, and visual market structure mapping.' },
-  propfirm:  { section:'TRADING', icon:'◆', title:'Prop Firm Evaluations',  subtitle:'Funded Trading Accounts',                text:'Systematic approach to passing prop firm evaluations through disciplined risk management and consistent execution methodology.' },
-  valkri:    { section:'VENTURE', icon:'▲', title:'Valkri',                 subtitle:'AI-Powered Algorithmic Hedge Fund',       text:'An AI-driven quantitative hedge fund deploying algorithmic trading strategies with exceptional performance metrics. Built on proprietary machine learning models for market prediction and execution.' },
-  algotraderx:{ section:'VENTURE', icon:'▲', title:'AlgoTraderX',           subtitle:'Trade Execution Automation Platform',     text:'A trade execution automation platform enabling users to configure and mechanically execute trading parameters while maintaining full account control.' },
-  chatbots:  { section:'VENTURE', icon:'▲', title:'AI Chatbot Solutions',   subtitle:'Customer Support & Sales Automation',     text:'Building and deploying intelligent customer support and sales chatbots for businesses, with attention to legal compliance and conversational design.' },
-  youtube:   { section:'CONTENT', icon:'■', title:'Trading Education Series',subtitle:'YouTube / Beginner to Advanced',        text:'Comprehensive educational content covering trading methodology from foundational concepts through advanced techniques including ICT, risk management, and trading psychology.' },
-  analysis:  { section:'CONTENT', icon:'■', title:'Market Analysis',         subtitle:'Technical Breakdowns & Commentary',      text:'Regular technical analysis and market commentary providing insights on market structure, key levels, and potential trade setups.' },
-  brands:    { section:'GALLERY', icon:'●', title:'Brand Systems',           subtitle:'Identity & Visual Language',             text:'Design of cohesive brand identities including logos, color systems, typography, and visual guidelines for technology and finance ventures.' },
-  interfaces:{ section:'GALLERY', icon:'●', title:'Interface Design',        subtitle:'Dashboards & Product UI',               text:'Dark-themed, terminal-inspired interface design for trading platforms, dashboards, and financial technology products.' },
-  creative:  { section:'GALLERY', icon:'●', title:'Creative Direction',      subtitle:'Digital & Mixed Media',                 text:'Explorations in digital design, visual aesthetics, and creative production across various mediums.' },
+  symbaai:  { section:'VENTURE',  icon:'\u25B2', title:'Symba AI',                   subtitle:'Artificial Intelligence',                text:'An AI-focused venture building intelligent systems and automation tools.' },
+  biolight: { section:'VENTURE',  icon:'\u25B2', title:'BioLight',                    subtitle:'Biotechnology',                          text:'A biotechnology company developing novel light-based therapeutic solutions, backed by multiple patents.' },
+  hypremium:{ section:'VENTURE',  icon:'\u25B2', title:'Hypremium',                   subtitle:'Premium Products & Services',            text:'A premium brand and product venture.' },
+  '7feur':  { section:'VENTURE',  icon:'\u25B2', title:'7feur Ventures',              subtitle:'Venture Building',                       text:'A venture studio and holding company focused on building and scaling technology companies.' },
+  noramp:   { section:'VENTURE',  icon:'\u25B2', title:'NoRamp',                      subtitle:'Web3 Infrastructure',                    text:'Web3 infrastructure simplifying NFT minting and distribution through the ERC-721N standard.' },
+  valkri:   { section:'VENTURE',  icon:'\u25B2', title:'Valkri',                      subtitle:'AI-Powered Algorithmic Hedge Fund',      text:'An AI-driven quantitative hedge fund deploying algorithmic trading strategies. Built on proprietary machine learning models for market prediction and execution.' },
+  patent1:  { section:'RESEARCH', icon:'\u25A0', title:'BioLight Patent 20230012300',  subtitle:'US Patent Application',                  text:'Patent application covering novel methods and apparatus for light-based therapeutic interventions in biological systems.' },
+  patent2:  { section:'RESEARCH', icon:'\u25A0', title:'BioLight Patent 20230010922',  subtitle:'US Patent Application',                  text:'Patent application covering additional innovations in photobiomodulation technology and delivery mechanisms.' },
+  erc721n:  { section:'RESEARCH', icon:'\u25A0', title:'ERC-721N: NoRamp',             subtitle:'Ethereum Token Standard',                text:'A novel ERC-721 extension designed to eliminate friction in NFT minting, enabling gasless and rampless distribution at scale.' },
 };
 
 // ─── Render (animated) ───
@@ -615,7 +793,6 @@ function el(tag, attrs) {
   return e;
 }
 
-// Store base positions & assign random drift parameters per node
 Object.values(nodes).forEach(n => {
   n.baseX = n.x;
   n.baseY = n.y;
@@ -627,14 +804,12 @@ Object.values(nodes).forEach(n => {
   n.driftPhaseY = Math.random() * Math.PI * 2;
 });
 
-// Create edge elements (will be updated each frame)
 const edgeEls = edges.map(e => {
   const line = el('line', { x1:0, y1:0, x2:0, y2:0, class:'edge-line' + (e.type==='dashed'?' dashed':'') });
   svg.appendChild(line);
   return { def: e, el: line };
 });
 
-// Create node elements with group transforms
 const nodeEls = {};
 Object.values(nodes).forEach(n => {
   if (n.type === 'center') {
@@ -675,15 +850,10 @@ Object.values(nodes).forEach(n => {
   lbl.textContent = n.label;
   g.appendChild(lbl);
 
-  if (n.label2) {
-    const lbl2 = el('text', { x:0, y:ly+14, class:'node-label' });
-    lbl2.textContent = n.label2;
-    g.appendChild(lbl2);
-  }
-
   g.onclick = () => {
     document.querySelectorAll('.node-group').forEach(e => e.classList.remove('active'));
     g.classList.add('active');
+    if (n.id === 'gallery') { openGallery(); return; }
     if (n.section) toggleSection(n.section, true);
     else if (n.detail) showDetail(n.detail);
   };
@@ -692,42 +862,33 @@ Object.values(nodes).forEach(n => {
   nodeEls[n.id] = { group: g, node: n };
 });
 
-// ─── Mouse tracking for subtle interaction ───
+// ─── Mouse tracking ───
 let mouseX = -1000, mouseY = -1000;
 const graphArea = document.querySelector('.graph-area');
 
 graphArea.addEventListener('mousemove', e => {
   const rect = svg.getBoundingClientRect();
-  const svgW = 700, svgH = 600;
-  mouseX = ((e.clientX - rect.left) / rect.width) * svgW;
-  mouseY = ((e.clientY - rect.top) / rect.height) * svgH;
+  mouseX = ((e.clientX - rect.left) / rect.width) * 700;
+  mouseY = ((e.clientY - rect.top) / rect.height) * 600;
 });
 
-graphArea.addEventListener('mouseleave', () => {
-  mouseX = -1000;
-  mouseY = -1000;
-});
+graphArea.addEventListener('mouseleave', () => { mouseX = -1000; mouseY = -1000; });
 
 // ─── Animation loop ───
 function animate(time) {
   const t = time * 0.001;
 
   Object.values(nodes).forEach(n => {
-    // Sinusoidal drift
     let dx = Math.sin(t * n.driftSpeedX + n.driftPhaseX) * n.driftAmpX;
     let dy = Math.cos(t * n.driftSpeedY + n.driftPhaseY) * n.driftAmpY;
-
-    // Add secondary slower wave for organic feel
     dx += Math.sin(t * n.driftSpeedX * 0.4 + n.driftPhaseY) * n.driftAmpX * 0.5;
     dy += Math.cos(t * n.driftSpeedY * 0.3 + n.driftPhaseX) * n.driftAmpY * 0.5;
 
-    // Mouse repulsion (subtle push away)
     const mx = n.baseX + dx - mouseX;
     const my = n.baseY + dy - mouseY;
     const dist = Math.sqrt(mx * mx + my * my);
-    const repulseRadius = 120;
-    if (dist < repulseRadius && dist > 0) {
-      const force = (1 - dist / repulseRadius) * 25;
+    if (dist < 120 && dist > 0) {
+      const force = (1 - dist / 120) * 25;
       dx += (mx / dist) * force;
       dy += (my / dist) * force;
     }
@@ -736,23 +897,18 @@ function animate(time) {
     n.y = n.baseY + dy;
   });
 
-  // Update node group transforms
   Object.values(nodeEls).forEach(({ group, node }) => {
     group.setAttribute('transform', `translate(${node.x}, ${node.y})`);
   });
 
-  // Update edge positions
   edgeEls.forEach(({ def, el }) => {
     const f = nodes[def.from], t = nodes[def.to];
-    el.setAttribute('x1', f.x);
-    el.setAttribute('y1', f.y);
-    el.setAttribute('x2', t.x);
-    el.setAttribute('y2', t.y);
+    el.setAttribute('x1', f.x); el.setAttribute('y1', f.y);
+    el.setAttribute('x2', t.x); el.setAttribute('y2', t.y);
   });
 
   requestAnimationFrame(animate);
 }
-
 requestAnimationFrame(animate);
 
 // ─── Sidebar Logic ───
@@ -760,10 +916,9 @@ function toggleSection(id, forceOpen) {
   const content = document.getElementById('content-' + id);
   const toggle = document.getElementById('toggle-' + id);
   if (!content) return;
-
   if (forceOpen || !content.classList.contains('open')) {
     content.classList.add('open');
-    if (toggle) toggle.textContent = '−';
+    if (toggle) toggle.textContent = '\u2212';
   } else {
     content.classList.remove('open');
     if (toggle) toggle.textContent = '+';
@@ -798,6 +953,185 @@ function toggleTheme() {
     html.setAttribute('data-theme', 'dark');
     btn.textContent = 'Light';
   }
+}
+
+// ─── Gallery (cursor image trail) ───
+// Add image file paths here when you drop files into images/gallery/
+const galleryImagePaths = [
+  // 'images/gallery/photo1.jpg',
+  // 'images/gallery/photo2.jpg',
+];
+
+let galleryThreshold = 80;
+let galleryLastX = 0, galleryLastY = 0;
+let galleryCurrentIndex = 0;
+let galleryZIndex = 1;
+let galleryImageEls = [];
+let galleryAllSrcs = [];
+let galleryActive = false;
+let galleryHintShown = true;
+const MAX_VISIBLE = 12;
+
+function openGallery() {
+  const overlay = document.getElementById('galleryOverlay');
+  overlay.classList.add('active');
+  galleryActive = true;
+  galleryCurrentIndex = 0;
+  galleryZIndex = 1;
+  galleryLastX = 0;
+  galleryLastY = 0;
+  galleryHintShown = true;
+  document.getElementById('galleryHint').style.opacity = '1';
+  buildGalleryImages();
+}
+
+function closeGallery() {
+  document.getElementById('galleryOverlay').classList.remove('active');
+  galleryActive = false;
+  const canvas = document.getElementById('galleryCanvas');
+  canvas.innerHTML = '';
+  galleryImageEls = [];
+}
+
+function buildGalleryImages() {
+  const canvas = document.getElementById('galleryCanvas');
+  canvas.innerHTML = '';
+  galleryImageEls = [];
+
+  // Combine file paths + localStorage uploads
+  const stored = JSON.parse(localStorage.getItem('galleryImages') || '[]');
+  galleryAllSrcs = [
+    ...galleryImagePaths,
+    ...stored.map(img => img.src)
+  ];
+
+  const counter = document.getElementById('galleryCounter');
+
+  if (galleryAllSrcs.length === 0) {
+    counter.textContent = '0000 / 0000';
+    document.getElementById('galleryHint').style.opacity = '0';
+    canvas.innerHTML = '<div class="gallery-empty-state" onclick="uploadImages()"><div class="gallery-empty-icon">+</div><div>Drop images here</div><div class="gallery-drop-hint">or click to browse</div></div>';
+    return;
+  }
+
+  // Pre-create image elements (all hidden)
+  galleryAllSrcs.forEach((src, i) => {
+    const img = document.createElement('img');
+    img.src = src;
+    img.alt = '';
+    img.className = 'gallery-trail-img';
+    img.style.zIndex = 0;
+    img.onclick = (e) => {
+      e.stopPropagation();
+      openLightbox(src);
+    };
+    canvas.appendChild(img);
+    galleryImageEls.push(img);
+  });
+
+  updateCounter();
+}
+
+function updateCounter() {
+  const counter = document.getElementById('galleryCounter');
+  const current = String(galleryCurrentIndex).padStart(4, '0');
+  const total = String(galleryAllSrcs.length).padStart(4, '0');
+  counter.textContent = `${current} / ${total}`;
+}
+
+function adjustThreshold(delta) {
+  galleryThreshold = Math.max(20, Math.min(200, galleryThreshold + delta));
+  document.getElementById('thresholdValue').textContent = String(galleryThreshold).padStart(4, '0');
+}
+
+// Cursor trail mousemove handler
+const galleryOverlay = document.getElementById('galleryOverlay');
+
+galleryOverlay.addEventListener('mousemove', e => {
+  if (!galleryActive || galleryAllSrcs.length === 0) return;
+
+  // Hide hint on first move
+  if (galleryHintShown) {
+    document.getElementById('galleryHint').style.opacity = '0';
+    galleryHintShown = false;
+  }
+
+  const dx = e.clientX - galleryLastX;
+  const dy = e.clientY - galleryLastY;
+  const distance = Math.sqrt(dx * dx + dy * dy);
+
+  if (distance > galleryThreshold) {
+    // Reveal next image at cursor position
+    const img = galleryImageEls[galleryCurrentIndex];
+
+    // Fade out older images beyond MAX_VISIBLE
+    const oldIndex = (galleryCurrentIndex - MAX_VISIBLE + galleryImageEls.length) % galleryImageEls.length;
+    if (galleryImageEls.length > MAX_VISIBLE) {
+      const oldImg = galleryImageEls[oldIndex];
+      oldImg.classList.remove('visible');
+      oldImg.classList.add('fading');
+      setTimeout(() => { oldImg.classList.remove('fading'); }, 800);
+    }
+
+    // Position and show current image
+    galleryZIndex++;
+    img.style.left = e.clientX + 'px';
+    img.style.top = e.clientY + 'px';
+    img.style.zIndex = galleryZIndex;
+    img.classList.remove('fading');
+    img.classList.add('visible');
+
+    // Advance to next image (loop)
+    galleryCurrentIndex = (galleryCurrentIndex + 1) % galleryImageEls.length;
+    galleryLastX = e.clientX;
+    galleryLastY = e.clientY;
+
+    updateCounter();
+  }
+});
+
+// Drag and drop on gallery overlay
+galleryOverlay.addEventListener('dragover', e => { e.preventDefault(); e.stopPropagation(); });
+galleryOverlay.addEventListener('drop', e => {
+  e.preventDefault();
+  e.stopPropagation();
+  handleFiles(e.dataTransfer.files);
+});
+
+function handleFiles(files) {
+  const stored = JSON.parse(localStorage.getItem('galleryImages') || '[]');
+  let loaded = 0;
+  const total = files.length;
+
+  Array.from(files).forEach(file => {
+    if (!file.type.startsWith('image/')) { loaded++; return; }
+    const reader = new FileReader();
+    reader.onload = ev => {
+      stored.push({ src: ev.target.result, alt: file.name });
+      localStorage.setItem('galleryImages', JSON.stringify(stored));
+      loaded++;
+      if (loaded >= total) buildGalleryImages();
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+function uploadImages() {
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.multiple = true;
+  input.accept = 'image/*';
+  input.onchange = () => handleFiles(input.files);
+  input.click();
+}
+
+function openLightbox(src) {
+  document.getElementById('lightboxImg').src = src;
+  document.getElementById('lightbox').classList.add('active');
+}
+
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('active');
 }
 </script>
 
