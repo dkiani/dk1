@@ -485,6 +485,44 @@
   .gallery-empty-icon { font-size: 1.5rem; color: var(--dim); margin-bottom: 0.5rem; }
   .gallery-drop-hint { font-size: 0.55rem; color: var(--dim); }
 
+  /* ─── Gallery Nav Dock ─── */
+  .gallery-nav {
+    position: fixed;
+    bottom: 1.5rem;
+    left: 1.5rem;
+    z-index: 60;
+    display: flex;
+    gap: 0.4rem;
+    pointer-events: auto;
+  }
+
+  .gallery-nav-btn {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: var(--font);
+    font-size: 0.5rem;
+    letter-spacing: 0.06em;
+    padding: 0.3rem 0.55rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-transform: uppercase;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+  }
+
+  .gallery-nav-btn:hover {
+    color: var(--hover);
+    border-color: var(--accent);
+  }
+
+  .gallery-nav-btn .nav-icon {
+    font-size: 0.45rem;
+    opacity: 0.5;
+  }
+
   /* ─── Lightbox ─── */
   .lightbox {
     display: none;
@@ -728,6 +766,12 @@
   </div>
   <div id="galleryCanvas"></div>
   <div class="gallery-hint" id="galleryHint">Move cursor to reveal images</div>
+  <div class="gallery-nav">
+    <button class="gallery-nav-btn" onclick="closeGallery(); toggleSection('hobbies', true);"><span class="nav-icon">&#9830;</span> Hobbies</button>
+    <button class="gallery-nav-btn" onclick="closeGallery(); toggleSection('ventures', true);"><span class="nav-icon">&#9650;</span> Ventures</button>
+    <button class="gallery-nav-btn" onclick="closeGallery(); toggleSection('research', true);"><span class="nav-icon">&#9632;</span> Research</button>
+    <button class="gallery-nav-btn" onclick="closeGallery(); toggleSection('writings', true);"><span class="nav-icon">&#9671;</span> Writings</button>
+  </div>
   <div class="gallery-counter" id="galleryCounter">0000 / 0000</div>
 </div>
 
