@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0a0a0a" id="themeColor">
 <title>Daniel</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
@@ -60,12 +61,7 @@
     font-family: var(--font);
     -webkit-font-smoothing: antialiased;
     transition: background 0.5s var(--ease), color 0.5s var(--ease);
-    border: none;
-    outline: none;
   }
-
-  body::before, body::after { display: none !important; }
-  body > iframe, body > [data-vercel], body > [id^="__"]  { display: none !important; }
 
   ::selection { background: rgba(128,128,128,0.15); }
 
@@ -580,23 +576,25 @@
   /* ─── Responsive ─── */
   @media (max-width: 900px) {
     .layout { flex-direction: column; }
-    .graph-area { position: fixed; width: 100%; height: 100%; }
+
+    /* Graph: constrain to top portion so it centers above the sidebar */
+    .graph-area { position: fixed; width: 100%; height: 55vh; }
 
     .sidebar {
       width: 100%; min-width: 100%; padding: 0;
       position: fixed; bottom: 0; top: auto;
-      height: auto; max-height: 50vh;
+      height: auto; max-height: 48vh;
       overflow-y: auto;
       justify-content: flex-end;
-      background: linear-gradient(to bottom, transparent 0%, var(--bg) 12%);
-      padding-top: 2rem;
+      background: linear-gradient(to bottom, transparent 0%, var(--bg) 10%);
+      padding-top: 1.5rem;
     }
     .sidebar::-webkit-scrollbar { width: 0; }
 
     .panel {
       margin: 0 0.75rem 0.75rem;
       max-height: none;
-      border-radius: 6px;
+      border-radius: 8px;
     }
 
     .section-header { padding: 0.85rem 1rem; min-height: 44px; }
@@ -1045,12 +1043,15 @@ function backToIndex() {
 function toggleTheme() {
   const html = document.documentElement;
   const btn = document.getElementById('themeBtn');
+  const tc = document.getElementById('themeColor');
   if (html.getAttribute('data-theme') === 'dark') {
     html.setAttribute('data-theme', 'light');
     btn.textContent = 'Dark';
+    tc.content = '#f0ede8';
   } else {
     html.setAttribute('data-theme', 'dark');
     btn.textContent = 'Light';
+    tc.content = '#0a0a0a';
   }
 }
 
@@ -1342,7 +1343,9 @@ function openGallery() {
   galleryLastX = 0;
   galleryLastY = 0;
   galleryHintShown = true;
-  document.getElementById('galleryHint').style.opacity = '1';
+  const hint = document.getElementById('galleryHint');
+  hint.textContent = ('ontouchstart' in window) ? 'Drag your finger to reveal images' : 'Move cursor to reveal images';
+  hint.style.opacity = '1';
   buildGalleryImages();
 }
 
