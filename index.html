@@ -232,12 +232,15 @@
     padding: 0.5rem 0;
     cursor: pointer;
     transition: padding-left 0.3s var(--ease);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
   }
 
   .item:hover { padding-left: 0.3rem; }
   .item:hover .item-title { color: var(--hover); }
 
-  a.item { display: block; text-decoration: none; color: inherit; }
+  a.item { text-decoration: none; color: inherit; }
 
   .item.static { cursor: default; }
   .item.static:hover { padding-left: 0; }
@@ -602,7 +605,7 @@
     .section-header { padding: 0.85rem 1rem; min-height: 44px; }
     .section-name { font-size: 0.72rem; }
     .section-toggle { font-size: 0.85rem; }
-    .item { padding: 0.6rem 0; min-height: 40px; display: flex; align-items: center; justify-content: space-between; }
+    .item { padding: 0.6rem 0; min-height: 40px; }
     .item-title { font-size: 0.75rem; }
     .item-sub { margin-top: 0; }
     .section-desc { font-size: 0.65rem; line-height: 1.8; }
