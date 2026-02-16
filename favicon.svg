@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="1.5" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Dark background -->
+  <rect width="64" height="64" rx="12" fill="#0a0a0a"/>
+
+  <!-- Tech corner brackets -->
+  <g stroke="#e85d2a" stroke-width="2" fill="none" stroke-linecap="square" opacity="0.45">
+    <path d="M5,16 L5,5 L16,5"/>
+    <path d="M48,5 L59,5 L59,16"/>
+    <path d="M59,48 L59,59 L48,59"/>
+    <path d="M16,59 L5,59 L5,48"/>
+  </g>
+
+  <!-- DK monogram -->
+  <g fill="#e85d2a" filter="url(#glow)">
+    <!-- D: bold geometric -->
+    <path d="M11,16 L23,16 C31,16 34,22 34,32 C34,42 31,48 23,48 L11,48 Z M18,23 L18,41 L22,41 C26,41 27,37 27,32 C27,27 26,23 22,23 Z" fill-rule="evenodd"/>
+    <!-- K: bold geometric -->
+    <path d="M37,16 L44,16 L44,28 L53,16 L61,16 L50,30.5 L62,48 L54,48 L44,33 L44,48 L37,48 Z"/>
+  </g>
+</svg>
