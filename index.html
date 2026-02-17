@@ -125,7 +125,8 @@
   .graph-area {
     position: fixed;
     top: 0; left: 0;
-    width: 100%; height: 100%;
+    right: 370px;
+    height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -134,7 +135,7 @@
     background: var(--bg);
   }
 
-  .graph-area svg { width: 100%; height: 100%; position: absolute; top: 0; left: 0; display: block; }
+  .graph-area svg { width: 100%; height: 100%; display: block; }
 
   .node-group { cursor: pointer; }
   .node-group:hover .node-shape { stroke: var(--fg); }
@@ -182,50 +183,54 @@
 
   .center-label {
     font-family: var(--font);
-    font-size: 12px;
-    font-weight: 400;
+    font-size: 14px;
+    font-weight: 500;
     fill: var(--fg);
     text-anchor: middle;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
     transition: fill 0.3s;
   }
 
   /* ─── Sidebar ─── */
   .sidebar {
-    width: 340px;
-    min-width: 340px;
+    width: 370px;
+    min-width: 370px;
     height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     padding: 2rem 0;
     position: fixed;
-    right: 1rem;
+    right: 0;
     top: 0;
     z-index: 10;
+    border-left: 1px solid var(--panel-border);
+    background: var(--bg);
+    transition: background 0.5s var(--ease), border-color 0.5s var(--ease);
   }
 
   .panel {
-    background: var(--panel-bg);
-    border: 1px solid var(--panel-border);
-    border-radius: 2px;
-    margin: 0 1.5rem;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    margin: 0;
     flex: 0 1 auto;
     overflow-y: auto;
     max-height: calc(100vh - 4rem);
-    transition: background 0.5s var(--ease), border-color 0.5s var(--ease);
-    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    transition: background 0.5s var(--ease);
   }
 
   .panel::-webkit-scrollbar { width: 0; }
 
-  .panel-section { border-bottom: 1px dashed var(--panel-border); transition: border-color 0.5s var(--ease); }
+  .panel-section { border-bottom: 1px solid var(--panel-border); transition: border-color 0.5s var(--ease); }
   .panel-section:last-child { border-bottom: none; }
 
   .section-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0.75rem 1rem;
+    padding: 0.85rem 1.5rem;
     cursor: pointer;
     user-select: none;
     transition: background 0.2s;
@@ -269,7 +274,7 @@
 
   .section-content.open { max-height: 800px; }
 
-  .section-body { padding: 0 1rem 1rem; }
+  .section-body { padding: 0 1.5rem 1rem; }
 
   .section-desc {
     font-size: 0.62rem;
@@ -319,8 +324,8 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0.75rem 1rem;
-    border-bottom: 1px dashed var(--panel-border);
+    padding: 0.85rem 1.5rem;
+    border-bottom: 1px solid var(--panel-border);
     cursor: pointer;
     transition: background 0.2s;
   }
@@ -344,8 +349,8 @@
     display: flex;
     align-items: center;
     gap: 0.6rem;
-    padding: 0.75rem 1rem;
-    border-bottom: 1px dashed var(--panel-border);
+    padding: 0.85rem 1.5rem;
+    border-bottom: 1px solid var(--panel-border);
   }
 
   .detail-section-label .section-name { font-size: 0.65rem; }
@@ -359,7 +364,7 @@
 
   .detail-section-close:hover { color: var(--hover); }
 
-  .detail-body { padding: 1rem; }
+  .detail-body { padding: 1rem 1.5rem; }
   .detail-title { font-size: 0.78rem; font-weight: 400; margin-bottom: 0.15rem; }
 
   .detail-subtitle {
@@ -381,8 +386,8 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0.75rem 1rem;
-    border-top: 1px dashed var(--panel-border);
+    padding: 0.85rem 1.5rem;
+    border-top: 1px solid var(--panel-border);
     cursor: pointer;
     margin-top: 0.5rem;
   }
@@ -615,7 +620,7 @@
   /* ─── Theme Toggle ─── */
   .theme-toggle {
     position: fixed;
-    top: 1.5rem;
+    bottom: 1.5rem;
     right: 1.5rem;
     z-index: 100;
     background: none;
@@ -636,8 +641,7 @@
   @media (max-width: 900px) {
     .layout { flex-direction: column; }
 
-    /* Graph: constrain to top portion so it centers above the sidebar */
-    .graph-area { position: fixed; width: 100%; height: 45vh; }
+    .graph-area { position: fixed; right: 0; width: 100%; height: 45vh; }
 
     .sidebar {
       width: 100%; min-width: 100%; padding: 0;
@@ -645,15 +649,17 @@
       height: auto; max-height: 58vh;
       overflow-y: auto;
       justify-content: flex-end;
-      background: linear-gradient(to bottom, transparent 0%, var(--bg) 10%);
-      padding-top: 1.5rem;
+      border-left: none;
+      border-top: 1px solid var(--panel-border);
+      background: var(--bg);
+      padding-top: 0;
     }
     .sidebar::-webkit-scrollbar { width: 0; }
 
     .panel {
-      margin: 0 0.75rem 0.75rem;
+      margin: 0;
       max-height: none;
-      border-radius: 8px;
+      border-radius: 0;
     }
 
     .section-header { padding: 0.85rem 1rem; min-height: 44px; }
@@ -663,9 +669,10 @@
     .item-title { font-size: 0.75rem; }
     .item-sub { margin-top: 0; }
     .section-desc { font-size: 0.65rem; line-height: 1.8; }
+    .section-body { padding: 0 1rem 1rem; }
 
     .theme-toggle {
-      top: 0.75rem; right: 0.75rem;
+      top: 0.75rem; right: 0.75rem; bottom: auto;
       font-size: 0.5rem;
       padding: 0.35rem 0.65rem;
       min-height: 32px;
@@ -716,7 +723,7 @@
 <div class="layout">
 
   <div class="graph-area">
-    <svg id="graph" viewBox="0 0 700 600" preserveAspectRatio="xMidYMid meet"></svg>
+    <svg id="graph" viewBox="0 0 600 560" preserveAspectRatio="xMidYMid meet"></svg>
   </div>
 
   <div class="sidebar">
@@ -923,20 +930,20 @@
 <script>
 // ─── Node positions (shifted left, centered around 220,300) ───
 const nodes = {
-  center:   { id:'center',   x:220, y:300, label:'Daniel',       type:'center' },
-  info:     { id:'info',     x:250, y:218, label:'Information',  shape:'circle-filled', parent:'center' },
-  hobbies:  { id:'hobbies',  x:120, y:238, label:'Hobbies',      num:'1', section:'hobbies' },
-  ventures: { id:'ventures', x:330, y:242, label:'Ventures',      num:'2', section:'ventures' },
-  research: { id:'research', x:335, y:378, label:'Research',      num:'3', section:'research' },
-  writings: { id:'writings', x:115, y:375, label:'Writings',      num:'4', section:'writings' },
-  gallery:  { id:'gallery',  x:228, y:445, label:'Gallery',       num:'5', section:'gallery' },
-  tennis:   { id:'tennis',   x:45,  y:180, label:'Tennis',        shape:'diamond', parent:'hobbies' },
-  piano:    { id:'piano',    x:42,  y:298, label:'Piano',         shape:'square',  parent:'hobbies' },
-  symbaai:  { id:'symbaai',  x:420, y:190, label:'Symba AI',      shape:'triangle', parent:'ventures', detail:'symbaai' },
-  valkri:   { id:'valkri',   x:430, y:298, label:'Valkri',        shape:'square',   parent:'ventures', detail:'valkri' },
-  patent:   { id:'patent',   x:425, y:418, label:'Patent',        shape:'square',   parent:'research', detail:'patent1' },
-  erc:      { id:'erc',      x:385, y:455, label:'ERC-721N',      shape:'diamond',  parent:'research', detail:'erc721n' },
-  blog:     { id:'blog',     x:42,  y:430, label:'Blog',          shape:'square',   parent:'writings' },
+  center:   { id:'center',   x:300, y:275, label:'Daniel',       type:'center' },
+  info:     { id:'info',     x:340, y:190, label:'Information',  shape:'circle-filled', parent:'center' },
+  hobbies:  { id:'hobbies',  x:180, y:208, label:'Hobbies',      num:'1', section:'hobbies' },
+  ventures: { id:'ventures', x:420, y:208, label:'Ventures',      num:'2', section:'ventures' },
+  research: { id:'research', x:430, y:355, label:'Research',      num:'3', section:'research' },
+  writings: { id:'writings', x:170, y:355, label:'Writings',      num:'4', section:'writings' },
+  gallery:  { id:'gallery',  x:300, y:425, label:'Gallery',       num:'5', section:'gallery' },
+  tennis:   { id:'tennis',   x:80,  y:148, label:'Tennis',        shape:'diamond', parent:'hobbies' },
+  piano:    { id:'piano',    x:75,  y:275, label:'Piano',         shape:'square',  parent:'hobbies' },
+  symbaai:  { id:'symbaai',  x:530, y:150, label:'Symba AI',      shape:'triangle', parent:'ventures', detail:'symbaai' },
+  valkri:   { id:'valkri',   x:535, y:275, label:'Valkri',        shape:'square',   parent:'ventures', detail:'valkri' },
+  patent:   { id:'patent',   x:535, y:400, label:'Patent',        shape:'square',   parent:'research', detail:'patent1' },
+  erc:      { id:'erc',      x:495, y:435, label:'ERC-721N',      shape:'diamond',  parent:'research', detail:'erc721n' },
+  blog:     { id:'blog',     x:75,  y:415, label:'Blog',          shape:'square',   parent:'writings' },
 };
 
 const edges = [
@@ -1001,7 +1008,7 @@ Object.values(nodes).forEach(n => {
     const dot = el('circle', { cx:0, cy:0, r:8, class:'center-dot' });
     dot.onclick = () => backToIndex();
     g.appendChild(dot);
-    const lbl = el('text', { x:0, y:24, class:'center-label' });
+    const lbl = el('text', { x:0, y:26, class:'center-label' });
     lbl.textContent = n.label;
     g.appendChild(lbl);
     svg.appendChild(g);
