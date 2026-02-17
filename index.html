@@ -45,6 +45,8 @@
   "description": "Entrepreneur, researcher, and polymath spanning venture building, biotechnology, and diverse personal pursuits.",
   "sameAs": [
     "https://www.linkedin.com/in/danielkiani",
+    "https://instagram.com/danielkiani",
+    "https://x.com/danielkiani",
     "https://danielkiani.com"
   ],
   "knowsAbout": ["Venture Building", "Biotechnology", "Artificial Intelligence", "Web3 Infrastructure"],
@@ -637,6 +639,33 @@
 
   .theme-toggle:hover { color: var(--hover); border-color: var(--accent); }
 
+  /* ─── Social Links ─── */
+  .social-links {
+    position: fixed;
+    bottom: 1.5rem;
+    left: 1.5rem;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .social-links a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--muted);
+    transition: color 0.3s;
+  }
+
+  .social-links a:hover { color: var(--hover); }
+
+  .social-links svg {
+    width: 14px;
+    height: 14px;
+    fill: currentColor;
+  }
+
   /* ─── Responsive ─── */
   @media (max-width: 900px) {
     .layout { flex-direction: column; }
@@ -670,6 +699,8 @@
     .item-sub { margin-top: 0; }
     .section-desc { font-size: 0.65rem; line-height: 1.8; }
     .section-body { padding: 0 1rem 1rem; }
+
+    .social-links { bottom: 0.75rem; left: 0.75rem; }
 
     .theme-toggle {
       top: 0.75rem; right: 0.75rem; bottom: auto;
@@ -719,6 +750,15 @@
 <body>
 
 <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">Light</button>
+
+<div class="social-links">
+  <a href="https://instagram.com/danielkiani" target="_blank" rel="noopener" aria-label="Instagram">
+    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2Zm0 1.5A4.25 4.25 0 0 0 3.5 7.75v8.5A4.25 4.25 0 0 0 7.75 20.5h8.5A4.25 4.25 0 0 0 20.5 16.25v-8.5A4.25 4.25 0 0 0 16.25 3.5ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 1.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Zm5.25-2.5a1 1 0 1 1 0 2 1 1 0 0 1 0-2Z"/></svg>
+  </a>
+  <a href="https://x.com/danielkiani" target="_blank" rel="noopener" aria-label="X">
+    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231Zm-1.161 17.52h1.833L7.084 4.126H5.117Z"/></svg>
+  </a>
+</div>
 
 <div class="layout">
 
