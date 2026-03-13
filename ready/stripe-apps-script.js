@@ -26,7 +26,7 @@ var DISCOUNT_CODES = {
   'INNER50': { percent_off: 50, label: '50% off applied' },
   'EARLYBIRD': { amount_off: 200000, label: '$2,000 off applied' },
   'RICH': { amount_off: 500000, label: '$5,000 off applied' },
-  'TEST': { amount_off: 777600, label: '$7,776 off applied' },
+  'TEST': { amount_off: 772600, label: '$7,726 off applied' },
 
   // Add more codes as needed
 };
@@ -84,10 +84,20 @@ function doGet(e) {
     var piId = p.pi || '';
     var newAmt = parseInt(p.amount) || 0;
     try {
+      // Affirm requires min $50, Klarna min ~$1; use card-only for low amounts
+      var updatePayload = 'amount=' + newAmt;
+      if (newAmt < 5000) {
+        updatePayload += '&payment_method_types[]=card';
+      } else {
+        updatePayload += '&payment_method_types[]=card'
+          + '&payment_method_types[]=klarna'
+          + '&payment_method_types[]=affirm';
+      }
       UrlFetchApp.fetch('https://api.stripe.com/v1/payment_intents/' + piId, {
         method: 'post',
         headers: { 'Authorization': 'Bearer ' + STRIPE_SECRET_KEY },
-        payload: { 'amount': String(newAmt) }
+        contentType: 'application/x-www-form-urlencoded',
+        payload: updatePayload
       });
       result = { status: 'updated' };
     } catch (err) {
