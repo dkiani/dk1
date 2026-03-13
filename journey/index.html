@@ -486,8 +486,18 @@ const SHEET_URL = 'https://script.google.com/macros/s/AKfycbw55J5iSzxxKVlPJSsr83
 const questions = document.querySelectorAll('.question');
 const totalSteps = 7;
 let current = 0;
-let submitted = false;
 const answers = {};
+const sessionId = Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+
+const FIELD_MAP = {
+  '1': 'name',
+  '2': 'instagram',
+  '3': 'trading_experience',
+  '4': 'why_trading',
+  '5': 'ninety_day_success',
+  '6': 'mentorship_cost',
+  '7': 'ready'
+};
 
 function updateUI() {
   const step = Math.min(current + 1, totalSteps);
@@ -545,19 +555,14 @@ function goTo(index) {
   current = index;
   updateUI();
 
-  // Submit answers when reaching the thank you screen
-  if (next.dataset.type === 'end' && !submitted) {
-    submitted = true;
-    submitAnswers();
-  }
-
   // Focus text input if present
   const input = next.querySelector('.text-input');
   if (input) setTimeout(() => input.focus(), 100);
 }
 
-function submitAnswers() {
+function syncToSheet() {
   const payload = {
+    session_id: sessionId,
     timestamp: new Date().toISOString(),
     name: answers['1'] || '',
     instagram: answers['2'] || '',
@@ -567,11 +572,6 @@ function submitAnswers() {
     mentorship_cost: answers['6'] || '',
     ready: answers['7'] || ''
   };
-
-  if (SHEET_URL === 'PASTE_YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
-    console.log('Questionnaire responses (no Sheet URL configured):', payload);
-    return;
-  }
 
   fetch(SHEET_URL, {
     method: 'POST',
@@ -595,6 +595,7 @@ function nextQuestion() {
       return;
     }
     answers[q.dataset.step] = val;
+    syncToSheet();
   }
 
   goTo(current + 1);
@@ -609,6 +610,7 @@ function selectChoice(el) {
   q.querySelectorAll('.choice').forEach(c => c.classList.remove('selected'));
   el.classList.add('selected');
   answers[q.dataset.step] = el.dataset.value;
+  syncToSheet();
 
   // Auto-advance after short delay
   setTimeout(() => {
