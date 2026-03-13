@@ -2,7 +2,7 @@
 <html lang="en" data-theme="dark">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="theme-color" content="#0a0a0a" id="themeColor">
 <title>Questionnaire — Daniel Kiani</title>
 <meta name="robots" content="noindex, nofollow">
@@ -12,7 +12,9 @@
 <link rel="icon" href="/favicon.ico" sizes="48x48">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180">
 
+<!-- Preload font to prevent FOUT -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -32,7 +34,6 @@
     --hover: #ffffff;
     --center-fill: #e85d2a;
     --item-hover: #181818;
-    --input-bg: #111111;
   }
 
   [data-theme="light"] {
@@ -45,10 +46,16 @@
     --hover: #000000;
     --center-fill: #e85d2a;
     --item-hover: #f7f5f2;
-    --input-bg: #ffffff;
   }
 
-  html, body {
+  html {
+    height: 100%;
+    overflow: hidden;
+    /* Prevent iOS overscroll bounce */
+    overscroll-behavior: none;
+  }
+
+  body {
     height: 100%;
     overflow: hidden;
     background: var(--bg);
@@ -56,6 +63,15 @@
     font-family: var(--font);
     -webkit-font-smoothing: antialiased;
     transition: background 0.5s var(--ease), color 0.5s var(--ease);
+    /* Prevent pull-to-refresh */
+    overscroll-behavior: none;
+    /* Remove tap highlight on iOS */
+    -webkit-tap-highlight-color: transparent;
+    /* Prevent text size adjust on orientation change */
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    /* Faster taps */
+    touch-action: manipulation;
   }
 
   ::selection { background: rgba(128,128,128,0.15); }
@@ -65,7 +81,7 @@
     position: fixed;
     top: 0;
     left: 0;
-    height: 1px;
+    height: 2px;
     background: var(--center-fill);
     transition: width 0.6s var(--ease);
     z-index: 100;
@@ -82,7 +98,7 @@
     letter-spacing: 0.1em;
     font-variant-numeric: tabular-nums;
     z-index: 100;
-    transition: color 0.3s;
+    transition: opacity 0.3s;
   }
 
   /* ─── Theme Toggle ─── */
@@ -101,6 +117,12 @@
     cursor: pointer;
     transition: all 0.3s;
     text-transform: uppercase;
+    /* Minimum 44px tap target on mobile */
+    min-width: 44px;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .theme-toggle:hover { color: var(--hover); border-color: var(--accent); }
@@ -121,12 +143,17 @@
     cursor: pointer;
     transition: all 0.3s;
     text-transform: uppercase;
+    min-width: 44px;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .back-btn:hover { color: var(--hover); border-color: var(--accent); }
   .back-btn.hidden { opacity: 0; pointer-events: none; }
 
-  /* ─── Enter Hint ─── */
+  /* ─── Enter Hint (desktop only) ─── */
   .enter-hint {
     position: fixed;
     bottom: 1.5rem;
@@ -198,19 +225,30 @@
     color: var(--fg);
   }
 
-  /* ─── Text Input ─── */
+  /* ─── Text Input with inline submit ─── */
+  .input-row {
+    display: flex;
+    align-items: stretch;
+    border-bottom: 1px solid var(--border);
+    transition: border-color 0.3s;
+  }
+
+  .input-row:focus-within {
+    border-bottom-color: var(--center-fill);
+  }
+
   .text-input {
-    width: 100%;
+    flex: 1;
+    min-width: 0;
     background: transparent;
     border: none;
-    border-bottom: 1px solid var(--border);
     color: var(--fg);
     font-family: var(--font);
-    font-size: 0.85rem;
+    /* 16px prevents iOS zoom — critical */
+    font-size: 16px;
     font-weight: 300;
     padding: 0.75rem 0;
     outline: none;
-    transition: border-color 0.3s;
     letter-spacing: 0.02em;
   }
 
@@ -219,9 +257,37 @@
     font-weight: 300;
   }
 
-  .text-input:focus {
-    border-bottom-color: var(--center-fill);
+  /* Inline submit checkmark button */
+  .input-submit {
+    background: none;
+    border: none;
+    color: var(--dim);
+    cursor: pointer;
+    padding: 0.5rem 0.25rem 0.5rem 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.3s;
+    flex-shrink: 0;
+    /* Easy tap target */
+    min-width: 44px;
+    min-height: 44px;
   }
+
+  .input-submit:hover,
+  .input-submit:active { color: var(--center-fill); }
+
+  .input-submit svg {
+    width: 18px;
+    height: 18px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .input-row:focus-within .input-submit { color: var(--accent); }
 
   /* ─── Multiple Choice ─── */
   .choices {
@@ -239,11 +305,18 @@
     cursor: pointer;
     transition: all 0.3s var(--ease);
     user-select: none;
+    /* 44px min tap target */
+    min-height: 48px;
   }
 
   .choice:hover {
     border-color: var(--accent);
     background: var(--item-hover);
+  }
+
+  .choice:active {
+    background: var(--item-hover);
+    border-color: var(--accent);
   }
 
   .choice.selected {
@@ -274,37 +347,6 @@
 
   .choice:hover .choice-label { color: var(--fg); }
   .choice.selected .choice-label { color: var(--fg); }
-
-  /* ─── Submit Button ─── */
-  .submit-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    background: none;
-    border: 1px solid var(--center-fill);
-    color: var(--center-fill);
-    font-family: var(--font);
-    font-size: 0.68rem;
-    font-weight: 400;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    padding: 0.6rem 1.2rem;
-    cursor: pointer;
-    transition: all 0.3s var(--ease);
-    margin-top: 0.5rem;
-  }
-
-  .submit-btn:hover {
-    background: var(--center-fill);
-    color: var(--bg);
-  }
-
-  .submit-btn .arrow {
-    font-size: 0.8rem;
-    transition: transform 0.3s var(--ease);
-  }
-
-  .submit-btn:hover .arrow { transform: translateX(3px); }
 
   /* ─── Thank You Screen ─── */
   .thankyou-icon {
@@ -340,14 +382,26 @@
   /* ─── Responsive ─── */
   @media (max-width: 600px) {
     .question-inner { padding: 0 1.5rem; }
-    .question-text { font-size: 0.88rem; }
-    .text-input { font-size: 0.78rem; }
-    .choice { padding: 0.7rem 0.85rem; }
-    .choice-label { font-size: 0.68rem; }
+    .question-text { font-size: 0.92rem; line-height: 1.6; margin-bottom: 1.5rem; }
+    .choice { padding: 0.8rem 1rem; min-height: 52px; }
+    .choice-label { font-size: 0.7rem; }
+    .choices { gap: 0.6rem; }
     .step-counter { top: 1rem; left: 1rem; }
     .theme-toggle { top: 1rem; right: 1rem; }
     .back-btn { bottom: 1rem; left: 1rem; }
-    .enter-hint { bottom: 1rem; right: 1rem; }
+    .enter-hint { display: none; }
+
+    /* Shift content up when keyboard is open */
+    .question.keyboard-open {
+      align-items: flex-start;
+      padding-top: 15vh;
+    }
+  }
+
+  /* ─── Safe area insets (notch phones) ─── */
+  @supports (padding: env(safe-area-inset-bottom)) {
+    .back-btn { bottom: calc(1.5rem + env(safe-area-inset-bottom)); }
+    .enter-hint { bottom: calc(1.5rem + env(safe-area-inset-bottom)); }
   }
 </style>
 </head>
@@ -366,7 +420,12 @@
     <div class="question-inner">
       <div class="question-num">01</div>
       <div class="question-text">What is your name?</div>
-      <input type="text" class="text-input" placeholder="Type your answer..." autocomplete="name" autofocus>
+      <div class="input-row">
+        <input type="text" class="text-input" placeholder="Type your answer..." autocomplete="name" enterkeyhint="next" autofocus>
+        <button class="input-submit" onclick="nextQuestion()" aria-label="Next">
+          <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+      </div>
     </div>
   </div>
 
@@ -375,7 +434,12 @@
     <div class="question-inner">
       <div class="question-num">02</div>
       <div class="question-text">What is your Instagram handle?</div>
-      <input type="text" class="text-input" placeholder="@" autocomplete="off">
+      <div class="input-row">
+        <input type="text" class="text-input" placeholder="@" autocomplete="off" enterkeyhint="next">
+        <button class="input-submit" onclick="nextQuestion()" aria-label="Next">
+          <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+      </div>
     </div>
   </div>
 
@@ -405,12 +469,17 @@
     </div>
   </div>
 
-  <!-- Q4: Changes -->
+  <!-- Q4: Why Trading -->
   <div class="question" data-type="text" data-step="4">
     <div class="question-inner">
       <div class="question-num">04</div>
       <div class="question-text">What makes you want to get into trading?</div>
-      <input type="text" class="text-input" placeholder="Type your answer..." autocomplete="off">
+      <div class="input-row">
+        <input type="text" class="text-input" placeholder="Type your answer..." autocomplete="off" enterkeyhint="next">
+        <button class="input-submit" onclick="nextQuestion()" aria-label="Next">
+          <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+      </div>
     </div>
   </div>
 
@@ -419,7 +488,12 @@
     <div class="question-inner">
       <div class="question-num">05</div>
       <div class="question-text">Fast forward 90 days from now, what does success look like to you?</div>
-      <input type="text" class="text-input" placeholder="Type your answer..." autocomplete="off">
+      <div class="input-row">
+        <input type="text" class="text-input" placeholder="Type your answer..." autocomplete="off" enterkeyhint="next">
+        <button class="input-submit" onclick="nextQuestion()" aria-label="Next">
+          <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+      </div>
     </div>
   </div>
 
@@ -480,7 +554,6 @@
 
 <script>
 // ─── Google Sheets endpoint ───
-// Replace this URL with your deployed Google Apps Script web app URL
 const SHEET_URL = 'https://script.google.com/macros/s/AKfycbw55J5iSzxxKVlPJSsr83IFU8uF3rDBFfWM3cDbcX59f7ZvXWnR36k3DBXPhIZdbD5oMQ/exec';
 
 const questions = document.querySelectorAll('.question');
@@ -503,10 +576,8 @@ function updateUI() {
   const step = Math.min(current + 1, totalSteps);
   const isEnd = current >= totalSteps;
 
-  // Progress bar
   document.getElementById('progressBar').style.width = (current / totalSteps * 100) + '%';
 
-  // Step counter
   const counter = document.getElementById('stepCounter');
   if (isEnd) {
     counter.style.opacity = '0';
@@ -515,7 +586,6 @@ function updateUI() {
     counter.textContent = String(step).padStart(2, '0') + ' / ' + String(totalSteps).padStart(2, '0');
   }
 
-  // Back button
   const backBtn = document.getElementById('backBtn');
   if (current === 0 || isEnd) {
     backBtn.classList.add('hidden');
@@ -523,12 +593,10 @@ function updateUI() {
     backBtn.classList.remove('hidden');
   }
 
-  // Enter hint
   const hint = document.getElementById('enterHint');
-  const q = questions[current];
   if (isEnd) {
     hint.style.opacity = '0';
-  } else if (q.dataset.type === 'choice') {
+  } else if (questions[current].dataset.type === 'choice') {
     hint.textContent = 'Or press A, B, C...';
     hint.style.opacity = '1';
   } else {
@@ -544,20 +612,24 @@ function goTo(index) {
   const next = questions[index];
 
   if (index > current) {
-    prev.classList.remove('active');
+    prev.classList.remove('active', 'keyboard-open');
     prev.classList.add('exit-up');
     setTimeout(() => prev.classList.remove('exit-up'), 500);
   } else {
-    prev.classList.remove('active');
+    prev.classList.remove('active', 'keyboard-open');
   }
 
   next.classList.add('active');
   current = index;
   updateUI();
 
-  // Focus text input if present
+  // Focus text input — use requestAnimationFrame for reliable focus on mobile
   const input = next.querySelector('.text-input');
-  if (input) setTimeout(() => input.focus(), 100);
+  if (input) {
+    requestAnimationFrame(() => {
+      setTimeout(() => input.focus(), 50);
+    });
+  }
 }
 
 function syncToSheet() {
@@ -585,16 +657,19 @@ function nextQuestion() {
   const q = questions[current];
   const type = q.dataset.type;
 
-  // Save answer
   if (type === 'text') {
     const input = q.querySelector('.text-input');
     const val = input.value.trim();
     if (!val) {
-      input.style.borderBottomColor = 'var(--center-fill)';
+      // Shake the input row briefly
+      const row = q.querySelector('.input-row');
+      row.style.borderBottomColor = 'var(--center-fill)';
       input.focus();
       return;
     }
     answers[q.dataset.step] = val;
+    // Blur input before transition to dismiss keyboard smoothly
+    input.blur();
     syncToSheet();
   }
 
@@ -602,6 +677,8 @@ function nextQuestion() {
 }
 
 function prevQuestion() {
+  // Blur any active input to dismiss keyboard
+  if (document.activeElement) document.activeElement.blur();
   if (current > 0) goTo(current - 1);
 }
 
@@ -612,7 +689,6 @@ function selectChoice(el) {
   answers[q.dataset.step] = el.dataset.value;
   syncToSheet();
 
-  // Auto-advance after short delay
   setTimeout(() => {
     if (current < questions.length - 1) goTo(current + 1);
   }, 350);
@@ -630,7 +706,6 @@ document.addEventListener('keydown', e => {
     prevQuestion();
   }
 
-  // A/B/C/D for choices
   const q = questions[current];
   if (q.dataset.type === 'choice' && document.activeElement.tagName !== 'INPUT') {
     const keyMap = { a: 0, b: 1, c: 2, d: 3 };
@@ -641,6 +716,35 @@ document.addEventListener('keydown', e => {
     }
   }
 });
+
+// ─── Mobile keyboard handling ───
+// Use visualViewport API to detect keyboard open/close
+if (window.visualViewport) {
+  let initialHeight = window.visualViewport.height;
+
+  window.visualViewport.addEventListener('resize', () => {
+    const q = questions[current];
+    const ratio = window.visualViewport.height / initialHeight;
+
+    if (ratio < 0.75) {
+      // Keyboard is open — shift content up
+      q.classList.add('keyboard-open');
+      // Adjust body to prevent iOS from scrolling the viewport
+      document.body.style.height = window.visualViewport.height + 'px';
+    } else {
+      // Keyboard closed
+      q.classList.remove('keyboard-open');
+      document.body.style.height = '100%';
+      initialHeight = window.visualViewport.height;
+    }
+  });
+}
+
+// Prevent iOS rubber-band scrolling
+document.addEventListener('touchmove', e => {
+  if (e.target.closest('.choices')) return; // allow scroll in long choice lists
+  e.preventDefault();
+}, { passive: false });
 
 // Theme toggle
 function toggleTheme() {
