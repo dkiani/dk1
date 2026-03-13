@@ -391,10 +391,10 @@
     .back-btn { bottom: 1rem; left: 1rem; }
     .enter-hint { display: none; }
 
-    /* Shift content up when keyboard is open */
-    .question.keyboard-open {
+    /* Position content in upper third so it's already above the keyboard */
+    .question {
       align-items: flex-start;
-      padding-top: 15vh;
+      padding-top: 18vh;
     }
   }
 
@@ -612,11 +612,11 @@ function goTo(index) {
   const next = questions[index];
 
   if (index > current) {
-    prev.classList.remove('active', 'keyboard-open');
+    prev.classList.remove('active');
     prev.classList.add('exit-up');
     setTimeout(() => prev.classList.remove('exit-up'), 500);
   } else {
-    prev.classList.remove('active', 'keyboard-open');
+    prev.classList.remove('active');
   }
 
   next.classList.add('active');
@@ -661,16 +661,25 @@ function nextQuestion() {
     const input = q.querySelector('.text-input');
     const val = input.value.trim();
     if (!val) {
-      // Shake the input row briefly
       const row = q.querySelector('.input-row');
       row.style.borderBottomColor = 'var(--center-fill)';
       input.focus();
       return;
     }
     answers[q.dataset.step] = val;
-    // Blur input before transition to dismiss keyboard smoothly
     input.blur();
     syncToSheet();
+  }
+
+  if (type === 'choice') {
+    if (!answers[q.dataset.step]) {
+      // Flash the choices to signal a selection is required
+      q.querySelectorAll('.choice').forEach(c => {
+        c.style.borderColor = 'var(--center-fill)';
+        setTimeout(() => c.style.borderColor = '', 600);
+      });
+      return;
+    }
   }
 
   goTo(current + 1);
@@ -716,35 +725,6 @@ document.addEventListener('keydown', e => {
     }
   }
 });
-
-// ─── Mobile keyboard handling ───
-// Use visualViewport API to detect keyboard open/close
-if (window.visualViewport) {
-  let initialHeight = window.visualViewport.height;
-
-  window.visualViewport.addEventListener('resize', () => {
-    const q = questions[current];
-    const ratio = window.visualViewport.height / initialHeight;
-
-    if (ratio < 0.75) {
-      // Keyboard is open — shift content up
-      q.classList.add('keyboard-open');
-      // Adjust body to prevent iOS from scrolling the viewport
-      document.body.style.height = window.visualViewport.height + 'px';
-    } else {
-      // Keyboard closed
-      q.classList.remove('keyboard-open');
-      document.body.style.height = '100%';
-      initialHeight = window.visualViewport.height;
-    }
-  });
-}
-
-// Prevent iOS rubber-band scrolling
-document.addEventListener('touchmove', e => {
-  if (e.target.closest('.choices')) return; // allow scroll in long choice lists
-  e.preventDefault();
-}, { passive: false });
 
 // Theme toggle
 function toggleTheme() {
