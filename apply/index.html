@@ -401,12 +401,44 @@
     .back-btn { bottom: 1rem; left: 1rem; }
     .enter-hint { display: none; }
     .input-submit { display: flex; }
+    .status-bar { bottom: 1rem; font-size: 0.45rem; gap: 1rem; }
 
     /* Position content in upper third so it's already above the keyboard */
     .question {
       align-items: flex-start;
       padding-top: 18vh;
     }
+  }
+
+  /* ─── Status Bar ─── */
+  .status-bar {
+    position: fixed;
+    bottom: 1.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 1.5rem;
+    z-index: 100;
+    font-size: 0.5rem;
+    font-weight: 300;
+    color: var(--dim);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .status-bar span {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .status-dot {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--center-fill);
+    opacity: 0.6;
   }
 
   /* ─── Safe area insets (notch phones) ─── */
@@ -423,6 +455,10 @@
 <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">Light</button>
 <button class="back-btn hidden" id="backBtn" onclick="prevQuestion()">&larr; Back</button>
 <div class="enter-hint" id="enterHint">Press Enter &darr;</div>
+<div class="status-bar" id="statusBar">
+  <span><span class="status-dot"></span>2 / 5 spots filled</span>
+  <span>14 requests</span>
+</div>
 
 <div class="questions" id="questions">
 
@@ -603,6 +639,9 @@ function updateUI() {
   } else {
     backBtn.classList.remove('hidden');
   }
+
+  const statusBar = document.getElementById('statusBar');
+  statusBar.style.opacity = isEnd ? '0' : '1';
 
   const hint = document.getElementById('enterHint');
   if (isEnd) {
