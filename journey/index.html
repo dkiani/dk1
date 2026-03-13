@@ -479,9 +479,14 @@
 </div>
 
 <script>
+// ─── Google Sheets endpoint ───
+// Replace this URL with your deployed Google Apps Script web app URL
+const SHEET_URL = 'PASTE_YOUR_GOOGLE_APPS_SCRIPT_URL_HERE';
+
 const questions = document.querySelectorAll('.question');
 const totalSteps = 7;
 let current = 0;
+let submitted = false;
 const answers = {};
 
 function updateUI() {
@@ -540,9 +545,40 @@ function goTo(index) {
   current = index;
   updateUI();
 
+  // Submit answers when reaching the thank you screen
+  if (next.dataset.type === 'end' && !submitted) {
+    submitted = true;
+    submitAnswers();
+  }
+
   // Focus text input if present
   const input = next.querySelector('.text-input');
   if (input) setTimeout(() => input.focus(), 100);
+}
+
+function submitAnswers() {
+  const payload = {
+    timestamp: new Date().toISOString(),
+    name: answers['1'] || '',
+    instagram: answers['2'] || '',
+    trading_experience: answers['3'] || '',
+    life_changes: answers['4'] || '',
+    ninety_day_success: answers['5'] || '',
+    mentorship_cost: answers['6'] || '',
+    ready: answers['7'] || ''
+  };
+
+  if (SHEET_URL === 'PASTE_YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
+    console.log('Questionnaire responses (no Sheet URL configured):', payload);
+    return;
+  }
+
+  fetch(SHEET_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  }).catch(err => console.error('Submit error:', err));
 }
 
 function nextQuestion() {
