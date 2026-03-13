@@ -97,6 +97,14 @@ function doGet(e) {
   var lastRow = sheet.getLastRow();
   // Subtract 1 for header row; minimum 0
   var count = Math.max(0, lastRow - 1);
-  return ContentService.createTextOutput(JSON.stringify({ count: count }))
+  var json = JSON.stringify({ count: count });
+
+  // Support JSONP callback to avoid CORS issues
+  var callback = (e && e.parameter && e.parameter.callback) ? e.parameter.callback : null;
+  if (callback) {
+    return ContentService.createTextOutput(callback + '(' + json + ')')
+      .setMimeType(ContentService.MimeType.JAVASCRIPT);
+  }
+  return ContentService.createTextOutput(json)
     .setMimeType(ContentService.MimeType.JSON);
 }
