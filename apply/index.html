@@ -792,18 +792,15 @@ function toggleTheme() {
   }
 }
 
-// Fetch request count from sheet
-fetch(SHEET_URL, { redirect: 'follow' })
-  .then(r => r.text())
-  .then(text => {
-    try {
-      var data = JSON.parse(text);
-      if (data.count !== undefined) {
-        document.getElementById('requestCount').textContent = data.count + ' requests';
-      }
-    } catch(e) {}
-  })
-  .catch(() => {});
+// Fetch request count from sheet via JSONP (avoids CORS)
+window._onRequestCount = function(data) {
+  if (data.count !== undefined) {
+    document.getElementById('requestCount').textContent = data.count + ' requests';
+  }
+};
+var s = document.createElement('script');
+s.src = SHEET_URL + '?callback=_onRequestCount';
+document.body.appendChild(s);
 
 // Init
 updateUI();
