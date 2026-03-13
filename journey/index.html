@@ -257,19 +257,18 @@
     font-weight: 300;
   }
 
-  /* Inline submit checkmark button */
+  /* Inline submit button — mobile only */
   .input-submit {
     background: none;
     border: none;
     color: var(--dim);
     cursor: pointer;
     padding: 0.5rem 0.25rem 0.5rem 0.75rem;
-    display: flex;
+    display: none;
     align-items: center;
     justify-content: center;
     transition: color 0.3s;
     flex-shrink: 0;
-    /* Easy tap target */
     min-width: 44px;
     min-height: 44px;
   }
@@ -390,6 +389,7 @@
     .theme-toggle { top: 1rem; right: 1rem; }
     .back-btn { bottom: 1rem; left: 1rem; }
     .enter-hint { display: none; }
+    .input-submit { display: flex; }
 
     /* Position content in upper third so it's already above the keyboard */
     .question {
