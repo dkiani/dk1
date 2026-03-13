@@ -84,10 +84,20 @@ function doGet(e) {
     var piId = p.pi || '';
     var newAmt = parseInt(p.amount) || 0;
     try {
+      // Affirm requires min $50, Klarna min ~$1; use card-only for low amounts
+      var updatePayload = 'amount=' + newAmt;
+      if (newAmt < 5000) {
+        updatePayload += '&payment_method_types[]=card';
+      } else {
+        updatePayload += '&payment_method_types[]=card'
+          + '&payment_method_types[]=klarna'
+          + '&payment_method_types[]=affirm';
+      }
       UrlFetchApp.fetch('https://api.stripe.com/v1/payment_intents/' + piId, {
         method: 'post',
         headers: { 'Authorization': 'Bearer ' + STRIPE_SECRET_KEY },
-        payload: { 'amount': String(newAmt) }
+        contentType: 'application/x-www-form-urlencoded',
+        payload: updatePayload
       });
       result = { status: 'updated' };
     } catch (err) {
