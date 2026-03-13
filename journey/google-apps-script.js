@@ -93,6 +93,10 @@ function findRowBySessionId(sheet, sessionId) {
 }
 
 function doGet(e) {
-  return ContentService.createTextOutput('Questionnaire endpoint is running.')
-    .setMimeType(ContentService.MimeType.TEXT);
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  var lastRow = sheet.getLastRow();
+  // Subtract 1 for header row; minimum 0
+  var count = Math.max(0, lastRow - 1);
+  return ContentService.createTextOutput(JSON.stringify({ count: count }))
+    .setMimeType(ContentService.MimeType.JSON);
 }

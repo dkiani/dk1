@@ -457,7 +457,7 @@
 <div class="enter-hint" id="enterHint">Press Enter &darr;</div>
 <div class="status-bar" id="statusBar">
   <span><span class="status-dot"></span>2 / 5 spots filled</span>
-  <span>14 requests</span>
+  <span id="requestCount"></span>
 </div>
 
 <div class="questions" id="questions">
@@ -791,6 +791,16 @@ function toggleTheme() {
     tc.content = '#0a0a0a';
   }
 }
+
+// Fetch request count from sheet
+fetch(SHEET_URL)
+  .then(r => r.json())
+  .then(data => {
+    if (data.count !== undefined) {
+      document.getElementById('requestCount').textContent = data.count + ' requests';
+    }
+  })
+  .catch(() => {});
 
 // Init
 updateUI();
