@@ -793,12 +793,15 @@ function toggleTheme() {
 }
 
 // Fetch request count from sheet
-fetch(SHEET_URL)
-  .then(r => r.json())
-  .then(data => {
-    if (data.count !== undefined) {
-      document.getElementById('requestCount').textContent = data.count + ' requests';
-    }
+fetch(SHEET_URL, { redirect: 'follow' })
+  .then(r => r.text())
+  .then(text => {
+    try {
+      var data = JSON.parse(text);
+      if (data.count !== undefined) {
+        document.getElementById('requestCount').textContent = data.count + ' requests';
+      }
+    } catch(e) {}
   })
   .catch(() => {});
 
