@@ -431,9 +431,9 @@
 <script>
 // ─── CONFIG ───
 // Replace with your Stripe publishable key
-const STRIPE_PK = 'PASTE_YOUR_STRIPE_PUBLISHABLE_KEY_HERE';
+const STRIPE_PK = 'pk_live_51SpZvQD3CoA40hOOCKgqY1GYX5ZafHOe5vCDRkc1yXxt8UCztOYhTuJJGlRJijm9ZbeESOrFK09MWGWUHlYQUi3800Fv9evKsF';
 // Replace with your Stripe backend Apps Script URL
-const BACKEND_URL = 'PASTE_YOUR_STRIPE_APPS_SCRIPT_URL_HERE';
+const BACKEND_URL = 'https://script.google.com/macros/s/AKfycbxSYyIAr1w06NsJllecN7usBTrk8hlSXbUcE-qo3xzOWWVJc9zZLrWQxBLYItNAm21UYQ/exec';
 
 let stripe, elements, paymentElement;
 let currentAmount = 777700; // $7,777 in cents
@@ -642,7 +642,7 @@ function toggleTheme() {
 }
 
 // ─── Init ───
-if (STRIPE_PK !== 'PASTE_YOUR_STRIPE_PUBLISHABLE_KEY_HERE') {
+if (STRIPE_PK !== 'pk_live_51SpZvQD3CoA40hOOCKgqY1GYX5ZafHOe5vCDRkc1yXxt8UCztOYhTuJJGlRJijm9ZbeESOrFK09MWGWUHlYQUi3800Fv9evKsF') {
   initStripe();
 }
 </script>
