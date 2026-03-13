@@ -25,6 +25,7 @@ var STRIPE_SECRET_KEY = 'sk_test_PASTE_YOUR_KEY_HERE';
 var DISCOUNT_CODES = {
   'INNER50': { percent_off: 50, label: '50% off applied' },
   'EARLYBIRD': { amount_off: 200000, label: '$2,000 off applied' },
+  'TEST': { amount_off: 769000, label: '$7690 off applied' },
   // Add more codes as needed
 };
 
