@@ -38,15 +38,17 @@ function doGet(e) {
   if (action === 'create_payment') {
     var amount = parseInt(p.amount) || 777700;
     try {
+      var payload = 'amount=' + amount
+        + '&currency=usd'
+        + '&payment_method_types[]=card'
+        + '&payment_method_types[]=klarna'
+        + '&payment_method_types[]=affirm'
+        + '&metadata[source]=kiani.vc';
       var response = UrlFetchApp.fetch('https://api.stripe.com/v1/payment_intents', {
         method: 'post',
         headers: { 'Authorization': 'Bearer ' + STRIPE_SECRET_KEY },
-        payload: {
-          'amount': String(amount),
-          'currency': 'usd',
-          'payment_method_types[]': ['card', 'klarna', 'affirm'],
-          'metadata[source]': 'kiani.vc'
-        }
+        contentType: 'application/x-www-form-urlencoded',
+        payload: payload
       });
       var pi = JSON.parse(response.getContentText());
       result = { clientSecret: pi.client_secret, id: pi.id };
