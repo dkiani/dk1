@@ -7,21 +7,27 @@
 // 1. Go to https://sheets.google.com and create a new spreadsheet
 // 2. Name it something like "Journey Responses"
 // 3. In Row 1, add these headers (one per column):
-//    A: Timestamp | B: Name | C: Instagram | D: Trading Experience
-//    E: Life Changes | F: 90-Day Success | G: Mentorship Cost | H: Ready
+//    A: Session ID | B: Timestamp | C: Name | D: Instagram
+//    E: Trading Experience | F: Why Trading | G: 90-Day Success
+//    H: Mentorship Cost | I: Ready
 //
 // 4. Go to Extensions → Apps Script
 // 5. Delete the default code and paste EVERYTHING below this comment block
-// 6. Click Deploy → New deployment
-// 7. Select type: "Web app"
-// 8. Set "Execute as": Me
-// 9. Set "Who has access": Anyone
-// 10. Click Deploy and authorize when prompted
-// 11. Copy the Web app URL
-// 12. Paste it into journey/index.html replacing PASTE_YOUR_GOOGLE_APPS_SCRIPT_URL_HERE
+// 6. Click Deploy → New deployment → Web app
+// 7. Set "Execute as": Me
+// 8. Set "Who has access": Anyone
+// 9. Click Deploy and authorize when prompted
+// 10. Copy the Web app URL
+// 11. Paste it into journey/index.html replacing PASTE_YOUR_GOOGLE_APPS_SCRIPT_URL_HERE
 //
-// That's it! Responses will now appear in your spreadsheet.
+// Each answer syncs immediately. If someone drops off midway,
+// you'll still see their partial responses. Rows are identified
+// by session_id so repeated syncs update the same row.
+//
+// To enable email notifications, set your email below.
 // ─────────────────────────────────────────────────────────
+
+var NOTIFY_EMAIL = '';  // ← Put your email here for notifications, or leave blank to disable
 
 function doPost(e) {
   var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
@@ -34,19 +40,56 @@ function doPost(e) {
       .setMimeType(ContentService.MimeType.JSON);
   }
 
-  sheet.appendRow([
+  var sessionId = data.session_id || '';
+  var row = findRowBySessionId(sheet, sessionId);
+
+  var values = [
+    sessionId,
     data.timestamp || new Date().toISOString(),
     data.name || '',
     data.instagram || '',
     data.trading_experience || '',
-    data.life_changes || '',
+    data.why_trading || '',
     data.ninety_day_success || '',
     data.mentorship_cost || '',
     data.ready || ''
-  ]);
+  ];
+
+  if (row > 0) {
+    // Update existing row
+    sheet.getRange(row, 1, 1, values.length).setValues([values]);
+  } else {
+    // New respondent — append row
+    sheet.appendRow(values);
+  }
+
+  // Send email when the final answer (ready) comes in
+  if (NOTIFY_EMAIL && data.ready) {
+    var subject = 'New Journey Response — ' + (data.name || 'Unknown');
+    var body = 'New questionnaire submission:\n\n'
+      + 'Name: ' + (data.name || '—') + '\n'
+      + 'Instagram: ' + (data.instagram || '—') + '\n'
+      + 'Trading Experience: ' + (data.trading_experience || '—') + '\n'
+      + 'Why Trading: ' + (data.why_trading || '—') + '\n'
+      + '90-Day Success: ' + (data.ninety_day_success || '—') + '\n'
+      + 'Mentorship Cost: ' + (data.mentorship_cost || '—') + '\n'
+      + 'Ready: ' + (data.ready || '—') + '\n\n'
+      + 'Submitted: ' + (data.timestamp || new Date().toISOString());
+
+    MailApp.sendEmail(NOTIFY_EMAIL, subject, body);
+  }
 
   return ContentService.createTextOutput(JSON.stringify({ status: 'ok' }))
     .setMimeType(ContentService.MimeType.JSON);
+}
+
+function findRowBySessionId(sheet, sessionId) {
+  if (!sessionId) return -1;
+  var data = sheet.getRange(1, 1, sheet.getLastRow(), 1).getValues();
+  for (var i = data.length - 1; i >= 0; i--) {
+    if (data[i][0] === sessionId) return i + 1;
+  }
+  return -1;
 }
 
 function doGet(e) {
