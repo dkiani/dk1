@@ -430,45 +430,63 @@
 <script src="https://js.stripe.com/v3/"></script>
 <script>
 // ─── CONFIG ───
-// Replace with your Stripe publishable key
 const STRIPE_PK = 'pk_live_51SpZvQD3CoA40hOOCKgqY1GYX5ZafHOe5vCDRkc1yXxt8UCztOYhTuJJGlRJijm9ZbeESOrFK09MWGWUHlYQUi3800Fv9evKsF';
-// Replace with your Stripe backend Apps Script URL
 const BACKEND_URL = 'https://script.google.com/macros/s/AKfycbxSYyIAr1w06NsJllecN7usBTrk8hlSXbUcE-qo3xzOWWVJc9zZLrWQxBLYItNAm21UYQ/exec';
 
 let stripe, elements, paymentElement;
-let currentAmount = 777700; // $7,777 in cents
-const baseAmount = 777700;
+let currentAmount = 777700;
+let clientSecret = null;
+
+// ─── JSONP helper (bypasses CORS) ───
+function jsonp(params) {
+  return new Promise((resolve, reject) => {
+    const cbName = '_cb_' + Date.now() + Math.random().toString(36).slice(2,6);
+    window[cbName] = function(data) {
+      delete window[cbName];
+      document.body.removeChild(script);
+      resolve(data);
+    };
+    const qs = new URLSearchParams(params);
+    qs.set('callback', cbName);
+    const script = document.createElement('script');
+    script.src = BACKEND_URL + '?' + qs.toString();
+    script.onerror = function() {
+      delete window[cbName];
+      document.body.removeChild(script);
+      reject(new Error('Request failed'));
+    };
+    document.body.appendChild(script);
+  });
+}
 
 // ─── Init Stripe ───
 async function initStripe() {
   stripe = Stripe(STRIPE_PK);
 
-  // Create PaymentIntent via backend
-  const res = await fetch(BACKEND_URL, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ action: 'create_payment', amount: currentAmount })
-  });
+  try {
+    const data = await jsonp({ action: 'create_payment', amount: currentAmount });
 
-  const data = await res.json();
-  if (!data.clientSecret) {
+    if (!data.clientSecret) {
+      document.getElementById('paymentMsg').textContent = data.error || 'Unable to initialize payment.';
+      document.getElementById('paymentMsg').className = 'payment-msg error';
+      return;
+    }
+
+    clientSecret = data.clientSecret;
+    const theme = document.documentElement.getAttribute('data-theme');
+
+    elements = stripe.elements({
+      clientSecret: clientSecret,
+      appearance: getStripeAppearance(theme),
+      fonts: [{ cssSrc: 'https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400&display=swap' }]
+    });
+
+    paymentElement = elements.create('payment', { layout: 'tabs' });
+    paymentElement.mount('#payment-element');
+  } catch (err) {
     document.getElementById('paymentMsg').textContent = 'Unable to initialize payment.';
     document.getElementById('paymentMsg').className = 'payment-msg error';
-    return;
   }
-
-  const theme = document.documentElement.getAttribute('data-theme');
-
-  elements = stripe.elements({
-    clientSecret: data.clientSecret,
-    appearance: getStripeAppearance(theme),
-    fonts: [{ cssSrc: 'https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400&display=swap' }]
-  });
-
-  paymentElement = elements.create('payment', {
-    layout: 'tabs'
-  });
-  paymentElement.mount('#payment-element');
 }
 
 function getStripeAppearance(theme) {
@@ -529,13 +547,7 @@ async function applyDiscount() {
   document.getElementById('discountBtn').textContent = '...';
 
   try {
-    const res = await fetch(BACKEND_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ action: 'validate_discount', code: code })
-    });
-
-    const data = await res.json();
+    const data = await jsonp({ action: 'validate_discount', code: code });
 
     if (data.valid) {
       currentAmount = data.amount;
@@ -553,11 +565,8 @@ async function applyDiscount() {
       document.getElementById('discountBtn').textContent = 'Applied';
 
       // Update PaymentIntent amount
-      await fetch(BACKEND_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'update_payment', amount: currentAmount, clientSecret: elements._commonOptions.clientSecret })
-      });
+      const piId = clientSecret.split('_secret_')[0];
+      await jsonp({ action: 'update_payment', pi: piId, amount: currentAmount });
     } else {
       msg.textContent = 'Invalid code';
       msg.className = 'discount-msg error';
@@ -579,9 +588,8 @@ document.getElementById('termsCheck').addEventListener('change', function() {
 async function handlePayment() {
   const btn = document.getElementById('payBtn');
   const msg = document.getElementById('paymentMsg');
-  const terms = document.getElementById('termsCheck');
 
-  if (!terms.checked) {
+  if (!document.getElementById('termsCheck').checked) {
     msg.textContent = 'Please agree to the terms';
     msg.className = 'payment-msg error';
     return;
@@ -610,7 +618,7 @@ async function handlePayment() {
   }
 }
 
-// Check for redirect return
+// Check for redirect return (Klarna/Affirm)
 const params = new URLSearchParams(window.location.search);
 if (params.get('success') === 'true' || params.get('redirect_status') === 'succeeded') {
   document.getElementById('checkoutView').style.display = 'none';
@@ -635,16 +643,13 @@ function toggleTheme() {
     btn.textContent = 'Light';
     tc.content = '#0a0a0a';
   }
-  // Update Stripe element theme
   if (elements) {
     elements.update({ appearance: getStripeAppearance(html.getAttribute('data-theme')) });
   }
 }
 
 // ─── Init ───
-if (STRIPE_PK !== 'pk_live_51SpZvQD3CoA40hOOCKgqY1GYX5ZafHOe5vCDRkc1yXxt8UCztOYhTuJJGlRJijm9ZbeESOrFK09MWGWUHlYQUi3800Fv9evKsF') {
-  initStripe();
-}
+initStripe();
 </script>
 
 </body>

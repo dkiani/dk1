@@ -9,15 +9,14 @@
 // 2. Delete the default code and paste EVERYTHING below
 // 3. Replace STRIPE_SECRET_KEY with your Stripe secret key
 //    - Find it at: https://dashboard.stripe.com/apikeys
-//    - Use the key starting with "sk_live_" for production
-//    - Use "sk_test_" for testing first
+//    - Use "sk_live_" for production, "sk_test_" for testing
 // 4. Set up your discount codes in the DISCOUNT_CODES object
 // 5. Deploy → New deployment → Web app
-// 6. Execute as: Me
-// 7. Who has access: Anyone
-// 8. Copy the Web app URL
-// 9. Paste it into ready/index.html replacing PASTE_YOUR_STRIPE_APPS_SCRIPT_URL_HERE
+// 6. Execute as: Me  |  Who has access: Anyone
+// 7. Copy the Web app URL into ready/index.html
 //
+// IMPORTANT: All requests come via doGet (JSONP) to avoid CORS.
+// After ANY code change, redeploy as a NEW version.
 // ─────────────────────────────────────────────────────────
 
 var STRIPE_SECRET_KEY = 'sk_test_PASTE_YOUR_KEY_HERE';
@@ -29,95 +28,78 @@ var DISCOUNT_CODES = {
   // Add more codes as needed
 };
 
-function doPost(e) {
-  var data;
-  try {
-    data = JSON.parse(e.postData.contents);
-  } catch (err) {
-    return jsonResponse({ error: 'Invalid JSON' });
-  }
-
-  var action = data.action;
+function doGet(e) {
+  var p = e.parameter || {};
+  var action = p.action || '';
+  var callback = p.callback || '';
+  var result = {};
 
   // ─── Create PaymentIntent ───
   if (action === 'create_payment') {
-    var amount = data.amount || 777700; // default $7,777
+    var amount = parseInt(p.amount) || 777700;
     try {
       var response = UrlFetchApp.fetch('https://api.stripe.com/v1/payment_intents', {
         method: 'post',
-        headers: {
-          'Authorization': 'Bearer ' + STRIPE_SECRET_KEY
-        },
+        headers: { 'Authorization': 'Bearer ' + STRIPE_SECRET_KEY },
         payload: {
-          'amount': amount,
+          'amount': String(amount),
           'currency': 'usd',
           'payment_method_types[]': ['card', 'klarna', 'affirm'],
           'metadata[source]': 'kiani.vc'
         }
       });
       var pi = JSON.parse(response.getContentText());
-      return jsonResponse({ clientSecret: pi.client_secret, id: pi.id });
+      result = { clientSecret: pi.client_secret, id: pi.id };
     } catch (err) {
-      return jsonResponse({ error: 'Payment creation failed: ' + err.message });
+      result = { error: 'Payment creation failed: ' + err.message };
     }
   }
 
   // ─── Validate Discount Code ───
-  if (action === 'validate_discount') {
-    var code = (data.code || '').toUpperCase();
+  else if (action === 'validate_discount') {
+    var code = (p.code || '').toUpperCase();
     var discount = DISCOUNT_CODES[code];
 
     if (!discount) {
-      return jsonResponse({ valid: false });
+      result = { valid: false };
+    } else {
+      var baseAmount = 777700;
+      var newAmount = baseAmount;
+      if (discount.percent_off) {
+        newAmount = Math.round(baseAmount * (1 - discount.percent_off / 100));
+      } else if (discount.amount_off) {
+        newAmount = Math.max(0, baseAmount - discount.amount_off);
+      }
+      result = { valid: true, amount: newAmount, label: discount.label || 'Discount applied' };
     }
-
-    var baseAmount = 777700;
-    var newAmount = baseAmount;
-
-    if (discount.percent_off) {
-      newAmount = Math.round(baseAmount * (1 - discount.percent_off / 100));
-    } else if (discount.amount_off) {
-      newAmount = Math.max(0, baseAmount - discount.amount_off);
-    }
-
-    return jsonResponse({
-      valid: true,
-      amount: newAmount,
-      label: discount.label || 'Discount applied'
-    });
   }
 
   // ─── Update PaymentIntent Amount ───
-  if (action === 'update_payment') {
-    var clientSecret = data.clientSecret || '';
-    var piId = clientSecret.split('_secret_')[0];
-    var newAmt = data.amount;
-
+  else if (action === 'update_payment') {
+    var piId = p.pi || '';
+    var newAmt = parseInt(p.amount) || 0;
     try {
-      var response = UrlFetchApp.fetch('https://api.stripe.com/v1/payment_intents/' + piId, {
+      UrlFetchApp.fetch('https://api.stripe.com/v1/payment_intents/' + piId, {
         method: 'post',
-        headers: {
-          'Authorization': 'Bearer ' + STRIPE_SECRET_KEY
-        },
-        payload: {
-          'amount': newAmt
-        }
+        headers: { 'Authorization': 'Bearer ' + STRIPE_SECRET_KEY },
+        payload: { 'amount': String(newAmt) }
       });
-      return jsonResponse({ status: 'updated' });
+      result = { status: 'updated' };
     } catch (err) {
-      return jsonResponse({ error: 'Update failed: ' + err.message });
+      result = { error: 'Update failed: ' + err.message };
     }
   }
 
-  return jsonResponse({ error: 'Unknown action' });
-}
+  else {
+    result = { error: 'Unknown action' };
+  }
 
-function jsonResponse(obj) {
-  return ContentService.createTextOutput(JSON.stringify(obj))
+  // Return JSONP or JSON
+  var json = JSON.stringify(result);
+  if (callback) {
+    return ContentService.createTextOutput(callback + '(' + json + ')')
+      .setMimeType(ContentService.MimeType.JAVASCRIPT);
+  }
+  return ContentService.createTextOutput(json)
     .setMimeType(ContentService.MimeType.JSON);
-}
-
-function doGet(e) {
-  return ContentService.createTextOutput('Stripe backend is running.')
-    .setMimeType(ContentService.MimeType.TEXT);
 }
