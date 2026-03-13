@@ -27,6 +27,7 @@ var DISCOUNT_CODES = {
   'EARLYBIRD': { amount_off: 200000, label: '$2,000 off applied' },
   'RICH': { amount_off: 500000, label: '$5,000 off applied' },
   'TEST': { amount_off: 777600, label: '$7,776 off applied' },
+
   // Add more codes as needed
 };
 
