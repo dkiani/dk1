@@ -661,16 +661,25 @@ function nextQuestion() {
     const input = q.querySelector('.text-input');
     const val = input.value.trim();
     if (!val) {
-      // Shake the input row briefly
       const row = q.querySelector('.input-row');
       row.style.borderBottomColor = 'var(--center-fill)';
       input.focus();
       return;
     }
     answers[q.dataset.step] = val;
-    // Blur input before transition to dismiss keyboard smoothly
     input.blur();
     syncToSheet();
+  }
+
+  if (type === 'choice') {
+    if (!answers[q.dataset.step]) {
+      // Flash the choices to signal a selection is required
+      q.querySelectorAll('.choice').forEach(c => {
+        c.style.borderColor = 'var(--center-fill)';
+        setTimeout(() => c.style.borderColor = '', 600);
+      });
+      return;
+    }
   }
 
   goTo(current + 1);
