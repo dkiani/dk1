@@ -92,15 +92,52 @@ function findRowBySessionId(sheet, sessionId) {
   return -1;
 }
 
+// ─── ADMIN KEY ───
+// Change this to a secret passphrase. Used to access all responses via ?action=all&key=YOUR_KEY
+var ADMIN_KEY = 'dk2026';
+
 function doGet(e) {
   var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  var action = (e && e.parameter && e.parameter.action) ? e.parameter.action : '';
+  var callback = (e && e.parameter && e.parameter.callback) ? e.parameter.callback : null;
+
+  // ─── Return all responses (protected by admin key) ───
+  if (action === 'all') {
+    var key = (e && e.parameter && e.parameter.key) ? e.parameter.key : '';
+    if (key !== ADMIN_KEY) {
+      var err = JSON.stringify({ status: 'error', message: 'Invalid key' });
+      if (callback) return ContentService.createTextOutput(callback + '(' + err + ')').setMimeType(ContentService.MimeType.JAVASCRIPT);
+      return ContentService.createTextOutput(err).setMimeType(ContentService.MimeType.JSON);
+    }
+
+    var lastRow = sheet.getLastRow();
+    var responses = [];
+    if (lastRow > 1) {
+      var data = sheet.getRange(2, 1, lastRow - 1, 9).getValues();
+      for (var i = 0; i < data.length; i++) {
+        responses.push({
+          session_id: data[i][0],
+          timestamp: data[i][1],
+          name: data[i][2],
+          instagram: data[i][3],
+          trading_experience: data[i][4],
+          why_trading: data[i][5],
+          ninety_day_success: data[i][6],
+          mentorship_cost: data[i][7],
+          ready: data[i][8]
+        });
+      }
+    }
+    var json = JSON.stringify({ status: 'ok', responses: responses });
+    if (callback) return ContentService.createTextOutput(callback + '(' + json + ')').setMimeType(ContentService.MimeType.JAVASCRIPT);
+    return ContentService.createTextOutput(json).setMimeType(ContentService.MimeType.JSON);
+  }
+
+  // ─── Default: return count ───
   var lastRow = sheet.getLastRow();
-  // Subtract 1 for header row; minimum 0
   var count = Math.max(0, lastRow - 1);
   var json = JSON.stringify({ count: count });
 
-  // Support JSONP callback to avoid CORS issues
-  var callback = (e && e.parameter && e.parameter.callback) ? e.parameter.callback : null;
   if (callback) {
     return ContentService.createTextOutput(callback + '(' + json + ')')
       .setMimeType(ContentService.MimeType.JAVASCRIPT);

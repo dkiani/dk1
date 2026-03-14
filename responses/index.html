@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0a0a0a">
+<title>Responses — Daniel Kiani</title>
+<meta name="robots" content="noindex, nofollow">
+
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root { --font: 'JetBrains Mono', monospace; --ease: cubic-bezier(0.16, 1, 0.3, 1); }
+
+  [data-theme="dark"] {
+    --bg: #0a0a0a; --fg: #d4d4d4; --muted: #525252; --dim: #3a3a3a;
+    --border: #1f1f1f; --accent: #a0a0a0; --hover: #ffffff;
+    --center-fill: #e85d2a; --card-bg: #111111; --card-hover: #161616;
+  }
+
+  [data-theme="light"] {
+    --bg: #f0ede8; --fg: #1a1a1a; --muted: #8a8a8a; --dim: #b0aca6;
+    --border: #ddd9d4; --accent: #555; --hover: #000000;
+    --center-fill: #e85d2a; --card-bg: #faf8f5; --card-hover: #f5f2ee;
+  }
+
+  html { height: 100%; }
+
+  body {
+    min-height: 100%;
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--font);
+    -webkit-font-smoothing: antialiased;
+    transition: background 0.5s var(--ease), color 0.5s var(--ease);
+  }
+
+  ::selection { background: rgba(128,128,128,0.15); }
+
+  /* ─── Login Screen ─── */
+  .login-screen {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 2rem;
+  }
+
+  .login-box {
+    width: 100%;
+    max-width: 320px;
+  }
+
+  .login-title {
+    font-size: 0.6rem;
+    font-weight: 400;
+    color: var(--muted);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+  }
+
+  .login-input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--border);
+    color: var(--fg);
+    font-family: var(--font);
+    font-size: 16px;
+    font-weight: 300;
+    padding: 0.75rem 0;
+    outline: none;
+    letter-spacing: 0.02em;
+    transition: border-color 0.3s;
+  }
+
+  .login-input:focus { border-bottom-color: var(--center-fill); }
+  .login-input::placeholder { color: var(--dim); }
+
+  .login-error {
+    font-size: 0.55rem;
+    color: var(--center-fill);
+    margin-top: 0.75rem;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .login-error.visible { opacity: 1; }
+
+  .login-hint {
+    font-size: 0.5rem;
+    color: var(--dim);
+    margin-top: 1rem;
+    letter-spacing: 0.06em;
+  }
+
+  /* ─── Dashboard ─── */
+  .dashboard {
+    display: none;
+    padding: 2rem;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .dash-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 2.5rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .dash-title {
+    font-size: 0.6rem;
+    font-weight: 400;
+    color: var(--muted);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .dash-count {
+    font-size: 0.55rem;
+    font-weight: 300;
+    color: var(--dim);
+    letter-spacing: 0.06em;
+  }
+
+  .dash-count span { color: var(--center-fill); }
+
+  .dash-actions {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .dash-btn {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: var(--font);
+    font-size: 0.5rem;
+    letter-spacing: 0.06em;
+    padding: 0.35rem 0.7rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-transform: uppercase;
+  }
+
+  .dash-btn:hover { color: var(--hover); border-color: var(--accent); }
+
+  /* ─── Response Cards ─── */
+  .cards {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    padding: 1.5rem;
+    transition: all 0.3s var(--ease);
+    cursor: default;
+  }
+
+  .card:hover {
+    background: var(--card-hover);
+    border-color: var(--accent);
+  }
+
+  .card-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 1.2rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .card-name {
+    font-size: 0.85rem;
+    font-weight: 400;
+    color: var(--fg);
+  }
+
+  .card-meta {
+    font-size: 0.5rem;
+    font-weight: 300;
+    color: var(--dim);
+    letter-spacing: 0.06em;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+  }
+
+  .card-ig {
+    color: var(--muted);
+  }
+
+  .card-status {
+    display: inline-block;
+    padding: 0.15rem 0.4rem;
+    font-size: 0.45rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border: 1px solid;
+  }
+
+  .card-status.complete { color: #4ade80; border-color: #4ade8033; }
+  .card-status.partial { color: var(--center-fill); border-color: rgba(232,93,42,0.2); }
+
+  .card-fields {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+
+  .field-label {
+    font-size: 0.5rem;
+    font-weight: 400;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .field-value {
+    font-size: 0.72rem;
+    font-weight: 300;
+    color: var(--fg);
+    line-height: 1.7;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  .field-value.empty {
+    color: var(--dim);
+    font-style: italic;
+  }
+
+  .field-value.tag {
+    display: inline-block;
+    padding: 0.2rem 0.5rem;
+    border: 1px solid var(--border);
+    font-size: 0.6rem;
+    width: fit-content;
+  }
+
+  /* ─── Empty State ─── */
+  .empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: var(--dim);
+    font-size: 0.65rem;
+    font-weight: 300;
+  }
+
+  /* ─── Loading ─── */
+  .loading {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: var(--dim);
+    font-size: 0.55rem;
+    font-weight: 300;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  @keyframes pulse { 0%,100% { opacity: 0.4; } 50% { opacity: 1; } }
+  .loading { animation: pulse 1.5s ease-in-out infinite; }
+
+  /* ─── Responsive ─── */
+  @media (max-width: 600px) {
+    .dashboard { padding: 1.25rem; }
+    .card { padding: 1.2rem; }
+    .card-header { flex-direction: column; gap: 0.4rem; }
+    .dash-header { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Login -->
+<div class="login-screen" id="loginScreen">
+  <div class="login-box">
+    <div class="login-title">Responses</div>
+    <input type="password" class="login-input" id="keyInput" placeholder="Enter access key..." autofocus>
+    <div class="login-error" id="loginError">Invalid key. Try again.</div>
+    <div class="login-hint">Press Enter</div>
+  </div>
+</div>
+
+<!-- Dashboard -->
+<div class="dashboard" id="dashboard">
+  <div class="dash-header">
+    <div>
+      <div class="dash-title">Applicant Responses</div>
+      <div class="dash-count" id="dashCount"></div>
+    </div>
+    <div class="dash-actions">
+      <button class="dash-btn" onclick="toggleTheme()">Toggle Theme</button>
+      <button class="dash-btn" onclick="loadResponses()">Refresh</button>
+    </div>
+  </div>
+  <div class="cards" id="cards">
+    <div class="loading">Loading responses...</div>
+  </div>
+</div>
+
+<script>
+const SHEET_URL = 'https://script.google.com/macros/s/AKfycbwzIH8vbHcUT3EeIqKqpkIYIruEnLH9z8YHrNj9lzV98XDKyuFS0FFoXK9O93hgAMZ3jQ/exec';
+let adminKey = '';
+
+// ─── Login ───
+document.getElementById('keyInput').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') {
+    adminKey = this.value.trim();
+    if (!adminKey) return;
+    document.getElementById('loginError').classList.remove('visible');
+    tryLogin();
+  }
+});
+
+function tryLogin() {
+  const cbName = '_loginCheck' + Date.now();
+  window[cbName] = function(data) {
+    delete window[cbName];
+    if (data.status === 'error') {
+      document.getElementById('loginError').classList.add('visible');
+      document.getElementById('keyInput').value = '';
+      document.getElementById('keyInput').focus();
+      return;
+    }
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('dashboard').style.display = 'block';
+    renderResponses(data.responses || []);
+  };
+  const s = document.createElement('script');
+  s.src = SHEET_URL + '?action=all&key=' + encodeURIComponent(adminKey) + '&callback=' + cbName;
+  s.onerror = function() {
+    document.getElementById('loginError').textContent = 'Network error. Try again.';
+    document.getElementById('loginError').classList.add('visible');
+  };
+  document.body.appendChild(s);
+}
+
+function loadResponses() {
+  const container = document.getElementById('cards');
+  container.innerHTML = '<div class="loading">Loading responses...</div>';
+
+  const cbName = '_refresh' + Date.now();
+  window[cbName] = function(data) {
+    delete window[cbName];
+    if (data.status === 'ok') renderResponses(data.responses || []);
+  };
+  const s = document.createElement('script');
+  s.src = SHEET_URL + '?action=all&key=' + encodeURIComponent(adminKey) + '&callback=' + cbName;
+  document.body.appendChild(s);
+}
+
+function renderResponses(responses) {
+  const container = document.getElementById('cards');
+  const countEl = document.getElementById('dashCount');
+
+  const complete = responses.filter(r => r.ready).length;
+  countEl.innerHTML = '<span>' + responses.length + '</span> total &middot; <span>' + complete + '</span> completed';
+
+  if (responses.length === 0) {
+    container.innerHTML = '<div class="empty-state">No responses yet.</div>';
+    return;
+  }
+
+  // Show newest first
+  const sorted = responses.slice().reverse();
+
+  container.innerHTML = sorted.map(function(r) {
+    const isComplete = !!r.ready;
+    const name = esc(r.name) || 'Anonymous';
+    const ig = esc(r.instagram);
+    const ts = formatDate(r.timestamp);
+
+    return '<div class="card">'
+      + '<div class="card-header">'
+        + '<div class="card-name">' + name + '</div>'
+        + '<div class="card-meta">'
+          + (ig ? '<span class="card-ig">' + ig + '</span>' : '')
+          + '<span>' + ts + '</span>'
+          + '<span class="card-status ' + (isComplete ? 'complete' : 'partial') + '">'
+            + (isComplete ? 'Complete' : 'Partial')
+          + '</span>'
+        + '</div>'
+      + '</div>'
+      + '<div class="card-fields">'
+        + field('Trading Experience', r.trading_experience, true)
+        + field('Why Trading', r.why_trading, false)
+        + field('90-Day Success', r.ninety_day_success, false)
+        + field('Mentorship Cost', r.mentorship_cost, true)
+        + field('Ready', r.ready, true)
+      + '</div>'
+    + '</div>';
+  }).join('');
+}
+
+function field(label, value, isTag) {
+  const v = esc(value);
+  if (!v) return '<div class="field"><div class="field-label">' + label + '</div><div class="field-value empty">\u2014</div></div>';
+  const cls = isTag ? 'field-value tag' : 'field-value';
+  return '<div class="field"><div class="field-label">' + label + '</div><div class="' + cls + '">' + v + '</div></div>';
+}
+
+function esc(str) {
+  if (!str) return '';
+  var d = document.createElement('div');
+  d.textContent = String(str);
+  return d.innerHTML;
+}
+
+function formatDate(ts) {
+  if (!ts) return '';
+  try {
+    var d = new Date(ts);
+    if (isNaN(d)) return String(ts);
+    return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+      + ' ' + d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+  } catch(e) { return String(ts); }
+}
+
+// ─── Theme ───
+function toggleTheme() {
+  var html = document.documentElement;
+  var tc = document.querySelector('meta[name="theme-color"]');
+  if (html.getAttribute('data-theme') === 'dark') {
+    html.setAttribute('data-theme', 'light');
+    if (tc) tc.content = '#f0ede8';
+  } else {
+    html.setAttribute('data-theme', 'dark');
+    if (tc) tc.content = '#0a0a0a';
+  }
+}
+</script>
+
+</body>
+</html>
