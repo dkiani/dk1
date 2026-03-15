@@ -564,9 +564,10 @@ async function applyDiscount() {
       document.getElementById('discountBtn').disabled = true;
       document.getElementById('discountBtn').textContent = 'Applied';
 
-      // Update PaymentIntent amount
+      // Update PaymentIntent amount and refresh Elements
       const piId = clientSecret.split('_secret_')[0];
       await jsonp({ action: 'update_payment', pi: piId, amount: currentAmount });
+      elements.fetchUpdates();
     } else {
       msg.textContent = 'Invalid code';
       msg.className = 'discount-msg error';
