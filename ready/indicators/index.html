@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#0a0a0a">
+  <title>Indicators | Kiani</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/favicon.ico" sizes="48x48">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ease: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    [data-theme="dark"] {
+      --bg: #0a0a0a;
+      --fg: #d4d4d4;
+      --muted: #525252;
+      --dim: #3a3a3a;
+      --border: #1f1f1f;
+      --accent: #a0a0a0;
+      --hover: #ffffff;
+      --center-fill: #e85d2a;
+      --item-hover: #181818;
+      --card-bg: #111111;
+      --error: #ef4444;
+      --success: #22c55e;
+      --overlay: rgba(0, 0, 0, 0.85);
+    }
+
+    [data-theme="light"] {
+      --bg: #f0ede8;
+      --fg: #1a1a1a;
+      --muted: #8a8a8a;
+      --dim: #b0aca6;
+      --border: #ddd9d4;
+      --accent: #555;
+      --hover: #000000;
+      --center-fill: #e85d2a;
+      --item-hover: #f7f5f2;
+      --card-bg: #e8e5e0;
+      --error: #dc2626;
+      --success: #16a34a;
+      --overlay: rgba(240, 237, 232, 0.9);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'JetBrains Mono', monospace;
+      background: var(--bg);
+      color: var(--fg);
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+      transition: background 0.5s var(--ease), color 0.3s var(--ease);
+    }
+
+    /* ─── Theme Toggle ─── */
+    .theme-toggle {
+      position: fixed;
+      top: 1.2rem;
+      right: 1.5rem;
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-family: inherit;
+      font-size: 0.65rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: color 0.3s var(--ease);
+      z-index: 1000;
+    }
+    .theme-toggle:hover { color: var(--fg); }
+
+    /* ─── Page Layout ─── */
+    .page {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 4rem 2rem 6rem;
+    }
+
+    .page-header {
+      margin-bottom: 3rem;
+    }
+
+    .page-title {
+      font-size: 1.8rem;
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.5rem;
+    }
+
+    .page-subtitle {
+      font-size: 0.8rem;
+      font-weight: 300;
+      color: var(--muted);
+      line-height: 1.6;
+      max-width: 520px;
+    }
+
+    /* ─── Product Grid ─── */
+    .products {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .product-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      padding: 1.5rem;
+      transition: border-color 0.3s var(--ease);
+    }
+
+    .product-card:hover {
+      border-color: var(--dim);
+    }
+
+    .product-top {
+      display: flex;
+      gap: 1.5rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .product-preview {
+      width: 140px;
+      height: 100px;
+      flex-shrink: 0;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .product-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .product-preview .placeholder {
+      font-size: 0.6rem;
+      color: var(--dim);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .product-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .product-name {
+      font-size: 0.95rem;
+      font-weight: 500;
+      margin-bottom: 0.3rem;
+    }
+
+    .product-price {
+      font-size: 0.8rem;
+      color: var(--center-fill);
+      font-weight: 400;
+      margin-bottom: 0.6rem;
+    }
+
+    .product-price span {
+      font-size: 0.65rem;
+      color: var(--muted);
+      font-weight: 300;
+      margin-left: 0.3rem;
+    }
+
+    .product-desc {
+      font-size: 0.7rem;
+      font-weight: 300;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .product-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-top: 1rem;
+    }
+
+    .tag {
+      font-size: 0.55rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+      border: 1px solid var(--border);
+      padding: 0.25rem 0.6rem;
+    }
+
+    .product-footer {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      margin-top: 1.2rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .buy-btn {
+      font-family: inherit;
+      font-size: 0.7rem;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--bg);
+      background: var(--center-fill);
+      border: none;
+      padding: 0.6rem 1.5rem;
+      cursor: pointer;
+      transition: opacity 0.3s var(--ease);
+    }
+    .buy-btn:hover { opacity: 0.85; }
+
+    /* ─── Checkout Modal ─── */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: var(--overlay);
+      z-index: 900;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      width: 100%;
+      max-width: 460px;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 2rem;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1.5rem;
+    }
+
+    .modal-title {
+      font-size: 1rem;
+      font-weight: 400;
+    }
+
+    .modal-product-price {
+      font-size: 0.85rem;
+      color: var(--center-fill);
+      margin-top: 0.2rem;
+    }
+
+    .modal-close {
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-family: inherit;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      cursor: pointer;
+      transition: color 0.3s var(--ease);
+      padding: 0.2rem;
+    }
+    .modal-close:hover { color: var(--fg); }
+
+    .section-label {
+      font-size: 0.6rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      margin-bottom: 0.8rem;
+      font-weight: 400;
+    }
+
+    .tv-section {
+      margin-bottom: 1.5rem;
+    }
+
+    .tv-input {
+      width: 100%;
+      font-family: inherit;
+      font-size: 0.8rem;
+      font-weight: 300;
+      color: var(--fg);
+      background: transparent;
+      border: 1px solid var(--border);
+      padding: 0.7rem 0.8rem;
+      outline: none;
+      transition: border-color 0.3s var(--ease);
+    }
+    .tv-input::placeholder { color: var(--dim); }
+    .tv-input:focus { border-color: var(--muted); }
+
+    .tv-hint {
+      font-size: 0.6rem;
+      color: var(--dim);
+      margin-top: 0.4rem;
+      font-weight: 300;
+    }
+
+    .payment-section {
+      margin-bottom: 1.5rem;
+    }
+
+    #payment-element {
+      min-height: 100px;
+    }
+
+    .discount-section {
+      margin-bottom: 1.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .discount-row {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .discount-input {
+      flex: 1;
+      font-family: inherit;
+      font-size: 0.75rem;
+      font-weight: 300;
+      color: var(--fg);
+      background: transparent;
+      border: 1px solid var(--border);
+      padding: 0.6rem 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      outline: none;
+      transition: border-color 0.3s var(--ease);
+    }
+    .discount-input::placeholder {
+      color: var(--dim);
+      text-transform: none;
+      letter-spacing: normal;
+    }
+    .discount-input:focus { border-color: var(--muted); }
+
+    .discount-btn {
+      font-family: inherit;
+      font-size: 0.65rem;
+      font-weight: 400;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      background: transparent;
+      border: 1px solid var(--border);
+      padding: 0.6rem 1rem;
+      cursor: pointer;
+      transition: all 0.3s var(--ease);
+    }
+    .discount-btn:hover { color: var(--fg); border-color: var(--muted); }
+    .discount-btn:disabled { opacity: 0.4; cursor: default; }
+
+    .discount-msg {
+      font-size: 0.65rem;
+      font-weight: 300;
+      margin-top: 0.5rem;
+      min-height: 1em;
+    }
+    .discount-msg.error { color: var(--error); }
+    .discount-msg.success { color: var(--success); }
+
+    .terms-section {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .terms-checkbox {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 16px;
+      height: 16px;
+      border: 1px solid var(--border);
+      background: transparent;
+      cursor: pointer;
+      flex-shrink: 0;
+      position: relative;
+      transition: all 0.2s var(--ease);
+    }
+    .terms-checkbox:checked {
+      background: var(--center-fill);
+      border-color: var(--center-fill);
+    }
+    .terms-checkbox:checked::after {
+      content: '';
+      position: absolute;
+      left: 4px; top: 1px;
+      width: 5px; height: 9px;
+      border: solid var(--bg);
+      border-width: 0 1.5px 1.5px 0;
+      transform: rotate(45deg);
+    }
+
+    .terms-label {
+      font-size: 0.65rem;
+      font-weight: 300;
+      color: var(--muted);
+    }
+    .terms-label a {
+      color: var(--fg);
+      text-decoration: none;
+      border-bottom: 1px solid var(--border);
+      transition: border-color 0.3s var(--ease);
+    }
+    .terms-label a:hover { border-color: var(--fg); }
+
+    .pay-btn {
+      width: 100%;
+      font-family: inherit;
+      font-size: 0.8rem;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--bg);
+      background: var(--center-fill);
+      border: none;
+      padding: 1rem;
+      cursor: pointer;
+      transition: opacity 0.3s var(--ease);
+    }
+    .pay-btn:hover { opacity: 0.9; }
+    .pay-btn:disabled { opacity: 0.3; cursor: default; }
+
+    .pay-btn .spinner {
+      display: inline-block;
+      width: 14px; height: 14px;
+      border: 2px solid transparent;
+      border-top-color: var(--bg);
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+      vertical-align: middle;
+      margin-right: 0.4rem;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .payment-msg {
+      text-align: center;
+      font-size: 0.7rem;
+      font-weight: 300;
+      margin-top: 1rem;
+      min-height: 1.2em;
+    }
+    .payment-msg.error { color: var(--error); }
+    .payment-msg.success { color: var(--success); }
+
+    /* ─── Success View ─── */
+    .success-view {
+      display: none;
+      text-align: center;
+    }
+
+    .success-view .check-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: var(--center-fill);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.5rem;
+    }
+
+    .success-view h2 {
+      font-size: 1.1rem;
+      font-weight: 400;
+      margin-bottom: 0.8rem;
+    }
+
+    .success-view p {
+      font-size: 0.75rem;
+      font-weight: 300;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    /* ─── Responsive ─── */
+    @media (max-width: 600px) {
+      .page { padding: 3rem 1.2rem 4rem; }
+      .page-title { font-size: 1.4rem; }
+      .theme-toggle { top: 0.8rem; right: 1rem; }
+      .product-top { flex-direction: column; }
+      .product-preview { width: 100%; height: 160px; }
+      .modal { padding: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <button class="theme-toggle" onclick="toggleTheme()">Light</button>
+
+  <div class="page">
+    <div class="page-header">
+      <h1 class="page-title">Indicators</h1>
+      <p class="page-subtitle">Backtested TradingView indicators built from years of pattern recognition and market analysis. Add them to your charts instantly.</p>
+    </div>
+
+    <div class="products" id="productList">
+      <!-- Products are rendered by JS from the PRODUCTS array -->
+    </div>
+  </div>
+
+  <!-- ─── Checkout Modal ─── -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal">
+      <div id="checkoutView">
+        <div class="modal-header">
+          <div>
+            <div class="modal-title" id="modalProductName"></div>
+            <div class="modal-product-price" id="modalProductPrice"></div>
+          </div>
+          <button class="modal-close" onclick="closeModal()">Close</button>
+        </div>
+
+        <div class="tv-section">
+          <div class="section-label">TradingView Username</div>
+          <input type="text" class="tv-input" id="tvUsername" placeholder="your_username" autocomplete="off" spellcheck="false">
+          <div class="tv-hint">We'll grant access to this TradingView account</div>
+        </div>
+
+        <div class="discount-section">
+          <div class="discount-row">
+            <input type="text" class="discount-input" id="discountInput" placeholder="Discount code">
+            <button class="discount-btn" id="discountBtn" onclick="applyDiscount()">Apply</button>
+          </div>
+          <div class="discount-msg" id="discountMsg"></div>
+        </div>
+
+        <div class="payment-section">
+          <div class="section-label">Payment</div>
+          <div id="payment-element"></div>
+        </div>
+
+        <div class="terms-section">
+          <input type="checkbox" class="terms-checkbox" id="termsCheck" onchange="updatePayBtn()">
+          <label class="terms-label">I have read and agree to the <a href="/terms" target="_blank">Terms of Service & Refund Policy</a></label>
+        </div>
+
+        <button class="pay-btn" id="payBtn" disabled onclick="handlePayment()">Pay</button>
+        <div class="payment-msg" id="paymentMsg"></div>
+      </div>
+
+      <div class="success-view" id="successView">
+        <div class="check-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0a0a0a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        </div>
+        <h2>Payment confirmed.</h2>
+        <p>You'll receive access to the indicator on TradingView shortly. Check your TradingView notifications.</p>
+      </div>
+    </div>
+  </div>
+
+<!-- Stripe.js -->
+<script src="https://js.stripe.com/v3/"></script>
+<script>
+// ─── CONFIG ───
+const STRIPE_PK = 'pk_live_51JQdJHBF92YC6aePpxRsJcfabpN5McHTbO2ZIMzuumyUSIgmZMbUhYEpIxX99ciltzU0PLMa1fGXVyPaxxvef97L00QtWjG87D';
+const BACKEND_URL = 'https://script.google.com/macros/s/AKfycbx-bAMG5bC8PypLx5cruZXE8YrQ5vjIN_LbN5co9vVBBe4Dfy30BhuBwmHOljvc1UR4Og/exec';
+
+// ─── PRODUCTS ───
+// To add a new indicator, add an entry here.
+// price_id: the Stripe Price ID for this product (create in Stripe Dashboard)
+// amount: price in cents
+// image: path to a screenshot/preview image (or null for placeholder)
+const PRODUCTS = [
+  {
+    id: 'momentum-shift',
+    name: 'Momentum Shift',
+    amount: 24900,
+    description: 'Detects shifts in momentum before they show up on standard oscillators. Built on volume-weighted divergence analysis across multiple timeframes.',
+    tags: ['Multi-Timeframe', 'Momentum', 'Divergence'],
+    image: null
+  },
+  {
+    id: 'structure-breaks',
+    name: 'Structure Breaks',
+    amount: 24900,
+    description: 'Automatically identifies market structure breaks and order blocks. Maps out key supply and demand zones with historical accuracy scoring.',
+    tags: ['Market Structure', 'Supply & Demand', 'Order Blocks'],
+    image: null
+  },
+  {
+    id: 'liquidity-sweep',
+    name: 'Liquidity Sweep',
+    amount: 24900,
+    description: 'Tracks institutional liquidity pools and sweep patterns. Highlights stop hunts and liquidity grabs in real-time with confluence scoring.',
+    tags: ['Liquidity', 'Institutional', 'Smart Money'],
+    image: null
+  }
+];
+
+let stripe, elements, paymentElement;
+let currentProduct = null;
+let currentAmount = 0;
+let clientSecret = null;
+
+// ─── JSONP ───
+function jsonp(params) {
+  return new Promise((resolve, reject) => {
+    const cbName = '_cb_' + Date.now() + Math.random().toString(36).slice(2,6);
+    window[cbName] = function(data) {
+      delete window[cbName];
+      document.body.removeChild(script);
+      resolve(data);
+    };
+    const qs = new URLSearchParams(params);
+    qs.set('callback', cbName);
+    const script = document.createElement('script');
+    script.src = BACKEND_URL + '?' + qs.toString();
+    script.onerror = function() {
+      delete window[cbName];
+      document.body.removeChild(script);
+      reject(new Error('Request failed'));
+    };
+    document.body.appendChild(script);
+  });
+}
+
+// ─── Render Products ───
+function renderProducts() {
+  const list = document.getElementById('productList');
+  list.innerHTML = PRODUCTS.map(p => `
+    <div class="product-card">
+      <div class="product-top">
+        <div class="product-preview">
+          ${p.image
+            ? `<img src="${p.image}" alt="${p.name}">`
+            : `<span class="placeholder">Preview</span>`}
+        </div>
+        <div class="product-info">
+          <div class="product-name">${p.name}</div>
+          <div class="product-price">${formatPrice(p.amount)} <span>one-time</span></div>
+          <div class="product-desc">${p.description}</div>
+        </div>
+      </div>
+      <div class="product-tags">
+        ${p.tags.map(t => `<span class="tag">${t}</span>`).join('')}
+      </div>
+      <div class="product-footer">
+        <button class="buy-btn" onclick="openCheckout('${p.id}')">Get Access</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function formatPrice(cents) {
+  return '$' + (cents / 100).toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+}
+
+// ─── Checkout Modal ───
+async function openCheckout(productId) {
+  currentProduct = PRODUCTS.find(p => p.id === productId);
+  if (!currentProduct) return;
+
+  currentAmount = currentProduct.amount;
+  clientSecret = null;
+
+  // Reset modal state
+  document.getElementById('modalProductName').textContent = currentProduct.name;
+  document.getElementById('modalProductPrice').textContent = formatPrice(currentAmount);
+  document.getElementById('tvUsername').value = '';
+  document.getElementById('discountInput').value = '';
+  document.getElementById('discountInput').disabled = false;
+  document.getElementById('discountBtn').disabled = false;
+  document.getElementById('discountBtn').textContent = 'Apply';
+  document.getElementById('discountMsg').textContent = '';
+  document.getElementById('discountMsg').className = 'discount-msg';
+  document.getElementById('termsCheck').checked = false;
+  document.getElementById('paymentMsg').textContent = '';
+  document.getElementById('paymentMsg').className = 'payment-msg';
+  document.getElementById('checkoutView').style.display = 'block';
+  document.getElementById('successView').style.display = 'none';
+
+  // Show modal
+  document.getElementById('modalOverlay').classList.add('active');
+  document.body.style.overflow = 'hidden';
+
+  updatePayBtn();
+
+  // Init Stripe for this product
+  stripe = Stripe(STRIPE_PK);
+
+  try {
+    const data = await jsonp({
+      action: 'create_indicator_payment',
+      amount: currentAmount,
+      product: currentProduct.id,
+      product_name: currentProduct.name
+    });
+
+    if (!data.clientSecret) {
+      document.getElementById('paymentMsg').textContent = data.error || 'Unable to initialize payment.';
+      document.getElementById('paymentMsg').className = 'payment-msg error';
+      return;
+    }
+
+    clientSecret = data.clientSecret;
+    const theme = document.documentElement.getAttribute('data-theme');
+
+    elements = stripe.elements({
+      clientSecret: clientSecret,
+      appearance: getStripeAppearance(theme),
+      fonts: [{ cssSrc: 'https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400&display=swap' }]
+    });
+
+    // Clear any previous element
+    document.getElementById('payment-element').innerHTML = '';
+    paymentElement = elements.create('payment', { layout: 'tabs' });
+    paymentElement.mount('#payment-element');
+
+  } catch (err) {
+    document.getElementById('paymentMsg').textContent = 'Failed to load payment form.';
+    document.getElementById('paymentMsg').className = 'payment-msg error';
+  }
+}
+
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('active');
+  document.body.style.overflow = '';
+  if (paymentElement) {
+    paymentElement.unmount();
+    paymentElement = null;
+  }
+}
+
+// Close on overlay click
+document.getElementById('modalOverlay').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+
+// ─── Stripe Appearance ───
+function getStripeAppearance(theme) {
+  const isDark = theme === 'dark';
+  return {
+    theme: isDark ? 'night' : 'stripe',
+    variables: {
+      colorPrimary: '#e85d2a',
+      colorBackground: isDark ? '#0a0a0a' : '#f0ede8',
+      colorText: isDark ? '#d4d4d4' : '#1a1a1a',
+      colorDanger: isDark ? '#ef4444' : '#dc2626',
+      fontFamily: '"JetBrains Mono", monospace',
+      fontSizeBase: '13px',
+      fontWeightNormal: '300',
+      borderRadius: '0px',
+      spacingUnit: '4px'
+    },
+    rules: {
+      '.Input': {
+        borderColor: isDark ? '#1f1f1f' : '#ddd9d4',
+        boxShadow: 'none',
+        transition: 'border-color 0.3s cubic-bezier(0.16,1,0.3,1)'
+      },
+      '.Input:focus': {
+        borderColor: isDark ? '#525252' : '#8a8a8a',
+        boxShadow: 'none'
+      },
+      '.Tab': {
+        borderColor: isDark ? '#1f1f1f' : '#ddd9d4',
+        boxShadow: 'none'
+      },
+      '.Tab--selected': {
+        borderColor: '#e85d2a',
+        boxShadow: 'none'
+      },
+      '.Label': {
+        fontWeight: '300',
+        fontSize: '12px',
+        textTransform: 'uppercase',
+        letterSpacing: '0.08em'
+      }
+    }
+  };
+}
+
+// ─── Discount Codes ───
+async function applyDiscount() {
+  const code = document.getElementById('discountInput').value.trim().toUpperCase();
+  const msg = document.getElementById('discountMsg');
+
+  if (!code) return;
+
+  document.getElementById('discountBtn').textContent = '...';
+
+  try {
+    const data = await jsonp({ action: 'validate_discount', code: code, base_amount: currentProduct.amount });
+
+    if (data.valid) {
+      currentAmount = data.amount;
+      const formatted = formatPrice(currentAmount);
+
+      document.getElementById('modalProductPrice').textContent = formatted;
+      document.getElementById('payBtn').textContent = 'Pay ' + formatted;
+
+      msg.textContent = data.label || 'Discount applied';
+      msg.className = 'discount-msg success';
+
+      document.getElementById('discountInput').disabled = true;
+      document.getElementById('discountBtn').disabled = true;
+      document.getElementById('discountBtn').textContent = 'Applied';
+
+      // Update PaymentIntent amount
+      const piId = clientSecret.split('_secret_')[0];
+      await jsonp({ action: 'update_payment', pi: piId, amount: currentAmount });
+      elements.fetchUpdates();
+    } else {
+      msg.textContent = 'Invalid code';
+      msg.className = 'discount-msg error';
+      document.getElementById('discountBtn').textContent = 'Apply';
+    }
+  } catch (err) {
+    msg.textContent = 'Error validating code';
+    msg.className = 'discount-msg error';
+    document.getElementById('discountBtn').textContent = 'Apply';
+  }
+}
+
+// ─── Pay Button State ───
+function updatePayBtn() {
+  const btn = document.getElementById('payBtn');
+  const checked = document.getElementById('termsCheck').checked;
+  btn.disabled = !checked;
+  btn.textContent = 'Pay ' + formatPrice(currentAmount);
+}
+
+// ─── Handle Payment ───
+async function handlePayment() {
+  const btn = document.getElementById('payBtn');
+  const msgEl = document.getElementById('paymentMsg');
+  const tvUser = document.getElementById('tvUsername').value.trim();
+
+  if (!tvUser) {
+    msgEl.textContent = 'Please enter your TradingView username.';
+    msgEl.className = 'payment-msg error';
+    document.getElementById('tvUsername').focus();
+    return;
+  }
+
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Processing...';
+  msgEl.textContent = '';
+  msgEl.className = 'payment-msg';
+
+  // Update PI with TradingView username metadata
+  try {
+    const piId = clientSecret.split('_secret_')[0];
+    await jsonp({
+      action: 'update_payment_metadata',
+      pi: piId,
+      tv_username: tvUser,
+      product: currentProduct.id
+    });
+  } catch (err) {
+    // Non-blocking — continue with payment
+  }
+
+  const { error } = await stripe.confirmPayment({
+    elements,
+    confirmParams: {
+      return_url: window.location.origin + '/ready/indicators?success=true'
+    },
+    redirect: 'if_required'
+  });
+
+  if (error) {
+    msgEl.textContent = error.message;
+    msgEl.className = 'payment-msg error';
+    btn.disabled = false;
+    btn.textContent = 'Pay ' + formatPrice(currentAmount);
+  } else {
+    document.getElementById('checkoutView').style.display = 'none';
+    document.getElementById('successView').style.display = 'block';
+  }
+}
+
+// ─── Theme ───
+function toggleTheme() {
+  const html = document.documentElement;
+  const btn = document.querySelector('.theme-toggle');
+  if (html.getAttribute('data-theme') === 'dark') {
+    html.setAttribute('data-theme', 'light');
+    btn.textContent = 'Dark';
+  } else {
+    html.setAttribute('data-theme', 'dark');
+    btn.textContent = 'Light';
+  }
+  if (elements) {
+    elements.update({ appearance: getStripeAppearance(html.getAttribute('data-theme')) });
+  }
+}
+
+// ─── Check for return from redirect ───
+if (new URLSearchParams(window.location.search).get('success') === 'true') {
+  // Show a simple confirmation
+  document.querySelector('.page-header').innerHTML = `
+    <div style="text-align:center; padding: 2rem 0;">
+      <div style="width:48px;height:48px;border-radius:50%;background:var(--center-fill);display:flex;align-items:center;justify-content:center;margin:0 auto 1.5rem;">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0a0a0a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+      </div>
+      <h2 style="font-size:1.1rem;font-weight:400;margin-bottom:0.8rem;">Payment confirmed.</h2>
+      <p style="font-size:0.75rem;font-weight:300;color:var(--muted);line-height:1.6;">You'll receive access on TradingView shortly.</p>
+    </div>
+  `;
+  document.getElementById('productList').style.display = 'none';
+}
+
+// ─── Init ───
+renderProducts();
+</script>
+
+</body>
+</html>

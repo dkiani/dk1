@@ -63,6 +63,32 @@ function doGet(e) {
     }
   }
 
+  // ─── Create Indicator PaymentIntent ───
+  else if (action === 'create_indicator_payment') {
+    var amount = parseInt(p.amount) || 0;
+    var product = p.product || '';
+    var productName = p.product_name || '';
+    try {
+      var payload = 'amount=' + amount
+        + '&currency=usd'
+        + '&payment_method_types[]=card'
+        + '&metadata[source]=kiani.vc'
+        + '&metadata[type]=indicator'
+        + '&metadata[product]=' + encodeURIComponent(product)
+        + '&metadata[product_name]=' + encodeURIComponent(productName);
+      var response = UrlFetchApp.fetch('https://api.stripe.com/v1/payment_intents', {
+        method: 'post',
+        headers: { 'Authorization': 'Bearer ' + STRIPE_SECRET_KEY },
+        contentType: 'application/x-www-form-urlencoded',
+        payload: payload
+      });
+      var pi = JSON.parse(response.getContentText());
+      result = { clientSecret: pi.client_secret, id: pi.id };
+    } catch (err) {
+      result = { error: 'Payment creation failed: ' + err.message };
+    }
+  }
+
   // ─── Validate Discount Code ───
   else if (action === 'validate_discount') {
     var code = (p.code || '').toUpperCase();
@@ -71,7 +97,7 @@ function doGet(e) {
     if (!discount) {
       result = { valid: false };
     } else {
-      var baseAmount = 777700;
+      var baseAmount = parseInt(p.base_amount) || 777700;
       var newAmount = baseAmount;
       if (discount.percent_off) {
         newAmount = Math.round(baseAmount * (1 - discount.percent_off / 100));
@@ -87,7 +113,6 @@ function doGet(e) {
     var piId = p.pi || '';
     var newAmt = parseInt(p.amount) || 0;
     try {
-      // Affirm requires min $50, Klarna min ~$1; use card-only for low amounts
       var updatePayload = 'amount=' + newAmt
         + '&payment_method_types[]=card';
       UrlFetchApp.fetch('https://api.stripe.com/v1/payment_intents/' + piId, {
@@ -99,6 +124,26 @@ function doGet(e) {
       result = { status: 'updated' };
     } catch (err) {
       result = { error: 'Update failed: ' + err.message };
+    }
+  }
+
+  // ─── Update PaymentIntent Metadata (TradingView username) ───
+  else if (action === 'update_payment_metadata') {
+    var piId = p.pi || '';
+    var tvUsername = p.tv_username || '';
+    var product = p.product || '';
+    try {
+      var metaPayload = 'metadata[tv_username]=' + encodeURIComponent(tvUsername)
+        + '&metadata[product]=' + encodeURIComponent(product);
+      UrlFetchApp.fetch('https://api.stripe.com/v1/payment_intents/' + piId, {
+        method: 'post',
+        headers: { 'Authorization': 'Bearer ' + STRIPE_SECRET_KEY },
+        contentType: 'application/x-www-form-urlencoded',
+        payload: metaPayload
+      });
+      result = { status: 'updated' };
+    } catch (err) {
+      result = { error: 'Metadata update failed: ' + err.message };
     }
   }
 
