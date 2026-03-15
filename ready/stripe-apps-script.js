@@ -86,14 +86,8 @@ function doGet(e) {
     var newAmt = parseInt(p.amount) || 0;
     try {
       // Affirm requires min $50, Klarna min ~$1; use card-only for low amounts
-      var updatePayload = 'amount=' + newAmt;
-      if (newAmt < 5000) {
-        updatePayload += '&payment_method_types[]=card';
-      } else {
-        updatePayload += '&payment_method_types[]=card'
-          + '&payment_method_types[]=klarna'
-          + '&payment_method_types[]=affirm';
-      }
+      var updatePayload = 'amount=' + newAmt
+        + '&payment_method_types[]=card';
       UrlFetchApp.fetch('https://api.stripe.com/v1/payment_intents/' + piId, {
         method: 'post',
         headers: { 'Authorization': 'Bearer ' + STRIPE_SECRET_KEY },
