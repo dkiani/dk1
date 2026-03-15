@@ -481,7 +481,15 @@ async function initStripe() {
       fonts: [{ cssSrc: 'https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400&display=swap' }]
     });
 
-    paymentElement = elements.create('payment', { layout: 'tabs' });
+    paymentElement = elements.create('payment', {
+      layout: {
+        type: 'accordion',
+        defaultCollapsed: false,
+        radios: false,
+        spacedAccordionItems: true
+      },
+      wallets: { applePay: 'auto', googlePay: 'auto' }
+    });
     paymentElement.mount('#payment-element');
   } catch (err) {
     document.getElementById('paymentMsg').textContent = 'Unable to initialize payment.';

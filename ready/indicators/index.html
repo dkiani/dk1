@@ -728,7 +728,15 @@ async function openCheckout(productId) {
 
     // Clear any previous element
     document.getElementById('payment-element').innerHTML = '';
-    paymentElement = elements.create('payment', { layout: 'tabs' });
+    paymentElement = elements.create('payment', {
+      layout: {
+        type: 'accordion',
+        defaultCollapsed: false,
+        radios: false,
+        spacedAccordionItems: true
+      },
+      wallets: { applePay: 'auto', googlePay: 'auto' }
+    });
     paymentElement.mount('#payment-element');
 
   } catch (err) {

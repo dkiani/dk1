@@ -34,16 +34,6 @@ var DISCOUNT_CODES = {
   // Add more codes as needed
 };
 
-// Returns payment method type params based on amount
-// Klarna: $1–$10,000 but we only offer it for $50+ (5000 cents)
-function getPaymentMethodParams(amount) {
-  var params = '&payment_method_types[]=card';
-  if (amount >= 5000) {
-    params += '&payment_method_types[]=klarna';
-  }
-  return params;
-}
-
 function doGet(e) {
   var p = e.parameter || {};
   var action = p.action || '';
@@ -56,7 +46,7 @@ function doGet(e) {
     try {
       var payload = 'amount=' + amount
         + '&currency=usd'
-        + getPaymentMethodParams(amount)
+        + '&automatic_payment_methods[enabled]=true'
         + '&metadata[source]=kiani.vc';
       var response = UrlFetchApp.fetch('https://api.stripe.com/v1/payment_intents', {
         method: 'post',
@@ -79,7 +69,7 @@ function doGet(e) {
     try {
       var payload = 'amount=' + amount
         + '&currency=usd'
-        + getPaymentMethodParams(amount)
+        + '&automatic_payment_methods[enabled]=true'
         + '&metadata[source]=kiani.vc'
         + '&metadata[type]=indicator'
         + '&metadata[product]=' + encodeURIComponent(product)
@@ -121,8 +111,7 @@ function doGet(e) {
     var piId = p.pi || '';
     var newAmt = parseInt(p.amount) || 0;
     try {
-      var updatePayload = 'amount=' + newAmt
-        + getPaymentMethodParams(newAmt);
+      var updatePayload = 'amount=' + newAmt;
       UrlFetchApp.fetch('https://api.stripe.com/v1/payment_intents/' + piId, {
         method: 'post',
         headers: { 'Authorization': 'Bearer ' + STRIPE_SECRET_KEY },
