@@ -871,18 +871,15 @@ async function handlePayment() {
   msgEl.textContent = '';
   msgEl.className = 'payment-msg';
 
-  // Update PI with TradingView username metadata
-  try {
-    const piId = clientSecret.split('_secret_')[0];
-    await jsonp({
-      action: 'update_payment_metadata',
-      pi: piId,
-      tv_username: tvUser,
-      product: currentProduct.id
-    });
-  } catch (err) {
-    // Non-blocking — continue with payment
-  }
+  // Update PI with TradingView username metadata (fire-and-forget to preserve
+  // the user-gesture chain required by Apple Pay's payment sheet)
+  const piId = clientSecret.split('_secret_')[0];
+  jsonp({
+    action: 'update_payment_metadata',
+    pi: piId,
+    tv_username: tvUser,
+    product: currentProduct.id
+  }).catch(() => {});
 
   const { error } = await stripe.confirmPayment({
     elements,
