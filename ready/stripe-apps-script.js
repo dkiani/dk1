@@ -7,7 +7,9 @@
 // 1. Go to https://script.google.com and create a NEW project
 //    (separate from your questionnaire script)
 // 2. Delete the default code and paste EVERYTHING below
-// 3. Replace STRIPE_SECRET_KEY with your Stripe secret key
+// 3. Add your Stripe secret key as a Script Property:
+//    Project Settings (gear icon) > Script Properties > Add
+//    Key: STRIPE_SECRET_KEY  Value: sk_live_...
 //    - Find it at: https://dashboard.stripe.com/apikeys
 //    - Use "sk_live_" for production, "sk_test_" for testing
 // 4. Set up your discount codes in the DISCOUNT_CODES object
@@ -19,7 +21,7 @@
 // After ANY code change, redeploy as a NEW version.
 // ─────────────────────────────────────────────────────────
 
-var STRIPE_SECRET_KEY = 'sk_test_PASTE_YOUR_KEY_HERE';
+var STRIPE_SECRET_KEY = PropertiesService.getScriptProperties().getProperty('STRIPE_SECRET_KEY');
 
 // Discount codes: CODE → { percent_off OR amount_off (in cents), label }
 var DISCOUNT_CODES = {
