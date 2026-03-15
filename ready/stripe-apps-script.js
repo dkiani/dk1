@@ -70,10 +70,8 @@ function doGet(e) {
       var payload = 'amount=' + amount
         + '&currency=usd'
         + '&payment_method_types[0]=card'
-        + '&payment_method_types[1]=apple_pay'
-        + '&payment_method_types[2]=google_pay'
-        + '&payment_method_types[3]=klarna'
-        + '&payment_method_types[4]=affirm'
+        + '&payment_method_types[1]=klarna'
+        + '&payment_method_types[2]=affirm'
         + '&metadata[source]=kiani.vc'
         + '&metadata[type]=indicator'
         + '&metadata[product]=' + encodeURIComponent(product)
