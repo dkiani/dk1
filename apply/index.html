@@ -433,13 +433,6 @@
     gap: 0.4rem;
   }
 
-  .status-dot {
-    width: 4px;
-    height: 4px;
-    border-radius: 50%;
-    background: var(--center-fill);
-    opacity: 0.6;
-  }
 
   /* ─── Safe area insets (notch phones) ─── */
   @supports (padding: env(safe-area-inset-bottom)) {
@@ -456,7 +449,6 @@
 <button class="back-btn hidden" id="backBtn" onclick="prevQuestion()">&larr; Back</button>
 <div class="enter-hint" id="enterHint">Press Enter &darr;</div>
 <div class="status-bar" id="statusBar">
-  <span><span class="status-dot"></span>6 / 5 spots filled</span>
   <span id="requestCount"></span>
 </div>
 
