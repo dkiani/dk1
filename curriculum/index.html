@@ -2172,9 +2172,257 @@ With time and sessions covered, you now know WHAT drives price (the algorithm), 
     }
   },
   {
-    number: 5, id: 'liquidity', title: 'Liquidity',
-    subtitle: 'Where are the retail stops?',
-    locked: true, comingSoon: true, lessons: []
+    number: 5,
+    id: 'liquidity',
+    title: 'Liquidity',
+    subtitle: 'Where are the retail stops? — The only question that matters.',
+    locked: false,
+    lessons: [
+      {
+        id: 'what-is-liquidity',
+        title: 'What is Liquidity?',
+        readingTime: 6,
+        globalNum: 21,
+        content: `In Module 03, you learned that IPDA's primary job is to engineer liquidity. Now it's time to understand exactly what liquidity is, where it forms, and why the algorithm hunts it.
+
+## The Simple Definition
+
+Liquidity is **resting orders in the market.** Every stop-loss order, every take-profit order, every pending limit or stop entry — these are all liquidity. They're orders sitting in the market waiting to be triggered.
+
+Why does this matter? Because every trade needs a counterparty. If a large institution wants to buy 5,000 NQ contracts, they need sellers. They can't just click "buy" and fill at one price — the order is too large. They need a pool of sell orders to absorb their position. That pool of sell orders is liquidity.
+
+## Where Liquidity Forms
+
+Retail traders are predictable. They place their stop-loss orders in the same places, over and over:
+
+**Buy-Side Liquidity (BSL):** Resting **above** old swing highs. This includes:
+- Stop-loss orders from traders who are short (their protective buy stops sit above recent highs)
+- Entry orders from breakout traders waiting to buy a move above the high
+- Take-profit orders from short sellers
+
+**Sell-Side Liquidity (SSL):** Resting **below** old swing lows. This includes:
+- Stop-loss orders from traders who are long (their protective sell stops sit below recent lows)
+- Entry orders from breakdown traders waiting to sell a move below the low
+- Take-profit orders from long traders
+
+![diagram](Price chart with a swing high and swing low labeled. Above the swing high: a cluster of icons representing buy stops labeled 'BSL — Buy-Side Liquidity.' Below the swing low: a cluster of icons representing sell stops labeled 'SSL — Sell-Side Liquidity.')
+
+:::callout
+THE FUNDAMENTAL INSIGHT
+Every old high has buy stops above it. Every old low has sell stops below it. The algorithm knows exactly where these orders sit — and it will move price to trigger them when it needs the liquidity. Your job is to anticipate which pool of liquidity IPDA is targeting next.
+:::
+
+## Liquidity is Fuel
+
+Think of liquidity as fuel for a move. When IPDA sweeps a pool of sell stops below a swing low, those sell stops activate as market orders (selling). This burst of selling provides the liquidity for Smart Money to fill buy orders. After the sweep, with Smart Money now positioned long and the fuel consumed, price reverses higher.
+
+The same works in reverse: sweeping buy stops above a swing high provides the liquidity for Smart Money to fill sell orders. Then price reverses lower.
+
+This is why the most powerful reversals happen right after a liquidity sweep — the sweep IS the fuel for the reversal.`
+      },
+      {
+        id: 'equal-highs-and-equal-lows',
+        title: 'Equal Highs & Equal Lows',
+        readingTime: 5,
+        globalNum: 22,
+        content: `Not all liquidity pools are created equal. The most magnetic, highest-probability targets are **equal highs** and **equal lows.**
+
+## What Are Equal Highs?
+
+Equal highs occur when two or more swing highs form at nearly the same price level. On the chart, they look like a flat ceiling — price reaches the same level multiple times but doesn't break through.
+
+Retail traders see this and think: "Strong resistance. Price can't get above this level." So they go short with their stop-loss orders just above those equal highs.
+
+What actually happens: those equal highs create an extremely concentrated pool of buy-stop liquidity. Every short seller's stop is sitting right above that level. IPDA sees this as a target — a dense cluster of orders waiting to be triggered.
+
+## What Are Equal Lows?
+
+Equal lows are the mirror image — two or more swing lows at nearly the same price level. They look like a flat floor.
+
+Retail traders see this as "strong support" and go long with stops just below. This creates a dense pool of sell-stop liquidity below the equal lows.
+
+![diagram](Two panels: Left shows equal highs with buy stops clustered above, labeled 'Equal Highs = BSL Magnet.' Right shows equal lows with sell stops clustered below, labeled 'Equal Lows = SSL Magnet.')
+
+:::callout
+THE RULE OF EQUAL HIGHS AND LOWS
+Equal highs are made to be broken. Equal lows are made to be broken. When you see them forming on your chart, don't trade the "support" or "resistance" — anticipate the sweep. The cleaner the level, the more liquidity is resting there, and the more attractive it is to the algorithm.
+:::
+
+## Grading Liquidity Pools
+
+Not all equal highs/lows are equally significant. Here's how to grade them:
+
+**High-value targets:**
+- Equal highs/lows that have been tested 3+ times (more tests = more stops)
+- Levels visible on higher timeframes (daily equal lows are more significant than 5m equal lows)
+- Levels that have held for multiple sessions (more time = more orders accumulate)
+
+**Lower-value targets:**
+- Single swing highs/lows (less concentrated liquidity)
+- Levels only visible on very low timeframes
+- Levels that formed very recently (less time for orders to accumulate)
+
+When you're looking for where price is going next, find the most obvious, highest-grade liquidity pool on the timeframe you're analyzing. That's likely IPDA's next target.`
+      },
+      {
+        id: 'liquidity-sweeps-and-stop-hunts',
+        title: 'Liquidity Sweeps & Stop Hunts',
+        readingTime: 6,
+        globalNum: 23,
+        content: `A **liquidity sweep** is the event where price moves through a liquidity pool, triggers the resting orders, and then reverses. This is the algorithm doing its job — collecting the fuel it needs for the next move.
+
+## Anatomy of a Sweep
+
+Here's what happens during a sell-side liquidity sweep:
+
+:::steps
+1. Price approaches a previous swing low where sell stops are resting
+2. Price pierces below the low — triggering the sell stops
+3. The sell stops activate as market sell orders, creating a burst of selling
+4. Smart Money uses this selling to fill buy orders (they need sellers to buy from)
+5. With positions filled, price reverses and moves higher
+:::
+
+The sweep might last one candle, a few candles, or even just a wick. The key is that price goes through the level, takes the liquidity, and doesn't sustain the move.
+
+## Single-Candle Sweeps
+
+The most valid and tradeable sweeps happen on a **single candle.** Price wicks through the liquidity level and closes back above (for SSL sweeps) or below (for BSL sweeps) in the same candle. This shows immediate rejection — the algorithm got what it needed and reversed instantly.
+
+The next candle after the sweep is your confirmation. It should **not** break below the sweep candle's low (for bullish setups) or above the sweep candle's high (for bearish setups). If it does, the sweep may actually be a genuine breakout, not a reversal.
+
+![diagram](Two examples: Left shows a valid single-candle SSL sweep — price wicks below old lows then closes back above, next candle is bullish. Right shows a failed sweep / genuine breakdown — price breaks below old lows and continues lower.)
+
+## Sweep vs. Breakout
+
+This is the critical question every time price reaches a liquidity level: **is this a sweep (reversal) or a breakout (continuation)?**
+
+Factors that favor a **sweep/reversal:**
+- Price is reaching the level during a killzone
+- The move into the level is the manipulation phase of AMD
+- There's a HTF PD array (order block, FVG) at or near the liquidity level
+- The HTF trend suggests the move into this level is counter-trend
+
+Factors that favor a **breakout/continuation:**
+- The HTF trend is aligned with the break (bearish trend breaking lows = continuation)
+- There's displacement through the level — multiple large candles closing beyond it
+- No significant PD array nearby to cause a reversal
+- The break occurs during a distribution phase, not manipulation
+
+:::callout
+CONTEXT IS EVERYTHING
+A sweep of sell-side liquidity in a HTF bullish market is high-probability for a reversal higher — that's the algorithm taking fuel for the next leg up. A break of sell-side liquidity in a HTF bearish market is more likely continuation lower. Same event, different context, opposite conclusion. This is why Module 02 (Market Structure) had to come first.
+:::`
+      },
+      {
+        id: 'buyside-and-sellside-in-practice',
+        title: 'Buy-Side & Sell-Side Liquidity in Practice',
+        readingTime: 6,
+        globalNum: 24,
+        content: `Let's get practical. Here's how to identify and mark liquidity on your charts.
+
+## Step-by-Step: Marking Liquidity
+
+:::steps
+1. Open your NQ chart on the 1-hour timeframe
+2. Identify all swing highs and swing lows using the 3-bar swing method (Module 02)
+3. Draw a horizontal line at each swing high — extend it to the right. Label it BSL.
+4. Draw a horizontal line at each swing low — extend it to the right. Label it SSL.
+5. Look for clusters: multiple swing highs at similar levels = high-grade BSL. Multiple swing lows at similar levels = high-grade SSL.
+6. Highlight the most obvious, cleanest levels — these are IPDA's highest-priority targets.
+:::
+
+## What Makes a Level "Clean"?
+
+A clean liquidity level is one that hasn't been swept yet. Once price runs through a level and takes the liquidity, that level is **spent** — the orders have been triggered, the liquidity is gone.
+
+**Clean levels** (untouched) are the ones to watch. **Dirty levels** (already swept) are less relevant.
+
+This is why you extend your lines to the right — you want to see which levels haven't been tagged yet. Those are the remaining targets.
+
+## Layering Timeframes
+
+Liquidity exists on every timeframe, and higher-timeframe liquidity is more significant:
+
+**Weekly/Daily swing highs and lows:** Major liquidity pools. These are the primary targets that can drive moves lasting days.
+
+**4H/1H swing highs and lows:** Session-level liquidity. These drive intraday moves and are your primary reference for day trading.
+
+**15m/5m swing highs and lows:** Micro liquidity. Used for fine-tuning entries and identifying short-term sweeps within larger moves.
+
+:::callout
+PRACTICAL TIP
+When doing your pre-market analysis, mark liquidity on at least two timeframes: the daily (for overall targets) and the 1-hour (for session-level targets). Ask yourself: what is the nearest untouched BSL? What is the nearest untouched SSL? One of those is likely where price is heading today.
+:::
+
+![diagram](NQ 1H chart with multiple swing highs and lows marked. Clean levels highlighted with solid lines, already-swept levels shown as dashed/faded lines. BSL and SSL labels on each.)`
+      },
+      {
+        id: 'internal-vs-external-range-liquidity',
+        title: 'Internal vs. External Range Liquidity',
+        readingTime: 6,
+        globalNum: 25,
+        content: `This concept ties liquidity directly to dealing ranges (which you'll learn in full detail in Module 07). For now, you need to understand the two categories of liquidity targets.
+
+## External Range Liquidity
+
+External range liquidity sits **outside** the current dealing range — above the range high and below the range low. These are the swing high and swing low that define the range itself.
+
+When IPDA targets external range liquidity, it's looking to **expand the range** — to sweep the highs or lows and potentially establish a new dealing range.
+
+## Internal Range Liquidity
+
+Internal range liquidity sits **inside** the current dealing range. This includes:
+- FVGs (Fair Value Gaps) within the range
+- Order blocks within the range
+- Swing highs and lows that formed inside the range
+- The equilibrium (50%) level of the range
+
+When IPDA targets internal range liquidity, it's **rebalancing** — filling FVGs, testing order blocks, and offering fair value within the existing range.
+
+## The Oscillation
+
+This is one of the most powerful concepts for anticipating price:
+
+**The market constantly oscillates between internal and external range liquidity.**
+
+:::steps
+1. IPDA sweeps external liquidity (runs the highs or lows of the range)
+2. Price moves back inside the range to seek internal targets (FVGs, OBs)
+3. After filling internal targets, price moves back toward external liquidity on the other side
+4. Cycle repeats — unless manual intervention changes the dynamic
+:::
+
+![diagram](A dealing range shown as a box. External liquidity labeled above and below the box. Internal liquidity targets (FVGs, OBs) labeled inside the box. Arrows showing the oscillation pattern: external → internal → external.)
+
+Understanding this oscillation tells you what to expect next:
+
+- **Price just swept the lows (external SSL)?** Expect a move back inside the range toward internal targets.
+- **Price just filled an FVG (internal)?** Expect a move toward the external liquidity at the range highs or lows.
+
+:::callout
+WHY THIS MATTERS FOR YOUR TRADING
+When you can identify whether IPDA is currently seeking internal or external targets, you know the approximate destination of the next move. Combined with time (killzones) and PD arrays (next module), this gives you a complete picture: where price is going, when it's likely to go there, and what levels it will react to along the way.
+:::
+
+With liquidity covered, you now understand WHAT the algorithm is targeting. In Module 06, you'll learn the specific price levels — the PD Arrays — where the algorithm leaves its footprints and where you'll find your trade entries.`
+      }
+    ],
+    quiz: {
+      title: 'Quiz: Liquidity',
+      passingScore: 80,
+      questions: [
+        { id:'q05-r1', section:'recall', type:'multiple_choice', question:'What is Buy-Side Liquidity (BSL) and where does it rest?', options:['Sell orders below old lows','Buy stop orders resting above old swing highs','Limit orders at the current price','Volume at the bid price'], correctAnswer:1, explanation:'BSL consists of buy stop orders (from short sellers\' stop losses, breakout entries, and take profits) resting above old swing highs.' },
+        { id:'q05-r2', section:'recall', type:'multiple_choice', question:'What creates concentrated liquidity pools at equal highs?', options:['Market makers placing limit orders','Retail traders seeing \'resistance\' and placing short entries with stops just above the equal highs','News events causing volatility','Random order flow'], correctAnswer:1, explanation:'Retail traders interpret equal highs as strong resistance. They enter short positions with stop-loss buy orders just above, creating a dense cluster of buy-stop liquidity — a prime target for the algorithm.' },
+        { id:'q05-r3', section:'recall', type:'multiple_choice', question:'What is the difference between a liquidity sweep and a breakout?', options:['A sweep reverses after taking the liquidity; a breakout continues through with sustained displacement','A sweep happens on higher timeframes; a breakout happens on lower timeframes','There is no difference','A sweep is bullish; a breakout is bearish'], correctAnswer:0, explanation:'A liquidity sweep pierces through a level to trigger resting orders but reverses — the move was only to collect fuel. A breakout pushes through with displacement and continues — it\'s genuine directional movement.' },
+        { id:'q05-r4', section:'recall', type:'multiple_choice', question:'What is the difference between internal and external range liquidity?', options:['Internal is on lower timeframes, external is on higher timeframes','Internal liquidity is inside the dealing range (FVGs, OBs); external is outside the range (the highs and lows defining the range)','Internal is buy-side, external is sell-side','There is no meaningful difference'], correctAnswer:1, explanation:'Internal range liquidity = targets inside the dealing range (FVGs, order blocks, minor swing points). External range liquidity = the highs and lows defining the range boundaries. Price oscillates between the two.' },
+        { id:'q05-r5', section:'recall', type:'multiple_choice', question:'Why does Smart Money need liquidity?', options:['To make their charts look better','To fill their large positions — they need counterparty orders to buy from or sell to','To trigger their own stop losses','Liquidity is not important to Smart Money'], correctAnswer:1, explanation:'Large institutional positions require massive counterparty order flow. Smart Money can\'t just buy 5,000 contracts at one price — they need pools of sell orders (liquidity) to absorb their position. Liquidity sweeps provide this.' },
+        { id:'q05-a1', section:'applied', type:'chart_analysis', question:'Mark all BSL and SSL levels on this chart. Identify which levels are \'clean\' (untouched) and which have already been swept.', explanation:'Draw horizontal lines at each swing high (BSL) and swing low (SSL). If price has already wicked through or traded past the level, it\'s been swept and is less relevant. Clean/untouched levels are the active targets.' },
+        { id:'q05-a2', section:'applied', type:'chart_analysis', question:'Price has just wicked below a previous swing low and closed back above it on a single candle. Is this a valid liquidity sweep? What would you expect next?', explanation:'A single-candle wick below a swing low that closes back above is a classic sell-side liquidity sweep. If the next candle doesn\'t break below the sweep candle\'s low, this is a valid reversal signal. Expect price to move higher toward internal range liquidity or the opposing BSL.' },
+        { id:'q05-a3', section:'applied', type:'multiple_choice', question:'NQ is in a bullish HTF trend. Price drops and sweeps below yesterday\'s low, triggering sell stops. The daily trend is still bullish. Is this more likely a sweep (reversal) or a breakout (continuation)?', options:['Breakout — the lows were broken so the trend is now bearish','Sweep — in a bullish HTF trend, taking SSL is likely the manipulation phase before the next leg higher','Cannot determine without more information','Neither — this is just random movement'], correctAnswer:1, explanation:'In a bullish HTF trend, sweeping sell-side liquidity below a recent low is classic manipulation — the algorithm is collecting fuel (sell stops) for Smart Money to fill long positions. Expect reversal higher. If the HTF trend were bearish, the break would more likely be continuation.' },
+        { id:'q05-a4', section:'applied', type:'chart_analysis', question:'Is price currently targeting internal or external range liquidity on this chart? What do you expect the next move to be?', explanation:'Determine if price recently swept external liquidity (range highs/lows) — if so, expect a move back to internal targets. If price is currently at internal levels (mid-range FVGs/OBs), expect a push toward external liquidity next.' }
+      ]
+    }
   },
   {
     number: 6, id: 'price-delivery-arrays', title: 'Price Delivery Arrays',
