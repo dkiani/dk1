@@ -2793,9 +2793,213 @@ SMT adds another layer of confirmation. It's not required for every trade, but w
     }
   },
   {
-    number: 7, id: 'dealing-ranges-and-fair-value', title: 'Dealing Ranges & Fair Value',
-    subtitle: 'Buy at discount. Sell at premium.',
-    locked: true, comingSoon: true, lessons: []
+    number: 7,
+    id: 'dealing-ranges-and-fair-value',
+    title: 'Dealing Ranges & Fair Value',
+    subtitle: 'Buy at discount. Sell at premium. It\'s that simple — and that hard.',
+    locked: false,
+    lessons: [
+      {
+        id: 'the-dealing-range',
+        title: 'The Dealing Range',
+        readingTime: 6,
+        globalNum: 33,
+        content: `Everything you've learned so far — structure, the algorithm, time, liquidity, PD arrays — comes together inside the dealing range. This is the framework that organizes all of it.
+
+## What Creates a Dealing Range?
+
+A dealing range is established when IPDA runs **both buyside and sellside liquidity** to create a new swing. Specifically:
+
+:::steps
+1. Price runs **sellside liquidity** (sweeps below old lows) — creating a new low
+2. Price then runs **buyside liquidity** (sweeps above old highs) — creating a new high
+3. The range between this new low and new high = the current **dealing range**
+:::
+
+The dealing range is the sandbox IPDA is currently playing in. Until a new dealing range is created (by running liquidity beyond the current range), all price action occurs within this framework.
+
+![diagram](Price action showing: 1) Sellstops purged below old lows creating a new low, 2) Price rallies and runs buystops above old highs creating a new high, 3) A box drawn around the range between the new low and new high labeled 'New Dealing Range.')
+
+## What Happens Inside a Dealing Range?
+
+Once established, IPDA works within the dealing range:
+
+- It seeks **PD arrays and FVGs** within the range (internal range liquidity)
+- It seeks **minor swing highs and lows** within the range
+- It oscillates between internal and external targets
+- It uses the range's equilibrium as a reference for premium/discount
+
+The dealing range is not a static box — it's a **living framework** that tells you where price is relative to value and where it's likely to go next.
+
+:::callout
+DEALING RANGES ARE FRACTAL
+Just like market structure and AMD, dealing ranges exist on every timeframe. The weekly chart has its own dealing range. The daily chart has one inside it. The 1-hour chart has smaller ones inside those. Your job is to identify the dealing range on the timeframe you're trading and use it to frame your analysis.
+:::`
+      },
+      {
+        id: 'premium-vs-discount',
+        title: 'Premium vs. Discount',
+        readingTime: 6,
+        globalNum: 34,
+        content: `This is one of the simplest concepts in the curriculum — and one of the most impactful. If you do nothing else but follow this rule, you'll avoid the majority of bad trades.
+
+## The Rule
+
+**Buy in discount. Sell in premium. Never the reverse.**
+
+## How to Determine Premium and Discount
+
+Take your dealing range and find the **50% level** — this is the **equilibrium.** You can do this manually (average of the high and low) or use a Fibonacci tool set from 0% at the low to 100% at the high.
+
+**Premium:** Everything ABOVE the 50% level. Price is expensive relative to the range. This is where you look for **sell setups.**
+
+**Discount:** Everything BELOW the 50% level. Price is cheap relative to the range. This is where you look for **buy setups.**
+
+![diagram](A dealing range split at the 50% level. Upper half shaded red/warm labeled 'PREMIUM — Sell Zone.' Lower half shaded green/cool labeled 'DISCOUNT — Buy Zone.' The 50% line labeled 'Equilibrium.' Price action shown oscillating within the range.)
+
+## Why This Filter is So Powerful
+
+Think about what most retail traders do: they buy breakouts at the top of ranges (premium) and sell breakdowns at the bottom of ranges (discount). They're buying expensive and selling cheap — the exact opposite of what Smart Money does.
+
+Smart Money buys in discount (where price is cheap and PD arrays offer support) and sells in premium (where price is expensive and PD arrays offer resistance).
+
+This single filter — "Am I in premium or discount?" — eliminates a huge number of bad trades. If your analysis says to buy but price is in premium, something is wrong. Either your analysis is off or you need to wait for price to come to discount first.
+
+:::callout
+THE NON-NEGOTIABLE RULE
+Before any trade, ask: is price in premium or discount of the current dealing range? If you're looking to buy but you're in premium — WAIT. If you're looking to sell but you're in discount — WAIT. This discipline alone will dramatically improve your win rate.
+:::`
+      },
+      {
+        id: 'equilibrium-and-ote',
+        title: 'Equilibrium & Optimal Trade Entry',
+        readingTime: 6,
+        globalNum: 35,
+        content: `The equilibrium level is more than just the border between premium and discount. It's a key reference level in its own right, and it's the foundation for finding Optimal Trade Entries.
+
+## Equilibrium as a Magnet
+
+Price gravitates toward equilibrium after displacement. When price is extended deep into premium, it wants to return toward equilibrium. When it's deep in discount, the same pull applies. Equilibrium represents **fair value** for the current range — neither expensive nor cheap.
+
+This is also why higher-probability order blocks tend to form **near equilibrium** — Smart Money positions itself at fair value, not at extreme prices.
+
+## The Optimal Trade Entry (OTE)
+
+The OTE is a Fibonacci-based concept for identifying the **highest-probability entry zone** within a retracement.
+
+Here's how to find it:
+
+:::steps
+1. Identify a completed swing (swing low to swing high, or swing high to swing low)
+2. Apply the Fibonacci retracement tool: **0% at the start** of the swing, **100% at the end**
+3. The **OTE zone** is the area between the **61.8% and 78.6% retracement levels**
+4. Within this zone, look for a PD array (FVG, order block) — that's your entry
+:::
+
+For a bullish OTE: price swings up, retraces back down to the 61.8%-78.6% zone (which is in discount), and you look for a PD array to enter long.
+
+For a bearish OTE: price swings down, retraces back up to the 61.8%-78.6% zone (which is in premium), and you look for a PD array to enter short.
+
+![diagram](A bullish swing with Fibonacci retracement overlay. 0% at the swing low, 100% at the swing high. The 50% level labeled 'Equilibrium.' The zone between 61.8% and 78.6% highlighted and labeled 'OTE Zone.' An order block is shown within the OTE zone as the entry point.)
+
+:::callout
+OTE + PD ARRAY = PRECISION
+The OTE zone alone is a region, not a level. The PD array within the OTE zone is the specific level. When a FVG or order block sits inside the OTE zone and aligns with your HTF bias and killzone timing — that's an A+ entry. You've combined structure, price level, retracement depth, and time. That's confluence.
+:::`
+      },
+      {
+        id: 'balanced-price-range',
+        title: 'Balanced Price Range',
+        readingTime: 5,
+        globalNum: 36,
+        content: `A Balanced Price Range (BPR) occurs when the market creates two opposing FVGs in rapid succession — a tug-of-war between buyers and sellers that temporarily traps price in a range.
+
+## How a BPR Forms
+
+:::steps
+1. A strong bearish displacement creates a **SIBI** (bearish FVG)
+2. Shortly after, a strong bullish displacement creates a **BISI** (bullish FVG)
+3. The overlap between these two FVGs = the **Balanced Price Range**
+4. Price oscillates within this range, repeatedly testing both extremes
+:::
+
+The BPR is essentially a micro dealing range defined by opposing institutional moves. Both sides have made their presence known, and the range between their FVGs is the battlefield.
+
+![diagram](Two opposing displacements creating overlapping FVGs. The bearish displacement creates a SIBI from top. The bullish displacement creates a BISI from bottom. The overlapping area is highlighted as 'Balanced Price Range.' Price is shown chopping within this range.)
+
+## Trading the BPR
+
+Within a BPR, price is **ranging** — it's testing both sides, filling both FVGs. This is NOT a good environment for directional trades. The BPR tells you to wait.
+
+**The trade comes when price breaks out of the BPR:**
+- If price breaks above the BPR with displacement → bullish bias, look for pullback entries
+- If price breaks below the BPR with displacement → bearish bias, look for pullback entries
+
+The breakout from a BPR is often significant because both sides have been tested and the winning side now has clear direction.
+
+:::callout
+BPR = PATIENCE SIGNAL
+When you identify a Balanced Price Range, don't force trades inside it. Mark the upper and lower boundaries and wait for one side to break with conviction. The BPR is the accumulation phase; the breakout is the beginning of distribution.
+:::`
+      },
+      {
+        id: 'reading-a-range-putting-it-together',
+        title: 'Reading a Range: Putting It All Together',
+        readingTime: 7,
+        globalNum: 37,
+        content: `Let's consolidate everything from Modules 05, 06, and 07 into a single, repeatable process for reading any chart.
+
+## The 5-Step Range Analysis
+
+:::steps
+1. **Identify the current dealing range.** Where did BSL and SSL most recently get taken? The high and low of that swing = your range. Draw a box around it.
+2. **Mark equilibrium (50%).** Split the range in half. Everything above = premium. Everything below = discount. This immediately tells you which direction to trade.
+3. **Determine your location.** Where is current price within the range? Premium or discount? This tells you whether to look for buys (discount) or sells (premium).
+4. **Find PD arrays in the appropriate zone.** In discount: look for bullish OBs, BISI FVGs, and bullish breakers. In premium: look for bearish OBs, SIBI FVGs, and bearish breakers. These are your potential entry levels.
+5. **Wait for time alignment.** Is a killzone active? Is a high-impact news event approaching? The PD array only activates when time aligns with price.
+:::
+
+## A Worked Example
+
+Let's walk through this on a hypothetical NQ chart:
+
+**Step 1:** Yesterday, NQ swept the lows at 18,200 (SSL taken) and then rallied to sweep the highs at 18,600 (BSL taken). Dealing range = 18,200 to 18,600.
+
+**Step 2:** Equilibrium = 18,400. Premium = 18,400 to 18,600. Discount = 18,200 to 18,400.
+
+**Step 3:** Price is currently at 18,320. That's in discount. We should be looking for **buys.**
+
+**Step 4:** There's a bullish order block at 18,280-18,300 with a BISI FVG directly above it. The CE of the FVG is at 18,310. This is our entry zone.
+
+**Step 5:** It's 9:45 AM EST — we're in the NY killzone, approaching the 09:50-10:10 macro window. Time is aligned.
+
+**Conclusion:** Look for a bullish reaction from the 18,280-18,310 area. Stop below the OB low (18,270). Target the equilibrium (18,400) for first partial and the BSL at 18,600 for the full target.
+
+![diagram](Fully annotated dealing range example: range from 18,200 to 18,600, equilibrium at 18,400, premium and discount zones shaded, bullish OB at 18,280-18,300, FVG above it with CE at 18,310, current price at 18,320, entry and stop marked, target levels shown.)
+
+:::callout
+THIS IS YOUR PRE-MARKET ANALYSIS
+Every day before the session, run through these 5 steps on the 1H and Daily charts. Write down your dealing range, equilibrium, location, PD arrays, and the time windows you're watching. This takes 15 minutes and gives you a complete game plan before a single candle prints.
+:::
+
+You now have every concept you need to read a chart at a professional level. You understand structure, the algorithm, time, liquidity, PD arrays, and dealing ranges. In Module 08, we put it all together into specific, repeatable trade models — the exact setups you'll use to enter and exit trades.`
+      }
+    ],
+    quiz: {
+      title: 'Quiz: Dealing Ranges & Fair Value',
+      passingScore: 80,
+      questions: [
+        { id:'q07-r1', section:'recall', type:'multiple_choice', question:'How is a dealing range established?', options:['By drawing a box around any consolidation','When IPDA runs both buyside and sellside liquidity to create a new swing high and swing low','By connecting two moving averages','When price touches a round number'], correctAnswer:1, explanation:'A dealing range is created when IPDA sweeps both BSL (creating a new high) and SSL (creating a new low). The range between this new high and low is the current dealing range.' },
+        { id:'q07-r2', section:'recall', type:'multiple_choice', question:'What is above the 50% level called? Below?', options:['Support above, resistance below','Premium above, discount below','Bullish above, bearish below','The upper and lower halves'], correctAnswer:1, explanation:'Above 50% (equilibrium) = Premium — where you look to sell. Below 50% = Discount — where you look to buy.' },
+        { id:'q07-r3', section:'recall', type:'multiple_choice', question:'What is the OTE zone in Fibonacci terms?', options:['0% to 50%','38.2% to 50%','61.8% to 78.6%','78.6% to 100%'], correctAnswer:2, explanation:'The Optimal Trade Entry (OTE) zone sits between the 61.8% and 78.6% Fibonacci retracement levels. This is the sweet spot for high-probability entries on pullbacks.' },
+        { id:'q07-r4', section:'recall', type:'multiple_choice', question:'What creates a Balanced Price Range?', options:['Two moving averages crossing','Two opposing displacements (bearish and bullish) creating overlapping FVGs in a short time period','Equal highs and equal lows','A consolidation pattern'], correctAnswer:1, explanation:'A BPR forms when two opposing displacements create two FVGs (one SIBI, one BISI) that overlap. The overlapping area is the Balanced Price Range — a temporary equilibrium zone.' },
+        { id:'q07-r5', section:'recall', type:'multiple_choice', question:'Should you buy in premium or discount?', options:['Premium','Discount','Either — it doesn\'t matter','Only at equilibrium'], correctAnswer:1, explanation:'Always buy in discount (below the 50% level of the dealing range) and sell in premium (above 50%). This ensures you\'re buying cheap and selling expensive — aligned with Smart Money positioning.' },
+        { id:'q07-a1', section:'applied', type:'chart_analysis', question:'Draw the current dealing range on this chart and mark the equilibrium level.', explanation:'Find the most recent swing where both BSL and SSL were taken. The high = the BSL sweep, the low = the SSL sweep. Draw a box. The midpoint of that box = equilibrium.' },
+        { id:'q07-a2', section:'applied', type:'chart_analysis', question:'Is price currently in premium or discount on this chart? What type of setup should you be looking for?', explanation:'Compare current price to the dealing range equilibrium. If above = premium (look for sells at PD arrays). If below = discount (look for buys at PD arrays).' },
+        { id:'q07-a3', section:'applied', type:'chart_analysis', question:'Identify the OTE zone on this chart. Is there a PD array (FVG or order block) inside the OTE zone?', explanation:'Apply Fibonacci from the swing low to swing high (or vice versa). The 61.8%-78.6% retracement area is the OTE zone. Look for FVGs or order blocks within this zone — that\'s where your entry would be.' },
+        { id:'q07-a4', section:'applied', type:'multiple_choice', question:'NQ dealing range is 18,200 to 18,600. Equilibrium is 18,400. There\'s a bullish order block at 18,280 and a bearish order block at 18,520. Price is currently at 18,300. What is your bias and which PD array are you watching?', options:['Bearish bias — watch the bearish OB at 18,520 for a short entry','Bullish bias — watch the bullish OB at 18,280 for a long entry, since price is in discount','No trade — wait for price to reach equilibrium','Short from current price at 18,300'], correctAnswer:1, explanation:'Price is at 18,300 — below equilibrium (18,400) — which means we\'re in discount. In discount, you look for buys. The bullish OB at 18,280 is your entry level. The bearish OB at 18,520 is a potential target, not an entry (you don\'t sell from discount).' }
+      ]
+    }
   },
   {
     number: 8, id: 'trade-models', title: 'Trade Models',
