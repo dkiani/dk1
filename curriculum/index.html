@@ -1719,16 +1719,402 @@ Mark them on your chart. Screenshot them. Bring them to the next coaching call. 
     ],
     quiz: null // Quiz will be added in Step 4
   },
-  // Modules 03-12 will be added in subsequent commits
   {
-    number: 3, id: 'the-algorithm', title: 'The Algorithm',
+    number: 3,
+    id: 'the-algorithm',
+    title: 'The Algorithm',
     subtitle: 'An algorithm is responsible for moving price in the markets.',
-    locked: true, comingSoon: true, lessons: []
+    locked: false,
+    lessons: [
+      {
+        id: 'the-truth-about-price-movement',
+        title: 'The Truth About Price Movement',
+        readingTime: 6,
+        globalNum: 12,
+        content: `Everything you learned in Modules 01 and 02 was mechanical — how to read candles and identify structure. Now we go deeper. This module is about **why** price moves the way it does. And the answer is going to challenge everything most traders believe.
+
+## The Retail Narrative
+
+Standard trading education teaches this: Price moves because of buying and selling pressure. When there are more buyers than sellers, price goes up. When there are more sellers than buyers, price goes down. Supply and demand.
+
+This isn't wrong exactly — it's just incomplete to the point of being useless. It describes what happens at the micro level of order matching but tells you nothing about **why** price goes to specific levels, **why** it reverses at specific times, or **why** the same patterns play out across every market, every day.
+
+## The Reality
+
+Price in financial markets is delivered by an algorithm. Not metaphorically. Literally. The major financial exchanges use sophisticated algorithms to match orders, manage liquidity, and deliver price to institutions and banks worldwide.
+
+In the ICT framework, this algorithm is called **IPDA — the Interbank Price Delivery Algorithm.** IPDA doesn't trade randomly. It follows a logic — a set of rules that determine where price goes, when, and why.
+
+:::callout
+DOES THIS MEAN MARKETS ARE "RIGGED"?
+No — at least not in the way conspiracy theorists mean. Markets are *structured*. The algorithm has a job: facilitate efficient price delivery and ensure liquidity. Understanding its logic doesn't guarantee profits, but it does give you a framework for reading price that is vastly superior to retail technical analysis.
+:::
+
+## Why This Changes Everything
+
+If price movement is algorithmic rather than purely random or emotional, then:
+
+- Price going to specific levels isn't coincidence — it's by design
+- Patterns that "fail" aren't actually failing — they're doing exactly what they were designed to do (engineer liquidity)
+- Certain times of day see consistent behavior because the algorithm operates on a schedule
+- You can learn to read the algorithm's footprints in price action
+
+This is what this entire curriculum is built on. Every concept you'll learn — FVGs, order blocks, killzones, liquidity sweeps — is a tool for reading the algorithm's behavior. You're not predicting the future. You're reading the present with informed context.`
+      },
+      {
+        id: 'ipda-the-interbank-price-delivery-algorithm',
+        title: 'IPDA: The Interbank Price Delivery Algorithm',
+        readingTime: 7,
+        globalNum: 13,
+        content: `Let's get specific about what IPDA does and how it operates.
+
+## IPDA's Two Jobs
+
+IPDA has two primary objectives:
+
+:::steps
+1. **Engineer liquidity** by manipulating price to trigger resting orders above old highs and below old lows
+2. **Offer fair value** by returning to areas where price was delivered inefficiently (one-sided)
+:::
+
+That's it. Every move you see on a chart is IPDA either seeking liquidity or rebalancing inefficient price delivery. When you can identify which of these two things is happening, you can anticipate where price is going next.
+
+## The Market Efficiency Paradigm
+
+IPDA operates within what ICT calls the **Market Efficiency Paradigm.** This is the relationship between two groups:
+
+**Smart Money (Liquidity Providers):** Banks, institutions, and large fund managers who understand how the algorithm works. They don't chase price — they position themselves where the algorithm will deliver price to them.
+
+**Speculative / Uninformed Money (Retail):** Individual traders who use retail technical analysis, follow indicators, and place predictable stop-loss orders. They provide the liquidity that Smart Money needs.
+
+IPDA is the bridge between these two groups. It takes liquidity from retail traders (via stop hunts and inducements) and delivers it to institutional positions.
+
+![diagram](Market Efficiency Paradigm: Smart Money connected through IPDA to Speculative Uninformed Money. Labels: 'Liquidity Provider' on left, 'Willing and/or Unwilling Liquidity' on right)
+
+:::callout
+THE UNCOMFORTABLE TRUTH
+As a retail trader, you are — by default — on the wrong side of this dynamic. The entire purpose of this program is to move you from the right side of that diagram (uninformed money) to thinking like the left side (smart money). You'll never have their capital, but you can read the same footprints they leave.
+:::
+
+## Liquidity: The Fuel for Every Move
+
+IPDA needs liquidity to function. Liquidity exists wherever there are resting orders — stop losses, take profits, pending limit orders. The most concentrated liquidity sits:
+
+- **Above old swing highs:** Retail traders who are short have their stop-loss orders (buy stops) above previous highs. Retail breakout traders have their entry orders here too.
+- **Below old swing lows:** Retail traders who are long have their stop-loss orders (sell stops) below previous lows. Retail breakdown traders have their entries here.
+
+IPDA will move price to these levels to trigger these orders, providing the liquidity that institutions need to fill their positions. This is not theory — this is observable on every chart, every day.
+
+## Fair Value: The Return Trip
+
+When IPDA moves price aggressively in one direction, it sometimes moves too fast — leaving areas where only buying or only selling occurred (not both). These areas are **inefficient** — they don't represent fair value because only one side of the market was served.
+
+IPDA will return to these areas to offer fair value to the other side. These inefficient areas are called **Fair Value Gaps (FVGs)**, and they're one of the most powerful tools in your arsenal. You'll learn exactly how to identify and trade them in Module 06.`
+      },
+      {
+        id: 'accumulation-manipulation-distribution',
+        title: 'Accumulation, Manipulation, Distribution',
+        readingTime: 7,
+        globalNum: 14,
+        content: `The AMD cycle is the core pattern of how IPDA delivers price. It happens on every timeframe — from the 1-minute chart to the weekly chart. Once you see it, you can't unsee it.
+
+## Phase 1: Accumulation
+
+IPDA holds price in a **consolidation range.** During this phase, retail traders are placing orders on both sides of the range:
+
+- **Buy stops** accumulate above the range (from retail shorts and breakout buyers)
+- **Sell stops** accumulate below the range (from retail longs and breakdown sellers)
+
+The longer price stays in the range, the more liquidity builds on both sides. IPDA is essentially setting the table.
+
+On the chart, accumulation looks like: tight range, small candles, choppy price action. Retail traders see this and get bored. Smart money sees this and gets ready.
+
+## Phase 2: Manipulation
+
+IPDA breaks out of the range — but in the **wrong** direction. This is the trap.
+
+If the real move is going to be bullish, IPDA first spikes price **below** the accumulation range, triggering the sell stops. This:
+- Stops out retail longs (who had stops below the range)
+- Activates breakout shorts (who sell the "breakdown")
+- Provides liquidity for Smart Money to fill buy orders at discount prices
+
+This fake move is called the **Judas Swing** — named for its deceptive nature.
+
+## Phase 3: Distribution
+
+After the manipulation phase has provided the liquidity Smart Money needs, the **real move** begins. IPDA distributes price in the intended direction — aggressively.
+
+Using the bullish example: after sweeping the sell stops below the range, price reverses hard and blasts through the top of the accumulation range, running the buy stops above it. Smart Money is distributing (selling) their long positions to the willing buyers (buy stops) above the range.
+
+![diagram](Full AMD cycle shown in three phases: 1) Price consolidating in a range with BSL above and SSL below labeled, 2) Price spiking below the range sweeping SSL (Judas Swing), 3) Price reversing and expanding above the range through BSL)
+
+:::callout
+AMD IS FRACTAL
+The AMD cycle happens on every timeframe. The daily candle follows AMD (midnight open → manipulation → expansion → close). The weekly candle follows AMD. Even a single trading session follows AMD (Asian consolidation → London manipulation → NY distribution). Once you understand this, you start seeing the same pattern everywhere.
+:::
+
+## How to Use AMD
+
+You don't trade the accumulation phase — there's no edge in a range. You don't chase the manipulation phase — that's the trap. You trade the **distribution phase** — after the manipulation has occurred and the real move begins.
+
+The question is: how do you know when manipulation is ending and distribution is beginning? The answer: **Market Structure Shift.** When the Judas Swing creates a CHoCH with displacement (MSS), that's your signal that manipulation is complete and the real move is underway.
+
+AMD + MSS + the tools from Modules 04–07 = your trade.`
+      },
+      {
+        id: 'why-retail-patterns-fail',
+        title: 'Why Retail Patterns Fail',
+        readingTime: 5,
+        globalNum: 15,
+        content: `Now that you understand how IPDA engineers liquidity through the AMD cycle, let's revisit something from Module 01: retail technical analysis patterns.
+
+## The Patterns You've Been Taught
+
+If you've studied any trading education before this, you've probably learned about:
+- Trendlines
+- Support and resistance levels
+- Head and shoulders patterns
+- Double tops and double bottoms
+- Bull flags, bear flags
+- Triangles, wedges, channels
+
+These patterns are real — they do appear on charts. But they don't work the way retail education teaches. They're not predictive signals. They're **liquidity engineering tools.**
+
+## How the Algorithm Uses Retail Patterns
+
+Every retail pattern teaches traders to place their stops in predictable locations:
+
+**Support level:** Retail traders go long at support with stops just below. This creates a **sell stop liquidity pool** just below the level.
+
+**Double bottom:** Retail traders go long with stops below the equal lows. This creates an even thicker sell stop pool.
+
+**Trendline:** Retail traders go long at the trendline with stops just below. Again — predictable liquidity.
+
+**Bull flag:** Retail traders buy the "breakout" with stops at the bottom of the flag.
+
+In every case, the pattern teaches retail traders to cluster their stops at obvious levels. And IPDA's job is to seek those stops.
+
+:::callout
+THE QUESTION THAT CHANGES EVERYTHING
+Every time you look at a chart, stop asking: "What pattern do I see?" Start asking: **"Where are the retail stops?"** This single shift in thinking will change your trading forever. Where the stops are is where price is going — because that's where the liquidity is.
+:::
+
+## An Example
+
+Imagine NQ has bounced off 18,500 three times over the past week. Retail traders see "strong support" and go long at 18,500 with stops at 18,480.
+
+What happens? IPDA drives price below 18,500, triggering all those sell stops. The sell stops activate as market orders (selling), which provides the liquidity for Smart Money to buy at 18,480. Price then reverses and rockets higher — without the retail longs on board, because they just got stopped out.
+
+The retail trader says: "Support broke, then it came right back. So frustrating."
+
+The Smart Money trader says: "Liquidity swept. Long from 18,480."
+
+Same chart. Completely different understanding.
+
+![diagram](A 'support' level at 18,500 with sell stops clustered below it. Price sweeps below, triggers the stops, then reverses higher. Labels show where retail gets stopped out vs where Smart Money enters long.)
+
+## What This Means for You
+
+You don't need to abandon every retail concept — some of them (like candlestick reading and basic structure) are genuinely useful. But you need to understand that chart patterns are not trading signals. They are maps of where liquidity is being built.
+
+Your edge comes from being on the **same side as the algorithm** — not fighting it by placing your stops where everyone else does.
+
+In Modules 04 through 08, you'll learn exactly how to do this: identify where liquidity sits, anticipate when it will be taken, and position yourself to profit from the move that follows.`
+      }
+    ],
+    quiz: null // Quiz will be added in Step 4
   },
   {
-    number: 4, id: 'time-and-sessions', title: 'Time & Sessions',
+    number: 4,
+    id: 'time-and-sessions',
+    title: 'Time & Sessions',
     subtitle: 'It is always TIME then PRICE.',
-    locked: true, comingSoon: true, lessons: []
+    locked: false,
+    lessons: [
+      {
+        id: 'time-is-the-first-variable',
+        title: 'Time is the First Variable',
+        readingTime: 5,
+        globalNum: 16,
+        content: `You now understand structure, you understand the algorithm, and you understand AMD. The next question is: **when does all of this happen?**
+
+The answer is not "randomly throughout the day." IPDA operates on a **schedule.** Specific price behaviors — manipulation, expansion, reversal — occur during specific windows of time. These windows are predictable. And knowing them is what turns a good chart reader into a good trader.
+
+## TIME then PRICE
+
+This is one of the most important principles in the entire ICT framework: **time is the first variable IPDA refers to.** Before the algorithm looks for a price level to target, it checks whether the appropriate time window is active.
+
+What this means practically: even if you've identified the perfect order block at a perfect discount level with a perfect FVG above it — if it's 3:00 PM EST and the trading day is winding down, the setup may not activate. The time window isn't right.
+
+Conversely, during the right time window, IPDA is actively seeking targets. This is when your analysis has the highest probability of playing out.
+
+:::callout
+THE IMPLICATION
+Trading outside of the key time windows dramatically reduces your edge. One of the simplest ways to improve your trading overnight is to stop trading during dead time and only take setups during active killzones.
+:::`
+      },
+      {
+        id: 'the-true-day',
+        title: 'The True Day',
+        readingTime: 5,
+        globalNum: 17,
+        content: `The standard calendar day starts at midnight and ends at midnight. But for IPDA, the **true trading day** is defined differently.
+
+## The IPDA True Day
+
+The algorithm's active daily range runs from **12:00 AM EST (midnight) to 3:00 PM EST.** This 15-hour window is where the vast majority of meaningful price delivery occurs. The period outside this window — from 3:00 PM to midnight — is considered **dead time.** Price action during dead time is less predictable and often just noise.
+
+## The Midnight Opening Price
+
+The price at **12:00 AM EST (midnight New York time)** is the **true daily opening price.** This is not an arbitrary choice — it's the price the algorithm uses as its reference for the day.
+
+Why does this matter? Because of Power of 3 (which you'll learn in Module 08):
+
+- On a **buy day**, price will trade **below** the midnight open (manipulation) before expanding **above** it (distribution)
+- On a **sell day**, price will trade **above** the midnight open (manipulation) before expanding **below** it (distribution)
+
+The midnight open is your anchor. It tells you whether the day's manipulation has already occurred and which side of it you should be trading on.
+
+![diagram](24-hour timeline showing the True Day window from midnight to 3 PM EST, with dead time shaded. The midnight open price is marked with a horizontal line across the chart. Sessions labeled: Asia, London, NY, London Close, Dead Time)
+
+:::callout
+PRACTICAL TIP
+On TradingView, you can draw a horizontal line at the midnight opening price each day. Many traders use an indicator that automatically plots this level. Watching where price is relative to the midnight open gives you immediate context about what phase of the daily AMD cycle you're in.
+:::`
+      },
+      {
+        id: 'killzones',
+        title: 'Killzones',
+        readingTime: 7,
+        globalNum: 18,
+        content: `Killzones are the specific time windows within the True Day where IPDA is most active. These are the times when manipulation, expansion, and reversal are most likely to occur. They are called "killzones" because they are where trades are made — or where traders get killed if they're on the wrong side.
+
+## The Four Killzones (All Times EST)
+
+**Asia Session: 8:00 PM – 12:00 AM**
+This is the consolidation/accumulation phase. Price typically forms a tight range. Liquidity builds above and below the Asian range. You generally **do not trade during Asia** — you observe it to see where the range forms. The Asian range high and low become reference levels for the London and NY sessions.
+
+**London Session: 2:00 AM – 5:00 AM**
+London is where the first major move of the day often occurs. This is frequently the **manipulation phase** — the Judas Swing. London will often sweep one side of the Asian range, triggering stops, before reversing. If you trade FX pairs, London is a primary killzone. For NQ futures, London sets the stage for NY.
+
+**New York Session: 7:00 AM – 10:00 AM**
+This is the primary killzone for NQ futures. The highest volume and largest price moves of the day typically occur here. For intraday NQ traders, this is your session. This is where you execute.
+
+**London Close: 10:00 AM – 12:00 PM**
+London Close often brings a retracement or reversal of the NY session's move. Profit-taking and position squaring by London-based traders create opportunities. This is a secondary killzone — useful but less reliable than the NY open.
+
+## Futures-Specific Timing
+
+For NQ futures, the most important windows are:
+
+:::steps
+1. **AM Session: 8:30 AM – 12:00 PM EST** — Your primary trading window. This includes the cash market open (9:30 AM) and the high-probability 09:50-10:10 macro window.
+2. **PM Session: 1:30 PM – 4:00 PM EST** — Secondary window. Often sees continuation or reversal of the AM session move. Less reliable, more suited for experienced traders.
+:::
+
+![diagram](Horizontal timeline from 8 PM to 4 PM EST with the four killzones color-coded: Asia in blue, London in purple, New York in gold/amber, London Close in gray. The NY AM session highlighted as primary)
+
+:::callout
+THE SIMPLE RULE
+If you only trade NQ during the AM session (8:30 AM – 12:00 PM EST) and sit out the rest of the day, you will catch the majority of the day's best moves while avoiding the majority of the day's traps. Simplicity is an edge.
+:::`
+      },
+      {
+        id: 'session-profiles-and-day-types',
+        title: 'Session Profiles & Day Types',
+        readingTime: 6,
+        globalNum: 19,
+        content: `Not every day behaves the same way, but most days follow one of a few recognizable templates. Understanding these day types helps you anticipate how the session will unfold.
+
+## Classic Buy Day
+
+The daily candle opens near its low and closes near its high. During the session:
+- Asian session consolidates
+- London or early NY sweeps the low (manipulation/Judas Swing)
+- Price reverses and expands higher through the NY session
+- Closes near the high of the day
+
+The midnight open is near the bottom of the candle. Your entry is at or below the midnight open during the manipulation phase.
+
+## Classic Sell Day
+
+The daily candle opens near its high and closes near its low. During the session:
+- Asian session consolidates
+- London or early NY pushes to the high (manipulation/Judas Swing)
+- Price reverses and expands lower through the NY session
+- Closes near the low of the day
+
+The midnight open is near the top of the candle. Your entry is at or above the midnight open during the manipulation phase.
+
+## London Swing to NY Reversal
+
+London makes a strong directional move. NY session reverses it. This is common when London's move was the manipulation phase and NY is the distribution. You'd look to trade the NY reversal after London's move takes out key liquidity.
+
+## Range Day into NY Expansion
+
+Price ranges through Asia and London. The expansion happens during the NY session — often triggered by a news release (8:30 AM data or 10:00 AM data). On these days, the AM session is where the real move starts.
+
+## Consolidation Raid on News Release
+
+Price consolidates ahead of a major news event, then spikes violently in one direction to sweep liquidity before reversing. This is the AMD cycle compressed into a few minutes. Extremely common on CPI, NFP, and FOMC days.
+
+![diagram](Four day-type templates shown as simple OHLC profiles: Classic Buy Day, Classic Sell Day, London Swing to NY Reversal, Range to NY Expansion — each with labeled phases and the midnight open marked)
+
+:::callout
+YOU DON'T NEED TO PREDICT THE DAY TYPE
+You don't need to know in advance whether it's a buy day or sell day. What you need is to recognize which phase you're in as the session unfolds. If the manipulation phase has just occurred (liquidity swept, MSS forming), you know the distribution is next. The day type reveals itself — you just need to read it in real time.
+:::`
+      },
+      {
+        id: 'news-drivers-and-macro-events',
+        title: 'News Drivers & Macro Events',
+        readingTime: 5,
+        globalNum: 20,
+        content: `High-impact economic news events play a specific role in the IPDA framework. Understanding this role will save you from many unnecessary losses.
+
+## News Doesn't Cause the Move
+
+This is counterintuitive, but critical: **news does not cause price to move to a specific level.** IPDA already has its targets — the liquidity pools and FVGs it wants to reach. What news provides is the **volatility and cover** for IPDA to reach those targets quickly.
+
+Think of it this way: IPDA knows it wants to sweep the sell stops below yesterday's low. It could grind there over several hours — or it could use the CPI release at 8:30 AM to get there in 30 seconds. The destination is the same; the news just accelerates the journey.
+
+## Key Economic Events for NQ
+
+These are the high-impact events that affect NQ futures most:
+
+:::steps
+1. **CPI (Consumer Price Index)** — Released monthly, usually at 8:30 AM EST. Major volatility.
+2. **NFP (Non-Farm Payrolls)** — First Friday of each month, 8:30 AM EST. Massive volatility.
+3. **FOMC (Federal Reserve Interest Rate Decision)** — Released 8 times per year, 2:00 PM EST. Typically the highest-volatility event of the month.
+4. **PPI, Retail Sales, GDP** — Other significant releases, usually at 8:30 AM EST.
+5. **Fed Chair Press Conferences** — After FOMC decisions, usually 2:30 PM EST. Can be more impactful than the decision itself.
+:::
+
+## Manual Intervention
+
+During the most significant events — particularly FOMC decisions — **manual intervention** can occur. This is where normal IPDA parameters can be temporarily overridden at the central bank level. Price may move in ways that don't follow the normal algorithmic patterns. This is why FOMC days are dangerous for mechanical trading.
+
+## How to Trade Around News
+
+**Before the release:** Do not enter new positions within 30 minutes of a high-impact release. If you're already in a trade, consider tightening your stop or closing before the event.
+
+**During the release:** The initial spike is almost always the manipulation. Don't chase it. Let the dust settle.
+
+**After the release:** Wait for a clear MSS or liquidity sweep post-news. The real move usually becomes clear within 15-30 minutes after the initial volatility.
+
+:::callout
+WHEN TO SIT OUT ENTIRELY
+There are days when the best trade is no trade. FOMC decision days, NFP days (unless you have significant experience), half-trading days before holidays, and any day where you haven't done your pre-market analysis. Protecting your capital on uncertain days is not cowardice — it's professional.
+:::
+
+## Using the Economic Calendar
+
+Check the economic calendar before every session. We recommend ForexFactory (forexfactory.com/calendar) or TradingView's built-in economic calendar. Filter for **high-impact events** (red flag on ForexFactory) affecting USD. Know what's coming before you open a chart.
+
+With time and sessions covered, you now know WHAT drives price (the algorithm), WHEN it acts (killzones and sessions), and the general template of HOW daily price action unfolds. In Module 05, we dive into the WHERE — the specific price levels where liquidity pools form and IPDA targets them.`
+      }
+    ],
+    quiz: null // Quiz will be added in Step 4
   },
   {
     number: 5, id: 'liquidity', title: 'Liquidity',
