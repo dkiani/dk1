@@ -203,6 +203,15 @@
     background: var(--item-hover);
   }
 
+  .module-header.locked {
+    cursor: default;
+    opacity: 0.4;
+  }
+
+  .module-header.locked:hover {
+    background: none;
+  }
+
   .module-number {
     font-size: 10px;
     color: var(--muted);
@@ -213,6 +222,13 @@
     font-size: 12px;
     font-weight: 500;
     flex: 1;
+  }
+
+  .module-lock-icon {
+    width: 12px;
+    height: 12px;
+    color: var(--muted);
+    flex-shrink: 0;
   }
 
   .module-chevron {
@@ -234,7 +250,7 @@
   }
 
   .module-group.open .module-lessons {
-    max-height: 500px;
+    max-height: 800px;
   }
 
   .lesson-item {
@@ -570,6 +586,8 @@
     color: var(--muted);
     font-size: 12px;
     background: var(--code-bg);
+    text-align: center;
+    padding: 1rem;
   }
 
   /* Video embed */
@@ -680,6 +698,277 @@
 
   .complete-btn.is-completed {
     opacity: 0.6;
+  }
+
+  /* ─── Quiz Styles ─── */
+  .quiz-container {
+    margin-top: 2rem;
+  }
+
+  .quiz-section-label {
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--center-fill);
+    margin: 2rem 0 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .quiz-question {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 1.25rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .quiz-question-text {
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 1.7;
+    color: var(--fg);
+    margin-bottom: 1rem;
+  }
+
+  .quiz-question-number {
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+
+  .quiz-options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .quiz-option {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+    font-family: var(--font);
+    font-size: 12px;
+    font-weight: 300;
+    color: var(--accent);
+    background: none;
+    width: 100%;
+    text-align: left;
+    line-height: 1.6;
+  }
+
+  .quiz-option:hover {
+    border-color: var(--accent);
+    background: var(--item-hover);
+  }
+
+  .quiz-option.selected {
+    border-color: var(--center-fill);
+    background: var(--item-hover);
+    color: var(--fg);
+  }
+
+  .quiz-option.correct {
+    border-color: var(--check-fill);
+    background: var(--check-bg);
+  }
+
+  .quiz-option.incorrect {
+    border-color: #ef4444;
+    background: rgba(239, 68, 68, 0.08);
+  }
+
+  .quiz-option-letter {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--muted);
+    margin-top: 1px;
+  }
+
+  .quiz-option.selected .quiz-option-letter {
+    border-color: var(--center-fill);
+    color: var(--center-fill);
+  }
+
+  .quiz-option.correct .quiz-option-letter {
+    border-color: var(--check-fill);
+    color: var(--check-fill);
+    background: var(--check-bg);
+  }
+
+  .quiz-option.incorrect .quiz-option-letter {
+    border-color: #ef4444;
+    color: #ef4444;
+  }
+
+  .quiz-explanation {
+    margin-top: 0.75rem;
+    padding: 0.75rem 1rem;
+    background: var(--item-hover);
+    border-radius: 3px;
+    font-size: 12px;
+    font-weight: 300;
+    line-height: 1.7;
+    color: var(--accent);
+    display: none;
+  }
+
+  .quiz-explanation.visible {
+    display: block;
+  }
+
+  .quiz-chart-placeholder {
+    width: 100%;
+    height: 200px;
+    border: 1px dashed var(--border);
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--muted);
+    font-size: 12px;
+    background: var(--code-bg);
+    margin-bottom: 1rem;
+  }
+
+  .quiz-open-response {
+    width: 100%;
+    min-height: 80px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 0.75rem 1rem;
+    font-family: var(--font);
+    font-size: 12px;
+    font-weight: 300;
+    color: var(--fg);
+    resize: vertical;
+    line-height: 1.7;
+  }
+
+  .quiz-open-response:focus {
+    outline: none;
+    border-color: var(--center-fill);
+  }
+
+  .quiz-submit-btn {
+    font-family: var(--font);
+    font-size: 12px;
+    font-weight: 400;
+    background: var(--center-fill);
+    color: #fff;
+    border: 1px solid var(--center-fill);
+    border-radius: 3px;
+    padding: 0.75rem 1.5rem;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    margin-top: 1.5rem;
+  }
+
+  .quiz-submit-btn:hover {
+    opacity: 0.9;
+  }
+
+  .quiz-submit-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  .quiz-results {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 1.5rem;
+    margin-top: 1.5rem;
+    text-align: center;
+  }
+
+  .quiz-score {
+    font-size: 32px;
+    font-weight: 500;
+    color: var(--fg);
+    margin-bottom: 0.5rem;
+  }
+
+  .quiz-score.passing {
+    color: var(--check-fill);
+  }
+
+  .quiz-score.failing {
+    color: #ef4444;
+  }
+
+  .quiz-results-text {
+    font-size: 13px;
+    font-weight: 300;
+    color: var(--accent);
+    line-height: 1.7;
+  }
+
+  .quiz-retry-btn {
+    font-family: var(--font);
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--accent);
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 0.6rem 1rem;
+    cursor: pointer;
+    transition: color 0.2s, border-color 0.2s;
+    margin-top: 1rem;
+  }
+
+  .quiz-retry-btn:hover {
+    color: var(--hover);
+    border-color: var(--accent);
+  }
+
+  /* ─── Locked Module Page ─── */
+  .locked-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 40vh;
+    text-align: center;
+    color: var(--muted);
+  }
+
+  .locked-content svg {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 1.5rem;
+    opacity: 0.3;
+  }
+
+  .locked-content h2 {
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--fg);
+    margin-bottom: 0.75rem;
+  }
+
+  .locked-content p {
+    font-size: 13px;
+    font-weight: 300;
+    line-height: 1.7;
+    color: var(--muted);
+    max-width: 400px;
   }
 
   /* ─── Mobile Hamburger ─── */
@@ -861,803 +1150,1222 @@
 
 <script>
 // ─── Curriculum Data ───
+const TOTAL_LESSONS = 59;
+
 const CURRICULUM = [
   {
-    module: 'Getting Started',
+    number: 1,
+    id: 'the-foundation',
+    title: 'The Foundation',
+    subtitle: 'Before you can read the algorithm, you have to read a candle.',
+    locked: false,
     lessons: [
       {
-        id: 'welcome',
-        title: 'Welcome to the Program',
-        time: '3 min',
-        content: `
-          <p>Welcome. If you're reading this, you've already taken the most important step — you showed up.</p>
-          <p>This curriculum is designed to take you from <strong>zero to your first funded prop firm account</strong>. Every module builds on the last. Don't skip ahead. Trust the process.</p>
+        id: 'welcome-to-kiani',
+        title: 'Welcome to KIANI',
+        readingTime: 5,
+        globalNum: 1,
+        content: `Welcome. You're here because you want to learn how to trade — not gamble, not guess, not follow signals from strangers on the internet. You want to understand what's actually happening on a price chart, and you want to use that understanding to extract consistent income from the markets.
 
-          <h2>What You'll Learn</h2>
-          <ul>
-            <li>How to set up a professional trading environment</li>
-            <li>How to read price action and understand market structure</li>
-            <li>How to use custom indicators to identify high-probability setups</li>
-            <li>How to manage risk and protect your capital</li>
-            <li>How to pass a prop firm challenge and get funded</li>
-          </ul>
+This is the KIANI Smart Money Structure curriculum. Over the next 12 modules, you're going to learn a framework for reading price action that is rooted in how institutional participants actually move markets. This isn't retail technical analysis. We don't draw trendlines and hope. We read the algorithm.
 
-          <h2>How This Works</h2>
-          <p>Each lesson is short and actionable. Read it, do it, mark it complete. The progress bar tracks your journey — aim for 100%.</p>
+## What This Program Is
 
-          <div class="callout">
-            <div class="callout-label">Important</div>
-            <p>This is not a get-rich-quick scheme. Trading is a skill that takes time to develop. The students who succeed are the ones who show up consistently and follow the system.</p>
-          </div>
+This is a structured education program designed to take you from zero knowledge to competent, independent NQ futures trader. Every module builds on the one before it. Every concept connects to the next. By the end, you won't just know what an order block is — you'll know when to trust one, when to ignore one, and how to build a trade around one.
 
-          <h2>Support</h2>
-          <p>If you get stuck at any point, reach out in the community. You're not doing this alone.</p>
-        `
+The curriculum is organized into four phases:
+
+**Phase 1 — Foundation (Modules 01–03):** You'll learn how markets work, how to read price structure, and the core theory behind why price moves the way it does.
+
+**Phase 2 — The Toolkit (Modules 04–06):** You'll learn the specific concepts and tools: time-based analysis, liquidity, and the price delivery arrays (FVGs, order blocks, breakers, and more).
+
+**Phase 3 — Synthesis (Modules 07–08):** You'll learn how to combine everything into actual trade models — repeatable setups you can execute.
+
+**Phase 4 — Execution (Modules 09–12):** You'll learn multi-timeframe analysis, risk management, trading psychology, and how to pass prop firm evaluations.
+
+## What This Program Is Not
+
+This is not a get-rich-quick scheme. This is not a signal service. You will not be profitable after one weekend of reading. Trading is a skill that requires months of deliberate practice, and this program is designed to structure that practice so you don't waste years going in circles.
+
+:::callout
+THE COMMITMENT
+You will get out of this what you put in. Show up to every call. Complete every lesson. Do the quizzes. Paper trade for a minimum of two weeks before risking real capital. Follow the process. The process works — but only if you do.
+:::
+
+## How the Curriculum Works
+
+Each module contains written lessons with diagrams. At the end of each module, there's a quiz with two sections: recall questions (can you remember what you learned?) and applied questions (can you use it on a chart?). You need to score 80% or higher to unlock the next module.
+
+Take your time. Re-read lessons that don't click immediately. Use our coaching calls to ask questions about anything that's unclear. The goal isn't speed — it's comprehension.
+
+## What We Trade
+
+We trade NQ futures — the NASDAQ-100 E-mini and Micro E-mini contracts. Everything in this curriculum is taught through the lens of NQ, though the concepts apply to any liquid market. NQ is our instrument because it offers the volatility, liquidity, and session structure that aligns perfectly with the Smart Money approach.
+
+Let's get started.`
       },
       {
-        id: 'expectations',
+        id: 'setting-expectations',
         title: 'Setting Expectations',
-        time: '4 min',
-        content: `
-          <p>Before we get into charts and indicators, let's get your mindset right. This is the part most people skip — and it's the reason most people fail.</p>
+        readingTime: 5,
+        globalNum: 2,
+        content: `Before we go any further, we need to have an honest conversation about what's ahead. Most people who attempt trading fail — not because the concepts are too hard, but because they skip the boring parts, trade before they're ready, and let emotions drive their decisions.
 
-          <h2>The Reality of Trading</h2>
-          <p>Here's the truth: <strong>most traders lose money</strong>. Not because trading is impossible, but because they approach it like gambling instead of treating it like a business.</p>
-          <p>You are going to treat this differently. You'll follow a system. You'll manage risk. You'll journal your trades. You'll be patient.</p>
+You're going to be different, but only if you understand what realistic progress looks like.
 
-          <h2>Your Commitment</h2>
-          <ul>
-            <li><strong>Time:</strong> Dedicate at least 1-2 hours per day to learning and practice</li>
-            <li><strong>Paper trading:</strong> You will NOT trade real money until you're consistently profitable on paper</li>
-            <li><strong>Journaling:</strong> Every trade gets logged — winners and losers</li>
-            <li><strong>Patience:</strong> The market will always be there. There is no rush.</li>
-          </ul>
+## The Learning Curve
 
-          <div class="callout warning">
-            <div class="callout-label">Warning</div>
-            <p>If you're looking to "make quick money," stop here. This program is for people who want to build a real, sustainable skill. The results come, but only with the work.</p>
-          </div>
+Here is what the next several months typically look like for a serious student:
 
-          <h2>Your Timeline</h2>
-          <p>A realistic timeline to getting funded:</p>
-          <ul>
-            <li><strong>Weeks 1-2:</strong> Setup and education (you are here)</li>
-            <li><strong>Weeks 3-6:</strong> Paper trading and building consistency</li>
-            <li><strong>Weeks 7-8:</strong> Prop firm challenge attempt</li>
-          </ul>
-          <p>Some will move faster, some slower. The timeline doesn't matter — the consistency does.</p>
-        `
-      }
-    ]
-  },
-  {
-    module: 'TradingView Setup',
-    lessons: [
-      {
-        id: 'tradingview-account',
-        title: 'Creating Your TradingView Account',
-        time: '5 min',
-        content: `
-          <p>TradingView is where you'll spend most of your time. It's the charting platform we use for analysis, alerts, and executing our strategy. Let's get you set up properly.</p>
+**Weeks 1–4:** You're absorbing concepts. Things will start making sense on paper but feel overwhelming when you look at a live chart. This is normal. You're building vocabulary.
 
-          <h2>Step-by-Step Setup</h2>
-          <div class="steps">
-            <div class="step">
-              <div class="step-content">
-                <p>Go to <a href="https://tradingview.com" target="_blank" rel="noopener">tradingview.com</a> and click <strong>"Get started for free"</strong></p>
-                <p>Create your account using Google or email — either works.</p>
-              </div>
-            </div>
-            <div class="step">
-              <div class="step-content">
-                <p>Choose the <strong>Essential</strong> plan (or higher). The free plan limits you to 2 indicators per chart, which won't be enough.</p>
-                <div class="callout info">
-                  <div class="callout-label">Tip</div>
-                  <p>TradingView often runs sales. If you can wait, Black Friday deals are typically 60% off. Otherwise, Essential is ~$13/month and well worth it.</p>
-                </div>
-              </div>
-            </div>
-            <div class="step">
-              <div class="step-content">
-                <p>Once you're in, navigate to the <strong>Chart</strong> page. This is your workspace — get familiar with it.</p>
-              </div>
-            </div>
-          </div>
+**Weeks 5–8:** You start recognizing concepts in real-time. You'll see FVGs forming, notice liquidity pools, and begin to understand session timing. You'll want to trade. Resist the urge unless you're paper trading.
 
-          <h2>Recommended Settings</h2>
-          <p>Once you're on the chart, configure these settings:</p>
-          <ul>
-            <li>Right-click the chart → <strong>Settings</strong> → Background → set to <strong>solid black</strong> (#000000)</li>
-            <li>Symbol → Body: set up candle to <strong>green</strong> and down candle to <strong>red</strong></li>
-            <li>Under Scales → disable "Countdown to bar close" (it's distracting)</li>
-            <li>Under Trading → uncheck "Show positions" if you don't want clutter</li>
-          </ul>
+**Weeks 9–12:** You start taking paper trades with structure. Some will work, some won't. The ones that don't work are more valuable — they show you where your understanding has gaps.
 
-          <div class="img-placeholder">[ Screenshot: TradingView chart settings — coming soon ]</div>
-        `
+**Months 4–6:** With consistent study and paper trading, this is where it starts to click. You develop a feel for your chosen trade model. You're not guessing anymore — you're reading.
+
+:::callout
+NO SHORTCUTS
+There is no indicator, bot, or signal service that replaces this learning curve. Anyone who tells you otherwise is selling you something. The edge is in your understanding — not in a tool.
+:::
+
+## What Consistency Actually Means
+
+Consistency doesn't mean winning every trade. It means executing the same process every day regardless of yesterday's result. A consistent trader with a 55% win rate and 2.5:1 reward-to-risk is extremely profitable over time. An inconsistent trader with an 80% win rate will blow up eventually because they'll size up, revenge trade, or abandon their rules at the worst possible moment.
+
+Your target is not perfection. Your target is process.
+
+## The Daily Commitment
+
+To get through this curriculum and develop real competence, plan to dedicate:
+
+:::steps
+1. **30–60 minutes per day** for lessons and chart study
+2. **The morning session (9:30 AM – 12:00 PM EST)** for paper trading once you reach Module 08
+3. **15 minutes after each session** for journaling
+:::
+
+If you can't commit this time consistently, that's okay — but be honest with yourself about the timeline. Part-time study means a longer path to proficiency. There's no shame in that.
+
+## One More Thing
+
+You will have bad days. You will have days where nothing makes sense, where every trade goes against you, where you question why you started this. Every successful trader has been there. The ones who made it didn't have some special talent — they just didn't quit.
+
+Now let's learn how markets actually work.`
       },
       {
-        id: 'chart-layout',
-        title: 'Configuring Your Chart Layout',
-        time: '6 min',
-        content: `
-          <p>Your chart layout matters more than you think. A clean, organized workspace helps you make better decisions. Here's how to set it up.</p>
+        id: 'how-financial-markets-work',
+        title: 'How Financial Markets Work',
+        readingTime: 7,
+        globalNum: 3,
+        content: `To trade effectively, you need a basic understanding of what a financial market actually is and what happens when you click "buy" or "sell." This lesson covers the essentials — nothing more than what you need to move forward.
 
-          <h2>The Default Layout</h2>
-          <p>We'll use a <strong>single chart view</strong> to start. Multi-chart layouts are useful later, but for now, focus on one timeframe at a time.</p>
+## What is a Market?
 
-          <h2>Timeframes</h2>
-          <p>Add these timeframes to your favorites (click the timeframe dropdown → star them):</p>
-          <ul>
-            <li><strong>1 minute (1m)</strong> — for entry timing</li>
-            <li><strong>5 minute (5m)</strong> — primary execution timeframe</li>
-            <li><strong>15 minute (15m)</strong> — for context and structure</li>
-            <li><strong>1 hour (1H)</strong> — for higher-timeframe bias</li>
-            <li><strong>4 hour (4H)</strong> — for daily direction</li>
-            <li><strong>Daily (1D)</strong> — for weekly/monthly levels</li>
-          </ul>
+A market is simply a place where buyers and sellers come together to exchange something at an agreed-upon price. The stock market, the futures market, the forex market — they all follow this basic principle. A buyer wants to purchase at the lowest price possible. A seller wants to sell at the highest price possible. The current price is where these two sides meet.
 
-          <div class="callout">
-            <div class="callout-label">Key Concept</div>
-            <p>Higher timeframes set the direction. Lower timeframes give you the entry. We always work <strong>top-down</strong> — start from the daily, work your way down to the 5m for entries.</p>
-          </div>
+## What are Futures?
 
-          <h2>Saving Your Layout</h2>
-          <div class="steps">
-            <div class="step">
-              <div class="step-content">
-                <p>Once your chart looks clean, go to the top-right menu and click <strong>"Save layout"</strong></p>
-              </div>
-            </div>
-            <div class="step">
-              <div class="step-content">
-                <p>Name it something like <strong>"Main Trading"</strong> — this becomes your default workspace.</p>
-              </div>
-            </div>
-            <div class="step">
-              <div class="step-content">
-                <p>Enable <strong>"Auto-save"</strong> so your layout persists across sessions.</p>
-              </div>
-            </div>
-          </div>
+A futures contract is an agreement to buy or sell something at a specific price on a future date. In our case, we trade NQ futures — contracts based on the NASDAQ-100 index. You don't need to own any stocks to trade NQ futures. You're simply speculating on whether the NASDAQ-100 will go up or down.
 
-          <h2>Symbols to Watch</h2>
-          <p>Add these to your watchlist to start:</p>
-          <ul>
-            <li><strong>NQ1!</strong> — Nasdaq 100 Futures (our primary instrument)</li>
-            <li><strong>ES1!</strong> — S&P 500 Futures</li>
-            <li><strong>DXY</strong> — US Dollar Index (for correlation)</li>
-            <li><strong>US10Y</strong> — 10-Year Treasury Yield</li>
-          </ul>
-          <p>We'll focus primarily on <strong>NQ</strong> (Nasdaq futures) for our strategy.</p>
-        `
-      }
-    ]
-  },
-  {
-    module: 'Installing Indicators',
-    lessons: [
-      {
-        id: 'indicator-overview',
-        title: 'Understanding the Indicator Suite',
-        time: '4 min',
-        content: `
-          <p>Indicators are tools — not crystal balls. They help you <em>confirm</em> what price action is already telling you. We use a specific set of custom indicators that work together as a system.</p>
+There are two contract sizes we care about:
 
-          <h2>The Indicators We Use</h2>
-          <p>Our system uses a combination of custom-built indicators that work together:</p>
-          <ul>
-            <li><strong>Trend Engine</strong> — identifies the current market trend direction and strength</li>
-            <li><strong>Signal Ribbon</strong> — generates entry/exit signals based on momentum shifts</li>
-            <li><strong>Volume Profile</strong> — shows where the most trading activity is concentrated</li>
-            <li><strong>Kill Zones</strong> — highlights optimal trading sessions and time-based levels</li>
-          </ul>
+**NQ (E-mini NASDAQ-100):** Each point of movement is worth **$20 per contract.** If NQ moves 10 points in your favor, you make $200 per contract.
 
-          <div class="callout info">
-            <div class="callout-label">Note</div>
-            <p>These indicators are included with your program enrollment. If you haven't purchased them yet, visit the <a href="/ready/indicators">indicators page</a> to get access.</p>
-          </div>
+**MNQ (Micro E-mini NASDAQ-100):** Each point is worth **$2 per contract.** This is 1/10th the size of NQ — ideal for learning and smaller accounts.
 
-          <h2>Why Custom Indicators?</h2>
-          <p>TradingView has thousands of free indicators. Most of them are noise. Our indicators are built specifically for the strategy you'll learn in this program. They're designed to:</p>
-          <ul>
-            <li>Filter out false signals</li>
-            <li>Work across multiple timeframes</li>
-            <li>Give you clear, actionable information</li>
-            <li>Remove guesswork from entries and exits</li>
-          </ul>
-          <p>You don't need to understand the code behind them. You just need to know how to read them — which we'll cover in the next lessons.</p>
-        `
+:::callout
+WHY NQ FUTURES?
+We trade NQ because it offers excellent volatility (it moves enough to make money), deep liquidity (orders fill instantly), and clean session structure (it respects the time-based patterns we'll learn). It's also the primary instrument for prop firm trading.
+:::
+
+## How Orders Work
+
+When you place a trade, you're submitting an order. There are three types you need to know:
+
+**Market Order:** Buy or sell immediately at the current price. You get filled instantly, but the exact price may differ slightly from what you see (this is called slippage).
+
+**Limit Order:** Buy or sell at a specific price or better. If NQ is at 18,500 and you place a buy limit at 18,480, your order only fills if price drops to 18,480. You control the price, but you might not get filled.
+
+**Stop Order:** An order that becomes a market order when a certain price is reached. Used primarily for stop-losses — automatic exits to limit your loss on a trade.
+
+## The Bid-Ask Spread
+
+At any moment, there are two prices displayed for NQ:
+
+- **Bid:** The highest price a buyer is currently willing to pay
+- **Ask:** The lowest price a seller is currently willing to accept
+
+The difference between these two is the **spread.** On NQ during regular trading hours, the spread is typically 0.25 points (one tick). When you buy, you pay the ask. When you sell, you receive the bid. This means every trade starts slightly in the negative — you need price to move past the spread before you're in profit.
+
+## What Moves Price?
+
+This is where most trading education gets it wrong. The retail narrative says price moves because of "supply and demand" or "buying and selling pressure." While technically true at a micro level, this explanation misses the critical reality: **price delivery in financial markets is governed by algorithms.**
+
+We'll go deep into this in Module 03. For now, just plant this seed: the market is not random, it is not purely driven by human emotion, and understanding the logic behind price movement is what separates traders who consistently profit from those who consistently donate.
+
+![diagram](Simple visualization showing a buyer and seller meeting at a price, with bid and ask labeled)`
       },
       {
-        id: 'installing-indicators',
-        title: 'Installing Indicators on TradingView',
-        time: '5 min',
-        content: `
-          <p>Let's get the indicators loaded onto your chart. This process takes about 2 minutes once you have access.</p>
+        id: 'reading-a-candlestick',
+        title: 'Reading a Candlestick',
+        readingTime: 6,
+        globalNum: 4,
+        content: `The candlestick is the fundamental unit of a price chart. Every concept in this curriculum — structure, liquidity, FVGs, order blocks — is built on top of candlesticks. If you can't read a candle, you can't read the market. This lesson is non-negotiable.
 
-          <h2>Installation Steps</h2>
-          <div class="steps">
-            <div class="step">
-              <div class="step-content">
-                <p>Open your TradingView chart and click the <strong>"Indicators"</strong> button at the top (or press <code>/</code> on your keyboard).</p>
-              </div>
-            </div>
-            <div class="step">
-              <div class="step-content">
-                <p>Click the <strong>"Invite-only scripts"</strong> tab. You should see the indicators listed here once access has been granted to your TradingView username.</p>
-                <div class="callout warning">
-                  <div class="callout-label">Don't see them?</div>
-                  <p>Make sure you provided the correct TradingView username during checkout. Access is granted within 24 hours. If it's been longer, reach out for support.</p>
-                </div>
-              </div>
-            </div>
-            <div class="step">
-              <div class="step-content">
-                <p>Click each indicator to add it to your chart. Add them in this order:</p>
-                <ol>
-                  <li>Trend Engine (add first — this goes on the main chart)</li>
-                  <li>Signal Ribbon (main chart overlay)</li>
-                  <li>Volume Profile (separate pane below)</li>
-                  <li>Kill Zones (main chart overlay)</li>
-                </ol>
-              </div>
-            </div>
-            <div class="step">
-              <div class="step-content">
-                <p><strong>Save your layout</strong> after adding all indicators. This ensures they persist every time you open TradingView.</p>
-              </div>
-            </div>
-          </div>
+## Anatomy of a Candlestick
 
-          <h2>Verifying the Setup</h2>
-          <p>Your chart should now show:</p>
-          <ul>
-            <li>Colored candles or zones from the Trend Engine</li>
-            <li>Entry arrows or dots from the Signal Ribbon</li>
-            <li>A volume histogram in a separate pane below the chart</li>
-            <li>Time-based shaded zones from Kill Zones</li>
-          </ul>
+Every candlestick represents price movement over a specific period of time. A candle on a 5-minute chart represents 5 minutes of trading. A candle on the daily chart represents one full trading day. Regardless of the timeframe, every candle records exactly four data points:
 
-          <div class="img-placeholder">[ Screenshot: Complete chart with all indicators loaded — coming soon ]</div>
+**Open:** The price at the beginning of the period
+**High:** The highest price reached during the period
+**Low:** The lowest price reached during the period
+**Close:** The price at the end of the period
 
-          <p>If everything looks right, you're ready to move on. If something looks off, double-check that each indicator is enabled and on the correct pane.</p>
-        `
-      }
-    ]
-  },
-  {
-    module: 'Reading Charts',
-    lessons: [
-      {
-        id: 'candlestick-basics',
-        title: 'Candlestick Basics',
-        time: '6 min',
-        content: `
-          <p>Before you can trade, you need to understand what you're looking at. Candlesticks are the language of the market. Let's learn to read them.</p>
+These four values — **OHLC** — are everything. Every candle, every chart, every pattern is built from these four numbers.
 
-          <h2>Anatomy of a Candlestick</h2>
-          <p>Every candlestick tells you four things:</p>
-          <ul>
-            <li><strong>Open</strong> — where the price started for that time period</li>
-            <li><strong>High</strong> — the highest price reached</li>
-            <li><strong>Low</strong> — the lowest price reached</li>
-            <li><strong>Close</strong> — where the price ended</li>
-          </ul>
+![diagram](Annotated candlestick showing Open, High, Low, Close with the body and wicks clearly labeled)
 
-          <p>The thick part is called the <strong>body</strong>. The thin lines above and below are called <strong>wicks</strong> (or shadows).</p>
+## The Body
 
-          <ul>
-            <li><strong>Green candle</strong> = Close is higher than Open (bullish / price went up)</li>
-            <li><strong>Red candle</strong> = Close is lower than Open (bearish / price went down)</li>
-          </ul>
+The **body** of the candle is the filled rectangle between the open and the close. It tells you the net direction of price during that period.
 
-          <div class="img-placeholder">[ Diagram: Anatomy of bullish vs bearish candlestick — coming soon ]</div>
+- If the **close is above the open**, the candle is **bullish** (price went up). Typically colored green, blue, or white.
+- If the **close is below the open**, the candle is **bearish** (price went down). Typically colored red, black, or filled dark.
 
-          <h2>What Wicks Tell You</h2>
-          <p>Wicks are <em>rejection</em>. A long wick means price tried to go somewhere but got pushed back.</p>
-          <ul>
-            <li><strong>Long upper wick</strong> — sellers pushed price back down (bearish rejection)</li>
-            <li><strong>Long lower wick</strong> — buyers pushed price back up (bullish rejection)</li>
-            <li><strong>No/small wicks</strong> — strong conviction in the direction of the candle</li>
-          </ul>
+The size of the body tells you about conviction. A large body means price moved decisively in one direction. A small body means there was indecision — buyers and sellers were fighting.
 
-          <div class="callout">
-            <div class="callout-label">Key Insight</div>
-            <p>A candle with a big body and no wicks shows <strong>strength</strong>. A candle with a small body and long wicks shows <strong>indecision</strong>. Learn to see the difference.</p>
-          </div>
+## The Wicks (Shadows)
 
-          <h2>Important Candle Patterns</h2>
-          <p>You don't need to memorize 50 patterns. Focus on these three:</p>
-          <ul>
-            <li><strong>Engulfing</strong> — a candle that completely covers the previous one. Shows a shift in control.</li>
-            <li><strong>Pin bar / Hammer</strong> — small body, long wick in one direction. Shows rejection at a level.</li>
-            <li><strong>Doji</strong> — open and close are nearly the same. Shows pure indecision.</li>
-          </ul>
-          <p>We'll see how these patterns play into our strategy in later modules.</p>
-        `
+The thin lines extending above and below the body are called **wicks** (or shadows). They represent the price range that was explored but not held.
+
+**Upper wick:** Price went up to this level during the period but was pushed back down before the close. This represents **rejection of higher prices.**
+
+**Lower wick:** Price went down to this level but was pushed back up before the close. This represents **rejection of lower prices.**
+
+:::callout
+KEY INSIGHT
+Wicks tell you where price was rejected. The body tells you where price was accepted. A long lower wick on a bullish candle means sellers tried to push price down but buyers overwhelmed them. This is important information.
+:::
+
+## What a Candle Tells You
+
+A single candlestick tells a story. Let's read a few:
+
+**Large bullish candle with small wicks:** Buyers were in control from open to close. Strong bullish conviction. This is often part of displacement.
+
+**Small body with long upper and lower wicks:** Neither side won. Indecision. The market is deciding its next move. Often seen during consolidation.
+
+**Bullish candle with a long lower wick:** Price dropped significantly during the period but buyers stepped in and pushed it back up past the open. Buyers showed strength at lower prices.
+
+**Bearish candle with a long upper wick:** Price rallied during the period but sellers slammed it back down below the open. Sellers showed strength at higher prices.
+
+## A Word of Caution
+
+Retail trading education obsesses over single-candle "patterns" — dojis, hammers, shooting stars, engulfing patterns. While these can be useful context clues, **they are unreliable in isolation.** A hammer at a random price level means nothing. A hammer at a discount order block during the NY killzone after a liquidity sweep — that means something.
+
+Don't memorize candle patterns. Learn to read what the candle is telling you about who's in control — buyers or sellers — and where that battle is happening relative to the structure around it. That's what the rest of this curriculum teaches you.
+
+![diagram](Four example candles side by side: large bullish, small doji, bullish with long lower wick, bearish with long upper wick — each with a one-line caption explaining what it shows)`
       },
       {
-        id: 'support-resistance',
-        title: 'Support & Resistance',
-        time: '7 min',
-        content: `
-          <p>Support and resistance are the most fundamental concepts in trading. If you understand nothing else, understand this: <strong>price respects levels</strong>.</p>
+        id: 'timeframes-and-terminology',
+        title: 'Timeframes & Key Terminology',
+        readingTime: 7,
+        globalNum: 5,
+        content: `## What is a Timeframe?
 
-          <h2>What is Support?</h2>
-          <p>Support is a price level where buying pressure has historically been strong enough to stop price from falling further. Think of it as a <strong>floor</strong>.</p>
-          <p>When price approaches a support level, buyers step in, demand increases, and price bounces.</p>
+A timeframe determines how much time each candlestick represents. The same price data looks completely different depending on the timeframe you choose — and understanding this is critical.
 
-          <h2>What is Resistance?</h2>
-          <p>Resistance is a price level where selling pressure has historically been strong enough to stop price from rising further. Think of it as a <strong>ceiling</strong>.</p>
-          <p>When price approaches a resistance level, sellers step in, supply increases, and price drops.</p>
+Here are the timeframes you'll use in this program:
 
-          <div class="callout">
-            <div class="callout-label">The Golden Rule</div>
-            <p>When support breaks, it becomes resistance. When resistance breaks, it becomes support. This is called a <strong>flip</strong> — and it's one of the most reliable patterns in all of trading.</p>
-          </div>
+:::steps
+1. **Weekly (1W)** — Each candle = one week. Used for macro bias and long-term structure.
+2. **Daily (1D)** — Each candle = one trading day. Used for daily bias and key level identification.
+3. **4-Hour (4H)** — Each candle = 4 hours. Used for swing structure and higher-timeframe PD arrays.
+4. **1-Hour (1H)** — Each candle = 1 hour. Your primary structure timeframe for intraday trading.
+5. **15-Minute (15m)** — Used for identifying entry-level PD arrays and confirmation.
+6. **5-Minute (5m)** — Your execution timeframe. This is where you pull the trigger.
+:::
 
-          <h2>How to Draw Levels</h2>
-          <div class="steps">
-            <div class="step">
-              <div class="step-content">
-                <p>Zoom out to the <strong>Daily or 4H</strong> timeframe. You want to see the big picture.</p>
-              </div>
-            </div>
-            <div class="step">
-              <div class="step-content">
-                <p>Look for areas where price has <strong>bounced multiple times</strong>. The more touches, the stronger the level.</p>
-              </div>
-            </div>
-            <div class="step">
-              <div class="step-content">
-                <p>Draw a <strong>horizontal line</strong> at these areas. Use the Ray tool in TradingView (shortcut: <code>Alt+H</code>).</p>
-              </div>
-            </div>
-            <div class="step">
-              <div class="step-content">
-                <p>Think of levels as <strong>zones, not exact prices</strong>. Use a range rather than a single line. Price rarely respects an exact number.</p>
-              </div>
-            </div>
-          </div>
+Here's the key concept: **every timeframe shows the same price action, just at different levels of detail.** A single bullish daily candle might contain 24 hourly candles, some bullish, some bearish, showing the internal back-and-forth that the daily candle summarizes.
 
-          <div class="img-placeholder">[ Screenshot: Chart with support/resistance levels marked — coming soon ]</div>
+Higher timeframes (HTF) — Weekly, Daily, 4H — show you the big picture: where is price going and what levels matter? Lower timeframes (LTF) — 1H, 15m, 5m — show you the fine detail: when and where exactly to enter a trade.
 
-          <h2>Key Levels for NQ</h2>
-          <p>For Nasdaq futures, pay special attention to:</p>
-          <ul>
-            <li><strong>Round numbers</strong> (e.g., 18,000 / 18,500 / 19,000) — psychological levels</li>
-            <li><strong>Previous day high/low</strong> — major intraday levels</li>
-            <li><strong>Weekly open</strong> — often acts as a magnet for price</li>
-            <li><strong>Prior session's value area</strong> — where 70% of volume traded</li>
-          </ul>
-        `
+:::callout
+THE RULE
+The higher timeframe always wins. If the daily chart says bullish, a bearish signal on the 5-minute chart is just noise. Never fight the HTF narrative. You'll learn exactly how to read HTF-to-LTF alignment in Module 09.
+:::
+
+![diagram](The same 4-hour price move shown on the 1H, 15m, and 5m charts side by side, illustrating how one swing contains multiple candles at lower timeframes)
+
+## Chart Types
+
+We use **candlestick charts** exclusively. You may encounter line charts (only show closing prices) or bar charts (similar data to candles, different visual). Candlestick charts give us the most information in the most readable format. Everything in this curriculum assumes you're looking at candlesticks.
+
+## Setting Up Your Chart
+
+On TradingView, set up NQ with the following layout:
+
+:::steps
+1. Open TradingView and search for **NQ1!** (continuous NQ futures contract)
+2. Set your chart to **candlestick** display
+3. Use a **dark background** with clean colors (we recommend the default dark theme)
+4. Set up a **multi-chart layout** with at least three panels: 1H, 15m, and 5m
+5. Remove all default indicators. We want **clean charts** — just candles and your drawn levels.
+:::
+
+You'll add our indicator suite later. For now, the goal is to learn to read raw price action without any crutches.
+
+## Essential Terminology
+
+Here are terms you'll encounter throughout this curriculum. Bookmark this page — you'll reference it often.
+
+**Bull / Bullish:** Expecting price to go up. A bullish candle closes above its open.
+
+**Bear / Bearish:** Expecting price to go down. A bearish candle closes below its open.
+
+**Long:** A trade that profits when price goes up. "Going long" = buying.
+
+**Short:** A trade that profits when price goes down. "Going short" = selling.
+
+**Bid:** The highest price a buyer is willing to pay right now.
+
+**Ask:** The lowest price a seller is willing to accept right now.
+
+**Spread:** The difference between bid and ask.
+
+**Tick:** The smallest price increment. On NQ, one tick = 0.25 points = $5.00 per contract.
+
+**Point:** One full point on NQ = 4 ticks = $20 per contract (NQ) or $2 per contract (MNQ).
+
+**HTF (Higher Timeframe):** Weekly, Daily, 4H — used for directional bias.
+
+**LTF (Lower Timeframe):** 1H, 15m, 5m — used for entry timing and execution.
+
+**Price Action:** The movement of price over time as displayed on a chart. We analyze price action — not indicators.
+
+**Support / Resistance (Retail Definition):** Levels where price has historically bounced. We include this definition because you'll hear these terms everywhere, but we'll redefine what true support and resistance actually is in later modules. Spoiler: it's not horizontal lines on a chart.
+
+:::callout
+A NOTE ON RETAIL CONCEPTS
+We're teaching you the standard vocabulary here so you understand what most traders are talking about. But a core thesis of this program is that retail concepts (trendlines, support/resistance, chart patterns) are incomplete at best and traps at worst. Starting in Module 03, we'll show you what's actually driving price — and it will change how you see every chart.
+:::
+
+You now have the foundation. You can read a candle, understand what timeframes show you, and speak the basic language of trading. In Module 02, we build on this with the most important skill in all of trading: reading market structure.`
+      }
+    ],
+    quiz: {
+      title: 'Quiz: The Foundation',
+      passingScore: 80,
+      questions: [
+        { id:'q01-r1', section:'recall', type:'multiple_choice', question:'What are the four data points recorded by every candlestick?', options:['Open, High, Low, Close','Bid, Ask, Volume, Time','Support, Resistance, Trend, Range','Entry, Stop, Target, Result'], correctAnswer:0, explanation:'Every candlestick records Open, High, Low, and Close (OHLC) — the price at the start, the highest point, the lowest point, and the price at the end of that time period.' },
+        { id:'q01-r2', section:'recall', type:'multiple_choice', question:'What does a long lower wick on a bullish candle indicate?', options:['Sellers are in full control','Price was rejected at higher levels','Buyers stepped in after a sell-off and pushed price back up','The market is about to crash'], correctAnswer:2, explanation:'A long lower wick means price dropped significantly during the period, but buyers overwhelmed sellers and pushed price back above the open. It shows buyer strength at lower prices.' },
+        { id:'q01-r3', section:'recall', type:'multiple_choice', question:'What is the difference between a market order and a limit order?', options:['Market orders are free, limit orders have fees','Market orders fill immediately at the current price; limit orders fill only at your specified price or better','Market orders are for stocks, limit orders are for futures','There is no difference'], correctAnswer:1, explanation:'A market order executes immediately at the best available price. A limit order only executes at your specified price or better — giving you price control but no guarantee of execution.' },
+        { id:'q01-r4', section:'recall', type:'multiple_choice', question:'On NQ futures (E-mini), what is 1 point of movement worth per contract?', options:['$2','$5','$10','$20'], correctAnswer:3, explanation:'On the E-mini NQ (NQ), each point = $20 per contract. On the Micro (MNQ), each point = $2 per contract.' },
+        { id:'q01-r5', section:'recall', type:'multiple_choice', question:"If a candle's close is above its open, the candle is:", options:['Bearish','Neutral','Bullish','Invalid'], correctAnswer:2, explanation:'When the close is above the open, price went up during that period — making it a bullish candle.' },
+        { id:'q01-r6', section:'recall', type:'multiple_choice', question:'What does HTF stand for?', options:['High Trade Frequency','Higher Timeframe','Horizontal Trend Filter','Hedge Trading Fund'], correctAnswer:1, explanation:'HTF = Higher Timeframe. These are the Weekly, Daily, and 4H charts used to determine directional bias.' },
+        { id:'q01-a1', section:'applied', type:'chart_analysis', question:'Look at the middle candle in this chart. Identify whether it is bullish or bearish, and describe what the wick(s) tell you about the price action during that period.', explanation:'Evaluate whether the close is above or below the open (bullish vs bearish), then read the wicks: upper wick = rejection of higher prices, lower wick = rejection of lower prices.' },
+        { id:'q01-a2', section:'applied', type:'multiple_choice', question:'A trader places a buy limit order at 18,500 on NQ. The current price is 18,520. Will this order fill immediately?', options:['Yes, it fills at 18,520','Yes, it fills at 18,500','No, price must drop to 18,500 first','No, limit orders never fill'], correctAnswer:2, explanation:'A buy limit order at 18,500 only fills when price drops to 18,500 or lower. Since price is currently at 18,520 (above the limit price), the order sits and waits.' },
+        { id:'q01-a3', section:'applied', type:'multiple_choice', question:'You see a large bullish candle with almost no upper wick and almost no lower wick on the 5-minute chart. What does this tell you?', options:['The market is consolidating','Buyers were in strong control from open to close with minimal resistance','This is a doji and signals indecision','Sellers are about to take over'], correctAnswer:1, explanation:'A large bullish body with minimal wicks means buyers dominated the entire period. Price moved up decisively with little pushback from sellers. This is often part of displacement.' }
+      ]
+    }
+  },
+  {
+    number: 2,
+    id: 'market-structure',
+    title: 'Market Structure',
+    subtitle: 'Structure tells you who\'s in control. Everything else is noise.',
+    locked: false,
+    lessons: [
+      {
+        id: 'what-is-market-structure',
+        title: 'What is Market Structure?',
+        readingTime: 6,
+        globalNum: 6,
+        content: `Market structure is the single most important concept in trading. If you take nothing else from this curriculum, take this: **learn to read structure, and you'll always know where you are on a chart.**
+
+Price doesn't move in a straight line. It moves in **swings** — up, down, up, down — creating a series of peaks and valleys. The relationship between these peaks and valleys tells you who is in control: buyers or sellers.
+
+## Bullish Market Structure
+
+In a bullish market, price makes a pattern of:
+- **Higher Highs (HH):** Each peak is higher than the previous peak
+- **Higher Lows (HL):** Each valley is higher than the previous valley
+
+This tells you buyers are in control. Every time sellers try to push price down, buyers step in at a higher level than before. The market is trending upward.
+
+## Bearish Market Structure
+
+In a bearish market, price makes a pattern of:
+- **Lower Highs (LH):** Each peak is lower than the previous peak
+- **Lower Lows (LL):** Each valley is lower than the previous valley
+
+This tells you sellers are in control. Every time buyers try to push price up, sellers overwhelm them at a lower level than before. The market is trending downward.
+
+## Ranging / Consolidation
+
+When price is making roughly equal highs and equal lows — moving sideways within a range — neither side has control. The market is consolidating. This is the **accumulation** phase. A breakout in one direction is coming, but timing it requires the tools we'll learn in later modules.
+
+![diagram](Three side-by-side panels showing bullish structure (HH/HL staircase), bearish structure (LH/LL staircase), and a consolidation range with equal highs and lows)
+
+:::callout
+WHY THIS MATTERS
+Every single concept you'll learn — FVGs, order blocks, killzones, trade models — only works when you put it in the context of market structure. An order block in a bullish market means something completely different than the same pattern in a bearish market. Structure is the frame. Everything else is the painting.
+:::`
       },
       {
-        id: 'market-structure',
-        title: 'Market Structure & Trend',
-        time: '8 min',
-        content: `
-          <p>Market structure is the backbone of everything we do. It tells you who's in control — buyers or sellers — and where the market is likely to go next.</p>
+        id: 'the-3-bar-swing',
+        title: 'The 3-Bar Swing',
+        readingTime: 5,
+        globalNum: 7,
+        content: `Now that you understand the concept of market structure, you need a precise method for identifying swing points. We don't eyeball it — we use the **3-bar swing** method.
 
-          <h2>Higher Highs & Higher Lows (Uptrend)</h2>
-          <p>An uptrend is defined by a series of <strong>higher highs (HH)</strong> and <strong>higher lows (HL)</strong>. Each swing high is higher than the last, and each pullback holds above the previous low.</p>
-          <p>In an uptrend, we look for <strong>long (buy) entries</strong> at pullbacks to higher lows.</p>
+## Defining a Swing High
 
-          <h2>Lower Highs & Lower Lows (Downtrend)</h2>
-          <p>A downtrend is defined by a series of <strong>lower highs (LH)</strong> and <strong>lower lows (LL)</strong>. Each swing high is lower than the last, and each bounce fails to reach the previous high.</p>
-          <p>In a downtrend, we look for <strong>short (sell) entries</strong> at pullbacks to lower highs.</p>
+A **swing high** is formed by three consecutive candles where:
+- The middle candle has the **highest high** of the three
+- The candle to the left has a **lower high**
+- The candle to the right has a **lower high**
 
-          <div class="callout">
-            <div class="callout-label">The #1 Rule</div>
-            <p><strong>Trade with the trend.</strong> You can fight the trend and occasionally win, but the odds are always against you. Our strategy is simple: identify the trend on the higher timeframe, then find entries on the lower timeframe in that direction.</p>
-          </div>
+The middle candle is the swing high. This is where a peak formed — price went up, reached a high point, and then came back down.
 
-          <h2>Break of Structure (BOS)</h2>
-          <p>A <strong>break of structure</strong> happens when price breaks a previous swing high (in an uptrend) or swing low (in a downtrend). This confirms the trend is continuing.</p>
+## Defining a Swing Low
 
-          <h2>Change of Character (CHoCH)</h2>
-          <p>A <strong>change of character</strong> happens when price breaks the <em>opposite</em> swing point. For example, in an uptrend, if price breaks below the most recent higher low, that's a CHoCH — a potential signal that the trend is reversing.</p>
+A **swing low** is formed by three consecutive candles where:
+- The middle candle has the **lowest low** of the three
+- The candle to the left has a **higher low**
+- The candle to the right has a **higher low**
 
-          <div class="img-placeholder">[ Diagram: BOS vs CHoCH illustration — coming soon ]</div>
+The middle candle is the swing low. This is where a valley formed — price went down, reached a low point, and then came back up.
 
-          <h2>Putting It Together</h2>
-          <ol>
-            <li>Check the <strong>4H/Daily</strong> for overall trend direction</li>
-            <li>On the <strong>15m/5m</strong>, identify the local market structure</li>
-            <li>Wait for structure to align with your higher-timeframe bias</li>
-            <li>Enter on confirmed structure (BOS) with proper risk management</li>
-          </ol>
-          <p>This is the foundation. Everything else — indicators, entries, exits — layers on top of this core understanding.</p>
-        `
-      }
-    ]
-  },
-  {
-    module: 'Trading Terminology',
-    lessons: [
-      {
-        id: 'key-terms',
-        title: 'Essential Terms You Need to Know',
-        time: '5 min',
-        content: `
-          <p>Trading has its own language. Here's a no-fluff glossary of the terms you'll encounter throughout this program and in the trading community.</p>
+![diagram](Annotated 3-bar swing high and swing low, showing the middle candle as the pivot with lower highs on each side for swing high, and higher lows on each side for swing low)
 
-          <h2>Market Terms</h2>
-          <ul>
-            <li><strong>Bull / Bullish</strong> — expecting price to go up</li>
-            <li><strong>Bear / Bearish</strong> — expecting price to go down</li>
-            <li><strong>Long</strong> — buying, profiting when price goes up</li>
-            <li><strong>Short</strong> — selling, profiting when price goes down</li>
-            <li><strong>Liquidity</strong> — the ability to buy/sell without significantly affecting price</li>
-            <li><strong>Volatility</strong> — how much price moves in a given period</li>
-            <li><strong>Spread</strong> — the difference between the bid and ask price</li>
-            <li><strong>Slippage</strong> — the difference between expected entry price and actual fill price</li>
-          </ul>
+## Why This Precision Matters
 
-          <h2>Order Types</h2>
-          <ul>
-            <li><strong>Market order</strong> — buy/sell immediately at current price</li>
-            <li><strong>Limit order</strong> — buy/sell at a specific price or better</li>
-            <li><strong>Stop loss (SL)</strong> — an order to exit at a loss if price moves against you</li>
-            <li><strong>Take profit (TP)</strong> — an order to exit at a profit when price hits your target</li>
-            <li><strong>Stop limit</strong> — a combination: triggers a limit order when price hits a certain level</li>
-          </ul>
+The 3-bar swing is not arbitrary. This is how the algorithm marks structure. When IPDA (the Interbank Price Delivery Algorithm, which we'll cover in Module 03) references "old highs" and "old lows," it's looking at these swing points. If you mark your swing points differently than the algorithm does, your analysis will be off.
 
-          <h2>Risk & Position</h2>
-          <ul>
-            <li><strong>Risk-to-reward (R:R)</strong> — the ratio of potential loss to potential gain (e.g., 1:3 means risking $1 to make $3)</li>
-            <li><strong>Position size</strong> — how many contracts/shares you're trading</li>
-            <li><strong>Drawdown</strong> — the decline from a peak in your account balance</li>
-            <li><strong>Equity</strong> — your total account value including open positions</li>
-            <li><strong>Margin</strong> — the collateral required to hold a position</li>
-          </ul>
+:::callout
+PRACTICE THIS
+Open any NQ chart on the 1-hour timeframe. Go back 5 days. Mark every swing high and swing low using the 3-bar method. Don't rush. This is the most fundamental chart-reading skill you'll develop, and it needs to be automatic before you move forward.
+:::
 
-          <h2>Session Terms</h2>
-          <ul>
-            <li><strong>Pre-market</strong> — trading activity before the official market open (before 9:30 AM ET)</li>
-            <li><strong>Regular Trading Hours (RTH)</strong> — 9:30 AM - 4:00 PM ET</li>
-            <li><strong>After-hours</strong> — trading after 4:00 PM ET</li>
-            <li><strong>Kill zone</strong> — specific time windows where high-probability setups occur (London open, NY open, etc.)</li>
-            <li><strong>Session high/low</strong> — the highest/lowest price during a specific session</li>
-          </ul>
+## Multiple Touches
 
-          <div class="callout info">
-            <div class="callout-label">Bookmark This</div>
-            <p>You don't need to memorize all of this right now. Come back to this lesson whenever you encounter a term you're unsure about.</p>
-          </div>
-        `
-      }
-    ]
-  },
-  {
-    module: 'Risk Management',
-    lessons: [
-      {
-        id: 'risk-fundamentals',
-        title: 'The Only Thing That Matters',
-        time: '6 min',
-        content: `
-          <p>You can have the best strategy in the world and still blow your account if you don't manage risk. <strong>Risk management is not optional.</strong> It's the single most important skill in trading.</p>
-
-          <h2>The 1% Rule</h2>
-          <p>Never risk more than <strong>1% of your account</strong> on a single trade. Period.</p>
-          <p>If you have a $100,000 prop firm account, your maximum loss per trade is $1,000. This means:</p>
-          <ul>
-            <li>If your stop loss is 20 points on NQ, you trade 1 contract ($20/point × 50 points max loss = $1,000)</li>
-            <li>If your stop loss is 10 points, you can trade 2 contracts</li>
-            <li>The tighter the stop, the more contracts you can trade — but never exceed 1% total risk</li>
-          </ul>
-
-          <div class="callout">
-            <div class="callout-label">Why 1%?</div>
-            <p>At 1% risk per trade, you'd need <strong>100 consecutive losing trades</strong> to blow your account. That's nearly impossible with a real strategy. At 5% risk, you only need 20. At 10%, just 10. The math is simple — smaller risk = longer survival = more opportunities to win.</p>
-          </div>
-
-          <h2>Risk-to-Reward Ratio</h2>
-          <p>Every trade should have a minimum <strong>1:2 risk-to-reward ratio</strong>. This means for every $1 you risk, you target at least $2 in profit.</p>
-          <p>Why? Because with a 1:2 R:R, you only need to win <strong>34% of your trades</strong> to be profitable. Even a coin flip (50%) makes you money at 1:2.</p>
-
-          <h2>The Math That Changes Everything</h2>
-          <p>Let's say you take 100 trades at 1% risk with a 1:2 R:R and a 45% win rate:</p>
-          <ul>
-            <li>45 winning trades × 2% gain = +90%</li>
-            <li>55 losing trades × 1% loss = -55%</li>
-            <li><strong>Net gain: +35%</strong> on your account</li>
-          </ul>
-          <p>You lose more often than you win — and you still make 35%. That's the power of risk management.</p>
-
-          <h2>Rules to Live By</h2>
-          <ol>
-            <li><strong>Always set a stop loss</strong> before entering a trade. No exceptions.</li>
-            <li><strong>Never move your stop loss further away</strong> from your entry. If it hits, it hits.</li>
-            <li><strong>Never average down</strong> on a losing position.</li>
-            <li><strong>Max 3 trades per day.</strong> If all 3 hit stop loss, you're done for the day.</li>
-            <li><strong>Max 3% daily drawdown.</strong> If you lose 3% of your account in a day, stop trading.</li>
-          </ol>
-
-          <div class="callout warning">
-            <div class="callout-label">Non-Negotiable</div>
-            <p>These rules exist to protect you from yourself. Your worst enemy in trading isn't the market — it's your own emotions. Follow the rules even when you don't want to. <em>Especially</em> when you don't want to.</p>
-          </div>
-        `
-      }
-    ]
-  },
-  {
-    module: 'Prop Firm Setup',
-    lessons: [
-      {
-        id: 'what-are-prop-firms',
-        title: 'What Are Prop Firms?',
-        time: '5 min',
-        content: `
-          <p>A proprietary trading firm (prop firm) gives you capital to trade in exchange for a share of the profits. Instead of risking your own money, you trade with theirs.</p>
-
-          <h2>How It Works</h2>
-          <div class="steps">
-            <div class="step">
-              <div class="step-content">
-                <p><strong>Buy a challenge.</strong> You pay a fee (typically $100-$500 depending on account size) to attempt a trading evaluation.</p>
-              </div>
-            </div>
-            <div class="step">
-              <div class="step-content">
-                <p><strong>Pass the evaluation.</strong> You need to hit a profit target (usually 8-10%) while staying within drawdown limits (usually 5-10% max drawdown).</p>
-              </div>
-            </div>
-            <div class="step">
-              <div class="step-content">
-                <p><strong>Get funded.</strong> Once you pass, you receive a funded account with real capital. Trade it, and keep 80-90% of the profits.</p>
-              </div>
-            </div>
-          </div>
-
-          <h2>Why Prop Firms?</h2>
-          <ul>
-            <li><strong>Low barrier to entry</strong> — you don't need $100K+ of your own capital</li>
-            <li><strong>Limited risk</strong> — your maximum loss is the challenge fee</li>
-            <li><strong>Scalable</strong> — you can have multiple funded accounts simultaneously</li>
-            <li><strong>Profit splits</strong> — most firms offer 80/20 or 90/10 in your favor</li>
-          </ul>
-
-          <div class="callout">
-            <div class="callout-label">The Real Opportunity</div>
-            <p>With a $150K funded account at 90/10 profit split, a 5% monthly return = $6,750/month in your pocket. And you can stack multiple accounts. This is why we focus on prop firms — the leverage is unmatched.</p>
-          </div>
-
-          <h2>Recommended Firms</h2>
-          <p>The prop firm space changes quickly, but here are the ones I recommend at the time of writing:</p>
-          <ul>
-            <li><strong>Topstep</strong> — one of the most established, great for futures trading</li>
-            <li><strong>Apex Trader Funding</strong> — popular for their frequent sales and generous rules</li>
-            <li><strong>FTMO</strong> — industry standard for forex, also supports indices</li>
-          </ul>
-
-          <div class="callout info">
-            <div class="callout-label">Start Small</div>
-            <p>Start with the smallest account size for your first challenge ($50K or less). Passing a smaller challenge builds confidence and costs less if you fail. You can always scale up after your first funded account.</p>
-          </div>
-        `
+Sometimes you'll see swing highs or lows that form at nearly the same price level. Two swing highs at the same level create **equal highs.** Two swing lows at the same level create **equal lows.** These are extremely important — they create concentrated pools of liquidity that the algorithm will target. We'll cover this in detail in Module 05.`
       },
       {
-        id: 'passing-the-challenge',
-        title: 'Strategy for Passing the Challenge',
-        time: '7 min',
-        content: `
-          <p>Passing a prop firm challenge isn't about being aggressive — it's about being consistent. Here's the approach that works.</p>
+        id: 'identifying-trend-direction',
+        title: 'Identifying Trend Direction',
+        readingTime: 5,
+        globalNum: 8,
+        content: `Once you can identify swing highs and swing lows, determining trend direction becomes mechanical — not subjective.
 
-          <h2>Understand the Rules</h2>
-          <p>Every prop firm has specific rules. Before you start, know these numbers cold:</p>
-          <ul>
-            <li><strong>Profit target</strong> — how much you need to make (e.g., 8% of account)</li>
-            <li><strong>Max daily drawdown</strong> — how much you can lose in a single day (e.g., 2-3%)</li>
-            <li><strong>Max total drawdown</strong> — how much you can lose overall (e.g., 5-6%)</li>
-            <li><strong>Minimum trading days</strong> — how many days you must trade (e.g., 5-10)</li>
-            <li><strong>Time limit</strong> — how long you have to pass (e.g., 30-60 days)</li>
-          </ul>
+## Reading the Staircase
 
-          <h2>The Slow and Steady Approach</h2>
-          <p>Here's how to approach a $100K account with an 8% profit target ($8,000) and 5% max drawdown ($5,000):</p>
+Connect your swing points and look at the pattern:
 
-          <div class="steps">
-            <div class="step">
-              <div class="step-content">
-                <p><strong>Target 0.5% per day.</strong> That's $500/day on a $100K account. At 0.5%/day, you hit 8% in 16 trading days.</p>
-              </div>
-            </div>
-            <div class="step">
-              <div class="step-content">
-                <p><strong>Risk 0.5% per trade.</strong> This gives you room for 10 consecutive losing trades before hitting max drawdown. That's a massive safety buffer.</p>
-              </div>
-            </div>
-            <div class="step">
-              <div class="step-content">
-                <p><strong>Take 1-2 trades per day maximum.</strong> Quality over quantity. One good trade is all you need.</p>
-              </div>
-            </div>
-            <div class="step">
-              <div class="step-content">
-                <p><strong>Trade only during kill zones.</strong> London open (3-5 AM ET) or New York open (9:30-11 AM ET). These are when the best setups appear.</p>
-              </div>
-            </div>
-          </div>
+**Bullish trend:** You see a staircase going up. Each swing high is higher than the last (HH). Each swing low is higher than the last (HL). The staircase ascends from left to right.
 
-          <div class="callout">
-            <div class="callout-label">Mindset Shift</div>
-            <p>You're not trying to get rich on the challenge. You're trying to <strong>pass</strong>. Trade like a robot. Follow the system. Hit your daily target and walk away. The real money comes after you're funded.</p>
-          </div>
+**Bearish trend:** You see a staircase going down. Each swing high is lower than the last (LH). Each swing low is lower than the last (LL). The staircase descends from left to right.
 
-          <h2>Common Mistakes</h2>
-          <ul>
-            <li><strong>Overtrading</strong> — taking too many trades to "make up" for losses</li>
-            <li><strong>Moving stop losses</strong> — hoping a losing trade will turn around</li>
-            <li><strong>Trading on tilt</strong> — making emotional decisions after a loss</li>
-            <li><strong>Ignoring kill zones</strong> — trading during low-volume choppy hours</li>
-            <li><strong>Going for home runs</strong> — trying to hit the profit target in one trade</li>
-          </ul>
-          <p>If you catch yourself doing any of these, <strong>close your laptop and walk away</strong>. There's always tomorrow.</p>
-        `
-      }
-    ]
-  },
-  {
-    module: 'Your First Trade',
-    lessons: [
-      {
-        id: 'pre-trade-checklist',
-        title: 'The Pre-Trade Checklist',
-        time: '4 min',
-        content: `
-          <p>Before every single trade, you will run through this checklist. No checklist, no trade. Pin this somewhere you can see it.</p>
+**No trend (range):** The staircase is flat. Highs and lows are roughly at the same level. Price is moving sideways.
 
-          <h2>The Checklist</h2>
-          <ol>
-            <li><strong>What is the higher-timeframe trend?</strong> (4H/Daily — bullish or bearish?)</li>
-            <li><strong>Am I in a kill zone?</strong> (London open or NY open?)</li>
-            <li><strong>Is there a key level nearby?</strong> (Support, resistance, previous day high/low?)</li>
-            <li><strong>What does the Trend Engine say?</strong> (Confirm it aligns with your bias)</li>
-            <li><strong>Is there a Signal Ribbon entry?</strong> (Wait for confirmation, don't front-run)</li>
-            <li><strong>Where is my stop loss?</strong> (Below/above the recent structure)</li>
-            <li><strong>Where is my take profit?</strong> (Minimum 1:2 R:R)</li>
-            <li><strong>What is my position size?</strong> (Max 1% account risk)</li>
-          </ol>
+![diagram](1H NQ chart with swing points connected by lines showing a clear bullish staircase pattern: HH, HL, HH, HL)
 
-          <div class="callout">
-            <div class="callout-label">All 8 Must Check Out</div>
-            <p>If any single item on this checklist doesn't have a clear answer, <strong>do not take the trade</strong>. The best trade is often no trade. Wait for the setup that checks every box.</p>
-          </div>
+## The Trend Exists on Every Timeframe
 
-          <h2>Before the Session</h2>
-          <p>Before you even look at a chart for the day:</p>
-          <ul>
-            <li>Check the <strong>economic calendar</strong> — are there any high-impact news events? (FOMC, CPI, NFP, etc.) If yes, consider sitting out.</li>
-            <li>Mark your <strong>key levels</strong> on the 4H/Daily chart</li>
-            <li>Note yesterday's <strong>high, low, and close</strong></li>
-            <li>Identify the <strong>current trend direction</strong></li>
-          </ul>
-          <p>This prep takes 5 minutes and sets you up for the entire session.</p>
-        `
+This is crucial: you might see a bullish trend on the 1-hour chart while the daily chart is bearish. This isn't a contradiction — it means the 1-hour is showing a pullback rally inside a larger daily downtrend.
+
+**The higher timeframe trend takes priority.** If the daily chart says bearish, then bullish moves on the 1-hour chart are counter-trend rallies — not opportunities to go long (unless you're specifically scalping counter-trend, which is advanced and not recommended for newer traders).
+
+:::callout
+THE HIERARCHY
+Weekly trend > Daily trend > 4H trend > 1H trend > 15m trend > 5m trend. When the higher timeframe and lower timeframe agree, you have alignment — and that's where the highest probability trades live.
+:::
+
+## What Breaks a Trend?
+
+A bullish trend breaks when price makes a **lower low** — it takes out a previous swing low. This means buyers could no longer defend the level where they previously stepped in.
+
+A bearish trend breaks when price makes a **higher high** — it takes out a previous swing high. This means sellers could no longer defend the level where they previously stepped in.
+
+But not every break is the same. In the next two lessons, we'll distinguish between a **Break of Structure (BOS)** and a **Change of Character (CHoCH)** — this distinction is what separates beginners from competent traders.`
       },
       {
-        id: 'executing-a-trade',
-        title: 'Executing Your First Paper Trade',
-        time: '6 min',
-        content: `
-          <p>It's time. You've set up your chart, learned the concepts, and have your checklist ready. Let's walk through executing your first trade — on paper.</p>
+        id: 'break-of-structure',
+        title: 'Break of Structure (BOS)',
+        readingTime: 5,
+        globalNum: 9,
+        content: `A **Break of Structure (BOS)** occurs when price breaks through a previous swing point **in the direction of the existing trend.** BOS confirms that the trend is continuing.
 
-          <div class="callout warning">
-            <div class="callout-label">Paper Trading Only</div>
-            <p>Do NOT trade real money or start a prop firm challenge yet. You will paper trade for at least 2 weeks before risking any capital. This is non-negotiable.</p>
-          </div>
+## Bullish BOS
 
-          <h2>Setting Up Paper Trading</h2>
-          <div class="steps">
-            <div class="step">
-              <div class="step-content">
-                <p>On TradingView, click the <strong>"Trading Panel"</strong> at the bottom of the chart.</p>
-              </div>
-            </div>
-            <div class="step">
-              <div class="step-content">
-                <p>Select <strong>"Paper Trading"</strong> from the broker dropdown. TradingView has a built-in paper trading simulator.</p>
-              </div>
-            </div>
-            <div class="step">
-              <div class="step-content">
-                <p>Set your starting balance to match the prop firm account you plan to trade (e.g., $100,000).</p>
-              </div>
-            </div>
-          </div>
+In a bullish trend (HH, HL pattern), a bullish BOS happens when:
+- Price breaks above a previous **swing high**
+- This creates a new **higher high**
+- The bullish trend is confirmed to continue
 
-          <h2>Taking the Trade</h2>
-          <p>Let's say your checklist confirmed a <strong>long setup on NQ</strong> during the New York open:</p>
+After a bullish BOS, you expect price to pull back and form a new **higher low** before continuing upward.
 
-          <div class="steps">
-            <div class="step">
-              <div class="step-content">
-                <p><strong>Identify entry.</strong> The Signal Ribbon shows a buy signal at a key support level. The Trend Engine confirms bullish.</p>
-              </div>
-            </div>
-            <div class="step">
-              <div class="step-content">
-                <p><strong>Set stop loss.</strong> Place it below the recent swing low — let's say 15 points below entry.</p>
-              </div>
-            </div>
-            <div class="step">
-              <div class="step-content">
-                <p><strong>Set take profit.</strong> Target the next resistance level or 2x your risk — 30 points above entry (1:2 R:R).</p>
-              </div>
-            </div>
-            <div class="step">
-              <div class="step-content">
-                <p><strong>Calculate position size.</strong> 1% of $100K = $1,000 max risk. At $20/point on NQ and 15-point stop = $300 risk per contract. You can trade 3 contracts ($900 total risk, under $1,000).</p>
-              </div>
-            </div>
-            <div class="step">
-              <div class="step-content">
-                <p><strong>Enter the trade.</strong> Click Buy, set your SL and TP, confirm the order.</p>
-              </div>
-            </div>
-            <div class="step">
-              <div class="step-content">
-                <p><strong>Walk away.</strong> Do not stare at the chart. Your SL and TP are set. Let the trade play out.</p>
-              </div>
-            </div>
-          </div>
+## Bearish BOS
 
-          <h2>After the Trade</h2>
-          <p>Win or lose, <strong>journal the trade</strong>. Record:</p>
-          <ul>
-            <li>Date and time</li>
-            <li>Instrument (e.g., NQ)</li>
-            <li>Direction (long/short)</li>
-            <li>Entry price</li>
-            <li>Stop loss and take profit levels</li>
-            <li>Result (win/loss, dollar amount)</li>
-            <li>Screenshot of the chart</li>
-            <li>What you did well</li>
-            <li>What you could improve</li>
-          </ul>
+In a bearish trend (LH, LL pattern), a bearish BOS happens when:
+- Price breaks below a previous **swing low**
+- This creates a new **lower low**
+- The bearish trend is confirmed to continue
 
-          <div class="callout">
-            <div class="callout-label">The Goal</div>
-            <p>Your goal for the next 2 weeks: take 1-2 paper trades per day following the checklist. Track your win rate and average R:R. When you're consistently hitting 40%+ win rate with 1:2+ R:R, you're ready for the challenge.</p>
-          </div>
+After a bearish BOS, you expect price to retrace and form a new **lower high** before continuing downward.
 
-          <p>Congratulations — you now have everything you need to start. The rest is execution, repetition, and discipline. Trust the process. You've got this.</p>
-        `
+![diagram](Two panels: Left shows bullish BOS with price breaking above a swing high, labeled 'BOS — trend continues.' Right shows bearish BOS with price breaking below a swing low, labeled 'BOS — trend continues.')
+
+## What BOS Tells You
+
+BOS is a **continuation signal.** It tells you: the current trend is intact, the side in control is still in control, and you should be looking for trades in the direction of the trend.
+
+When you see a BOS:
+- **Don't fight it.** The trend has just been confirmed.
+- **Look for entries on the pullback.** After BOS, price often retraces to a PD array (we'll learn these in Module 06) before the next leg of the move.
+
+:::callout
+BOS = CONTINUATION
+Break of Structure means the trend is healthy and continuing. You're looking for pullback entries in the direction of the BOS. This is the bread-and-butter of trend-following within the Smart Money framework.
+:::`
+      },
+      {
+        id: 'change-of-character',
+        title: 'Change of Character (CHoCH)',
+        readingTime: 6,
+        globalNum: 10,
+        content: `A **Change of Character (CHoCH)** occurs when price breaks through a previous swing point **against the existing trend.** CHoCH is the first warning that the current trend may be ending.
+
+## CHoCH in a Bullish Trend
+
+In a bullish trend, a CHoCH happens when:
+- Price breaks below a previous **swing low**
+- For the first time in the trend, we see a **lower low**
+- This violates the HH/HL pattern and signals potential trend reversal
+
+## CHoCH in a Bearish Trend
+
+In a bearish trend, a CHoCH happens when:
+- Price breaks above a previous **swing high**
+- For the first time in the trend, we see a **higher high**
+- This violates the LH/LL pattern and signals potential trend reversal
+
+![diagram](Two panels: Left shows bullish trend with HH, HL, HH, HL then a break below the last HL labeled 'CHoCH — potential reversal.' Right shows bearish trend with LH, LL, LH, LL then a break above the last LH labeled 'CHoCH — potential reversal.')
+
+## CHoCH vs. BOS — The Critical Distinction
+
+This is one of the most important distinctions in this entire curriculum:
+
+- **BOS** = break in the **direction** of the trend → continuation
+- **CHoCH** = break **against** the trend → potential reversal
+
+Both are breaks of a swing point. The difference is direction relative to the prevailing trend. If you're in a bullish trend and price breaks a swing high — that's BOS (continuation). If price breaks a swing low — that's CHoCH (reversal warning).
+
+:::callout
+IMPORTANT NUANCE
+A CHoCH is a *warning*, not a *confirmation*. Not every CHoCH leads to a full reversal. Sometimes it's just a deeper pullback before the trend resumes. What turns a CHoCH into a confirmed reversal is **displacement** — a strong, impulsive move following the break. When CHoCH is accompanied by displacement, we call it a Market Structure Shift.
+:::
+
+## In Practice
+
+When you spot a CHoCH:
+
+:::steps
+1. **Stop looking for trades in the old trend direction.** The CHoCH is telling you the old trend may be done.
+2. **Wait for confirmation.** Look for displacement (consecutive large candles) following the CHoCH.
+3. **If confirmed**, start looking for entries in the new direction using the PD arrays you'll learn in Module 06.
+4. **If not confirmed** (price just chops around after the CHoCH), the trend may resume. Don't assume reversal without conviction.
+:::`
+      },
+      {
+        id: 'market-structure-shift',
+        title: 'Market Structure Shift (MSS)',
+        readingTime: 5,
+        globalNum: 11,
+        content: `A **Market Structure Shift (MSS)** is a CHoCH that is confirmed by **displacement.** This is the real deal — when you see an MSS, the trend has changed.
+
+## What is Displacement?
+
+Displacement is a sudden, forceful move in price. On the chart, it appears as one or more large-bodied candles with minimal wicks, all moving aggressively in the same direction. Displacement means someone with serious capital just moved the market. In the ICT framework, this is the algorithmic footprint of institutional order flow.
+
+Think of it this way: a CHoCH without displacement is someone knocking on the door. A CHoCH with displacement is someone kicking the door down.
+
+## How to Identify an MSS
+
+:::steps
+1. Price is in a defined trend (bullish or bearish)
+2. A swing point is broken against the trend (CHoCH)
+3. The move through that swing point is impulsive — large candles, minimal wicks, clear displacement
+4. This displacement typically creates a **Fair Value Gap** (you'll learn these in Module 06)
+:::
+
+When all three elements are present — trend, break against it, and displacement — you have a Market Structure Shift.
+
+![diagram](A bullish trend that transitions into a bearish MSS: HH, HL, HH, then a sharp displacement candle breaks below the last HL with a visible FVG, labeled 'MSS — structure has shifted bearish')
+
+## What Happens After an MSS
+
+After a confirmed MSS, you're now operating under a new trend assumption. The MSS level itself becomes a reference point:
+
+- In a bullish-to-bearish MSS: the MSS level is now resistance. Price should stay below it. If it reclaims that level, the shift may have been false.
+- In a bearish-to-bullish MSS: the MSS level is now support. Price should stay above it.
+
+The MSS is where you start building your trade idea. You know the new direction. Now you need timing (Module 04), levels (Modules 05–07), and a trade model (Module 08) to execute.
+
+:::callout
+TYING IT TOGETHER
+Market Structure is the backbone of everything we do. Here's the hierarchy: Swing Points → Trend Direction → BOS (continuation) or CHoCH (warning) → MSS (confirmed shift). If you can read this sequence on a chart, you can always answer the most important question in trading: which side am I on right now?
+:::
+
+## Practice Exercise
+
+Open the NQ 1-hour chart and go back 2 weeks. Find at least:
+- 3 examples of BOS (trend continuation)
+- 1 example of CHoCH (trend warning)
+- 1 example of MSS (confirmed shift with displacement)
+
+Mark them on your chart. Screenshot them. Bring them to the next coaching call. This exercise is how you burn these patterns into your brain.`
       }
-    ]
+    ],
+    quiz: {
+      title: 'Quiz: Market Structure',
+      passingScore: 80,
+      questions: [
+        { id:'q02-r1', section:'recall', type:'multiple_choice', question:'What defines a swing high using the 3-bar swing method?', options:['The highest candle on the chart','A candle with the highest high, with lower highs on the candles to its left and right','Any candle followed by a red candle','A candle that touches a resistance level'], correctAnswer:1, explanation:'A 3-bar swing high is the middle candle of three consecutive candles where the middle candle has the highest high, flanked by candles with lower highs on each side.' },
+        { id:'q02-r2', section:'recall', type:'multiple_choice', question:'In a bullish trend, what pattern of highs and lows do you expect?', options:['Lower highs and lower lows','Higher highs and higher lows','Equal highs and equal lows','Lower highs and higher lows'], correctAnswer:1, explanation:'A bullish trend is defined by a series of higher highs (HH) and higher lows (HL) — a staircase pattern ascending from left to right.' },
+        { id:'q02-r3', section:'recall', type:'multiple_choice', question:'What is the difference between a BOS and a CHoCH?', options:['BOS is on higher timeframes, CHoCH is on lower timeframes','BOS breaks structure in the direction of the trend (continuation); CHoCH breaks against it (potential reversal)','BOS is bearish, CHoCH is bullish','There is no difference — they are the same thing'], correctAnswer:1, explanation:'BOS (Break of Structure) confirms the trend is continuing by breaking a swing point in the trend direction. CHoCH (Change of Character) breaks a swing point against the trend, warning of a potential reversal.' },
+        { id:'q02-r4', section:'recall', type:'multiple_choice', question:'Does a BOS confirm trend continuation or reversal?', options:['Reversal','Continuation','Neither — it\'s random','It depends on the timeframe'], correctAnswer:1, explanation:'BOS confirms continuation. The trend is intact and you should look for pullback entries in the trend direction.' },
+        { id:'q02-r5', section:'recall', type:'multiple_choice', question:'What additional element turns a CHoCH into a Market Structure Shift?', options:['Volume spike','Displacement — a strong impulsive move with large candles','A news event','Touching a moving average'], correctAnswer:1, explanation:'A CHoCH becomes a Market Structure Shift when it\'s confirmed by displacement — aggressive, impulsive candles with minimal wicks that show real institutional conviction behind the break.' },
+        { id:'q02-r6', section:'recall', type:'multiple_choice', question:'If price makes a lower low in a bullish trend, what is that called?', options:['Break of Structure (BOS)','Change of Character (CHoCH)','Fair Value Gap','Accumulation'], correctAnswer:1, explanation:'A lower low in a bullish trend breaks the HH/HL pattern for the first time, which is a Change of Character (CHoCH) — a warning that the bullish trend may be ending.' },
+        { id:'q02-a1', section:'applied', type:'chart_analysis', question:'Mark all swing highs and swing lows on this chart using the 3-bar swing method.', explanation:'Identify every candle that has a lower high on each side (swing high) or a higher low on each side (swing low). These are your structural reference points.' },
+        { id:'q02-a2', section:'applied', type:'chart_analysis', question:'Is this market in bullish or bearish structure? Identify the most recent BOS.', explanation:'Connect the swing points and determine if you see HH/HL (bullish) or LH/LL (bearish). The most recent BOS is the last swing point broken in the trend direction.' },
+        { id:'q02-a3', section:'applied', type:'chart_analysis', question:'Has a CHoCH occurred on this chart? If so, mark where.', explanation:'Look for the first break of a swing point against the prevailing trend. That\'s the CHoCH.' },
+        { id:'q02-a4', section:'applied', type:'multiple_choice', question:'You see a bullish trend on the 1H chart with clear HH/HL. The 5m chart shows a CHoCH to the downside. What should you do?', options:['Go short immediately — the 5m CHoCH is a sell signal','Ignore the 5m CHoCH — the 1H trend is bullish, so this is likely just a pullback','Close all positions and wait','Switch to the weekly chart'], correctAnswer:1, explanation:'The HTF (1H) trend takes priority. A CHoCH on the 5m inside a bullish 1H trend is most likely a pullback — not a full reversal. You\'d look for the 5m to realign bullish (new CHoCH back up) for a potential entry with the 1H trend.' }
+      ]
+    }
+  },
+  {
+    number: 3,
+    id: 'the-algorithm',
+    title: 'The Algorithm',
+    subtitle: 'An algorithm is responsible for moving price in the markets.',
+    locked: false,
+    lessons: [
+      {
+        id: 'the-truth-about-price-movement',
+        title: 'The Truth About Price Movement',
+        readingTime: 6,
+        globalNum: 12,
+        content: `Everything you learned in Modules 01 and 02 was mechanical — how to read candles and identify structure. Now we go deeper. This module is about **why** price moves the way it does. And the answer is going to challenge everything most traders believe.
+
+## The Retail Narrative
+
+Standard trading education teaches this: Price moves because of buying and selling pressure. When there are more buyers than sellers, price goes up. When there are more sellers than buyers, price goes down. Supply and demand.
+
+This isn't wrong exactly — it's just incomplete to the point of being useless. It describes what happens at the micro level of order matching but tells you nothing about **why** price goes to specific levels, **why** it reverses at specific times, or **why** the same patterns play out across every market, every day.
+
+## The Reality
+
+Price in financial markets is delivered by an algorithm. Not metaphorically. Literally. The major financial exchanges use sophisticated algorithms to match orders, manage liquidity, and deliver price to institutions and banks worldwide.
+
+In the ICT framework, this algorithm is called **IPDA — the Interbank Price Delivery Algorithm.** IPDA doesn't trade randomly. It follows a logic — a set of rules that determine where price goes, when, and why.
+
+:::callout
+DOES THIS MEAN MARKETS ARE "RIGGED"?
+No — at least not in the way conspiracy theorists mean. Markets are *structured*. The algorithm has a job: facilitate efficient price delivery and ensure liquidity. Understanding its logic doesn't guarantee profits, but it does give you a framework for reading price that is vastly superior to retail technical analysis.
+:::
+
+## Why This Changes Everything
+
+If price movement is algorithmic rather than purely random or emotional, then:
+
+- Price going to specific levels isn't coincidence — it's by design
+- Patterns that "fail" aren't actually failing — they're doing exactly what they were designed to do (engineer liquidity)
+- Certain times of day see consistent behavior because the algorithm operates on a schedule
+- You can learn to read the algorithm's footprints in price action
+
+This is what this entire curriculum is built on. Every concept you'll learn — FVGs, order blocks, killzones, liquidity sweeps — is a tool for reading the algorithm's behavior. You're not predicting the future. You're reading the present with informed context.`
+      },
+      {
+        id: 'ipda-the-interbank-price-delivery-algorithm',
+        title: 'IPDA: The Interbank Price Delivery Algorithm',
+        readingTime: 7,
+        globalNum: 13,
+        content: `Let's get specific about what IPDA does and how it operates.
+
+## IPDA's Two Jobs
+
+IPDA has two primary objectives:
+
+:::steps
+1. **Engineer liquidity** by manipulating price to trigger resting orders above old highs and below old lows
+2. **Offer fair value** by returning to areas where price was delivered inefficiently (one-sided)
+:::
+
+That's it. Every move you see on a chart is IPDA either seeking liquidity or rebalancing inefficient price delivery. When you can identify which of these two things is happening, you can anticipate where price is going next.
+
+## The Market Efficiency Paradigm
+
+IPDA operates within what ICT calls the **Market Efficiency Paradigm.** This is the relationship between two groups:
+
+**Smart Money (Liquidity Providers):** Banks, institutions, and large fund managers who understand how the algorithm works. They don't chase price — they position themselves where the algorithm will deliver price to them.
+
+**Speculative / Uninformed Money (Retail):** Individual traders who use retail technical analysis, follow indicators, and place predictable stop-loss orders. They provide the liquidity that Smart Money needs.
+
+IPDA is the bridge between these two groups. It takes liquidity from retail traders (via stop hunts and inducements) and delivers it to institutional positions.
+
+![diagram](Market Efficiency Paradigm: Smart Money connected through IPDA to Speculative Uninformed Money. Labels: 'Liquidity Provider' on left, 'Willing and/or Unwilling Liquidity' on right)
+
+:::callout
+THE UNCOMFORTABLE TRUTH
+As a retail trader, you are — by default — on the wrong side of this dynamic. The entire purpose of this program is to move you from the right side of that diagram (uninformed money) to thinking like the left side (smart money). You'll never have their capital, but you can read the same footprints they leave.
+:::
+
+## Liquidity: The Fuel for Every Move
+
+IPDA needs liquidity to function. Liquidity exists wherever there are resting orders — stop losses, take profits, pending limit orders. The most concentrated liquidity sits:
+
+- **Above old swing highs:** Retail traders who are short have their stop-loss orders (buy stops) above previous highs. Retail breakout traders have their entry orders here too.
+- **Below old swing lows:** Retail traders who are long have their stop-loss orders (sell stops) below previous lows. Retail breakdown traders have their entries here.
+
+IPDA will move price to these levels to trigger these orders, providing the liquidity that institutions need to fill their positions. This is not theory — this is observable on every chart, every day.
+
+## Fair Value: The Return Trip
+
+When IPDA moves price aggressively in one direction, it sometimes moves too fast — leaving areas where only buying or only selling occurred (not both). These areas are **inefficient** — they don't represent fair value because only one side of the market was served.
+
+IPDA will return to these areas to offer fair value to the other side. These inefficient areas are called **Fair Value Gaps (FVGs)**, and they're one of the most powerful tools in your arsenal. You'll learn exactly how to identify and trade them in Module 06.`
+      },
+      {
+        id: 'accumulation-manipulation-distribution',
+        title: 'Accumulation, Manipulation, Distribution',
+        readingTime: 7,
+        globalNum: 14,
+        content: `The AMD cycle is the core pattern of how IPDA delivers price. It happens on every timeframe — from the 1-minute chart to the weekly chart. Once you see it, you can't unsee it.
+
+## Phase 1: Accumulation
+
+IPDA holds price in a **consolidation range.** During this phase, retail traders are placing orders on both sides of the range:
+
+- **Buy stops** accumulate above the range (from retail shorts and breakout buyers)
+- **Sell stops** accumulate below the range (from retail longs and breakdown sellers)
+
+The longer price stays in the range, the more liquidity builds on both sides. IPDA is essentially setting the table.
+
+On the chart, accumulation looks like: tight range, small candles, choppy price action. Retail traders see this and get bored. Smart money sees this and gets ready.
+
+## Phase 2: Manipulation
+
+IPDA breaks out of the range — but in the **wrong** direction. This is the trap.
+
+If the real move is going to be bullish, IPDA first spikes price **below** the accumulation range, triggering the sell stops. This:
+- Stops out retail longs (who had stops below the range)
+- Activates breakout shorts (who sell the "breakdown")
+- Provides liquidity for Smart Money to fill buy orders at discount prices
+
+This fake move is called the **Judas Swing** — named for its deceptive nature.
+
+## Phase 3: Distribution
+
+After the manipulation phase has provided the liquidity Smart Money needs, the **real move** begins. IPDA distributes price in the intended direction — aggressively.
+
+Using the bullish example: after sweeping the sell stops below the range, price reverses hard and blasts through the top of the accumulation range, running the buy stops above it. Smart Money is distributing (selling) their long positions to the willing buyers (buy stops) above the range.
+
+![diagram](Full AMD cycle shown in three phases: 1) Price consolidating in a range with BSL above and SSL below labeled, 2) Price spiking below the range sweeping SSL (Judas Swing), 3) Price reversing and expanding above the range through BSL)
+
+:::callout
+AMD IS FRACTAL
+The AMD cycle happens on every timeframe. The daily candle follows AMD (midnight open → manipulation → expansion → close). The weekly candle follows AMD. Even a single trading session follows AMD (Asian consolidation → London manipulation → NY distribution). Once you understand this, you start seeing the same pattern everywhere.
+:::
+
+## How to Use AMD
+
+You don't trade the accumulation phase — there's no edge in a range. You don't chase the manipulation phase — that's the trap. You trade the **distribution phase** — after the manipulation has occurred and the real move begins.
+
+The question is: how do you know when manipulation is ending and distribution is beginning? The answer: **Market Structure Shift.** When the Judas Swing creates a CHoCH with displacement (MSS), that's your signal that manipulation is complete and the real move is underway.
+
+AMD + MSS + the tools from Modules 04–07 = your trade.`
+      },
+      {
+        id: 'why-retail-patterns-fail',
+        title: 'Why Retail Patterns Fail',
+        readingTime: 5,
+        globalNum: 15,
+        content: `Now that you understand how IPDA engineers liquidity through the AMD cycle, let's revisit something from Module 01: retail technical analysis patterns.
+
+## The Patterns You've Been Taught
+
+If you've studied any trading education before this, you've probably learned about:
+- Trendlines
+- Support and resistance levels
+- Head and shoulders patterns
+- Double tops and double bottoms
+- Bull flags, bear flags
+- Triangles, wedges, channels
+
+These patterns are real — they do appear on charts. But they don't work the way retail education teaches. They're not predictive signals. They're **liquidity engineering tools.**
+
+## How the Algorithm Uses Retail Patterns
+
+Every retail pattern teaches traders to place their stops in predictable locations:
+
+**Support level:** Retail traders go long at support with stops just below. This creates a **sell stop liquidity pool** just below the level.
+
+**Double bottom:** Retail traders go long with stops below the equal lows. This creates an even thicker sell stop pool.
+
+**Trendline:** Retail traders go long at the trendline with stops just below. Again — predictable liquidity.
+
+**Bull flag:** Retail traders buy the "breakout" with stops at the bottom of the flag.
+
+In every case, the pattern teaches retail traders to cluster their stops at obvious levels. And IPDA's job is to seek those stops.
+
+:::callout
+THE QUESTION THAT CHANGES EVERYTHING
+Every time you look at a chart, stop asking: "What pattern do I see?" Start asking: **"Where are the retail stops?"** This single shift in thinking will change your trading forever. Where the stops are is where price is going — because that's where the liquidity is.
+:::
+
+## An Example
+
+Imagine NQ has bounced off 18,500 three times over the past week. Retail traders see "strong support" and go long at 18,500 with stops at 18,480.
+
+What happens? IPDA drives price below 18,500, triggering all those sell stops. The sell stops activate as market orders (selling), which provides the liquidity for Smart Money to buy at 18,480. Price then reverses and rockets higher — without the retail longs on board, because they just got stopped out.
+
+The retail trader says: "Support broke, then it came right back. So frustrating."
+
+The Smart Money trader says: "Liquidity swept. Long from 18,480."
+
+Same chart. Completely different understanding.
+
+![diagram](A 'support' level at 18,500 with sell stops clustered below it. Price sweeps below, triggers the stops, then reverses higher. Labels show where retail gets stopped out vs where Smart Money enters long.)
+
+## What This Means for You
+
+You don't need to abandon every retail concept — some of them (like candlestick reading and basic structure) are genuinely useful. But you need to understand that chart patterns are not trading signals. They are maps of where liquidity is being built.
+
+Your edge comes from being on the **same side as the algorithm** — not fighting it by placing your stops where everyone else does.
+
+In Modules 04 through 08, you'll learn exactly how to do this: identify where liquidity sits, anticipate when it will be taken, and position yourself to profit from the move that follows.`
+      }
+    ],
+    quiz: {
+      title: 'Quiz: The Algorithm',
+      passingScore: 80,
+      questions: [
+        { id:'q03-r1', section:'recall', type:'multiple_choice', question:'What does IPDA stand for?', options:['Internal Price Delivery Analysis','Interbank Price Delivery Algorithm','Institutional Price Direction Algorithm','Index Price Data Aggregator'], correctAnswer:1, explanation:'IPDA = Interbank Price Delivery Algorithm — the algorithm that delivers price to financial institutions and banks.' },
+        { id:'q03-r2', section:'recall', type:'multiple_choice', question:'What are the two main targets IPDA seeks?', options:['Support and resistance levels','Moving average crossovers and RSI signals','Liquidity above/below old highs and lows, and areas of inefficient price action','Volume spikes and momentum divergences'], correctAnswer:2, explanation:'IPDA seeks: 1) Liquidity above/below old highs and lows (stop hunts), and 2) Areas of inefficient price action (FVGs and voids to rebalance).' },
+        { id:'q03-r3', section:'recall', type:'multiple_choice', question:'What are the three phases of the AMD cycle in order?', options:['Analysis, Markup, Decline','Accumulation, Manipulation, Distribution','Advance, Maintain, Distribute','Aggregate, Magnify, Deliver'], correctAnswer:1, explanation:'AMD = Accumulation (range-building, liquidity builds), Manipulation (fake move/Judas Swing to trigger stops), Distribution (the real move in the intended direction).' },
+        { id:'q03-r4', section:'recall', type:'multiple_choice', question:'What is the Judas Swing?', options:['The main expansion move of the day','The false move during the manipulation phase that traps retail traders before the real move','A reversal pattern involving three candles','The opening price at midnight'], correctAnswer:1, explanation:'The Judas Swing is the manipulation phase of AMD — a deceptive move in the opposite direction of the intended move, designed to sweep liquidity and trap retail traders.' },
+        { id:'q03-r5', section:'recall', type:'multiple_choice', question:'In the Market Efficiency Paradigm, what role do retail traders primarily play?', options:['They are the smart money','They are market makers','They provide liquidity (willing or unwilling) for institutional positions','They control the algorithm'], correctAnswer:2, explanation:'In the Market Efficiency Paradigm, retail traders are the speculative/uninformed money that provides liquidity — often unwillingly through their stop-loss orders — for Smart Money to fill positions.' },
+        { id:'q03-a1', section:'applied', type:'chart_analysis', question:'Identify the Accumulation, Manipulation, and Distribution phases on this chart.', explanation:'Look for: a consolidation range (Accumulation), a sharp move breaking one side of the range that quickly reverses (Manipulation/Judas Swing), and a strong expansion in the opposite direction (Distribution).' },
+        { id:'q03-a2', section:'applied', type:'chart_analysis', question:'Where did IPDA engineer liquidity before the real move on this chart? Mark the liquidity sweep.', explanation:'Find where price briefly pierced below old lows (sweeping sell stops) or above old highs (sweeping buy stops) before reversing. That\'s where IPDA engineered the liquidity needed for the real move.' },
+        { id:'q03-a3', section:'applied', type:'multiple_choice', question:'NQ has formed a textbook \'double bottom\' at 18,200. Retail traders go long with stops at 18,180. Based on what you\'ve learned about IPDA, what is the algorithm most likely to do before any sustained rally?', options:['Immediately rally because double bottom is a strong bullish signal','Sweep below 18,200 to trigger the sell stops, then reverse higher','Consolidate sideways for several days','Drop through 18,180 and continue much lower'], correctAnswer:1, explanation:'IPDA will likely sweep below the double bottom (18,200) to trigger the clustered sell stops at 18,180. This provides the liquidity for Smart Money to enter long positions. After the sweep, the real move higher begins — but the retail traders who were right about the direction are already stopped out.' }
+      ]
+    }
+  },
+  {
+    number: 4,
+    id: 'time-and-sessions',
+    title: 'Time & Sessions',
+    subtitle: 'It is always TIME then PRICE.',
+    locked: false,
+    lessons: [
+      {
+        id: 'time-is-the-first-variable',
+        title: 'Time is the First Variable',
+        readingTime: 5,
+        globalNum: 16,
+        content: `You now understand structure, you understand the algorithm, and you understand AMD. The next question is: **when does all of this happen?**
+
+The answer is not "randomly throughout the day." IPDA operates on a **schedule.** Specific price behaviors — manipulation, expansion, reversal — occur during specific windows of time. These windows are predictable. And knowing them is what turns a good chart reader into a good trader.
+
+## TIME then PRICE
+
+This is one of the most important principles in the entire ICT framework: **time is the first variable IPDA refers to.** Before the algorithm looks for a price level to target, it checks whether the appropriate time window is active.
+
+What this means practically: even if you've identified the perfect order block at a perfect discount level with a perfect FVG above it — if it's 3:00 PM EST and the trading day is winding down, the setup may not activate. The time window isn't right.
+
+Conversely, during the right time window, IPDA is actively seeking targets. This is when your analysis has the highest probability of playing out.
+
+:::callout
+THE IMPLICATION
+Trading outside of the key time windows dramatically reduces your edge. One of the simplest ways to improve your trading overnight is to stop trading during dead time and only take setups during active killzones.
+:::`
+      },
+      {
+        id: 'the-true-day',
+        title: 'The True Day',
+        readingTime: 5,
+        globalNum: 17,
+        content: `The standard calendar day starts at midnight and ends at midnight. But for IPDA, the **true trading day** is defined differently.
+
+## The IPDA True Day
+
+The algorithm's active daily range runs from **12:00 AM EST (midnight) to 3:00 PM EST.** This 15-hour window is where the vast majority of meaningful price delivery occurs. The period outside this window — from 3:00 PM to midnight — is considered **dead time.** Price action during dead time is less predictable and often just noise.
+
+## The Midnight Opening Price
+
+The price at **12:00 AM EST (midnight New York time)** is the **true daily opening price.** This is not an arbitrary choice — it's the price the algorithm uses as its reference for the day.
+
+Why does this matter? Because of Power of 3 (which you'll learn in Module 08):
+
+- On a **buy day**, price will trade **below** the midnight open (manipulation) before expanding **above** it (distribution)
+- On a **sell day**, price will trade **above** the midnight open (manipulation) before expanding **below** it (distribution)
+
+The midnight open is your anchor. It tells you whether the day's manipulation has already occurred and which side of it you should be trading on.
+
+![diagram](24-hour timeline showing the True Day window from midnight to 3 PM EST, with dead time shaded. The midnight open price is marked with a horizontal line across the chart. Sessions labeled: Asia, London, NY, London Close, Dead Time)
+
+:::callout
+PRACTICAL TIP
+On TradingView, you can draw a horizontal line at the midnight opening price each day. Many traders use an indicator that automatically plots this level. Watching where price is relative to the midnight open gives you immediate context about what phase of the daily AMD cycle you're in.
+:::`
+      },
+      {
+        id: 'killzones',
+        title: 'Killzones',
+        readingTime: 7,
+        globalNum: 18,
+        content: `Killzones are the specific time windows within the True Day where IPDA is most active. These are the times when manipulation, expansion, and reversal are most likely to occur. They are called "killzones" because they are where trades are made — or where traders get killed if they're on the wrong side.
+
+## The Four Killzones (All Times EST)
+
+**Asia Session: 8:00 PM – 12:00 AM**
+This is the consolidation/accumulation phase. Price typically forms a tight range. Liquidity builds above and below the Asian range. You generally **do not trade during Asia** — you observe it to see where the range forms. The Asian range high and low become reference levels for the London and NY sessions.
+
+**London Session: 2:00 AM – 5:00 AM**
+London is where the first major move of the day often occurs. This is frequently the **manipulation phase** — the Judas Swing. London will often sweep one side of the Asian range, triggering stops, before reversing. If you trade FX pairs, London is a primary killzone. For NQ futures, London sets the stage for NY.
+
+**New York Session: 7:00 AM – 10:00 AM**
+This is the primary killzone for NQ futures. The highest volume and largest price moves of the day typically occur here. For intraday NQ traders, this is your session. This is where you execute.
+
+**London Close: 10:00 AM – 12:00 PM**
+London Close often brings a retracement or reversal of the NY session's move. Profit-taking and position squaring by London-based traders create opportunities. This is a secondary killzone — useful but less reliable than the NY open.
+
+## Futures-Specific Timing
+
+For NQ futures, the most important windows are:
+
+:::steps
+1. **AM Session: 8:30 AM – 12:00 PM EST** — Your primary trading window. This includes the cash market open (9:30 AM) and the high-probability 09:50-10:10 macro window.
+2. **PM Session: 1:30 PM – 4:00 PM EST** — Secondary window. Often sees continuation or reversal of the AM session move. Less reliable, more suited for experienced traders.
+:::
+
+![diagram](Horizontal timeline from 8 PM to 4 PM EST with the four killzones color-coded: Asia in blue, London in purple, New York in gold/amber, London Close in gray. The NY AM session highlighted as primary)
+
+:::callout
+THE SIMPLE RULE
+If you only trade NQ during the AM session (8:30 AM – 12:00 PM EST) and sit out the rest of the day, you will catch the majority of the day's best moves while avoiding the majority of the day's traps. Simplicity is an edge.
+:::`
+      },
+      {
+        id: 'session-profiles-and-day-types',
+        title: 'Session Profiles & Day Types',
+        readingTime: 6,
+        globalNum: 19,
+        content: `Not every day behaves the same way, but most days follow one of a few recognizable templates. Understanding these day types helps you anticipate how the session will unfold.
+
+## Classic Buy Day
+
+The daily candle opens near its low and closes near its high. During the session:
+- Asian session consolidates
+- London or early NY sweeps the low (manipulation/Judas Swing)
+- Price reverses and expands higher through the NY session
+- Closes near the high of the day
+
+The midnight open is near the bottom of the candle. Your entry is at or below the midnight open during the manipulation phase.
+
+## Classic Sell Day
+
+The daily candle opens near its high and closes near its low. During the session:
+- Asian session consolidates
+- London or early NY pushes to the high (manipulation/Judas Swing)
+- Price reverses and expands lower through the NY session
+- Closes near the low of the day
+
+The midnight open is near the top of the candle. Your entry is at or above the midnight open during the manipulation phase.
+
+## London Swing to NY Reversal
+
+London makes a strong directional move. NY session reverses it. This is common when London's move was the manipulation phase and NY is the distribution. You'd look to trade the NY reversal after London's move takes out key liquidity.
+
+## Range Day into NY Expansion
+
+Price ranges through Asia and London. The expansion happens during the NY session — often triggered by a news release (8:30 AM data or 10:00 AM data). On these days, the AM session is where the real move starts.
+
+## Consolidation Raid on News Release
+
+Price consolidates ahead of a major news event, then spikes violently in one direction to sweep liquidity before reversing. This is the AMD cycle compressed into a few minutes. Extremely common on CPI, NFP, and FOMC days.
+
+![diagram](Four day-type templates shown as simple OHLC profiles: Classic Buy Day, Classic Sell Day, London Swing to NY Reversal, Range to NY Expansion — each with labeled phases and the midnight open marked)
+
+:::callout
+YOU DON'T NEED TO PREDICT THE DAY TYPE
+You don't need to know in advance whether it's a buy day or sell day. What you need is to recognize which phase you're in as the session unfolds. If the manipulation phase has just occurred (liquidity swept, MSS forming), you know the distribution is next. The day type reveals itself — you just need to read it in real time.
+:::`
+      },
+      {
+        id: 'news-drivers-and-macro-events',
+        title: 'News Drivers & Macro Events',
+        readingTime: 5,
+        globalNum: 20,
+        content: `High-impact economic news events play a specific role in the IPDA framework. Understanding this role will save you from many unnecessary losses.
+
+## News Doesn't Cause the Move
+
+This is counterintuitive, but critical: **news does not cause price to move to a specific level.** IPDA already has its targets — the liquidity pools and FVGs it wants to reach. What news provides is the **volatility and cover** for IPDA to reach those targets quickly.
+
+Think of it this way: IPDA knows it wants to sweep the sell stops below yesterday's low. It could grind there over several hours — or it could use the CPI release at 8:30 AM to get there in 30 seconds. The destination is the same; the news just accelerates the journey.
+
+## Key Economic Events for NQ
+
+These are the high-impact events that affect NQ futures most:
+
+:::steps
+1. **CPI (Consumer Price Index)** — Released monthly, usually at 8:30 AM EST. Major volatility.
+2. **NFP (Non-Farm Payrolls)** — First Friday of each month, 8:30 AM EST. Massive volatility.
+3. **FOMC (Federal Reserve Interest Rate Decision)** — Released 8 times per year, 2:00 PM EST. Typically the highest-volatility event of the month.
+4. **PPI, Retail Sales, GDP** — Other significant releases, usually at 8:30 AM EST.
+5. **Fed Chair Press Conferences** — After FOMC decisions, usually 2:30 PM EST. Can be more impactful than the decision itself.
+:::
+
+## Manual Intervention
+
+During the most significant events — particularly FOMC decisions — **manual intervention** can occur. This is where normal IPDA parameters can be temporarily overridden at the central bank level. Price may move in ways that don't follow the normal algorithmic patterns. This is why FOMC days are dangerous for mechanical trading.
+
+## How to Trade Around News
+
+**Before the release:** Do not enter new positions within 30 minutes of a high-impact release. If you're already in a trade, consider tightening your stop or closing before the event.
+
+**During the release:** The initial spike is almost always the manipulation. Don't chase it. Let the dust settle.
+
+**After the release:** Wait for a clear MSS or liquidity sweep post-news. The real move usually becomes clear within 15-30 minutes after the initial volatility.
+
+:::callout
+WHEN TO SIT OUT ENTIRELY
+There are days when the best trade is no trade. FOMC decision days, NFP days (unless you have significant experience), half-trading days before holidays, and any day where you haven't done your pre-market analysis. Protecting your capital on uncertain days is not cowardice — it's professional.
+:::
+
+## Using the Economic Calendar
+
+Check the economic calendar before every session. We recommend ForexFactory (forexfactory.com/calendar) or TradingView's built-in economic calendar. Filter for **high-impact events** (red flag on ForexFactory) affecting USD. Know what's coming before you open a chart.
+
+With time and sessions covered, you now know WHAT drives price (the algorithm), WHEN it acts (killzones and sessions), and the general template of HOW daily price action unfolds. In Module 05, we dive into the WHERE — the specific price levels where liquidity pools form and IPDA targets them.`
+      }
+    ],
+    quiz: {
+      title: 'Quiz: Time & Sessions',
+      passingScore: 80,
+      questions: [
+        { id:'q04-r1', section:'recall', type:'multiple_choice', question:"What hours define the 'True Day' in New York time?", options:['9:30 AM to 4:00 PM','12:00 AM (midnight) to 3:00 PM','8:00 AM to 5:00 PM','6:00 PM to 6:00 PM'], correctAnswer:1, explanation:'The IPDA True Day runs from 12:00 AM (midnight) to 3:00 PM EST. This is when the algorithm is most actively delivering price.' },
+        { id:'q04-r2', section:'recall', type:'multiple_choice', question:'Which killzone is typically associated with consolidation and range-building?', options:['London','New York','Asia','London Close'], correctAnswer:2, explanation:'The Asian session (8:00 PM – 12:00 AM EST) is typically the consolidation/accumulation phase where the day\'s range is established and liquidity builds.' },
+        { id:'q04-r3', section:'recall', type:'multiple_choice', question:'For NQ futures, what is the primary trading window?', options:['Asian session (8 PM – 12 AM)','London session (2 AM – 5 AM)','AM Session (8:30 AM – 12:00 PM)','PM Session (1:30 PM – 4:00 PM)'], correctAnswer:2, explanation:'The AM Session (8:30 AM – 12:00 PM EST) is the primary killzone for NQ futures. It includes the cash market open and typically produces the day\'s largest, most predictable moves.' },
+        { id:'q04-r4', section:'recall', type:'multiple_choice', question:'What is the midnight opening price used for?', options:['Setting your stop loss','It\'s the reference price for the daily Power of 3 — the anchor for determining buy days vs sell days','Calculating your position size','It has no practical use'], correctAnswer:1, explanation:'The midnight opening price (12:00 AM EST) is the true daily opening price that IPDA references. On buy days, price manipulates below it before expanding above. On sell days, the opposite.' },
+        { id:'q04-r5', section:'recall', type:'multiple_choice', question:"According to ICT, what does 'TIME then PRICE' mean?", options:['Always check the time before checking the price','IPDA first checks if the correct time window is active before seeking price targets','Trade the first 30 minutes of the session','Price is less important than timing your entries'], correctAnswer:1, explanation:'TIME then PRICE means IPDA operates on a schedule — it first checks whether the appropriate time window (killzone) is active, then looks for its price targets (liquidity, FVGs, PD arrays).' },
+        { id:'q04-a1', section:'applied', type:'chart_analysis', question:'Look at this intraday NQ chart with time visible on the x-axis. Which killzone did the main manipulation (Judas Swing) occur in?', explanation:'Check the time axis. If the manipulation occurred between 2-5 AM EST, it was during the London killzone. If 7-10 AM EST, it was during the NY killzone. Identify the time of the false move.' },
+        { id:'q04-a2', section:'applied', type:'multiple_choice', question:"You look at yesterday's daily candle on NQ: it opened near 18,400 (the midnight open), the low was 18,360, the high was 18,550, and it closed at 18,530. Was this a Classic Buy Day or Classic Sell Day?", options:['Classic Buy Day — opened near the low, closed near the high','Classic Sell Day — opened near the high, closed near the low','Neither — this was a range day','Cannot determine from this information'], correctAnswer:0, explanation:'The open (18,400) was much closer to the low (18,360) than the high (18,550), and the close (18,530) was near the high. This is a Classic Buy Day: manipulation swept the low early, then price expanded and closed near the top.' },
+        { id:'q04-a3', section:'applied', type:'multiple_choice', question:'CPI data is releasing tomorrow at 8:30 AM EST. You have a long position from yesterday that\'s currently in profit. What should you consider?', options:['Add to the position before the news for maximum profit','Consider tightening your stop or closing before the release — the initial spike is often manipulation','Switch to a short position','Move your stop loss further away to avoid getting stopped out by volatility'], correctAnswer:1, explanation:'High-impact news creates extreme volatility. The initial spike is often manipulation (the Judas Swing compressed into seconds). Tightening your stop or closing protects your profit. Moving your stop further away exposes you to larger losses. Adding before news is gambling.' }
+      ]
+    }
+  },
+  {
+    number: 5, id: 'liquidity', title: 'Liquidity',
+    subtitle: 'Where are the retail stops?',
+    locked: true, comingSoon: true, lessons: []
+  },
+  {
+    number: 6, id: 'price-delivery-arrays', title: 'Price Delivery Arrays',
+    subtitle: 'These are the footprints of institutional sponsorship.',
+    locked: true, comingSoon: true, lessons: []
+  },
+  {
+    number: 7, id: 'dealing-ranges-and-fair-value', title: 'Dealing Ranges & Fair Value',
+    subtitle: 'Buy at discount. Sell at premium.',
+    locked: true, comingSoon: true, lessons: []
+  },
+  {
+    number: 8, id: 'trade-models', title: 'Trade Models',
+    subtitle: 'You need one model you trust completely.',
+    locked: true, comingSoon: true, lessons: []
+  },
+  {
+    number: 9, id: 'multi-timeframe-analysis', title: 'Multi-Timeframe Analysis',
+    subtitle: 'The HTF is the story. The LTF is the sentence.',
+    locked: true, comingSoon: true, lessons: []
+  },
+  {
+    number: 10, id: 'execution-and-risk-management', title: 'Execution & Risk Management',
+    subtitle: 'The best analysis means nothing without proper execution.',
+    locked: true, comingSoon: true, lessons: []
+  },
+  {
+    number: 11, id: 'trading-psychology-and-discipline', title: 'Trading Psychology & Discipline',
+    subtitle: 'You are the edge and the risk.',
+    locked: true, comingSoon: true, lessons: []
+  },
+  {
+    number: 12, id: 'prop-firm-readiness', title: 'Prop Firm Readiness & Live Trading',
+    subtitle: "Paper trading isn't practice. It's proof.",
+    locked: true, comingSoon: true, lessons: []
   }
 ];
 
+// ─── Markdown Renderer ───
+function renderMarkdown(text) {
+  let html = '';
+  const lines = text.split('\n');
+  let i = 0;
+  let inParagraph = false;
+
+  function closeParagraph() {
+    if (inParagraph) { html += '</p>'; inParagraph = false; }
+  }
+
+  function inlineFormat(str) {
+    // Bold
+    str = str.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+    // Italic
+    str = str.replace(/\*(.+?)\*/g, '<em>$1</em>');
+    return str;
+  }
+
+  while (i < lines.length) {
+    const line = lines[i].trim();
+
+    // Empty line — close paragraph
+    if (line === '') {
+      closeParagraph();
+      i++;
+      continue;
+    }
+
+    // Callout block
+    if (line === ':::callout' || line.startsWith(':::callout')) {
+      closeParagraph();
+      i++;
+      // First line after :::callout is the title
+      let title = '';
+      let body = '';
+      if (i < lines.length) {
+        title = lines[i].trim();
+        i++;
+      }
+      while (i < lines.length && lines[i].trim() !== ':::') {
+        body += (body ? ' ' : '') + lines[i].trim();
+        i++;
+      }
+      if (i < lines.length) i++; // skip closing :::
+      html += `<div class="callout"><div class="callout-label">${title}</div><p>${inlineFormat(body)}</p></div>`;
+      continue;
+    }
+
+    // Steps block
+    if (line === ':::steps' || line.startsWith(':::steps')) {
+      closeParagraph();
+      i++;
+      html += '<div class="steps">';
+      while (i < lines.length && lines[i].trim() !== ':::') {
+        const stepLine = lines[i].trim();
+        if (stepLine === '') { i++; continue; }
+        // Strip leading number + period
+        const stepText = stepLine.replace(/^\d+\.\s*/, '');
+        html += `<div class="step"><div class="step-content"><p>${inlineFormat(stepText)}</p></div></div>`;
+        i++;
+      }
+      if (i < lines.length) i++; // skip closing :::
+      html += '</div>';
+      continue;
+    }
+
+    // Heading h2
+    if (line.startsWith('## ')) {
+      closeParagraph();
+      html += `<h2>${inlineFormat(line.slice(3))}</h2>`;
+      i++;
+      continue;
+    }
+
+    // Heading h3
+    if (line.startsWith('### ')) {
+      closeParagraph();
+      html += `<h3>${inlineFormat(line.slice(4))}</h3>`;
+      i++;
+      continue;
+    }
+
+    // Image/diagram placeholder
+    if (line.startsWith('![diagram](')) {
+      closeParagraph();
+      const desc = line.match(/!\[diagram\]\((.+?)\)/);
+      const caption = desc ? desc[1] : 'Diagram';
+      html += `<div class="img-placeholder">${caption}</div>`;
+      i++;
+      continue;
+    }
+
+    // Unordered list item
+    if (line.startsWith('- ')) {
+      closeParagraph();
+      html += '<ul>';
+      while (i < lines.length && lines[i].trim().startsWith('- ')) {
+        html += `<li>${inlineFormat(lines[i].trim().slice(2))}</li>`;
+        i++;
+      }
+      html += '</ul>';
+      continue;
+    }
+
+    // Regular paragraph line
+    if (!inParagraph) {
+      html += '<p>';
+      inParagraph = true;
+    } else {
+      html += ' ';
+    }
+    html += inlineFormat(line);
+
+    // Peek ahead — if next line is empty or a block element, close paragraph
+    const nextLine = (i + 1 < lines.length) ? lines[i + 1].trim() : '';
+    if (nextLine === '' || nextLine.startsWith('##') || nextLine.startsWith(':::') || nextLine.startsWith('![') || nextLine.startsWith('- ')) {
+      closeParagraph();
+    }
+
+    i++;
+  }
+  closeParagraph();
+  return html;
+}
+
 // ─── State ───
-let currentLesson = { module: 0, lesson: 0 };
+let currentView = { type: 'lesson', module: 0, lesson: 0 };
 let completedLessons = new Set();
 
 // Load saved progress
 try {
-  const saved = localStorage.getItem('dk-curriculum-progress');
+  const saved = localStorage.getItem('dk-curriculum-progress-v2');
   if (saved) completedLessons = new Set(JSON.parse(saved));
-  const savedPos = localStorage.getItem('dk-curriculum-position');
-  if (savedPos) currentLesson = JSON.parse(savedPos);
+  const savedPos = localStorage.getItem('dk-curriculum-position-v2');
+  if (savedPos) currentView = JSON.parse(savedPos);
 } catch(e) {}
 
 function saveProgress() {
   try {
-    localStorage.setItem('dk-curriculum-progress', JSON.stringify([...completedLessons]));
-    localStorage.setItem('dk-curriculum-position', JSON.stringify(currentLesson));
+    localStorage.setItem('dk-curriculum-progress-v2', JSON.stringify([...completedLessons]));
+    localStorage.setItem('dk-curriculum-position-v2', JSON.stringify(currentView));
   } catch(e) {}
 }
 
-// ─── Count total lessons ───
-function getTotalLessons() {
-  return CURRICULUM.reduce((sum, m) => sum + m.lessons.length, 0);
+// ─── Helpers ───
+function getUnlockedModules() {
+  // All non-locked modules are accessible
+  return CURRICULUM.filter(m => !m.locked && !m.comingSoon);
 }
 
-function getLessonId(mi, li) {
-  return CURRICULUM[mi].lessons[li].id;
+function getTotalActiveLessons() {
+  return CURRICULUM.reduce((sum, m) => sum + m.lessons.length, 0);
 }
 
 function getFlatIndex(mi, li) {
@@ -1677,21 +2385,44 @@ function getPositionFromFlat(flat) {
   return { module: 0, lesson: 0 };
 }
 
+function getLastActiveFlatIndex() {
+  let total = 0;
+  for (let mi = 0; mi < CURRICULUM.length; mi++) {
+    total += CURRICULUM[mi].lessons.length;
+  }
+  return total - 1;
+}
+
 // ─── Render Sidebar ───
 function renderSidebar() {
   const nav = document.getElementById('sidebarNav');
   nav.innerHTML = CURRICULUM.map((mod, mi) => {
-    const isOpen = mi === currentLesson.module;
+    const isLocked = mod.locked || mod.comingSoon;
+    const isOpen = !isLocked && mi === currentView.module;
+    const hasLessons = mod.lessons.length > 0;
+
+    if (isLocked) {
+      return `
+        <div class="module-group" data-module="${mi}">
+          <div class="module-header locked">
+            <span class="module-number">${String(mod.number).padStart(2, '0')}</span>
+            <span class="module-title">${mod.title}</span>
+            <svg class="module-lock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          </div>
+        </div>
+      `;
+    }
+
     return `
       <div class="module-group${isOpen ? ' open' : ''}" data-module="${mi}">
         <button class="module-header" onclick="toggleModule(${mi})">
-          <span class="module-number">${String(mi + 1).padStart(2, '0')}</span>
-          <span class="module-title">${mod.module}</span>
+          <span class="module-number">${String(mod.number).padStart(2, '0')}</span>
+          <span class="module-title">${mod.title}</span>
           <svg class="module-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
         </button>
         <div class="module-lessons">
           ${mod.lessons.map((lesson, li) => {
-            const isActive = mi === currentLesson.module && li === currentLesson.lesson;
+            const isActive = currentView.type === 'lesson' && mi === currentView.module && li === currentView.lesson;
             const isCompleted = completedLessons.has(lesson.id);
             return `
               <button class="lesson-item${isActive ? ' active' : ''}${isCompleted ? ' completed' : ''}" onclick="goToLesson(${mi}, ${li})">
@@ -1700,6 +2431,12 @@ function renderSidebar() {
               </button>
             `;
           }).join('')}
+          ${mod.quiz ? `
+            <button class="lesson-item${currentView.type === 'quiz' && mi === currentView.module ? ' active' : ''}${isModulePassed(mod.id) ? ' completed' : ''}" onclick="goToQuiz(${mi})" style="font-style:italic;">
+              <span class="lesson-check"></span>
+              <span class="lesson-label">Module Quiz</span>
+            </button>
+          ` : ''}
         </div>
       </div>
     `;
@@ -1713,29 +2450,42 @@ function toggleModule(mi) {
 
 // ─── Render Content ───
 function renderContent() {
-  const mod = CURRICULUM[currentLesson.module];
-  const lesson = mod.lessons[currentLesson.lesson];
-  const flat = getFlatIndex(currentLesson.module, currentLesson.lesson);
-  const total = getTotalLessons();
+  if (currentView.type === 'quiz') {
+    renderQuizContent(currentView.module);
+  } else {
+    renderLessonContent();
+  }
+}
+
+function renderLessonContent() {
+  const mod = CURRICULUM[currentView.module];
+  if (!mod || mod.locked || mod.comingSoon || !mod.lessons.length) {
+    renderLockedContent(mod);
+    return;
+  }
+  const lesson = mod.lessons[currentView.lesson];
+  if (!lesson) return;
   const isCompleted = completedLessons.has(lesson.id);
+  const flat = getFlatIndex(currentView.module, currentView.lesson);
+  const lastFlat = getLastActiveFlatIndex();
 
   const wrap = document.getElementById('contentWrap');
   wrap.innerHTML = `
     <div class="fade-in">
       <div class="lesson-header">
-        <div class="lesson-breadcrumb">Module ${currentLesson.module + 1} — ${mod.module}</div>
+        <div class="lesson-breadcrumb">Module ${mod.number} — ${mod.title.toUpperCase()}</div>
         <h1 class="lesson-title">${lesson.title}</h1>
         <div class="lesson-meta">
           <span>
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-            ${lesson.time} read
+            ${lesson.readingTime} min read
           </span>
-          <span>Lesson ${flat + 1} of ${total}</span>
+          <span>Lesson ${lesson.globalNum} of ${TOTAL_LESSONS}</span>
         </div>
       </div>
 
       <div class="lesson-body">
-        ${lesson.content}
+        ${renderMarkdown(lesson.content)}
       </div>
 
       <div class="lesson-nav">
@@ -1745,10 +2495,10 @@ function renderContent() {
         </button>` : '<div></div>'}
 
         <button class="complete-btn${isCompleted ? ' is-completed' : ''}" onclick="toggleComplete()">
-          ${isCompleted ? `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg> Completed` : `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/></svg> Mark Complete`}
+          ${isCompleted ? '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg> Completed' : '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/></svg> Mark Complete'}
         </button>
 
-        ${flat < total - 1 ? `<button class="lesson-nav-btn primary" onclick="goToNext()">
+        ${flat < lastFlat ? `<button class="lesson-nav-btn primary" onclick="goToNext()">
           Next
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
         </button>` : '<div></div>'}
@@ -1756,41 +2506,54 @@ function renderContent() {
     </div>
   `;
 
-  // Scroll main content to top
   document.getElementById('mainContent').scrollTo(0, 0);
+}
+
+function renderLockedContent(mod) {
+  const wrap = document.getElementById('contentWrap');
+  wrap.innerHTML = `
+    <div class="fade-in">
+      <div class="locked-content">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        <h2>${mod ? mod.title : 'Locked'}</h2>
+        <p>${mod && mod.subtitle ? mod.subtitle : 'This module is coming soon.'}</p>
+        <p style="margin-top:0.5rem;">Content for this module will be available in a future update.</p>
+      </div>
+    </div>
+  `;
 }
 
 // ─── Update Progress ───
 function updateProgress() {
-  const total = getTotalLessons();
+  const total = getTotalActiveLessons();
   const done = completedLessons.size;
-  const pct = Math.round((done / total) * 100);
+  const pct = total > 0 ? Math.round((done / total) * 100) : 0;
   document.getElementById('progressFill').style.width = pct + '%';
   document.getElementById('progressLabel').textContent = pct + '%';
 }
 
 // ─── Navigation ───
 function goToLesson(mi, li) {
-  currentLesson = { module: mi, lesson: li };
+  currentView = { type: 'lesson', module: mi, lesson: li };
   saveProgress();
   renderSidebar();
   renderContent();
   updateProgress();
-  // Close mobile sidebar
   document.getElementById('sidebar').classList.remove('open');
   document.querySelector('.sidebar-overlay').classList.remove('open');
 }
 
 function goToNext() {
-  const flat = getFlatIndex(currentLesson.module, currentLesson.lesson);
-  if (flat < getTotalLessons() - 1) {
+  const flat = getFlatIndex(currentView.module, currentView.lesson);
+  const lastFlat = getLastActiveFlatIndex();
+  if (flat < lastFlat) {
     const pos = getPositionFromFlat(flat + 1);
     goToLesson(pos.module, pos.lesson);
   }
 }
 
 function goToPrev() {
-  const flat = getFlatIndex(currentLesson.module, currentLesson.lesson);
+  const flat = getFlatIndex(currentView.module, currentView.lesson);
   if (flat > 0) {
     const pos = getPositionFromFlat(flat - 1);
     goToLesson(pos.module, pos.lesson);
@@ -1798,11 +2561,12 @@ function goToPrev() {
 }
 
 function toggleComplete() {
-  const id = getLessonId(currentLesson.module, currentLesson.lesson);
-  if (completedLessons.has(id)) {
-    completedLessons.delete(id);
+  const mod = CURRICULUM[currentView.module];
+  const lesson = mod.lessons[currentView.lesson];
+  if (completedLessons.has(lesson.id)) {
+    completedLessons.delete(lesson.id);
   } else {
-    completedLessons.add(id);
+    completedLessons.add(lesson.id);
   }
   saveProgress();
   renderSidebar();
@@ -1844,6 +2608,181 @@ document.addEventListener('keydown', (e) => {
   if (e.key === 'ArrowLeft' || e.key === 'k') goToPrev();
   if (e.key === 'e') toggleComplete();
 });
+
+// ─── Quiz State ───
+let quizState = {}; // { moduleId: { answers: {qId: answerIndex}, submitted: bool, score: num } }
+try {
+  const savedQuiz = localStorage.getItem('dk-curriculum-quiz-v2');
+  if (savedQuiz) quizState = JSON.parse(savedQuiz);
+} catch(e) {}
+
+function saveQuizState() {
+  try { localStorage.setItem('dk-curriculum-quiz-v2', JSON.stringify(quizState)); } catch(e) {}
+}
+
+function getQuizState(modId) {
+  if (!quizState[modId]) quizState[modId] = { answers: {}, submitted: false, score: 0 };
+  return quizState[modId];
+}
+
+function isModulePassed(modId) {
+  const qs = quizState[modId];
+  return qs && qs.submitted && qs.score >= 80;
+}
+
+// ─── Quiz Rendering ───
+function goToQuiz(mi) {
+  currentView = { type: 'quiz', module: mi, lesson: 0 };
+  saveProgress();
+  renderSidebar();
+  renderQuizContent(mi);
+  updateProgress();
+  document.getElementById('sidebar').classList.remove('open');
+  document.querySelector('.sidebar-overlay').classList.remove('open');
+}
+
+function renderQuizContent(mi) {
+  const mod = CURRICULUM[mi];
+  if (!mod || !mod.quiz) return;
+  const quiz = mod.quiz;
+  const qs = getQuizState(mod.id);
+  const recallQs = quiz.questions.filter(q => q.section === 'recall');
+  const appliedQs = quiz.questions.filter(q => q.section === 'applied');
+  const letters = ['A','B','C','D','E','F'];
+
+  const wrap = document.getElementById('contentWrap');
+  wrap.innerHTML = `
+    <div class="fade-in">
+      <div class="lesson-header">
+        <div class="lesson-breadcrumb">Module ${mod.number} — ${mod.title.toUpperCase()}</div>
+        <h1 class="lesson-title">${quiz.title}</h1>
+        <div class="lesson-meta">
+          <span>Passing score: ${quiz.passingScore}%</span>
+          <span>${quiz.questions.length} questions</span>
+        </div>
+      </div>
+
+      <div class="lesson-body quiz-container" id="quizContainer">
+        ${recallQs.length ? '<div class="quiz-section-label">Recall Questions</div>' : ''}
+        ${recallQs.map((q, qi) => renderQuizQuestion(q, qi, qs, letters, 'R')).join('')}
+
+        ${appliedQs.length ? '<div class="quiz-section-label">Applied Questions</div>' : ''}
+        ${appliedQs.map((q, qi) => renderQuizQuestion(q, qi + recallQs.length, qs, letters, 'A')).join('')}
+
+        <div id="quizActions">
+          ${qs.submitted ? renderQuizResults(mod, qs, quiz) : `<button class="quiz-submit-btn" id="quizSubmitBtn" onclick="submitQuiz(${mi})">Submit Quiz</button>`}
+        </div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="lesson-nav-btn" onclick="goToLesson(${mi}, ${mod.lessons.length - 1})">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+          Back to Lessons
+        </button>
+        <div></div>
+        <div></div>
+      </div>
+    </div>
+  `;
+
+  document.getElementById('mainContent').scrollTo(0, 0);
+}
+
+function renderQuizQuestion(q, idx, qs, letters, prefix) {
+  const answered = qs.answers[q.id] !== undefined;
+  const submitted = qs.submitted;
+
+  if (q.type === 'chart_analysis') {
+    return `
+      <div class="quiz-question">
+        <div class="quiz-question-number">${prefix}${idx + 1}</div>
+        <div class="quiz-question-text">${q.question}</div>
+        <div class="quiz-chart-placeholder">[Chart screenshot will be provided]</div>
+        <textarea class="quiz-open-response" placeholder="Type your analysis here..." ${submitted ? 'disabled' : ''} oninput="quizTextAnswer('${q.id}', this.value)">${qs.answers[q.id] || ''}</textarea>
+        <div class="quiz-explanation ${submitted ? 'visible' : ''}">${q.explanation}</div>
+      </div>
+    `;
+  }
+
+  if (q.type === 'multiple_choice' && q.options) {
+    return `
+      <div class="quiz-question">
+        <div class="quiz-question-number">${prefix}${idx + 1}</div>
+        <div class="quiz-question-text">${q.question}</div>
+        <div class="quiz-options">
+          ${q.options.map((opt, oi) => {
+            let cls = 'quiz-option';
+            if (submitted && oi === q.correctAnswer) cls += ' correct';
+            else if (submitted && qs.answers[q.id] === oi && oi !== q.correctAnswer) cls += ' incorrect';
+            else if (!submitted && qs.answers[q.id] === oi) cls += ' selected';
+            return `<button class="${cls}" onclick="quizSelectAnswer('${q.id}', ${oi}, ${submitted})" ${submitted ? 'disabled' : ''}>
+              <span class="quiz-option-letter">${letters[oi]}</span>
+              <span>${opt}</span>
+            </button>`;
+          }).join('')}
+        </div>
+        <div class="quiz-explanation ${submitted ? 'visible' : ''}">${q.explanation}</div>
+      </div>
+    `;
+  }
+
+  return '';
+}
+
+function renderQuizResults(mod, qs, quiz) {
+  const passed = qs.score >= quiz.passingScore;
+  return `
+    <div class="quiz-results">
+      <div class="quiz-score ${passed ? 'passing' : 'failing'}">${qs.score}%</div>
+      <div class="quiz-results-text">${passed
+        ? 'You passed! The next module is now unlocked.'
+        : `You need ${quiz.passingScore}% to pass. Review the lessons and try again.`}</div>
+      ${!passed ? `<button class="quiz-retry-btn" onclick="retryQuiz(${CURRICULUM.indexOf(mod)})">Retry Quiz</button>` : ''}
+    </div>
+  `;
+}
+
+function quizSelectAnswer(qId, optionIndex, submitted) {
+  if (submitted) return;
+  const mi = currentView.module;
+  const mod = CURRICULUM[mi];
+  const qs = getQuizState(mod.id);
+  qs.answers[qId] = optionIndex;
+  saveQuizState();
+  renderQuizContent(mi);
+}
+
+function quizTextAnswer(qId, value) {
+  const mi = currentView.module;
+  const mod = CURRICULUM[mi];
+  const qs = getQuizState(mod.id);
+  qs.answers[qId] = value;
+  saveQuizState();
+}
+
+function submitQuiz(mi) {
+  const mod = CURRICULUM[mi];
+  const quiz = mod.quiz;
+  const qs = getQuizState(mod.id);
+
+  // Score: only count multiple_choice questions
+  const mcQuestions = quiz.questions.filter(q => q.type === 'multiple_choice' && q.correctAnswer !== undefined);
+  let correct = 0;
+  mcQuestions.forEach(q => {
+    if (qs.answers[q.id] === q.correctAnswer) correct++;
+  });
+  qs.score = mcQuestions.length > 0 ? Math.round((correct / mcQuestions.length) * 100) : 100;
+  qs.submitted = true;
+  saveQuizState();
+  renderQuizContent(mi);
+}
+
+function retryQuiz(mi) {
+  const mod = CURRICULUM[mi];
+  quizState[mod.id] = { answers: {}, submitted: false, score: 0 };
+  saveQuizState();
+  renderQuizContent(mi);
+}
 
 // ─── Init ───
 renderSidebar();
