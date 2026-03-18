@@ -3002,9 +3002,258 @@ You now have every concept you need to read a chart at a professional level. You
     }
   },
   {
-    number: 8, id: 'trade-models', title: 'Trade Models',
-    subtitle: 'You need one model you trust completely.',
-    locked: true, comingSoon: true, lessons: []
+    number: 8,
+    id: 'trade-models',
+    title: 'Trade Models',
+    subtitle: 'You don\'t need 10 strategies. You need one model you trust completely.',
+    locked: false,
+    lessons: [
+      {
+        id: 'power-of-3',
+        title: 'Power of 3 (AMD on the Daily Candle)',
+        readingTime: 6,
+        globalNum: 38,
+        content: `The Power of 3 (Po3) is not a new concept — it's the AMD cycle applied specifically to the daily candle. It gives you a framework for understanding how each trading day unfolds and where to position yourself.
+
+## The Daily Candle as AMD
+
+Every daily candle has an Open, High, Low, and Close. When you map these to the AMD cycle:
+
+**Buy Day:** Open → Low (Manipulation/Judas Swing) → High (Distribution/Expansion) → Close near the high
+- The open is near the bottom of the candle
+- Price drops below the open first (manipulation), then rallies above it (distribution)
+- Close is near the top
+
+**Sell Day:** Open → High (Manipulation/Judas Swing) → Low (Distribution/Expansion) → Close near the low
+- The open is near the top of the candle
+- Price rallies above the open first (manipulation), then drops below it (distribution)
+- Close is near the bottom
+
+## The Midnight Open
+
+The reference price for Po3 is the **midnight New York time (12:00 AM EST) opening price.** This is the "open" in the OHLC of the true day.
+
+Your objective:
+- On a buy day: buy **at or below** the midnight open as the low is being formed
+- On a sell day: sell **at or above** the midnight open as the high is being formed
+
+You are not concerned with predicting the close. Your goal is to capture the **bulk of the expansion move** — the distribution phase.
+
+![diagram](Two OHLC bars side by side: Left = Buy Day showing 12am Open near the bottom, Low just below it, High at the top, Close near the high. Right = Sell Day showing 12am Open near the top, High just above it, Low at the bottom, Close near the low. Manipulation and distribution phases labeled on each.)
+
+:::callout
+HOW TO USE PO3 IN PRACTICE
+Po3 is your daily framework, not a standalone entry signal. It tells you: after midnight, which side of the open is manipulation (the trap) and which side is distribution (the real move). Combine this with killzone timing — the manipulation typically occurs during London or early NY, and the distribution unfolds during the NY session.
+:::`
+      },
+      {
+        id: 'the-judas-swing',
+        title: 'The Judas Swing',
+        readingTime: 5,
+        globalNum: 39,
+        content: `The Judas Swing is the manipulation phase of Po3/AMD — the false move designed to trap retail traders before the real move begins. Understanding it means you'll never get trapped by it again.
+
+## Characteristics of the Judas Swing
+
+The Judas Swing:
+- Occurs **early in the killzone** (London open or early NY)
+- Moves in the **opposite direction** of the day's intended move
+- **Sweeps liquidity** — takes out stops above or below the Asian range or overnight range
+- Creates the appearance of a trend start (retail traders chase it)
+- Then **reverses** as the real distribution begins
+
+## Identifying the Judas Swing in Real-Time
+
+This is the challenge — how do you know you're in the Judas Swing while it's happening, not after?
+
+Clues that the current move is the Judas Swing:
+
+:::steps
+1. **Time:** It's happening during London open (2-5 AM EST) or early NY (7-8:30 AM EST) — classic manipulation windows
+2. **Direction vs. HTF bias:** The move contradicts your HTF analysis. If the daily is bullish but price is dropping at the London open, that drop is likely the Judas.
+3. **Liquidity target reached:** The move sweeps an obvious liquidity pool (the Asian range high/low, yesterday's high/low)
+4. **MSS forms:** After the sweep, you see displacement in the opposite direction with a Market Structure Shift on the LTF
+:::
+
+Once you see points 3 and 4 — liquidity swept and MSS confirmed — the Judas Swing is likely complete and the real move is beginning.
+
+![diagram](Intraday NQ chart showing: Asian range consolidation, London open Judas Swing sweeping below the Asian low (SSL taken), MSS forms with displacement candles, NY session expansion higher. Time labels and killzone windows marked.)
+
+:::callout
+THE JUDAS SWING IS YOUR ENTRY WINDOW
+Most traders fear the Judas Swing because it stops them out. You should love it — because it's the manipulation phase that creates your entry. After the Judas Swing completes (liquidity swept + MSS), the PD arrays it leaves behind are your entry levels for the real move.
+:::`
+      },
+      {
+        id: 'the-silver-bullet-model',
+        title: 'The Silver Bullet Model',
+        readingTime: 6,
+        globalNum: 40,
+        content: `The Silver Bullet is one of the most specific and repeatable intraday models. It's defined by time windows and a simple entry mechanism: a FVG that forms within the window.
+
+## The Three Silver Bullet Windows (EST)
+
+:::steps
+1. **3:00 AM – 4:00 AM** — The London Silver Bullet
+2. **10:00 AM – 11:00 AM** — The NY AM Silver Bullet (most relevant for NQ)
+3. **2:00 PM – 3:00 PM** — The NY PM Silver Bullet
+:::
+
+## The Setup
+
+Within any Silver Bullet window:
+
+:::steps
+1. **Identify your bias** using HTF analysis (dealing range, premium/discount, HTF structure)
+2. **Wait for a FVG to form** within the Silver Bullet time window that aligns with your bias
+3. **Enter on the return to the FVG** — price should retrace back to the FVG after creating it
+4. **Stop loss** below the FVG (for longs) or above the FVG (for shorts)
+5. **Target** the opposing liquidity pool — the nearest untouched BSL or SSL
+:::
+
+## Why the Silver Bullet Works
+
+These specific time windows correspond to moments when IPDA frequently initiates or continues its daily moves. The FVG that forms within the window is the algorithm's footprint — displacement showing you which direction it's committed to.
+
+The beauty of this model is its **simplicity and specificity.** You know exactly when to look (the three windows), exactly what to look for (a FVG), and exactly where to enter (the return to the FVG).
+
+![diagram](NQ 5-minute chart showing the 10:00-11:00 AM Silver Bullet window highlighted. A bearish FVG forms at 10:15 AM. Price creates the FVG during displacement lower, retraces back up to the FVG at 10:30 AM (entry), then continues lower to the SSL target.)
+
+:::callout
+THE 10 AM SILVER BULLET
+For NQ traders, the 10:00-11:00 AM window is the most relevant Silver Bullet. This is when London traders are closing positions, NY volume is strong, and the daily direction is often becoming clear. If you only trade one Silver Bullet window, make it this one.
+:::`
+      },
+      {
+        id: 'the-liquidity-sweep-model',
+        title: 'The Liquidity Sweep Model',
+        readingTime: 7,
+        globalNum: 41,
+        content: `The Liquidity Sweep Model is a multi-timeframe setup that starts with a sweep on the higher timeframe and drills down to the lower timeframe for a precise entry.
+
+## Step 1: Spot a Valid Liquidity Sweep on the HTF
+
+On your 1H or 15m chart, look for a **single-candle liquidity sweep:**
+- Price sweeps above BSL (or below SSL) with a single candle
+- The candle wicks through the liquidity level and closes back on the opposite side
+- This is IPDA collecting the fuel it needs for the reversal
+
+Critical validation: **the next candle must NOT exceed the sweep candle's extreme.** If price continues through, it's a breakout — not a sweep.
+
+## Step 2: Drop to the LTF and Wait for CHoCH
+
+Switch to the 5m or 1m chart and wait for a **Change of Character** — the first break of a swing point against the direction of the sweep. This confirms that the LTF structure is shifting in favor of the reversal.
+
+## Step 3: Identify Entry Level
+
+After the CHoCH, look for:
+- The **order block** that caused the CHoCH — the last candle in the old direction before the shift
+- A **FVG** that formed during the displacement of the CHoCH
+- Or combine them: treat the FVG and OB as a single entry zone and enter at the midpoint
+
+## Step 4: Set Stop Loss and Target
+
+**Stop loss:** Below the order block (for longs) or above it (for shorts). Add a small buffer for spread.
+
+**Target:** The nearest opposing liquidity pool. For a bullish setup (after an SSL sweep), target the BSL above. For bearish (after a BSL sweep), target the SSL below.
+
+![diagram](Three-panel sequence: Panel 1 (HTF): single-candle sweep of SSL below old lows. Panel 2 (LTF): CHoCH forms with displacement, FVG and OB are visible. Panel 3 (LTF): entry at the OB/FVG, stop below OB, target at BSL above. Labels: 'HTF Sweep → LTF CHoCH → Entry on PD Array.')
+
+:::callout
+THIS IS THE CORE MODEL
+If you master one model from this entire curriculum, make it this one. The Liquidity Sweep Model combines every concept you've learned: HTF liquidity identification, LTF structure confirmation, PD array entry, and clear risk management. It's the highest-probability setup in the framework.
+:::`
+      },
+      {
+        id: 'the-0950-1010-macro',
+        title: 'The 09:50–10:10 Macro',
+        readingTime: 5,
+        globalNum: 42,
+        content: `The 09:50-10:10 AM EST window is a specific NQ phenomenon where the algorithm frequently initiates the day's primary move.
+
+## Why This Window Matters
+
+The cash market opens at 9:30 AM EST. The first 20 minutes (9:30-9:50) are often **pure manipulation** — the algorithm uses the opening volatility to sweep liquidity and trap traders. Retail traders who enter on the "opening move" are frequently the ones providing liquidity.
+
+At approximately 9:50 AM, the manipulation phase often ends and the **real displacement** begins. By 10:10 AM, the algorithm's intended direction for the session is usually visible.
+
+## What to Watch For
+
+During the 09:50-10:10 window, look for:
+
+:::steps
+1. **A FVG forming** — displacement that creates a fair value gap in the direction of your HTF bias
+2. **An order block reaction** — price touching a key OB level and showing displacement away from it
+3. **A liquidity sweep completing** — the 9:30-9:50 move takes liquidity, and the 9:50+ move reverses
+4. **An MSS** — the first Market Structure Shift on the 5m chart after 9:50
+:::
+
+![diagram](NQ 5-minute chart showing: 9:30 AM open with volatile manipulation candles from 9:30-9:50, then a clear directional move starting at 9:50 with displacement candles and a FVG forming. The 09:50-10:10 window is highlighted. Labels show 'Manipulation' for 9:30-9:50 and 'Distribution begins' at 9:50.)
+
+:::callout
+COMBINE WITH YOUR BIAS
+The 09:50-10:10 window isn't a standalone signal. It tells you WHEN to pay attention — but your HTF analysis tells you WHICH DIRECTION. If your daily analysis says bullish and the 9:30-9:50 move sweeps sellside liquidity, then a bullish MSS at 9:50 confirms your thesis perfectly. That's your entry.
+:::`
+      },
+      {
+        id: 'choosing-your-model',
+        title: 'Choosing Your Model',
+        readingTime: 6,
+        globalNum: 43,
+        content: `You now know four trade models: Power of 3 / Judas Swing, Silver Bullet, Liquidity Sweep, and the 09:50-10:10 Macro. You do not trade all of them. You pick one — maybe two — and master them.
+
+## Why Specialize?
+
+Every model has different characteristics: entry timing, average hold time, number of trades per day, and emotional demands. Trying to trade all of them leads to confusion, overtrading, and inconsistency.
+
+The traders who make money consistently aren't the ones with the most tools. They're the ones who've mastered one tool so deeply that they can execute it without hesitation.
+
+## Matching Model to Personality
+
+This is what makes the KIANI approach different. We don't just teach concepts — we help you find the model that fits how your brain works.
+
+**If you're patient and methodical:** The Liquidity Sweep Model. It requires waiting for a HTF setup, dropping to the LTF for confirmation, and executing with clear structure. Fewer trades, higher quality.
+
+**If you like specific routines and time-based triggers:** The Silver Bullet. You know exactly when to sit down (the three windows), what to look for (a FVG), and when to walk away. Very structured, very repeatable.
+
+**If you prefer the opening session and are comfortable with fast-paced action:** The 09:50-10:10 Macro. Requires focus during a specific 20-minute window and the ability to act quickly on displacement.
+
+**If you're a big-picture thinker:** Power of 3 / Judas Swing. This model uses the daily bias framework to position before or during the manipulation phase, then holds through the expansion. Longer holds, bigger moves.
+
+:::callout
+THE KIANI DIFFERENTIATOR
+During your coaching calls, we'll work with you individually to determine which model fits your personality, risk tolerance, and schedule. This isn't one-size-fits-all. A model that works perfectly for one trader might be completely wrong for another — not because the model is flawed, but because the trader's psychology doesn't match it.
+:::
+
+## The Process from Here
+
+:::steps
+1. **Paper trade each model for at least 5 sessions** to feel how it works in practice
+2. **Journal your experience** — not just the P&L, but how you felt. Were you comfortable waiting? Did you feel rushed? Were you second-guessing entries?
+3. **Choose one primary model** based on which one felt the most natural and produced the most consistent execution
+4. **Master it** — take 50+ trades with this single model in paper trading before going live
+5. **Only then** consider adding a secondary model for different market conditions
+:::
+
+You now have everything you need to identify setups and take trades. Modules 09-12 will teach you how to analyze across timeframes, manage risk, handle the psychology of live trading, and prepare for prop firm evaluations. The concepts are done — now we refine the execution.`
+      }
+    ],
+    quiz: {
+      title: 'Quiz: Trade Models',
+      passingScore: 80,
+      questions: [
+        { id:'q08-r1', section:'recall', type:'multiple_choice', question:'What is the reference price for the Power of 3 concept?', options:['The previous day\'s close','The midnight New York time (12:00 AM EST) opening price','The 9:30 AM cash market open','The Asian session high'], correctAnswer:1, explanation:'The Power of 3 uses the midnight (12:00 AM EST) opening price as the day\'s reference. On buy days, manipulation goes below this level; distribution goes above it.' },
+        { id:'q08-r2', section:'recall', type:'multiple_choice', question:'What is the Judas Swing?', options:['The main expansion move of the day','A reversal pattern involving three candles','The false manipulation move early in the session that moves opposite the day\'s intended direction, sweeping liquidity before the real move','The closing price of the daily candle'], correctAnswer:2, explanation:'The Judas Swing is the manipulation phase — a deceptive move opposite the real direction, designed to sweep liquidity and trap retail traders. It typically occurs during London open or early NY.' },
+        { id:'q08-r3', section:'recall', type:'multiple_choice', question:'What are the three Silver Bullet time windows (EST)?', options:['8:00-9:00 AM, 12:00-1:00 PM, 3:00-4:00 PM','3:00-4:00 AM, 10:00-11:00 AM, 2:00-3:00 PM','9:30-10:00 AM, 11:00-12:00 PM, 1:00-2:00 PM','6:00-7:00 AM, 9:00-10:00 AM, 1:00-2:00 PM'], correctAnswer:1, explanation:'The three Silver Bullet windows are 3:00-4:00 AM (London), 10:00-11:00 AM (NY AM — most relevant for NQ), and 2:00-3:00 PM (NY PM). Look for FVGs forming within these windows.' },
+        { id:'q08-r4', section:'recall', type:'multiple_choice', question:'After identifying a liquidity sweep on the HTF, what do you look for on the LTF?', options:['A moving average crossover','A Change of Character (CHoCH) confirming the LTF structure is shifting in favor of the reversal','A double bottom or double top pattern','Volume exceeding the 20-period average'], correctAnswer:1, explanation:'After a HTF liquidity sweep, drop to the LTF and wait for a CHoCH — the first break of structure against the direction of the sweep. This confirms the reversal is underway and provides your entry framework (OB or FVG from the CHoCH).' },
+        { id:'q08-r5', section:'recall', type:'multiple_choice', question:'What typically happens during the 9:30-9:50 AM period on NQ, and what changes around 9:50?', options:['Price consolidates from 9:30-9:50, then consolidates more after 9:50','The 9:30-9:50 period is often manipulation (the algorithm sweeps liquidity with opening volatility), and around 9:50 the real directional move frequently begins','Nothing significant — all times are equal','The market closes at 9:50 and reopens later'], correctAnswer:1, explanation:'The first 20 minutes after the cash open (9:30-9:50) are frequently manipulation — the algorithm uses opening volatility to sweep stops. Around 9:50, the real displacement often begins, making 09:50-10:10 a key window for the day\'s intended move.' },
+        { id:'q08-r6', section:'recall', type:'multiple_choice', question:'Should you trade every model or specialize in one?', options:['Trade all models simultaneously for maximum opportunities','Specialize in one primary model that matches your personality and schedule','Only trade the Silver Bullet, ignore everything else','Alternate between models randomly each day'], correctAnswer:1, explanation:'Specialize. Each model has different timing, hold duration, and psychological demands. Master one model with 50+ paper trades before considering a second. Consistency comes from depth, not breadth.' },
+        { id:'q08-a1', section:'applied', type:'chart_analysis', question:'Identify the Power of 3 phases on this daily NQ chart. Was this a buy day or sell day? Where was the midnight open relative to the high, low, and close?', explanation:'Find the midnight opening price. If the open is near the low and close is near the high = buy day (manipulation below open, distribution above). If open is near the high and close is near the low = sell day.' },
+        { id:'q08-a2', section:'applied', type:'chart_analysis', question:'Is there a valid Silver Bullet setup in this chart? Check the time window, identify the FVG, and determine if the return entry was available.', explanation:'Verify: 1) Did the FVG form within a Silver Bullet window (3-4 AM, 10-11 AM, or 2-3 PM EST)? 2) Does it align with HTF bias? 3) Did price retrace to the FVG after creating it? If all three = valid Silver Bullet setup.' },
+        { id:'q08-a3', section:'applied', type:'chart_analysis', question:'On this HTF chart, has a valid liquidity sweep occurred? Mark the sweep. What would you look for on the LTF to confirm your entry?', explanation:'Identify the single-candle sweep (wick through old high/low that closes back). On the LTF, you\'d look for a CHoCH with displacement, then enter on the OB or FVG left behind. Stop below/above the OB, target the opposing liquidity pool.' },
+        { id:'q08-a4', section:'applied', type:'open_response', question:'Based on your personality, daily schedule, and what you\'ve learned about each trade model, which model appeals to you most and why? There is no wrong answer — this is about self-awareness.', explanation:'This is a reflection question. Consider: Do you prefer patience or quick decisions? Do you have specific hours available? Are you more comfortable with time-based rules (Silver Bullet) or structural analysis (Liquidity Sweep)? Your honest answer guides your development path.' }
+      ]
+    }
   },
   {
     number: 9, id: 'multi-timeframe-analysis', title: 'Multi-Timeframe Analysis',
