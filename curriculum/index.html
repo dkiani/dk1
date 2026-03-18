@@ -203,6 +203,15 @@
     background: var(--item-hover);
   }
 
+  .module-header.locked {
+    cursor: default;
+    opacity: 0.4;
+  }
+
+  .module-header.locked:hover {
+    background: none;
+  }
+
   .module-number {
     font-size: 10px;
     color: var(--muted);
@@ -213,6 +222,13 @@
     font-size: 12px;
     font-weight: 500;
     flex: 1;
+  }
+
+  .module-lock-icon {
+    width: 12px;
+    height: 12px;
+    color: var(--muted);
+    flex-shrink: 0;
   }
 
   .module-chevron {
@@ -234,7 +250,7 @@
   }
 
   .module-group.open .module-lessons {
-    max-height: 500px;
+    max-height: 800px;
   }
 
   .lesson-item {
@@ -570,6 +586,8 @@
     color: var(--muted);
     font-size: 12px;
     background: var(--code-bg);
+    text-align: center;
+    padding: 1rem;
   }
 
   /* Video embed */
@@ -680,6 +698,277 @@
 
   .complete-btn.is-completed {
     opacity: 0.6;
+  }
+
+  /* ─── Quiz Styles ─── */
+  .quiz-container {
+    margin-top: 2rem;
+  }
+
+  .quiz-section-label {
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--center-fill);
+    margin: 2rem 0 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .quiz-question {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 1.25rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .quiz-question-text {
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 1.7;
+    color: var(--fg);
+    margin-bottom: 1rem;
+  }
+
+  .quiz-question-number {
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+
+  .quiz-options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .quiz-option {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+    font-family: var(--font);
+    font-size: 12px;
+    font-weight: 300;
+    color: var(--accent);
+    background: none;
+    width: 100%;
+    text-align: left;
+    line-height: 1.6;
+  }
+
+  .quiz-option:hover {
+    border-color: var(--accent);
+    background: var(--item-hover);
+  }
+
+  .quiz-option.selected {
+    border-color: var(--center-fill);
+    background: var(--item-hover);
+    color: var(--fg);
+  }
+
+  .quiz-option.correct {
+    border-color: var(--check-fill);
+    background: var(--check-bg);
+  }
+
+  .quiz-option.incorrect {
+    border-color: #ef4444;
+    background: rgba(239, 68, 68, 0.08);
+  }
+
+  .quiz-option-letter {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--muted);
+    margin-top: 1px;
+  }
+
+  .quiz-option.selected .quiz-option-letter {
+    border-color: var(--center-fill);
+    color: var(--center-fill);
+  }
+
+  .quiz-option.correct .quiz-option-letter {
+    border-color: var(--check-fill);
+    color: var(--check-fill);
+    background: var(--check-bg);
+  }
+
+  .quiz-option.incorrect .quiz-option-letter {
+    border-color: #ef4444;
+    color: #ef4444;
+  }
+
+  .quiz-explanation {
+    margin-top: 0.75rem;
+    padding: 0.75rem 1rem;
+    background: var(--item-hover);
+    border-radius: 3px;
+    font-size: 12px;
+    font-weight: 300;
+    line-height: 1.7;
+    color: var(--accent);
+    display: none;
+  }
+
+  .quiz-explanation.visible {
+    display: block;
+  }
+
+  .quiz-chart-placeholder {
+    width: 100%;
+    height: 200px;
+    border: 1px dashed var(--border);
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--muted);
+    font-size: 12px;
+    background: var(--code-bg);
+    margin-bottom: 1rem;
+  }
+
+  .quiz-open-response {
+    width: 100%;
+    min-height: 80px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 0.75rem 1rem;
+    font-family: var(--font);
+    font-size: 12px;
+    font-weight: 300;
+    color: var(--fg);
+    resize: vertical;
+    line-height: 1.7;
+  }
+
+  .quiz-open-response:focus {
+    outline: none;
+    border-color: var(--center-fill);
+  }
+
+  .quiz-submit-btn {
+    font-family: var(--font);
+    font-size: 12px;
+    font-weight: 400;
+    background: var(--center-fill);
+    color: #fff;
+    border: 1px solid var(--center-fill);
+    border-radius: 3px;
+    padding: 0.75rem 1.5rem;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    margin-top: 1.5rem;
+  }
+
+  .quiz-submit-btn:hover {
+    opacity: 0.9;
+  }
+
+  .quiz-submit-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  .quiz-results {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 1.5rem;
+    margin-top: 1.5rem;
+    text-align: center;
+  }
+
+  .quiz-score {
+    font-size: 32px;
+    font-weight: 500;
+    color: var(--fg);
+    margin-bottom: 0.5rem;
+  }
+
+  .quiz-score.passing {
+    color: var(--check-fill);
+  }
+
+  .quiz-score.failing {
+    color: #ef4444;
+  }
+
+  .quiz-results-text {
+    font-size: 13px;
+    font-weight: 300;
+    color: var(--accent);
+    line-height: 1.7;
+  }
+
+  .quiz-retry-btn {
+    font-family: var(--font);
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--accent);
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 0.6rem 1rem;
+    cursor: pointer;
+    transition: color 0.2s, border-color 0.2s;
+    margin-top: 1rem;
+  }
+
+  .quiz-retry-btn:hover {
+    color: var(--hover);
+    border-color: var(--accent);
+  }
+
+  /* ─── Locked Module Page ─── */
+  .locked-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 40vh;
+    text-align: center;
+    color: var(--muted);
+  }
+
+  .locked-content svg {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 1.5rem;
+    opacity: 0.3;
+  }
+
+  .locked-content h2 {
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--fg);
+    margin-bottom: 0.75rem;
+  }
+
+  .locked-content p {
+    font-size: 13px;
+    font-weight: 300;
+    line-height: 1.7;
+    color: var(--muted);
+    max-width: 400px;
   }
 
   /* ─── Mobile Hamburger ─── */
@@ -861,994 +1150,11 @@
 
 <script>
 // ─── Curriculum Data ───
-const CURRICULUM = [
-  {
-    module: 'Getting Started',
-    lessons: [
-      {
-        id: 'welcome',
-        title: 'Welcome to the Program',
-        time: '3 min',
-        content: `
-          <p>Welcome. If you're reading this, you've already taken the most important step — you showed up.</p>
-          <p>This curriculum is designed to take you from <strong>zero to your first funded prop firm account</strong>. Every module builds on the last. Don't skip ahead. Trust the process.</p>
-
-          <h2>What You'll Learn</h2>
-          <ul>
-            <li>How to set up a professional trading environment</li>
-            <li>How to read price action and understand market structure</li>
-            <li>How to use custom indicators to identify high-probability setups</li>
-            <li>How to manage risk and protect your capital</li>
-            <li>How to pass a prop firm challenge and get funded</li>
-          </ul>
-
-          <h2>How This Works</h2>
-          <p>Each lesson is short and actionable. Read it, do it, mark it complete. The progress bar tracks your journey — aim for 100%.</p>
-
-          <div class="callout">
-            <div class="callout-label">Important</div>
-            <p>This is not a get-rich-quick scheme. Trading is a skill that takes time to develop. The students who succeed are the ones who show up consistently and follow the system.</p>
-          </div>
-
-          <h2>Support</h2>
-          <p>If you get stuck at any point, reach out in the community. You're not doing this alone.</p>
-        `
-      },
-      {
-        id: 'expectations',
-        title: 'Setting Expectations',
-        time: '4 min',
-        content: `
-          <p>Before we get into charts and indicators, let's get your mindset right. This is the part most people skip — and it's the reason most people fail.</p>
-
-          <h2>The Reality of Trading</h2>
-          <p>Here's the truth: <strong>most traders lose money</strong>. Not because trading is impossible, but because they approach it like gambling instead of treating it like a business.</p>
-          <p>You are going to treat this differently. You'll follow a system. You'll manage risk. You'll journal your trades. You'll be patient.</p>
-
-          <h2>Your Commitment</h2>
-          <ul>
-            <li><strong>Time:</strong> Dedicate at least 1-2 hours per day to learning and practice</li>
-            <li><strong>Paper trading:</strong> You will NOT trade real money until you're consistently profitable on paper</li>
-            <li><strong>Journaling:</strong> Every trade gets logged — winners and losers</li>
-            <li><strong>Patience:</strong> The market will always be there. There is no rush.</li>
-          </ul>
-
-          <div class="callout warning">
-            <div class="callout-label">Warning</div>
-            <p>If you're looking to "make quick money," stop here. This program is for people who want to build a real, sustainable skill. The results come, but only with the work.</p>
-          </div>
-
-          <h2>Your Timeline</h2>
-          <p>A realistic timeline to getting funded:</p>
-          <ul>
-            <li><strong>Weeks 1-2:</strong> Setup and education (you are here)</li>
-            <li><strong>Weeks 3-6:</strong> Paper trading and building consistency</li>
-            <li><strong>Weeks 7-8:</strong> Prop firm challenge attempt</li>
-          </ul>
-          <p>Some will move faster, some slower. The timeline doesn't matter — the consistency does.</p>
-        `
-      }
-    ]
-  },
-  {
-    module: 'TradingView Setup',
-    lessons: [
-      {
-        id: 'tradingview-account',
-        title: 'Creating Your TradingView Account',
-        time: '5 min',
-        content: `
-          <p>TradingView is where you'll spend most of your time. It's the charting platform we use for analysis, alerts, and executing our strategy. Let's get you set up properly.</p>
-
-          <h2>Step-by-Step Setup</h2>
-          <div class="steps">
-            <div class="step">
-              <div class="step-content">
-                <p>Go to <a href="https://tradingview.com" target="_blank" rel="noopener">tradingview.com</a> and click <strong>"Get started for free"</strong></p>
-                <p>Create your account using Google or email — either works.</p>
-              </div>
-            </div>
-            <div class="step">
-              <div class="step-content">
-                <p>Choose the <strong>Essential</strong> plan (or higher). The free plan limits you to 2 indicators per chart, which won't be enough.</p>
-                <div class="callout info">
-                  <div class="callout-label">Tip</div>
-                  <p>TradingView often runs sales. If you can wait, Black Friday deals are typically 60% off. Otherwise, Essential is ~$13/month and well worth it.</p>
-                </div>
-              </div>
-            </div>
-            <div class="step">
-              <div class="step-content">
-                <p>Once you're in, navigate to the <strong>Chart</strong> page. This is your workspace — get familiar with it.</p>
-              </div>
-            </div>
-          </div>
-
-          <h2>Recommended Settings</h2>
-          <p>Once you're on the chart, configure these settings:</p>
-          <ul>
-            <li>Right-click the chart → <strong>Settings</strong> → Background → set to <strong>solid black</strong> (#000000)</li>
-            <li>Symbol → Body: set up candle to <strong>green</strong> and down candle to <strong>red</strong></li>
-            <li>Under Scales → disable "Countdown to bar close" (it's distracting)</li>
-            <li>Under Trading → uncheck "Show positions" if you don't want clutter</li>
-          </ul>
-
-          <div class="img-placeholder">[ Screenshot: TradingView chart settings — coming soon ]</div>
-        `
-      },
-      {
-        id: 'chart-layout',
-        title: 'Configuring Your Chart Layout',
-        time: '6 min',
-        content: `
-          <p>Your chart layout matters more than you think. A clean, organized workspace helps you make better decisions. Here's how to set it up.</p>
-
-          <h2>The Default Layout</h2>
-          <p>We'll use a <strong>single chart view</strong> to start. Multi-chart layouts are useful later, but for now, focus on one timeframe at a time.</p>
-
-          <h2>Timeframes</h2>
-          <p>Add these timeframes to your favorites (click the timeframe dropdown → star them):</p>
-          <ul>
-            <li><strong>1 minute (1m)</strong> — for entry timing</li>
-            <li><strong>5 minute (5m)</strong> — primary execution timeframe</li>
-            <li><strong>15 minute (15m)</strong> — for context and structure</li>
-            <li><strong>1 hour (1H)</strong> — for higher-timeframe bias</li>
-            <li><strong>4 hour (4H)</strong> — for daily direction</li>
-            <li><strong>Daily (1D)</strong> — for weekly/monthly levels</li>
-          </ul>
-
-          <div class="callout">
-            <div class="callout-label">Key Concept</div>
-            <p>Higher timeframes set the direction. Lower timeframes give you the entry. We always work <strong>top-down</strong> — start from the daily, work your way down to the 5m for entries.</p>
-          </div>
-
-          <h2>Saving Your Layout</h2>
-          <div class="steps">
-            <div class="step">
-              <div class="step-content">
-                <p>Once your chart looks clean, go to the top-right menu and click <strong>"Save layout"</strong></p>
-              </div>
-            </div>
-            <div class="step">
-              <div class="step-content">
-                <p>Name it something like <strong>"Main Trading"</strong> — this becomes your default workspace.</p>
-              </div>
-            </div>
-            <div class="step">
-              <div class="step-content">
-                <p>Enable <strong>"Auto-save"</strong> so your layout persists across sessions.</p>
-              </div>
-            </div>
-          </div>
-
-          <h2>Symbols to Watch</h2>
-          <p>Add these to your watchlist to start:</p>
-          <ul>
-            <li><strong>NQ1!</strong> — Nasdaq 100 Futures (our primary instrument)</li>
-            <li><strong>ES1!</strong> — S&P 500 Futures</li>
-            <li><strong>DXY</strong> — US Dollar Index (for correlation)</li>
-            <li><strong>US10Y</strong> — 10-Year Treasury Yield</li>
-          </ul>
-          <p>We'll focus primarily on <strong>NQ</strong> (Nasdaq futures) for our strategy.</p>
-        `
-      }
-    ]
-  },
-  {
-    module: 'Installing Indicators',
-    lessons: [
-      {
-        id: 'indicator-overview',
-        title: 'Understanding the Indicator Suite',
-        time: '4 min',
-        content: `
-          <p>Indicators are tools — not crystal balls. They help you <em>confirm</em> what price action is already telling you. We use a specific set of custom indicators that work together as a system.</p>
-
-          <h2>The Indicators We Use</h2>
-          <p>Our system uses a combination of custom-built indicators that work together:</p>
-          <ul>
-            <li><strong>Trend Engine</strong> — identifies the current market trend direction and strength</li>
-            <li><strong>Signal Ribbon</strong> — generates entry/exit signals based on momentum shifts</li>
-            <li><strong>Volume Profile</strong> — shows where the most trading activity is concentrated</li>
-            <li><strong>Kill Zones</strong> — highlights optimal trading sessions and time-based levels</li>
-          </ul>
-
-          <div class="callout info">
-            <div class="callout-label">Note</div>
-            <p>These indicators are included with your program enrollment. If you haven't purchased them yet, visit the <a href="/ready/indicators">indicators page</a> to get access.</p>
-          </div>
-
-          <h2>Why Custom Indicators?</h2>
-          <p>TradingView has thousands of free indicators. Most of them are noise. Our indicators are built specifically for the strategy you'll learn in this program. They're designed to:</p>
-          <ul>
-            <li>Filter out false signals</li>
-            <li>Work across multiple timeframes</li>
-            <li>Give you clear, actionable information</li>
-            <li>Remove guesswork from entries and exits</li>
-          </ul>
-          <p>You don't need to understand the code behind them. You just need to know how to read them — which we'll cover in the next lessons.</p>
-        `
-      },
-      {
-        id: 'installing-indicators',
-        title: 'Installing Indicators on TradingView',
-        time: '5 min',
-        content: `
-          <p>Let's get the indicators loaded onto your chart. This process takes about 2 minutes once you have access.</p>
-
-          <h2>Installation Steps</h2>
-          <div class="steps">
-            <div class="step">
-              <div class="step-content">
-                <p>Open your TradingView chart and click the <strong>"Indicators"</strong> button at the top (or press <code>/</code> on your keyboard).</p>
-              </div>
-            </div>
-            <div class="step">
-              <div class="step-content">
-                <p>Click the <strong>"Invite-only scripts"</strong> tab. You should see the indicators listed here once access has been granted to your TradingView username.</p>
-                <div class="callout warning">
-                  <div class="callout-label">Don't see them?</div>
-                  <p>Make sure you provided the correct TradingView username during checkout. Access is granted within 24 hours. If it's been longer, reach out for support.</p>
-                </div>
-              </div>
-            </div>
-            <div class="step">
-              <div class="step-content">
-                <p>Click each indicator to add it to your chart. Add them in this order:</p>
-                <ol>
-                  <li>Trend Engine (add first — this goes on the main chart)</li>
-                  <li>Signal Ribbon (main chart overlay)</li>
-                  <li>Volume Profile (separate pane below)</li>
-                  <li>Kill Zones (main chart overlay)</li>
-                </ol>
-              </div>
-            </div>
-            <div class="step">
-              <div class="step-content">
-                <p><strong>Save your layout</strong> after adding all indicators. This ensures they persist every time you open TradingView.</p>
-              </div>
-            </div>
-          </div>
-
-          <h2>Verifying the Setup</h2>
-          <p>Your chart should now show:</p>
-          <ul>
-            <li>Colored candles or zones from the Trend Engine</li>
-            <li>Entry arrows or dots from the Signal Ribbon</li>
-            <li>A volume histogram in a separate pane below the chart</li>
-            <li>Time-based shaded zones from Kill Zones</li>
-          </ul>
-
-          <div class="img-placeholder">[ Screenshot: Complete chart with all indicators loaded — coming soon ]</div>
-
-          <p>If everything looks right, you're ready to move on. If something looks off, double-check that each indicator is enabled and on the correct pane.</p>
-        `
-      }
-    ]
-  },
-  {
-    module: 'Reading Charts',
-    lessons: [
-      {
-        id: 'candlestick-basics',
-        title: 'Candlestick Basics',
-        time: '6 min',
-        content: `
-          <p>Before you can trade, you need to understand what you're looking at. Candlesticks are the language of the market. Let's learn to read them.</p>
-
-          <h2>Anatomy of a Candlestick</h2>
-          <p>Every candlestick tells you four things:</p>
-          <ul>
-            <li><strong>Open</strong> — where the price started for that time period</li>
-            <li><strong>High</strong> — the highest price reached</li>
-            <li><strong>Low</strong> — the lowest price reached</li>
-            <li><strong>Close</strong> — where the price ended</li>
-          </ul>
-
-          <p>The thick part is called the <strong>body</strong>. The thin lines above and below are called <strong>wicks</strong> (or shadows).</p>
-
-          <ul>
-            <li><strong>Green candle</strong> = Close is higher than Open (bullish / price went up)</li>
-            <li><strong>Red candle</strong> = Close is lower than Open (bearish / price went down)</li>
-          </ul>
-
-          <div class="img-placeholder">[ Diagram: Anatomy of bullish vs bearish candlestick — coming soon ]</div>
-
-          <h2>What Wicks Tell You</h2>
-          <p>Wicks are <em>rejection</em>. A long wick means price tried to go somewhere but got pushed back.</p>
-          <ul>
-            <li><strong>Long upper wick</strong> — sellers pushed price back down (bearish rejection)</li>
-            <li><strong>Long lower wick</strong> — buyers pushed price back up (bullish rejection)</li>
-            <li><strong>No/small wicks</strong> — strong conviction in the direction of the candle</li>
-          </ul>
-
-          <div class="callout">
-            <div class="callout-label">Key Insight</div>
-            <p>A candle with a big body and no wicks shows <strong>strength</strong>. A candle with a small body and long wicks shows <strong>indecision</strong>. Learn to see the difference.</p>
-          </div>
-
-          <h2>Important Candle Patterns</h2>
-          <p>You don't need to memorize 50 patterns. Focus on these three:</p>
-          <ul>
-            <li><strong>Engulfing</strong> — a candle that completely covers the previous one. Shows a shift in control.</li>
-            <li><strong>Pin bar / Hammer</strong> — small body, long wick in one direction. Shows rejection at a level.</li>
-            <li><strong>Doji</strong> — open and close are nearly the same. Shows pure indecision.</li>
-          </ul>
-          <p>We'll see how these patterns play into our strategy in later modules.</p>
-        `
-      },
-      {
-        id: 'support-resistance',
-        title: 'Support & Resistance',
-        time: '7 min',
-        content: `
-          <p>Support and resistance are the most fundamental concepts in trading. If you understand nothing else, understand this: <strong>price respects levels</strong>.</p>
-
-          <h2>What is Support?</h2>
-          <p>Support is a price level where buying pressure has historically been strong enough to stop price from falling further. Think of it as a <strong>floor</strong>.</p>
-          <p>When price approaches a support level, buyers step in, demand increases, and price bounces.</p>
-
-          <h2>What is Resistance?</h2>
-          <p>Resistance is a price level where selling pressure has historically been strong enough to stop price from rising further. Think of it as a <strong>ceiling</strong>.</p>
-          <p>When price approaches a resistance level, sellers step in, supply increases, and price drops.</p>
-
-          <div class="callout">
-            <div class="callout-label">The Golden Rule</div>
-            <p>When support breaks, it becomes resistance. When resistance breaks, it becomes support. This is called a <strong>flip</strong> — and it's one of the most reliable patterns in all of trading.</p>
-          </div>
-
-          <h2>How to Draw Levels</h2>
-          <div class="steps">
-            <div class="step">
-              <div class="step-content">
-                <p>Zoom out to the <strong>Daily or 4H</strong> timeframe. You want to see the big picture.</p>
-              </div>
-            </div>
-            <div class="step">
-              <div class="step-content">
-                <p>Look for areas where price has <strong>bounced multiple times</strong>. The more touches, the stronger the level.</p>
-              </div>
-            </div>
-            <div class="step">
-              <div class="step-content">
-                <p>Draw a <strong>horizontal line</strong> at these areas. Use the Ray tool in TradingView (shortcut: <code>Alt+H</code>).</p>
-              </div>
-            </div>
-            <div class="step">
-              <div class="step-content">
-                <p>Think of levels as <strong>zones, not exact prices</strong>. Use a range rather than a single line. Price rarely respects an exact number.</p>
-              </div>
-            </div>
-          </div>
-
-          <div class="img-placeholder">[ Screenshot: Chart with support/resistance levels marked — coming soon ]</div>
-
-          <h2>Key Levels for NQ</h2>
-          <p>For Nasdaq futures, pay special attention to:</p>
-          <ul>
-            <li><strong>Round numbers</strong> (e.g., 18,000 / 18,500 / 19,000) — psychological levels</li>
-            <li><strong>Previous day high/low</strong> — major intraday levels</li>
-            <li><strong>Weekly open</strong> — often acts as a magnet for price</li>
-            <li><strong>Prior session's value area</strong> — where 70% of volume traded</li>
-          </ul>
-        `
-      },
-      {
-        id: 'market-structure',
-        title: 'Market Structure & Trend',
-        time: '8 min',
-        content: `
-          <p>Market structure is the backbone of everything we do. It tells you who's in control — buyers or sellers — and where the market is likely to go next.</p>
-
-          <h2>Higher Highs & Higher Lows (Uptrend)</h2>
-          <p>An uptrend is defined by a series of <strong>higher highs (HH)</strong> and <strong>higher lows (HL)</strong>. Each swing high is higher than the last, and each pullback holds above the previous low.</p>
-          <p>In an uptrend, we look for <strong>long (buy) entries</strong> at pullbacks to higher lows.</p>
-
-          <h2>Lower Highs & Lower Lows (Downtrend)</h2>
-          <p>A downtrend is defined by a series of <strong>lower highs (LH)</strong> and <strong>lower lows (LL)</strong>. Each swing high is lower than the last, and each bounce fails to reach the previous high.</p>
-          <p>In a downtrend, we look for <strong>short (sell) entries</strong> at pullbacks to lower highs.</p>
-
-          <div class="callout">
-            <div class="callout-label">The #1 Rule</div>
-            <p><strong>Trade with the trend.</strong> You can fight the trend and occasionally win, but the odds are always against you. Our strategy is simple: identify the trend on the higher timeframe, then find entries on the lower timeframe in that direction.</p>
-          </div>
-
-          <h2>Break of Structure (BOS)</h2>
-          <p>A <strong>break of structure</strong> happens when price breaks a previous swing high (in an uptrend) or swing low (in a downtrend). This confirms the trend is continuing.</p>
-
-          <h2>Change of Character (CHoCH)</h2>
-          <p>A <strong>change of character</strong> happens when price breaks the <em>opposite</em> swing point. For example, in an uptrend, if price breaks below the most recent higher low, that's a CHoCH — a potential signal that the trend is reversing.</p>
-
-          <div class="img-placeholder">[ Diagram: BOS vs CHoCH illustration — coming soon ]</div>
-
-          <h2>Putting It Together</h2>
-          <ol>
-            <li>Check the <strong>4H/Daily</strong> for overall trend direction</li>
-            <li>On the <strong>15m/5m</strong>, identify the local market structure</li>
-            <li>Wait for structure to align with your higher-timeframe bias</li>
-            <li>Enter on confirmed structure (BOS) with proper risk management</li>
-          </ol>
-          <p>This is the foundation. Everything else — indicators, entries, exits — layers on top of this core understanding.</p>
-        `
-      }
-    ]
-  },
-  {
-    module: 'Trading Terminology',
-    lessons: [
-      {
-        id: 'key-terms',
-        title: 'Essential Terms You Need to Know',
-        time: '5 min',
-        content: `
-          <p>Trading has its own language. Here's a no-fluff glossary of the terms you'll encounter throughout this program and in the trading community.</p>
-
-          <h2>Market Terms</h2>
-          <ul>
-            <li><strong>Bull / Bullish</strong> — expecting price to go up</li>
-            <li><strong>Bear / Bearish</strong> — expecting price to go down</li>
-            <li><strong>Long</strong> — buying, profiting when price goes up</li>
-            <li><strong>Short</strong> — selling, profiting when price goes down</li>
-            <li><strong>Liquidity</strong> — the ability to buy/sell without significantly affecting price</li>
-            <li><strong>Volatility</strong> — how much price moves in a given period</li>
-            <li><strong>Spread</strong> — the difference between the bid and ask price</li>
-            <li><strong>Slippage</strong> — the difference between expected entry price and actual fill price</li>
-          </ul>
-
-          <h2>Order Types</h2>
-          <ul>
-            <li><strong>Market order</strong> — buy/sell immediately at current price</li>
-            <li><strong>Limit order</strong> — buy/sell at a specific price or better</li>
-            <li><strong>Stop loss (SL)</strong> — an order to exit at a loss if price moves against you</li>
-            <li><strong>Take profit (TP)</strong> — an order to exit at a profit when price hits your target</li>
-            <li><strong>Stop limit</strong> — a combination: triggers a limit order when price hits a certain level</li>
-          </ul>
-
-          <h2>Risk & Position</h2>
-          <ul>
-            <li><strong>Risk-to-reward (R:R)</strong> — the ratio of potential loss to potential gain (e.g., 1:3 means risking $1 to make $3)</li>
-            <li><strong>Position size</strong> — how many contracts/shares you're trading</li>
-            <li><strong>Drawdown</strong> — the decline from a peak in your account balance</li>
-            <li><strong>Equity</strong> — your total account value including open positions</li>
-            <li><strong>Margin</strong> — the collateral required to hold a position</li>
-          </ul>
-
-          <h2>Session Terms</h2>
-          <ul>
-            <li><strong>Pre-market</strong> — trading activity before the official market open (before 9:30 AM ET)</li>
-            <li><strong>Regular Trading Hours (RTH)</strong> — 9:30 AM - 4:00 PM ET</li>
-            <li><strong>After-hours</strong> — trading after 4:00 PM ET</li>
-            <li><strong>Kill zone</strong> — specific time windows where high-probability setups occur (London open, NY open, etc.)</li>
-            <li><strong>Session high/low</strong> — the highest/lowest price during a specific session</li>
-          </ul>
-
-          <div class="callout info">
-            <div class="callout-label">Bookmark This</div>
-            <p>You don't need to memorize all of this right now. Come back to this lesson whenever you encounter a term you're unsure about.</p>
-          </div>
-        `
-      }
-    ]
-  },
-  {
-    module: 'Risk Management',
-    lessons: [
-      {
-        id: 'risk-fundamentals',
-        title: 'The Only Thing That Matters',
-        time: '6 min',
-        content: `
-          <p>You can have the best strategy in the world and still blow your account if you don't manage risk. <strong>Risk management is not optional.</strong> It's the single most important skill in trading.</p>
-
-          <h2>The 1% Rule</h2>
-          <p>Never risk more than <strong>1% of your account</strong> on a single trade. Period.</p>
-          <p>If you have a $100,000 prop firm account, your maximum loss per trade is $1,000. This means:</p>
-          <ul>
-            <li>If your stop loss is 20 points on NQ, you trade 1 contract ($20/point × 50 points max loss = $1,000)</li>
-            <li>If your stop loss is 10 points, you can trade 2 contracts</li>
-            <li>The tighter the stop, the more contracts you can trade — but never exceed 1% total risk</li>
-          </ul>
-
-          <div class="callout">
-            <div class="callout-label">Why 1%?</div>
-            <p>At 1% risk per trade, you'd need <strong>100 consecutive losing trades</strong> to blow your account. That's nearly impossible with a real strategy. At 5% risk, you only need 20. At 10%, just 10. The math is simple — smaller risk = longer survival = more opportunities to win.</p>
-          </div>
-
-          <h2>Risk-to-Reward Ratio</h2>
-          <p>Every trade should have a minimum <strong>1:2 risk-to-reward ratio</strong>. This means for every $1 you risk, you target at least $2 in profit.</p>
-          <p>Why? Because with a 1:2 R:R, you only need to win <strong>34% of your trades</strong> to be profitable. Even a coin flip (50%) makes you money at 1:2.</p>
-
-          <h2>The Math That Changes Everything</h2>
-          <p>Let's say you take 100 trades at 1% risk with a 1:2 R:R and a 45% win rate:</p>
-          <ul>
-            <li>45 winning trades × 2% gain = +90%</li>
-            <li>55 losing trades × 1% loss = -55%</li>
-            <li><strong>Net gain: +35%</strong> on your account</li>
-          </ul>
-          <p>You lose more often than you win — and you still make 35%. That's the power of risk management.</p>
-
-          <h2>Rules to Live By</h2>
-          <ol>
-            <li><strong>Always set a stop loss</strong> before entering a trade. No exceptions.</li>
-            <li><strong>Never move your stop loss further away</strong> from your entry. If it hits, it hits.</li>
-            <li><strong>Never average down</strong> on a losing position.</li>
-            <li><strong>Max 3 trades per day.</strong> If all 3 hit stop loss, you're done for the day.</li>
-            <li><strong>Max 3% daily drawdown.</strong> If you lose 3% of your account in a day, stop trading.</li>
-          </ol>
-
-          <div class="callout warning">
-            <div class="callout-label">Non-Negotiable</div>
-            <p>These rules exist to protect you from yourself. Your worst enemy in trading isn't the market — it's your own emotions. Follow the rules even when you don't want to. <em>Especially</em> when you don't want to.</p>
-          </div>
-        `
-      }
-    ]
-  },
-  {
-    module: 'Prop Firm Setup',
-    lessons: [
-      {
-        id: 'what-are-prop-firms',
-        title: 'What Are Prop Firms?',
-        time: '5 min',
-        content: `
-          <p>A proprietary trading firm (prop firm) gives you capital to trade in exchange for a share of the profits. Instead of risking your own money, you trade with theirs.</p>
-
-          <h2>How It Works</h2>
-          <div class="steps">
-            <div class="step">
-              <div class="step-content">
-                <p><strong>Buy a challenge.</strong> You pay a fee (typically $100-$500 depending on account size) to attempt a trading evaluation.</p>
-              </div>
-            </div>
-            <div class="step">
-              <div class="step-content">
-                <p><strong>Pass the evaluation.</strong> You need to hit a profit target (usually 8-10%) while staying within drawdown limits (usually 5-10% max drawdown).</p>
-              </div>
-            </div>
-            <div class="step">
-              <div class="step-content">
-                <p><strong>Get funded.</strong> Once you pass, you receive a funded account with real capital. Trade it, and keep 80-90% of the profits.</p>
-              </div>
-            </div>
-          </div>
-
-          <h2>Why Prop Firms?</h2>
-          <ul>
-            <li><strong>Low barrier to entry</strong> — you don't need $100K+ of your own capital</li>
-            <li><strong>Limited risk</strong> — your maximum loss is the challenge fee</li>
-            <li><strong>Scalable</strong> — you can have multiple funded accounts simultaneously</li>
-            <li><strong>Profit splits</strong> — most firms offer 80/20 or 90/10 in your favor</li>
-          </ul>
-
-          <div class="callout">
-            <div class="callout-label">The Real Opportunity</div>
-            <p>With a $150K funded account at 90/10 profit split, a 5% monthly return = $6,750/month in your pocket. And you can stack multiple accounts. This is why we focus on prop firms — the leverage is unmatched.</p>
-          </div>
-
-          <h2>Recommended Firms</h2>
-          <p>The prop firm space changes quickly, but here are the ones I recommend at the time of writing:</p>
-          <ul>
-            <li><strong>Topstep</strong> — one of the most established, great for futures trading</li>
-            <li><strong>Apex Trader Funding</strong> — popular for their frequent sales and generous rules</li>
-            <li><strong>FTMO</strong> — industry standard for forex, also supports indices</li>
-          </ul>
-
-          <div class="callout info">
-            <div class="callout-label">Start Small</div>
-            <p>Start with the smallest account size for your first challenge ($50K or less). Passing a smaller challenge builds confidence and costs less if you fail. You can always scale up after your first funded account.</p>
-          </div>
-        `
-      },
-      {
-        id: 'passing-the-challenge',
-        title: 'Strategy for Passing the Challenge',
-        time: '7 min',
-        content: `
-          <p>Passing a prop firm challenge isn't about being aggressive — it's about being consistent. Here's the approach that works.</p>
-
-          <h2>Understand the Rules</h2>
-          <p>Every prop firm has specific rules. Before you start, know these numbers cold:</p>
-          <ul>
-            <li><strong>Profit target</strong> — how much you need to make (e.g., 8% of account)</li>
-            <li><strong>Max daily drawdown</strong> — how much you can lose in a single day (e.g., 2-3%)</li>
-            <li><strong>Max total drawdown</strong> — how much you can lose overall (e.g., 5-6%)</li>
-            <li><strong>Minimum trading days</strong> — how many days you must trade (e.g., 5-10)</li>
-            <li><strong>Time limit</strong> — how long you have to pass (e.g., 30-60 days)</li>
-          </ul>
-
-          <h2>The Slow and Steady Approach</h2>
-          <p>Here's how to approach a $100K account with an 8% profit target ($8,000) and 5% max drawdown ($5,000):</p>
-
-          <div class="steps">
-            <div class="step">
-              <div class="step-content">
-                <p><strong>Target 0.5% per day.</strong> That's $500/day on a $100K account. At 0.5%/day, you hit 8% in 16 trading days.</p>
-              </div>
-            </div>
-            <div class="step">
-              <div class="step-content">
-                <p><strong>Risk 0.5% per trade.</strong> This gives you room for 10 consecutive losing trades before hitting max drawdown. That's a massive safety buffer.</p>
-              </div>
-            </div>
-            <div class="step">
-              <div class="step-content">
-                <p><strong>Take 1-2 trades per day maximum.</strong> Quality over quantity. One good trade is all you need.</p>
-              </div>
-            </div>
-            <div class="step">
-              <div class="step-content">
-                <p><strong>Trade only during kill zones.</strong> London open (3-5 AM ET) or New York open (9:30-11 AM ET). These are when the best setups appear.</p>
-              </div>
-            </div>
-          </div>
-
-          <div class="callout">
-            <div class="callout-label">Mindset Shift</div>
-            <p>You're not trying to get rich on the challenge. You're trying to <strong>pass</strong>. Trade like a robot. Follow the system. Hit your daily target and walk away. The real money comes after you're funded.</p>
-          </div>
-
-          <h2>Common Mistakes</h2>
-          <ul>
-            <li><strong>Overtrading</strong> — taking too many trades to "make up" for losses</li>
-            <li><strong>Moving stop losses</strong> — hoping a losing trade will turn around</li>
-            <li><strong>Trading on tilt</strong> — making emotional decisions after a loss</li>
-            <li><strong>Ignoring kill zones</strong> — trading during low-volume choppy hours</li>
-            <li><strong>Going for home runs</strong> — trying to hit the profit target in one trade</li>
-          </ul>
-          <p>If you catch yourself doing any of these, <strong>close your laptop and walk away</strong>. There's always tomorrow.</p>
-        `
-      }
-    ]
-  },
-  {
-    module: 'Your First Trade',
-    lessons: [
-      {
-        id: 'pre-trade-checklist',
-        title: 'The Pre-Trade Checklist',
-        time: '4 min',
-        content: `
-          <p>Before every single trade, you will run through this checklist. No checklist, no trade. Pin this somewhere you can see it.</p>
-
-          <h2>The Checklist</h2>
-          <ol>
-            <li><strong>What is the higher-timeframe trend?</strong> (4H/Daily — bullish or bearish?)</li>
-            <li><strong>Am I in a kill zone?</strong> (London open or NY open?)</li>
-            <li><strong>Is there a key level nearby?</strong> (Support, resistance, previous day high/low?)</li>
-            <li><strong>What does the Trend Engine say?</strong> (Confirm it aligns with your bias)</li>
-            <li><strong>Is there a Signal Ribbon entry?</strong> (Wait for confirmation, don't front-run)</li>
-            <li><strong>Where is my stop loss?</strong> (Below/above the recent structure)</li>
-            <li><strong>Where is my take profit?</strong> (Minimum 1:2 R:R)</li>
-            <li><strong>What is my position size?</strong> (Max 1% account risk)</li>
-          </ol>
-
-          <div class="callout">
-            <div class="callout-label">All 8 Must Check Out</div>
-            <p>If any single item on this checklist doesn't have a clear answer, <strong>do not take the trade</strong>. The best trade is often no trade. Wait for the setup that checks every box.</p>
-          </div>
-
-          <h2>Before the Session</h2>
-          <p>Before you even look at a chart for the day:</p>
-          <ul>
-            <li>Check the <strong>economic calendar</strong> — are there any high-impact news events? (FOMC, CPI, NFP, etc.) If yes, consider sitting out.</li>
-            <li>Mark your <strong>key levels</strong> on the 4H/Daily chart</li>
-            <li>Note yesterday's <strong>high, low, and close</strong></li>
-            <li>Identify the <strong>current trend direction</strong></li>
-          </ul>
-          <p>This prep takes 5 minutes and sets you up for the entire session.</p>
-        `
-      },
-      {
-        id: 'executing-a-trade',
-        title: 'Executing Your First Paper Trade',
-        time: '6 min',
-        content: `
-          <p>It's time. You've set up your chart, learned the concepts, and have your checklist ready. Let's walk through executing your first trade — on paper.</p>
-
-          <div class="callout warning">
-            <div class="callout-label">Paper Trading Only</div>
-            <p>Do NOT trade real money or start a prop firm challenge yet. You will paper trade for at least 2 weeks before risking any capital. This is non-negotiable.</p>
-          </div>
-
-          <h2>Setting Up Paper Trading</h2>
-          <div class="steps">
-            <div class="step">
-              <div class="step-content">
-                <p>On TradingView, click the <strong>"Trading Panel"</strong> at the bottom of the chart.</p>
-              </div>
-            </div>
-            <div class="step">
-              <div class="step-content">
-                <p>Select <strong>"Paper Trading"</strong> from the broker dropdown. TradingView has a built-in paper trading simulator.</p>
-              </div>
-            </div>
-            <div class="step">
-              <div class="step-content">
-                <p>Set your starting balance to match the prop firm account you plan to trade (e.g., $100,000).</p>
-              </div>
-            </div>
-          </div>
-
-          <h2>Taking the Trade</h2>
-          <p>Let's say your checklist confirmed a <strong>long setup on NQ</strong> during the New York open:</p>
-
-          <div class="steps">
-            <div class="step">
-              <div class="step-content">
-                <p><strong>Identify entry.</strong> The Signal Ribbon shows a buy signal at a key support level. The Trend Engine confirms bullish.</p>
-              </div>
-            </div>
-            <div class="step">
-              <div class="step-content">
-                <p><strong>Set stop loss.</strong> Place it below the recent swing low — let's say 15 points below entry.</p>
-              </div>
-            </div>
-            <div class="step">
-              <div class="step-content">
-                <p><strong>Set take profit.</strong> Target the next resistance level or 2x your risk — 30 points above entry (1:2 R:R).</p>
-              </div>
-            </div>
-            <div class="step">
-              <div class="step-content">
-                <p><strong>Calculate position size.</strong> 1% of $100K = $1,000 max risk. At $20/point on NQ and 15-point stop = $300 risk per contract. You can trade 3 contracts ($900 total risk, under $1,000).</p>
-              </div>
-            </div>
-            <div class="step">
-              <div class="step-content">
-                <p><strong>Enter the trade.</strong> Click Buy, set your SL and TP, confirm the order.</p>
-              </div>
-            </div>
-            <div class="step">
-              <div class="step-content">
-                <p><strong>Walk away.</strong> Do not stare at the chart. Your SL and TP are set. Let the trade play out.</p>
-              </div>
-            </div>
-          </div>
-
-          <h2>After the Trade</h2>
-          <p>Win or lose, <strong>journal the trade</strong>. Record:</p>
-          <ul>
-            <li>Date and time</li>
-            <li>Instrument (e.g., NQ)</li>
-            <li>Direction (long/short)</li>
-            <li>Entry price</li>
-            <li>Stop loss and take profit levels</li>
-            <li>Result (win/loss, dollar amount)</li>
-            <li>Screenshot of the chart</li>
-            <li>What you did well</li>
-            <li>What you could improve</li>
-          </ul>
-
-          <div class="callout">
-            <div class="callout-label">The Goal</div>
-            <p>Your goal for the next 2 weeks: take 1-2 paper trades per day following the checklist. Track your win rate and average R:R. When you're consistently hitting 40%+ win rate with 1:2+ R:R, you're ready for the challenge.</p>
-          </div>
-
-          <p>Congratulations — you now have everything you need to start. The rest is execution, repetition, and discipline. Trust the process. You've got this.</p>
-        `
-      }
-    ]
-  }
-];
-
-// ─── State ───
-let currentLesson = { module: 0, lesson: 0 };
-let completedLessons = new Set();
-
-// Load saved progress
-try {
-  const saved = localStorage.getItem('dk-curriculum-progress');
-  if (saved) completedLessons = new Set(JSON.parse(saved));
-  const savedPos = localStorage.getItem('dk-curriculum-position');
-  if (savedPos) currentLesson = JSON.parse(savedPos);
-} catch(e) {}
-
-function saveProgress() {
-  try {
-    localStorage.setItem('dk-curriculum-progress', JSON.stringify([...completedLessons]));
-    localStorage.setItem('dk-curriculum-position', JSON.stringify(currentLesson));
-  } catch(e) {}
-}
-
-// ─── Count total lessons ───
-function getTotalLessons() {
-  return CURRICULUM.reduce((sum, m) => sum + m.lessons.length, 0);
-}
-
-function getLessonId(mi, li) {
-  return CURRICULUM[mi].lessons[li].id;
-}
-
-function getFlatIndex(mi, li) {
-  let idx = 0;
-  for (let i = 0; i < mi; i++) idx += CURRICULUM[i].lessons.length;
-  return idx + li;
-}
-
-function getPositionFromFlat(flat) {
-  let count = 0;
-  for (let mi = 0; mi < CURRICULUM.length; mi++) {
-    for (let li = 0; li < CURRICULUM[mi].lessons.length; li++) {
-      if (count === flat) return { module: mi, lesson: li };
-      count++;
-    }
-  }
-  return { module: 0, lesson: 0 };
-}
-
-// ─── Render Sidebar ───
-function renderSidebar() {
-  const nav = document.getElementById('sidebarNav');
-  nav.innerHTML = CURRICULUM.map((mod, mi) => {
-    const isOpen = mi === currentLesson.module;
-    return `
-      <div class="module-group${isOpen ? ' open' : ''}" data-module="${mi}">
-        <button class="module-header" onclick="toggleModule(${mi})">
-          <span class="module-number">${String(mi + 1).padStart(2, '0')}</span>
-          <span class="module-title">${mod.module}</span>
-          <svg class="module-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
-        </button>
-        <div class="module-lessons">
-          ${mod.lessons.map((lesson, li) => {
-            const isActive = mi === currentLesson.module && li === currentLesson.lesson;
-            const isCompleted = completedLessons.has(lesson.id);
-            return `
-              <button class="lesson-item${isActive ? ' active' : ''}${isCompleted ? ' completed' : ''}" onclick="goToLesson(${mi}, ${li})">
-                <span class="lesson-check"></span>
-                <span class="lesson-label">${lesson.title}</span>
-              </button>
-            `;
-          }).join('')}
-        </div>
-      </div>
-    `;
-  }).join('');
-}
-
-function toggleModule(mi) {
-  const group = document.querySelector(`.module-group[data-module="${mi}"]`);
-  if (group) group.classList.toggle('open');
-}
-
-// ─── Render Content ───
-function renderContent() {
-  const mod = CURRICULUM[currentLesson.module];
-  const lesson = mod.lessons[currentLesson.lesson];
-  const flat = getFlatIndex(currentLesson.module, currentLesson.lesson);
-  const total = getTotalLessons();
-  const isCompleted = completedLessons.has(lesson.id);
-
-  const wrap = document.getElementById('contentWrap');
-  wrap.innerHTML = `
-    <div class="fade-in">
-      <div class="lesson-header">
-        <div class="lesson-breadcrumb">Module ${currentLesson.module + 1} — ${mod.module}</div>
-        <h1 class="lesson-title">${lesson.title}</h1>
-        <div class="lesson-meta">
-          <span>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-            ${lesson.time} read
-          </span>
-          <span>Lesson ${flat + 1} of ${total}</span>
-        </div>
-      </div>
-
-      <div class="lesson-body">
-        ${lesson.content}
-      </div>
-
-      <div class="lesson-nav">
-        ${flat > 0 ? `<button class="lesson-nav-btn" onclick="goToPrev()">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
-          Previous
-        </button>` : '<div></div>'}
-
-        <button class="complete-btn${isCompleted ? ' is-completed' : ''}" onclick="toggleComplete()">
-          ${isCompleted ? `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg> Completed` : `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/></svg> Mark Complete`}
-        </button>
-
-        ${flat < total - 1 ? `<button class="lesson-nav-btn primary" onclick="goToNext()">
-          Next
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
-        </button>` : '<div></div>'}
-      </div>
-    </div>
-  `;
-
-  // Scroll main content to top
-  document.getElementById('mainContent').scrollTo(0, 0);
-}
-
-// ─── Update Progress ───
-function updateProgress() {
-  const total = getTotalLessons();
-  const done = completedLessons.size;
-  const pct = Math.round((done / total) * 100);
-  document.getElementById('progressFill').style.width = pct + '%';
-  document.getElementById('progressLabel').textContent = pct + '%';
-}
-
-// ─── Navigation ───
-function goToLesson(mi, li) {
-  currentLesson = { module: mi, lesson: li };
-  saveProgress();
-  renderSidebar();
-  renderContent();
-  updateProgress();
-  // Close mobile sidebar
-  document.getElementById('sidebar').classList.remove('open');
-  document.querySelector('.sidebar-overlay').classList.remove('open');
-}
-
-function goToNext() {
-  const flat = getFlatIndex(currentLesson.module, currentLesson.lesson);
-  if (flat < getTotalLessons() - 1) {
-    const pos = getPositionFromFlat(flat + 1);
-    goToLesson(pos.module, pos.lesson);
-  }
-}
-
-function goToPrev() {
-  const flat = getFlatIndex(currentLesson.module, currentLesson.lesson);
-  if (flat > 0) {
-    const pos = getPositionFromFlat(flat - 1);
-    goToLesson(pos.module, pos.lesson);
-  }
-}
-
-function toggleComplete() {
-  const id = getLessonId(currentLesson.module, currentLesson.lesson);
-  if (completedLessons.has(id)) {
-    completedLessons.delete(id);
-  } else {
-    completedLessons.add(id);
-  }
-  saveProgress();
-  renderSidebar();
-  renderContent();
-  updateProgress();
-}
-
-// ─── Mobile Sidebar ───
-function toggleSidebar() {
-  document.getElementById('sidebar').classList.toggle('open');
-  document.querySelector('.sidebar-overlay').classList.toggle('open');
-}
-
-// ─── Theme Toggle ───
-function toggleTheme() {
-  const html = document.documentElement;
-  const current = html.getAttribute('data-theme');
-  const next = current === 'dark' ? 'light' : 'dark';
-  html.setAttribute('data-theme', next);
-  document.getElementById('themeColor').setAttribute('content', next === 'dark' ? '#0a0a0a' : '#f0ede8');
-  document.getElementById('themeBtn').textContent = next === 'dark' ? 'Light' : 'Dark';
-  try { localStorage.setItem('dk-curriculum-theme', next); } catch(e) {}
-}
-
-// Load saved theme
-try {
-  const savedTheme = localStorage.getItem('dk-curriculum-theme');
-  if (savedTheme) {
-    document.documentElement.setAttribute('data-theme', savedTheme);
-    document.getElementById('themeColor').setAttribute('content', savedTheme === 'dark' ? '#0a0a0a' : '#f0ede8');
-    document.getElementById('themeBtn').textContent = savedTheme === 'dark' ? 'Light' : 'Dark';
-  }
-} catch(e) {}
-
-// ─── Keyboard Nav ───
-document.addEventListener('keydown', (e) => {
-  if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
-  if (e.key === 'ArrowRight' || e.key === 'j') goToNext();
-  if (e.key === 'ArrowLeft' || e.key === 'k') goToPrev();
-  if (e.key === 'e') toggleComplete();
-});
-
-// ─── Init ───
-renderSidebar();
-renderContent();
-updateProgress();
+// Will be populated in next commit
+const CURRICULUM = [];
+
+// ─── Placeholder init ───
+document.getElementById('contentWrap').innerHTML = '<div class="fade-in" style="text-align:center;padding-top:20vh;color:var(--muted);font-size:13px;">Loading curriculum...</div>';
 </script>
 </body>
 </html>
