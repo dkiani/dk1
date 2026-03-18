@@ -1456,7 +1456,21 @@ We're teaching you the standard vocabulary here so you understand what most trad
 You now have the foundation. You can read a candle, understand what timeframes show you, and speak the basic language of trading. In Module 02, we build on this with the most important skill in all of trading: reading market structure.`
       }
     ],
-    quiz: null // Quiz will be added in Step 4
+    quiz: {
+      title: 'Quiz: The Foundation',
+      passingScore: 80,
+      questions: [
+        { id:'q01-r1', section:'recall', type:'multiple_choice', question:'What are the four data points recorded by every candlestick?', options:['Open, High, Low, Close','Bid, Ask, Volume, Time','Support, Resistance, Trend, Range','Entry, Stop, Target, Result'], correctAnswer:0, explanation:'Every candlestick records Open, High, Low, and Close (OHLC) — the price at the start, the highest point, the lowest point, and the price at the end of that time period.' },
+        { id:'q01-r2', section:'recall', type:'multiple_choice', question:'What does a long lower wick on a bullish candle indicate?', options:['Sellers are in full control','Price was rejected at higher levels','Buyers stepped in after a sell-off and pushed price back up','The market is about to crash'], correctAnswer:2, explanation:'A long lower wick means price dropped significantly during the period, but buyers overwhelmed sellers and pushed price back above the open. It shows buyer strength at lower prices.' },
+        { id:'q01-r3', section:'recall', type:'multiple_choice', question:'What is the difference between a market order and a limit order?', options:['Market orders are free, limit orders have fees','Market orders fill immediately at the current price; limit orders fill only at your specified price or better','Market orders are for stocks, limit orders are for futures','There is no difference'], correctAnswer:1, explanation:'A market order executes immediately at the best available price. A limit order only executes at your specified price or better — giving you price control but no guarantee of execution.' },
+        { id:'q01-r4', section:'recall', type:'multiple_choice', question:'On NQ futures (E-mini), what is 1 point of movement worth per contract?', options:['$2','$5','$10','$20'], correctAnswer:3, explanation:'On the E-mini NQ (NQ), each point = $20 per contract. On the Micro (MNQ), each point = $2 per contract.' },
+        { id:'q01-r5', section:'recall', type:'multiple_choice', question:"If a candle's close is above its open, the candle is:", options:['Bearish','Neutral','Bullish','Invalid'], correctAnswer:2, explanation:'When the close is above the open, price went up during that period — making it a bullish candle.' },
+        { id:'q01-r6', section:'recall', type:'multiple_choice', question:'What does HTF stand for?', options:['High Trade Frequency','Higher Timeframe','Horizontal Trend Filter','Hedge Trading Fund'], correctAnswer:1, explanation:'HTF = Higher Timeframe. These are the Weekly, Daily, and 4H charts used to determine directional bias.' },
+        { id:'q01-a1', section:'applied', type:'chart_analysis', question:'Look at the middle candle in this chart. Identify whether it is bullish or bearish, and describe what the wick(s) tell you about the price action during that period.', explanation:'Evaluate whether the close is above or below the open (bullish vs bearish), then read the wicks: upper wick = rejection of higher prices, lower wick = rejection of lower prices.' },
+        { id:'q01-a2', section:'applied', type:'multiple_choice', question:'A trader places a buy limit order at 18,500 on NQ. The current price is 18,520. Will this order fill immediately?', options:['Yes, it fills at 18,520','Yes, it fills at 18,500','No, price must drop to 18,500 first','No, limit orders never fill'], correctAnswer:2, explanation:'A buy limit order at 18,500 only fills when price drops to 18,500 or lower. Since price is currently at 18,520 (above the limit price), the order sits and waits.' },
+        { id:'q01-a3', section:'applied', type:'multiple_choice', question:'You see a large bullish candle with almost no upper wick and almost no lower wick on the 5-minute chart. What does this tell you?', options:['The market is consolidating','Buyers were in strong control from open to close with minimal resistance','This is a doji and signals indecision','Sellers are about to take over'], correctAnswer:1, explanation:'A large bullish body with minimal wicks means buyers dominated the entire period. Price moved up decisively with little pushback from sellers. This is often part of displacement.' }
+      ]
+    }
   },
   {
     number: 2,
@@ -1717,7 +1731,22 @@ Open the NQ 1-hour chart and go back 2 weeks. Find at least:
 Mark them on your chart. Screenshot them. Bring them to the next coaching call. This exercise is how you burn these patterns into your brain.`
       }
     ],
-    quiz: null // Quiz will be added in Step 4
+    quiz: {
+      title: 'Quiz: Market Structure',
+      passingScore: 80,
+      questions: [
+        { id:'q02-r1', section:'recall', type:'multiple_choice', question:'What defines a swing high using the 3-bar swing method?', options:['The highest candle on the chart','A candle with the highest high, with lower highs on the candles to its left and right','Any candle followed by a red candle','A candle that touches a resistance level'], correctAnswer:1, explanation:'A 3-bar swing high is the middle candle of three consecutive candles where the middle candle has the highest high, flanked by candles with lower highs on each side.' },
+        { id:'q02-r2', section:'recall', type:'multiple_choice', question:'In a bullish trend, what pattern of highs and lows do you expect?', options:['Lower highs and lower lows','Higher highs and higher lows','Equal highs and equal lows','Lower highs and higher lows'], correctAnswer:1, explanation:'A bullish trend is defined by a series of higher highs (HH) and higher lows (HL) — a staircase pattern ascending from left to right.' },
+        { id:'q02-r3', section:'recall', type:'multiple_choice', question:'What is the difference between a BOS and a CHoCH?', options:['BOS is on higher timeframes, CHoCH is on lower timeframes','BOS breaks structure in the direction of the trend (continuation); CHoCH breaks against it (potential reversal)','BOS is bearish, CHoCH is bullish','There is no difference — they are the same thing'], correctAnswer:1, explanation:'BOS (Break of Structure) confirms the trend is continuing by breaking a swing point in the trend direction. CHoCH (Change of Character) breaks a swing point against the trend, warning of a potential reversal.' },
+        { id:'q02-r4', section:'recall', type:'multiple_choice', question:'Does a BOS confirm trend continuation or reversal?', options:['Reversal','Continuation','Neither — it\'s random','It depends on the timeframe'], correctAnswer:1, explanation:'BOS confirms continuation. The trend is intact and you should look for pullback entries in the trend direction.' },
+        { id:'q02-r5', section:'recall', type:'multiple_choice', question:'What additional element turns a CHoCH into a Market Structure Shift?', options:['Volume spike','Displacement — a strong impulsive move with large candles','A news event','Touching a moving average'], correctAnswer:1, explanation:'A CHoCH becomes a Market Structure Shift when it\'s confirmed by displacement — aggressive, impulsive candles with minimal wicks that show real institutional conviction behind the break.' },
+        { id:'q02-r6', section:'recall', type:'multiple_choice', question:'If price makes a lower low in a bullish trend, what is that called?', options:['Break of Structure (BOS)','Change of Character (CHoCH)','Fair Value Gap','Accumulation'], correctAnswer:1, explanation:'A lower low in a bullish trend breaks the HH/HL pattern for the first time, which is a Change of Character (CHoCH) — a warning that the bullish trend may be ending.' },
+        { id:'q02-a1', section:'applied', type:'chart_analysis', question:'Mark all swing highs and swing lows on this chart using the 3-bar swing method.', explanation:'Identify every candle that has a lower high on each side (swing high) or a higher low on each side (swing low). These are your structural reference points.' },
+        { id:'q02-a2', section:'applied', type:'chart_analysis', question:'Is this market in bullish or bearish structure? Identify the most recent BOS.', explanation:'Connect the swing points and determine if you see HH/HL (bullish) or LH/LL (bearish). The most recent BOS is the last swing point broken in the trend direction.' },
+        { id:'q02-a3', section:'applied', type:'chart_analysis', question:'Has a CHoCH occurred on this chart? If so, mark where.', explanation:'Look for the first break of a swing point against the prevailing trend. That\'s the CHoCH.' },
+        { id:'q02-a4', section:'applied', type:'multiple_choice', question:'You see a bullish trend on the 1H chart with clear HH/HL. The 5m chart shows a CHoCH to the downside. What should you do?', options:['Go short immediately — the 5m CHoCH is a sell signal','Ignore the 5m CHoCH — the 1H trend is bullish, so this is likely just a pullback','Close all positions and wait','Switch to the weekly chart'], correctAnswer:1, explanation:'The HTF (1H) trend takes priority. A CHoCH on the 5m inside a bullish 1H trend is most likely a pullback — not a full reversal. You\'d look for the 5m to realign bullish (new CHoCH back up) for a potential entry with the 1H trend.' }
+      ]
+    }
   },
   {
     number: 3,
@@ -1922,7 +1951,20 @@ Your edge comes from being on the **same side as the algorithm** — not fightin
 In Modules 04 through 08, you'll learn exactly how to do this: identify where liquidity sits, anticipate when it will be taken, and position yourself to profit from the move that follows.`
       }
     ],
-    quiz: null // Quiz will be added in Step 4
+    quiz: {
+      title: 'Quiz: The Algorithm',
+      passingScore: 80,
+      questions: [
+        { id:'q03-r1', section:'recall', type:'multiple_choice', question:'What does IPDA stand for?', options:['Internal Price Delivery Analysis','Interbank Price Delivery Algorithm','Institutional Price Direction Algorithm','Index Price Data Aggregator'], correctAnswer:1, explanation:'IPDA = Interbank Price Delivery Algorithm — the algorithm that delivers price to financial institutions and banks.' },
+        { id:'q03-r2', section:'recall', type:'multiple_choice', question:'What are the two main targets IPDA seeks?', options:['Support and resistance levels','Moving average crossovers and RSI signals','Liquidity above/below old highs and lows, and areas of inefficient price action','Volume spikes and momentum divergences'], correctAnswer:2, explanation:'IPDA seeks: 1) Liquidity above/below old highs and lows (stop hunts), and 2) Areas of inefficient price action (FVGs and voids to rebalance).' },
+        { id:'q03-r3', section:'recall', type:'multiple_choice', question:'What are the three phases of the AMD cycle in order?', options:['Analysis, Markup, Decline','Accumulation, Manipulation, Distribution','Advance, Maintain, Distribute','Aggregate, Magnify, Deliver'], correctAnswer:1, explanation:'AMD = Accumulation (range-building, liquidity builds), Manipulation (fake move/Judas Swing to trigger stops), Distribution (the real move in the intended direction).' },
+        { id:'q03-r4', section:'recall', type:'multiple_choice', question:'What is the Judas Swing?', options:['The main expansion move of the day','The false move during the manipulation phase that traps retail traders before the real move','A reversal pattern involving three candles','The opening price at midnight'], correctAnswer:1, explanation:'The Judas Swing is the manipulation phase of AMD — a deceptive move in the opposite direction of the intended move, designed to sweep liquidity and trap retail traders.' },
+        { id:'q03-r5', section:'recall', type:'multiple_choice', question:'In the Market Efficiency Paradigm, what role do retail traders primarily play?', options:['They are the smart money','They are market makers','They provide liquidity (willing or unwilling) for institutional positions','They control the algorithm'], correctAnswer:2, explanation:'In the Market Efficiency Paradigm, retail traders are the speculative/uninformed money that provides liquidity — often unwillingly through their stop-loss orders — for Smart Money to fill positions.' },
+        { id:'q03-a1', section:'applied', type:'chart_analysis', question:'Identify the Accumulation, Manipulation, and Distribution phases on this chart.', explanation:'Look for: a consolidation range (Accumulation), a sharp move breaking one side of the range that quickly reverses (Manipulation/Judas Swing), and a strong expansion in the opposite direction (Distribution).' },
+        { id:'q03-a2', section:'applied', type:'chart_analysis', question:'Where did IPDA engineer liquidity before the real move on this chart? Mark the liquidity sweep.', explanation:'Find where price briefly pierced below old lows (sweeping sell stops) or above old highs (sweeping buy stops) before reversing. That\'s where IPDA engineered the liquidity needed for the real move.' },
+        { id:'q03-a3', section:'applied', type:'multiple_choice', question:'NQ has formed a textbook \'double bottom\' at 18,200. Retail traders go long with stops at 18,180. Based on what you\'ve learned about IPDA, what is the algorithm most likely to do before any sustained rally?', options:['Immediately rally because double bottom is a strong bullish signal','Sweep below 18,200 to trigger the sell stops, then reverse higher','Consolidate sideways for several days','Drop through 18,180 and continue much lower'], correctAnswer:1, explanation:'IPDA will likely sweep below the double bottom (18,200) to trigger the clustered sell stops at 18,180. This provides the liquidity for Smart Money to enter long positions. After the sweep, the real move higher begins — but the retail traders who were right about the direction are already stopped out.' }
+      ]
+    }
   },
   {
     number: 4,
@@ -2114,7 +2156,20 @@ Check the economic calendar before every session. We recommend ForexFactory (for
 With time and sessions covered, you now know WHAT drives price (the algorithm), WHEN it acts (killzones and sessions), and the general template of HOW daily price action unfolds. In Module 05, we dive into the WHERE — the specific price levels where liquidity pools form and IPDA targets them.`
       }
     ],
-    quiz: null // Quiz will be added in Step 4
+    quiz: {
+      title: 'Quiz: Time & Sessions',
+      passingScore: 80,
+      questions: [
+        { id:'q04-r1', section:'recall', type:'multiple_choice', question:"What hours define the 'True Day' in New York time?", options:['9:30 AM to 4:00 PM','12:00 AM (midnight) to 3:00 PM','8:00 AM to 5:00 PM','6:00 PM to 6:00 PM'], correctAnswer:1, explanation:'The IPDA True Day runs from 12:00 AM (midnight) to 3:00 PM EST. This is when the algorithm is most actively delivering price.' },
+        { id:'q04-r2', section:'recall', type:'multiple_choice', question:'Which killzone is typically associated with consolidation and range-building?', options:['London','New York','Asia','London Close'], correctAnswer:2, explanation:'The Asian session (8:00 PM – 12:00 AM EST) is typically the consolidation/accumulation phase where the day\'s range is established and liquidity builds.' },
+        { id:'q04-r3', section:'recall', type:'multiple_choice', question:'For NQ futures, what is the primary trading window?', options:['Asian session (8 PM – 12 AM)','London session (2 AM – 5 AM)','AM Session (8:30 AM – 12:00 PM)','PM Session (1:30 PM – 4:00 PM)'], correctAnswer:2, explanation:'The AM Session (8:30 AM – 12:00 PM EST) is the primary killzone for NQ futures. It includes the cash market open and typically produces the day\'s largest, most predictable moves.' },
+        { id:'q04-r4', section:'recall', type:'multiple_choice', question:'What is the midnight opening price used for?', options:['Setting your stop loss','It\'s the reference price for the daily Power of 3 — the anchor for determining buy days vs sell days','Calculating your position size','It has no practical use'], correctAnswer:1, explanation:'The midnight opening price (12:00 AM EST) is the true daily opening price that IPDA references. On buy days, price manipulates below it before expanding above. On sell days, the opposite.' },
+        { id:'q04-r5', section:'recall', type:'multiple_choice', question:"According to ICT, what does 'TIME then PRICE' mean?", options:['Always check the time before checking the price','IPDA first checks if the correct time window is active before seeking price targets','Trade the first 30 minutes of the session','Price is less important than timing your entries'], correctAnswer:1, explanation:'TIME then PRICE means IPDA operates on a schedule — it first checks whether the appropriate time window (killzone) is active, then looks for its price targets (liquidity, FVGs, PD arrays).' },
+        { id:'q04-a1', section:'applied', type:'chart_analysis', question:'Look at this intraday NQ chart with time visible on the x-axis. Which killzone did the main manipulation (Judas Swing) occur in?', explanation:'Check the time axis. If the manipulation occurred between 2-5 AM EST, it was during the London killzone. If 7-10 AM EST, it was during the NY killzone. Identify the time of the false move.' },
+        { id:'q04-a2', section:'applied', type:'multiple_choice', question:"You look at yesterday's daily candle on NQ: it opened near 18,400 (the midnight open), the low was 18,360, the high was 18,550, and it closed at 18,530. Was this a Classic Buy Day or Classic Sell Day?", options:['Classic Buy Day — opened near the low, closed near the high','Classic Sell Day — opened near the high, closed near the low','Neither — this was a range day','Cannot determine from this information'], correctAnswer:0, explanation:'The open (18,400) was much closer to the low (18,360) than the high (18,550), and the close (18,530) was near the high. This is a Classic Buy Day: manipulation swept the low early, then price expanded and closed near the top.' },
+        { id:'q04-a3', section:'applied', type:'multiple_choice', question:'CPI data is releasing tomorrow at 8:30 AM EST. You have a long position from yesterday that\'s currently in profit. What should you consider?', options:['Add to the position before the news for maximum profit','Consider tightening your stop or closing before the release — the initial spike is often manipulation','Switch to a short position','Move your stop loss further away to avoid getting stopped out by volatility'], correctAnswer:1, explanation:'High-impact news creates extreme volatility. The initial spike is often manipulation (the Judas Swing compressed into seconds). Tightening your stop or closing protects your profit. Moving your stop further away exposes you to larger losses. Adding before news is gambling.' }
+      ]
+    }
   },
   {
     number: 5, id: 'liquidity', title: 'Liquidity',
@@ -2376,6 +2431,12 @@ function renderSidebar() {
               </button>
             `;
           }).join('')}
+          ${mod.quiz ? `
+            <button class="lesson-item${currentView.type === 'quiz' && mi === currentView.module ? ' active' : ''}${isModulePassed(mod.id) ? ' completed' : ''}" onclick="goToQuiz(${mi})" style="font-style:italic;">
+              <span class="lesson-check"></span>
+              <span class="lesson-label">Module Quiz</span>
+            </button>
+          ` : ''}
         </div>
       </div>
     `;
@@ -2389,7 +2450,9 @@ function toggleModule(mi) {
 
 // ─── Render Content ───
 function renderContent() {
-  if (currentView.type === 'lesson') {
+  if (currentView.type === 'quiz') {
+    renderQuizContent(currentView.module);
+  } else {
     renderLessonContent();
   }
 }
@@ -2545,6 +2608,181 @@ document.addEventListener('keydown', (e) => {
   if (e.key === 'ArrowLeft' || e.key === 'k') goToPrev();
   if (e.key === 'e') toggleComplete();
 });
+
+// ─── Quiz State ───
+let quizState = {}; // { moduleId: { answers: {qId: answerIndex}, submitted: bool, score: num } }
+try {
+  const savedQuiz = localStorage.getItem('dk-curriculum-quiz-v2');
+  if (savedQuiz) quizState = JSON.parse(savedQuiz);
+} catch(e) {}
+
+function saveQuizState() {
+  try { localStorage.setItem('dk-curriculum-quiz-v2', JSON.stringify(quizState)); } catch(e) {}
+}
+
+function getQuizState(modId) {
+  if (!quizState[modId]) quizState[modId] = { answers: {}, submitted: false, score: 0 };
+  return quizState[modId];
+}
+
+function isModulePassed(modId) {
+  const qs = quizState[modId];
+  return qs && qs.submitted && qs.score >= 80;
+}
+
+// ─── Quiz Rendering ───
+function goToQuiz(mi) {
+  currentView = { type: 'quiz', module: mi, lesson: 0 };
+  saveProgress();
+  renderSidebar();
+  renderQuizContent(mi);
+  updateProgress();
+  document.getElementById('sidebar').classList.remove('open');
+  document.querySelector('.sidebar-overlay').classList.remove('open');
+}
+
+function renderQuizContent(mi) {
+  const mod = CURRICULUM[mi];
+  if (!mod || !mod.quiz) return;
+  const quiz = mod.quiz;
+  const qs = getQuizState(mod.id);
+  const recallQs = quiz.questions.filter(q => q.section === 'recall');
+  const appliedQs = quiz.questions.filter(q => q.section === 'applied');
+  const letters = ['A','B','C','D','E','F'];
+
+  const wrap = document.getElementById('contentWrap');
+  wrap.innerHTML = `
+    <div class="fade-in">
+      <div class="lesson-header">
+        <div class="lesson-breadcrumb">Module ${mod.number} — ${mod.title.toUpperCase()}</div>
+        <h1 class="lesson-title">${quiz.title}</h1>
+        <div class="lesson-meta">
+          <span>Passing score: ${quiz.passingScore}%</span>
+          <span>${quiz.questions.length} questions</span>
+        </div>
+      </div>
+
+      <div class="lesson-body quiz-container" id="quizContainer">
+        ${recallQs.length ? '<div class="quiz-section-label">Recall Questions</div>' : ''}
+        ${recallQs.map((q, qi) => renderQuizQuestion(q, qi, qs, letters, 'R')).join('')}
+
+        ${appliedQs.length ? '<div class="quiz-section-label">Applied Questions</div>' : ''}
+        ${appliedQs.map((q, qi) => renderQuizQuestion(q, qi + recallQs.length, qs, letters, 'A')).join('')}
+
+        <div id="quizActions">
+          ${qs.submitted ? renderQuizResults(mod, qs, quiz) : `<button class="quiz-submit-btn" id="quizSubmitBtn" onclick="submitQuiz(${mi})">Submit Quiz</button>`}
+        </div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="lesson-nav-btn" onclick="goToLesson(${mi}, ${mod.lessons.length - 1})">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+          Back to Lessons
+        </button>
+        <div></div>
+        <div></div>
+      </div>
+    </div>
+  `;
+
+  document.getElementById('mainContent').scrollTo(0, 0);
+}
+
+function renderQuizQuestion(q, idx, qs, letters, prefix) {
+  const answered = qs.answers[q.id] !== undefined;
+  const submitted = qs.submitted;
+
+  if (q.type === 'chart_analysis') {
+    return `
+      <div class="quiz-question">
+        <div class="quiz-question-number">${prefix}${idx + 1}</div>
+        <div class="quiz-question-text">${q.question}</div>
+        <div class="quiz-chart-placeholder">[Chart screenshot will be provided]</div>
+        <textarea class="quiz-open-response" placeholder="Type your analysis here..." ${submitted ? 'disabled' : ''} oninput="quizTextAnswer('${q.id}', this.value)">${qs.answers[q.id] || ''}</textarea>
+        <div class="quiz-explanation ${submitted ? 'visible' : ''}">${q.explanation}</div>
+      </div>
+    `;
+  }
+
+  if (q.type === 'multiple_choice' && q.options) {
+    return `
+      <div class="quiz-question">
+        <div class="quiz-question-number">${prefix}${idx + 1}</div>
+        <div class="quiz-question-text">${q.question}</div>
+        <div class="quiz-options">
+          ${q.options.map((opt, oi) => {
+            let cls = 'quiz-option';
+            if (submitted && oi === q.correctAnswer) cls += ' correct';
+            else if (submitted && qs.answers[q.id] === oi && oi !== q.correctAnswer) cls += ' incorrect';
+            else if (!submitted && qs.answers[q.id] === oi) cls += ' selected';
+            return `<button class="${cls}" onclick="quizSelectAnswer('${q.id}', ${oi}, ${submitted})" ${submitted ? 'disabled' : ''}>
+              <span class="quiz-option-letter">${letters[oi]}</span>
+              <span>${opt}</span>
+            </button>`;
+          }).join('')}
+        </div>
+        <div class="quiz-explanation ${submitted ? 'visible' : ''}">${q.explanation}</div>
+      </div>
+    `;
+  }
+
+  return '';
+}
+
+function renderQuizResults(mod, qs, quiz) {
+  const passed = qs.score >= quiz.passingScore;
+  return `
+    <div class="quiz-results">
+      <div class="quiz-score ${passed ? 'passing' : 'failing'}">${qs.score}%</div>
+      <div class="quiz-results-text">${passed
+        ? 'You passed! The next module is now unlocked.'
+        : `You need ${quiz.passingScore}% to pass. Review the lessons and try again.`}</div>
+      ${!passed ? `<button class="quiz-retry-btn" onclick="retryQuiz(${CURRICULUM.indexOf(mod)})">Retry Quiz</button>` : ''}
+    </div>
+  `;
+}
+
+function quizSelectAnswer(qId, optionIndex, submitted) {
+  if (submitted) return;
+  const mi = currentView.module;
+  const mod = CURRICULUM[mi];
+  const qs = getQuizState(mod.id);
+  qs.answers[qId] = optionIndex;
+  saveQuizState();
+  renderQuizContent(mi);
+}
+
+function quizTextAnswer(qId, value) {
+  const mi = currentView.module;
+  const mod = CURRICULUM[mi];
+  const qs = getQuizState(mod.id);
+  qs.answers[qId] = value;
+  saveQuizState();
+}
+
+function submitQuiz(mi) {
+  const mod = CURRICULUM[mi];
+  const quiz = mod.quiz;
+  const qs = getQuizState(mod.id);
+
+  // Score: only count multiple_choice questions
+  const mcQuestions = quiz.questions.filter(q => q.type === 'multiple_choice' && q.correctAnswer !== undefined);
+  let correct = 0;
+  mcQuestions.forEach(q => {
+    if (qs.answers[q.id] === q.correctAnswer) correct++;
+  });
+  qs.score = mcQuestions.length > 0 ? Math.round((correct / mcQuestions.length) * 100) : 100;
+  qs.submitted = true;
+  saveQuizState();
+  renderQuizContent(mi);
+}
+
+function retryQuiz(mi) {
+  const mod = CURRICULUM[mi];
+  quizState[mod.id] = { answers: {}, submitted: false, score: 0 };
+  saveQuizState();
+  renderQuizContent(mi);
+}
 
 // ─── Init ───
 renderSidebar();
