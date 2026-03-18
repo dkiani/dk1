@@ -2425,9 +2425,372 @@ With liquidity covered, you now understand WHAT the algorithm is targeting. In M
     }
   },
   {
-    number: 6, id: 'price-delivery-arrays', title: 'Price Delivery Arrays',
+    number: 6,
+    id: 'price-delivery-arrays',
+    title: 'Price Delivery Arrays',
     subtitle: 'These are the footprints of institutional sponsorship.',
-    locked: true, comingSoon: true, lessons: []
+    locked: false,
+    lessons: [
+      {
+        id: 'what-are-pd-arrays',
+        title: 'What are PD Arrays?',
+        readingTime: 5,
+        globalNum: 26,
+        content: `You've learned that IPDA targets liquidity and areas of inefficient price action. PD Arrays are the **specific price levels** where the algorithm stores its reference points and where you'll find your trade entries.
+
+## The Definition
+
+**PD Arrays (Premium/Discount Arrays)** are key price levels stored in IPDA's repricing logic. They act as support and resistance — but not in the retail sense of "price bounced here before." These levels have algorithmic significance. They're data points the algorithm references when deciding where to deliver price next.
+
+Each array has specific levels that can be **graded** (how strong is it?) and **calibrated** (where exactly within it should price react?).
+
+## The PD Array Matrix
+
+The arrays are organized in a hierarchy based on their distance from current price. In a **premium** market (above equilibrium), these arrays act as resistance. In a **discount** market (below equilibrium), they act as support.
+
+From closest to farthest from current price:
+
+:::steps
+1. **Fair Value Gap (FVG)** — Closest to price, most frequently encountered
+2. **Mitigation Block** — Failed order block area, used for position mitigation
+3. **Breaker Block** — Failed structure that flips from support to resistance (or vice versa)
+4. **Order Block** — Institutional entry points, the footprint of Smart Money positioning
+5. **Rejection Block** — Areas of strong price rejection (long wicks)
+6. **Old High / Old Low** — The liquidity pools at previous swing extremes
+:::
+
+![diagram](The PD Array Matrix shown as a vertical list. Current price in the center. Above price (Premium): FVG, Mitigation Block, Breaker, Order Block, Rejection Block, Old High — each labeled as resistance. Below price (Discount): the same arrays mirrored, each labeled as support.)
+
+:::callout
+NO ZONES — ONLY LEVELS
+A critical distinction: in ICT logic, we do not trade "zones." Each PD array has specific price levels within it. An order block has a high, an open, a mean threshold (50%), and a low. You're not trading "somewhere in this area" — you're watching specific levels for reactions. Precision matters.
+:::
+
+In the following lessons, we'll break down each array in detail. By the end of this module, you'll be able to look at any chart and identify exactly where IPDA is likely to react.`
+      },
+      {
+        id: 'the-fair-value-gap',
+        title: 'The Fair Value Gap (FVG)',
+        readingTime: 8,
+        globalNum: 27,
+        content: `The Fair Value Gap is the most common and most versatile PD array you'll encounter. Understanding FVGs is essential — they appear on every chart, every day, and they're the foundation for many of the trade models in Module 08.
+
+## What Creates a FVG?
+
+When IPDA moves price too quickly in one direction, it leaves an area where only one side of the market was served — either only buying or only selling. This inefficiency is a Fair Value Gap.
+
+On the chart, a FVG is a **three-candle pattern** where the middle candle is large enough that its body creates a gap between the wicks of the candles on either side. The gap is the area where only one-directional delivery occurred.
+
+## BISI — Buyside Imbalance, Sellside Inefficiency
+
+A **bullish FVG (BISI)** forms during an upward move:
+- Three candles moving upward
+- The gap is between the **high of candle 1** and the **low of candle 3**
+- Within this gap, only buying occurred — there was no sellside delivery
+- IPDA will return to this gap to offer sellside delivery (fair value)
+
+When price returns to a BISI, it's rebalancing the inefficiency. In a bullish market, this rebalance often acts as **support** — price dips into the FVG, gets rebalanced, and continues higher.
+
+## SIBI — Sellside Imbalance, Buyside Inefficiency
+
+A **bearish FVG (SIBI)** forms during a downward move:
+- Three candles moving downward
+- The gap is between the **low of candle 1** and the **high of candle 3**
+- Within this gap, only selling occurred — there was no buyside delivery
+- IPDA will return to this gap to offer buyside delivery (fair value)
+
+When price returns to a SIBI, in a bearish market this often acts as **resistance** — price rallies into the FVG, gets rebalanced, and continues lower.
+
+![diagram](Two panels: Left shows a BISI forming during an up move — three bullish candles with the gap between candle 1 high and candle 3 low highlighted and labeled 'BISI — Only buyside delivered.' Right shows a SIBI forming during a down move with the equivalent gap labeled 'SIBI — Only sellside delivered.')
+
+## The Three Levels of a FVG
+
+Every FVG has three reference levels:
+
+**Premium Level (High of the FVG):** In a bullish context, if price has closed above this level, it should act as support. Stronger if the FVG has been partially rebalanced.
+
+**Discount Level (Low of the FVG):** In a bearish context, if price has closed below this level, it should act as resistance. Stronger if the FVG has been partially rebalanced.
+
+**Consequent Encroachment (C.E.):** The **50% midpoint** of the FVG. This is a key reaction level — price often reacts right at the CE. Think of it as the equilibrium of the imbalance.
+
+:::callout
+C.E. IS YOUR PRECISION TOOL
+When price returns to a FVG, watch the Consequent Encroachment level closely. In a strong trend, price often touches the CE and reverses — it doesn't need to fill the entire gap. This gives you a precise entry level rather than guessing "somewhere in the FVG."
+:::
+
+## Rebalancing vs. Rebalanced
+
+A FVG goes through stages:
+
+**Open:** The FVG has not been revisited. It's a fresh inefficiency.
+
+**Partially rebalanced:** Price has returned into the FVG but hasn't traded through the entire gap. The portion that's been revisited now has both buy and sell delivery.
+
+**Fully rebalanced:** Price has traded through the entire FVG — both sides have been served. The gap is "closed." A fully rebalanced FVG that price passes through a third time should act as strong support/resistance.
+
+## FVGs as Displacement Footprints
+
+FVGs are created by displacement — aggressive price movement. This means they're the literal footprints of institutional order flow. A large FVG on the 1-hour chart means someone with serious capital just moved the market. The FVG they leave behind is both a target for rebalancing AND a reference level for future price delivery.`
+      },
+      {
+        id: 'volume-imbalance-and-gap-imbalance',
+        title: 'Volume Imbalance & Gap Imbalance',
+        readingTime: 5,
+        globalNum: 28,
+        content: `Beyond the standard FVG, there are two related imbalance types that indicate urgency in price delivery.
+
+## Volume Imbalance (V.I.)
+
+A Volume Imbalance occurs between two adjacent candles where the **candle bodies don't overlap** — there's a gap between the close of one candle and the open of the next. The wicks may overlap (there is some up-and-down movement in that area), but since the bulk of volume transacts in the candle body, the lack of body overlap represents an imbalance in volume delivery.
+
+Think of it as a lighter version of a FVG — there was some delivery in the area (wick overlap), but not enough to be considered efficient.
+
+![diagram](Two adjacent candles with bodies that don't overlap. The gap between the close of candle 1 and the open of candle 2 is highlighted as 'V.I. — Volume Imbalance.' Wicks overlap in the gap area.)
+
+## Gap Imbalance (G.I.)
+
+A Gap Imbalance is a **true gap** — an area of price where there was absolutely no price delivery at all. Not even wick overlap. This is the most extreme form of imbalance.
+
+Gap Imbalances are less common on NQ during regular trading hours (the market is very liquid), but they can occur:
+- At the Sunday open (gap between Friday's close and Sunday's open)
+- Around major news events
+- Between sessions in less liquid markets
+
+![diagram](Two adjacent candles with NO overlap at all — not even wicks. The empty space between them is highlighted as 'G.I. — Gap Imbalance / True Gap.')
+
+## How to Trade V.I. and G.I.
+
+Both behave like FVGs but with different levels of significance:
+
+**Gap Imbalance:** Very high significance. A true void in price delivery is a strong magnet for price to return and rebalance. These often fill quickly.
+
+**Volume Imbalance:** Moderate significance. Price may or may not fully rebalance a V.I. — it depends on the strength of the trend and the timeframe.
+
+:::callout
+PRIORITY ORDER
+When marking your chart, prioritize: FVGs first (most common, most tradeable), then Gap Imbalances (rare but powerful), then Volume Imbalances (supplementary information). Don't overcomplicate your charts by marking every V.I. — focus on the ones that align with your bias and killzone.
+:::`
+      },
+      {
+        id: 'the-order-block',
+        title: 'The Order Block',
+        readingTime: 8,
+        globalNum: 29,
+        content: `The Order Block is one of the most important PD arrays in the entire framework. It represents the **price level where Smart Money positioned itself** before a significant move. When price returns to an order block, it's returning to a level of institutional interest.
+
+## Bullish Order Block
+
+A bullish order block is the **last down-close candle (or consecutive down-close candles)** before a significant move higher.
+
+For a bullish order block to be valid:
+
+:::steps
+1. There must be a down-close candle (bearish candle) that runs sellside liquidity — it takes out a previous low
+2. This candle occurs at or near a higher-timeframe support level or PD array
+3. The order block is confirmed when price **closes above the high** of the down-close candle — this validates the institutional interest
+4. Higher quality: a FVG forms directly above the order block (displacement confirms the institutional entry)
+:::
+
+## Bearish Order Block
+
+A bearish order block is the **last up-close candle (or consecutive up-close candles)** before a significant move lower.
+
+For a bearish order block to be valid, reverse all the bullish criteria:
+- An up-close candle that runs buyside liquidity
+- At or near a higher-timeframe resistance level
+- Confirmed when price closes below the low of the up-close candle
+- Higher quality with a FVG directly below
+
+![diagram](Bullish order block formation in 6 steps: 1) Previous low with SSL below, 2) Down-close candle sweeps the low, 3) Candle is at HTF support, 4) Next candle closes above the OB high with displacement/FVG above, 5) Price returns to the OB, 6) Reaction from the OB sends price higher.)
+
+## Order Block Key Levels
+
+Every order block has four reference levels:
+
+**High:** The highest point of the OB candle(s). This is the first level price encounters on a return.
+
+**Open:** The opening price of the OB candle. Often a key reaction level.
+
+**Mean Threshold (50%):** The midpoint between the high and the low. This is the critical level — if price violates the mean threshold, the order block is weakening.
+
+**Low:** The lowest point of the OB candle(s). If price closes below this (for a bullish OB), the order block has failed.
+
+:::callout
+THE MEAN THRESHOLD RULE
+When price returns to a bullish order block, the most sensitive area is from the high down to the mean threshold (50%). You do NOT want to see price close below the mean threshold. If it does, the order block is likely invalid — Smart Money's orders have been overwhelmed. Use the mean threshold as your line in the sand.
+:::
+
+## Grading Order Blocks
+
+Not all order blocks are equal. Here's how to grade them:
+
+**A+ Order Block:**
+- Has a FVG directly above/below it (displacement)
+- Located at or near the equilibrium of a larger dealing range
+- Aligns with the HTF trend direction
+- Formed during a killzone
+- First return to the OB (untouched)
+
+**B Grade Order Block:**
+- Valid formation but missing one or two of the above criteria
+- Second return to the OB (partially tested)
+
+**Avoid:**
+- No displacement/FVG
+- Against the HTF trend
+- Formed during dead time
+- Already tested multiple times`
+      },
+      {
+        id: 'the-breaker-block',
+        title: 'The Breaker Block',
+        readingTime: 7,
+        globalNum: 30,
+        content: `A Breaker Block is what happens when a swing point fails — an order block that gets broken through and then **flips its role.** What was support becomes resistance, or what was resistance becomes support. It's a powerful concept because it identifies trapped traders.
+
+## Bearish Breaker Formation
+
+Here's how a bearish breaker forms, step by step:
+
+:::steps
+1. A **swing high** forms (price peaks and turns down)
+2. A **swing low** forms (price bottoms and turns up) — this swing low contains an order block (the last down-close candles)
+3. Price makes a **higher high** — breaking above the previous swing high and triggering buy stops above it
+4. Price then **reverses hard** and breaks below the previous swing low — the move to the higher high was a trap
+5. The down-close candle(s) from the swing low are now the **Breaker Block** — they were previously acting as support (order block), but that support has been broken
+6. When price returns to this broken level, it now acts as **resistance** — the breaker provides an opportunity to sell
+:::
+
+![diagram](Step-by-step bearish breaker: swing high forms, swing low forms with OB candles highlighted, price makes higher high triggering BSL, price reverses and breaks below swing low, the OB candles are now labeled 'Bearish Breaker,' price returns to the breaker and sells off.)
+
+## Why Breakers Work
+
+The breaker level represents **trapped longs.** During step 2, traders bought at the swing low order block. In step 3, they felt validated as price made a higher high. In step 4, their world fell apart — price reversed and broke their support.
+
+Now these trapped longs are underwater. Many are still holding, hoping to "get back to breakeven." When price returns to the breaker level (step 6), these traders exit their longs (selling), which provides resistance. Smart Money uses this return to add to short positions.
+
+## Bullish Breaker
+
+Reverse the entire formation:
+- Swing low → swing high → lower low (sweeping SSL) → reversal above the swing high
+- The up-close candles from the swing high become the bullish breaker
+- Trapped shorts exit when price returns, providing support
+
+:::callout
+BREAKER VS. ORDER BLOCK
+An order block is an active level of institutional interest — it's where Smart Money entered. A breaker is a *failed* order block — the level was broken, trapping traders. The breaker now works in the opposite direction because of those trapped positions. If an order block holds, it's an OB. If it fails and flips, it's a breaker.
+:::`
+      },
+      {
+        id: 'the-mitigation-block',
+        title: 'The Mitigation Block',
+        readingTime: 7,
+        globalNum: 31,
+        content: `The Mitigation Block is similar to the Breaker Block with one critical difference in the structure that creates it. Understanding this difference is what allows you to correctly identify each one on a chart.
+
+## The Key Difference: Higher High vs. Lower High
+
+**Breaker Block:** Forms when price makes a **higher high** (runs buy stops) before reversing. The move to the higher high is a fake-out — a manipulation to trigger BSL.
+
+**Mitigation Block:** Forms when price makes a **lower high** (fails to take buy stops) before continuing lower. There's no fake-out above the previous high — the trend is already clearly bearish.
+
+## Bearish Mitigation Block Formation
+
+:::steps
+1. A **swing high** forms
+2. A **swing low** forms — this swing low contains the down-close candle(s) that will become the mitigation block
+3. Price rallies but only makes a **lower high** — it does NOT exceed the previous swing high
+4. Price then reverses and breaks below the previous swing low
+5. The down-close candle(s) from step 2 = the **Mitigation Block**
+6. When price returns to this level, Smart Money uses it to **mitigate** (close out) their losing long positions and add to shorts
+:::
+
+![diagram](Side-by-side comparison: Left panel shows Breaker formation with a higher high before the reversal. Right panel shows Mitigation Block formation with a lower high before the reversal. The structural difference is highlighted with annotations.)
+
+## Why It's Called "Mitigation"
+
+Mitigation means to reduce the severity of something. When Smart Money has a losing long position from the swing low, they need price to return to that level so they can exit at breakeven or a smaller loss. The return to the mitigation block allows them to **mitigate their losses** — close the bad position and reposition in the correct direction.
+
+## Bullish Mitigation Block
+
+Reverse the formation:
+- Swing low → swing high → higher low (not a lower low) → price breaks above the swing high
+- The up-close candles from the swing high become the bullish mitigation block
+- Price returns, Smart Money mitigates shorts and adds longs
+
+:::callout
+BREAKER OR MITIGATION BLOCK? USE THIS TEST
+Look at the swing AFTER the potential block forms. Did price make a new extreme that exceeded the previous swing? If YES → Breaker (the fake-out to trigger stops was the setup). If NO → Mitigation Block (no fake-out needed, the trend was already clear). This is the one question that distinguishes them.
+:::`
+      },
+      {
+        id: 'displacement-and-institutional-sponsorship',
+        title: 'Displacement & Institutional Sponsorship',
+        readingTime: 6,
+        globalNum: 32,
+        content: `Now that you know all the major PD arrays, let's talk about the force that creates them: **displacement.** And the tool that confirms institutional involvement: **SMT Divergence.**
+
+## Displacement Revisited
+
+We introduced displacement in Module 02 as the force that confirms a Market Structure Shift. Now you can see it through the lens of PD arrays:
+
+Displacement is what creates FVGs. It's what validates order blocks. It's what breaks structure and forms breakers. Without displacement, none of these patterns have conviction behind them.
+
+On the chart, displacement looks like: **one or more large-body candles with minimal wicks, all moving aggressively in one direction.** The candles are telling you that someone with significant capital just moved the market decisively.
+
+:::callout
+THE ELEPHANT IN THE POOL
+ICT uses the analogy of an elephant stepping into a children's pool. The elephant's foot is so large that it causes a visible displacement of water. In the same way, when a large institution enters the market, their order is so large that it causes a visible displacement of price — creating FVGs, confirming order blocks, and shifting structure.
+:::
+
+## SMT Divergence — Smart Money Tool
+
+SMT Divergence is how you detect **institutional sponsorship** behind a move. The concept: algorithms that control correlated asset prices work synergistically. When these correlations break, it's a footprint of institutional positioning.
+
+## How SMT Works with Correlated Pairs
+
+For assets that normally move **together** (e.g., ES and NQ):
+- If ES makes a lower low but NQ makes a **higher low**, NQ is showing strength
+- NQ's unwillingness to make a new low signals institutional buying — they're accumulating NQ
+- ES going lower was just a liquidity sweep; NQ's higher low confirms the sweep is done
+- This divergence suggests both will move higher, with NQ leading
+
+For assets that normally move **inversely** (e.g., DXY and EUR/USD):
+- If DXY fails to make a new low while EUR/USD runs buy stops to a new high
+- DXY's strength (failing to drop) suggests EUR/USD's new high is just a liquidity grab
+- Expect EUR/USD to reverse lower
+
+![diagram](Two panels showing SMT divergence: Top panel shows Correlated Pair 1 (ES) making a lower low while Correlated Pair 2 (NQ) makes a higher low — divergence labeled. Bottom panel shows the same concept with inverse correlation.)
+
+## Using SMT in Your Trading
+
+SMT isn't a standalone signal — it's a **confluence tool.** It's most powerful when it confirms something you're already seeing:
+
+- You see a sell-side liquidity sweep on NQ at a discount order block during the NY killzone → Check ES. Did ES make a lower low while NQ held a higher low? → SMT confirms institutional buying. High conviction long.
+
+- Your analysis says to sell, but NQ and ES are both making higher lows in sync → No divergence, trend is healthy. Your sell idea may be premature.
+
+SMT adds another layer of confirmation. It's not required for every trade, but when it's present, it significantly increases your conviction.`
+      }
+    ],
+    quiz: {
+      title: 'Quiz: Price Delivery Arrays',
+      passingScore: 80,
+      questions: [
+        { id:'q06-r1', section:'recall', type:'multiple_choice', question:'What does FVG stand for and what causes it?', options:['Fair Volume Gap — caused by low volume','Fair Value Gap — caused by IPDA repricing too quickly in one direction, leaving an inefficiency','Forward Value Gauge — a predictive indicator','Fibonacci Value Grid — a grid overlay tool'], correctAnswer:1, explanation:'FVG = Fair Value Gap. It\'s created when IPDA moves price too quickly in one direction, leaving an area where only one side (buy or sell) was served. The algorithm returns to these gaps to offer fair value.' },
+        { id:'q06-r2', section:'recall', type:'multiple_choice', question:'What is the difference between a BISI and a SIBI?', options:['BISI is bearish, SIBI is bullish','BISI = Buyside Imbalance/Sellside Inefficiency (bullish FVG); SIBI = Sellside Imbalance/Buyside Inefficiency (bearish FVG)','They are the same thing','BISI is on higher timeframes, SIBI is on lower timeframes'], correctAnswer:1, explanation:'BISI forms during upward moves (only buying occurred — sellside inefficient). SIBI forms during downward moves (only selling occurred — buyside inefficient). BISI acts as support, SIBI acts as resistance.' },
+        { id:'q06-r3', section:'recall', type:'multiple_choice', question:'What is Consequent Encroachment?', options:['The high of a FVG','The low of a FVG','The 50% midpoint of a FVG','The candle that creates the FVG'], correctAnswer:2, explanation:'Consequent Encroachment (C.E.) is the 50% midpoint of a FVG. It\'s a key reaction level — price often touches the CE and reverses without needing to fill the entire gap.' },
+        { id:'q06-r4', section:'recall', type:'multiple_choice', question:'What makes a bullish order block valid?', options:['Any green candle on the chart','The last down-close candle(s) before a move higher, that sweeps sellside liquidity, at a HTF support level, confirmed by a close above its high','A candle that touches a moving average','Any candle near a round number'], correctAnswer:1, explanation:'A valid bullish OB requires: down-close candle(s) that run SSL, located at HTF support, confirmed when price closes above the OB high. Higher quality if displacement/FVG forms above it.' },
+        { id:'q06-r5', section:'recall', type:'multiple_choice', question:'What is the key structural difference between a breaker block and a mitigation block?', options:['Breakers are bullish, mitigation blocks are bearish','In a breaker, price makes a new extreme (higher high / lower low) before reversing; in a mitigation block, it makes a lower high / higher low (fails to make a new extreme)','Breakers form on lower timeframes','There is no difference'], correctAnswer:1, explanation:'The critical distinction: a breaker forms after a fake-out to a new extreme (triggering stops). A mitigation block forms when price fails to make a new extreme — no fake-out, the trend is already clear.' },
+        { id:'q06-r6', section:'recall', type:'multiple_choice', question:'What is displacement?', options:['Price moving sideways','A sudden, forceful price movement shown by large-body candles with minimal wicks — the footprint of institutional order flow','The distance between support and resistance','A type of indicator'], correctAnswer:1, explanation:'Displacement is aggressive, impulsive price movement — large candles, small wicks, one clear direction. It creates FVGs, confirms order blocks, and signals that institutional capital has entered the market.' },
+        { id:'q06-r7', section:'recall', type:'multiple_choice', question:'In the PD Array Matrix, list the arrays from closest to farthest from current price.', options:['Order Block, Breaker, FVG, Old High/Low, Mitigation Block, Rejection Block','FVG, Mitigation Block, Breaker Block, Order Block, Rejection Block, Old High/Low','Old High/Low, Rejection Block, Order Block, FVG, Breaker, Mitigation Block','The order doesn\'t matter'], correctAnswer:1, explanation:'From closest to farthest from price: FVG → Mitigation Block → Breaker Block → Order Block → Rejection Block → Old High/Low. The closer arrays are encountered first as price moves toward them.' },
+        { id:'q06-a1', section:'applied', type:'chart_analysis', question:'Identify all FVGs on this chart and label each as BISI or SIBI.', explanation:'Look for three-candle patterns where the middle candle creates a gap between the wicks of candles 1 and 3. If the gap formed during an up move = BISI. During a down move = SIBI.' },
+        { id:'q06-a2', section:'applied', type:'chart_analysis', question:'Is this a valid bullish order block? Walk through all the validation criteria.', explanation:'Check: 1) Is it a down-close candle? 2) Did it sweep sellside liquidity? 3) Is it at a HTF support level? 4) Did price close above its high? 5) Is there a FVG directly above (displacement)? The more criteria met, the higher the grade.' },
+        { id:'q06-a3', section:'applied', type:'chart_analysis', question:'Has a breaker block formed on this chart? Walk through the formation steps.', explanation:'Look for: swing high → swing low → higher high (BSL triggered) → reversal below swing low. The candles at the swing low are the bearish breaker. For bullish: swing low → swing high → lower low (SSL triggered) → reversal above swing high.' },
+        { id:'q06-a4', section:'applied', type:'chart_analysis', question:'Draw the FVG\'s Premium level, Discount level, and Consequent Encroachment on this chart.', explanation:'Premium = the high of the FVG (candle 1 high or candle 3 low, whichever defines the upper boundary). Discount = the low of the FVG. C.E. = exactly halfway between premium and discount.' },
+        { id:'q06-a5', section:'applied', type:'chart_analysis', question:'You\'re comparing NQ and ES charts. ES made a lower low while NQ held a higher low at a discount order block. Is there SMT divergence? What does it suggest?', explanation:'Yes — this is bullish SMT divergence. NQ is showing relative strength by refusing to make a new low while its correlated pair (ES) does. Combined with the discount OB, this suggests institutional accumulation in NQ. High conviction for a long trade.' }
+      ]
+    }
   },
   {
     number: 7, id: 'dealing-ranges-and-fair-value', title: 'Dealing Ranges & Fair Value',
