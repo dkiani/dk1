@@ -2172,24 +2172,1088 @@ With time and sessions covered, you now know WHAT drives price (the algorithm), 
     }
   },
   {
-    number: 5, id: 'liquidity', title: 'Liquidity',
-    subtitle: 'Where are the retail stops?',
-    locked: true, comingSoon: true, lessons: []
+    number: 5,
+    id: 'liquidity',
+    title: 'Liquidity',
+    subtitle: 'Where are the retail stops? — The only question that matters.',
+    locked: false,
+    lessons: [
+      {
+        id: 'what-is-liquidity',
+        title: 'What is Liquidity?',
+        readingTime: 6,
+        globalNum: 21,
+        content: `In Module 03, you learned that IPDA's primary job is to engineer liquidity. Now it's time to understand exactly what liquidity is, where it forms, and why the algorithm hunts it.
+
+## The Simple Definition
+
+Liquidity is **resting orders in the market.** Every stop-loss order, every take-profit order, every pending limit or stop entry — these are all liquidity. They're orders sitting in the market waiting to be triggered.
+
+Why does this matter? Because every trade needs a counterparty. If a large institution wants to buy 5,000 NQ contracts, they need sellers. They can't just click "buy" and fill at one price — the order is too large. They need a pool of sell orders to absorb their position. That pool of sell orders is liquidity.
+
+## Where Liquidity Forms
+
+Retail traders are predictable. They place their stop-loss orders in the same places, over and over:
+
+**Buy-Side Liquidity (BSL):** Resting **above** old swing highs. This includes:
+- Stop-loss orders from traders who are short (their protective buy stops sit above recent highs)
+- Entry orders from breakout traders waiting to buy a move above the high
+- Take-profit orders from short sellers
+
+**Sell-Side Liquidity (SSL):** Resting **below** old swing lows. This includes:
+- Stop-loss orders from traders who are long (their protective sell stops sit below recent lows)
+- Entry orders from breakdown traders waiting to sell a move below the low
+- Take-profit orders from long traders
+
+![diagram](Price chart with a swing high and swing low labeled. Above the swing high: a cluster of icons representing buy stops labeled 'BSL — Buy-Side Liquidity.' Below the swing low: a cluster of icons representing sell stops labeled 'SSL — Sell-Side Liquidity.')
+
+:::callout
+THE FUNDAMENTAL INSIGHT
+Every old high has buy stops above it. Every old low has sell stops below it. The algorithm knows exactly where these orders sit — and it will move price to trigger them when it needs the liquidity. Your job is to anticipate which pool of liquidity IPDA is targeting next.
+:::
+
+## Liquidity is Fuel
+
+Think of liquidity as fuel for a move. When IPDA sweeps a pool of sell stops below a swing low, those sell stops activate as market orders (selling). This burst of selling provides the liquidity for Smart Money to fill buy orders. After the sweep, with Smart Money now positioned long and the fuel consumed, price reverses higher.
+
+The same works in reverse: sweeping buy stops above a swing high provides the liquidity for Smart Money to fill sell orders. Then price reverses lower.
+
+This is why the most powerful reversals happen right after a liquidity sweep — the sweep IS the fuel for the reversal.`
+      },
+      {
+        id: 'equal-highs-and-equal-lows',
+        title: 'Equal Highs & Equal Lows',
+        readingTime: 5,
+        globalNum: 22,
+        content: `Not all liquidity pools are created equal. The most magnetic, highest-probability targets are **equal highs** and **equal lows.**
+
+## What Are Equal Highs?
+
+Equal highs occur when two or more swing highs form at nearly the same price level. On the chart, they look like a flat ceiling — price reaches the same level multiple times but doesn't break through.
+
+Retail traders see this and think: "Strong resistance. Price can't get above this level." So they go short with their stop-loss orders just above those equal highs.
+
+What actually happens: those equal highs create an extremely concentrated pool of buy-stop liquidity. Every short seller's stop is sitting right above that level. IPDA sees this as a target — a dense cluster of orders waiting to be triggered.
+
+## What Are Equal Lows?
+
+Equal lows are the mirror image — two or more swing lows at nearly the same price level. They look like a flat floor.
+
+Retail traders see this as "strong support" and go long with stops just below. This creates a dense pool of sell-stop liquidity below the equal lows.
+
+![diagram](Two panels: Left shows equal highs with buy stops clustered above, labeled 'Equal Highs = BSL Magnet.' Right shows equal lows with sell stops clustered below, labeled 'Equal Lows = SSL Magnet.')
+
+:::callout
+THE RULE OF EQUAL HIGHS AND LOWS
+Equal highs are made to be broken. Equal lows are made to be broken. When you see them forming on your chart, don't trade the "support" or "resistance" — anticipate the sweep. The cleaner the level, the more liquidity is resting there, and the more attractive it is to the algorithm.
+:::
+
+## Grading Liquidity Pools
+
+Not all equal highs/lows are equally significant. Here's how to grade them:
+
+**High-value targets:**
+- Equal highs/lows that have been tested 3+ times (more tests = more stops)
+- Levels visible on higher timeframes (daily equal lows are more significant than 5m equal lows)
+- Levels that have held for multiple sessions (more time = more orders accumulate)
+
+**Lower-value targets:**
+- Single swing highs/lows (less concentrated liquidity)
+- Levels only visible on very low timeframes
+- Levels that formed very recently (less time for orders to accumulate)
+
+When you're looking for where price is going next, find the most obvious, highest-grade liquidity pool on the timeframe you're analyzing. That's likely IPDA's next target.`
+      },
+      {
+        id: 'liquidity-sweeps-and-stop-hunts',
+        title: 'Liquidity Sweeps & Stop Hunts',
+        readingTime: 6,
+        globalNum: 23,
+        content: `A **liquidity sweep** is the event where price moves through a liquidity pool, triggers the resting orders, and then reverses. This is the algorithm doing its job — collecting the fuel it needs for the next move.
+
+## Anatomy of a Sweep
+
+Here's what happens during a sell-side liquidity sweep:
+
+:::steps
+1. Price approaches a previous swing low where sell stops are resting
+2. Price pierces below the low — triggering the sell stops
+3. The sell stops activate as market sell orders, creating a burst of selling
+4. Smart Money uses this selling to fill buy orders (they need sellers to buy from)
+5. With positions filled, price reverses and moves higher
+:::
+
+The sweep might last one candle, a few candles, or even just a wick. The key is that price goes through the level, takes the liquidity, and doesn't sustain the move.
+
+## Single-Candle Sweeps
+
+The most valid and tradeable sweeps happen on a **single candle.** Price wicks through the liquidity level and closes back above (for SSL sweeps) or below (for BSL sweeps) in the same candle. This shows immediate rejection — the algorithm got what it needed and reversed instantly.
+
+The next candle after the sweep is your confirmation. It should **not** break below the sweep candle's low (for bullish setups) or above the sweep candle's high (for bearish setups). If it does, the sweep may actually be a genuine breakout, not a reversal.
+
+![diagram](Two examples: Left shows a valid single-candle SSL sweep — price wicks below old lows then closes back above, next candle is bullish. Right shows a failed sweep / genuine breakdown — price breaks below old lows and continues lower.)
+
+## Sweep vs. Breakout
+
+This is the critical question every time price reaches a liquidity level: **is this a sweep (reversal) or a breakout (continuation)?**
+
+Factors that favor a **sweep/reversal:**
+- Price is reaching the level during a killzone
+- The move into the level is the manipulation phase of AMD
+- There's a HTF PD array (order block, FVG) at or near the liquidity level
+- The HTF trend suggests the move into this level is counter-trend
+
+Factors that favor a **breakout/continuation:**
+- The HTF trend is aligned with the break (bearish trend breaking lows = continuation)
+- There's displacement through the level — multiple large candles closing beyond it
+- No significant PD array nearby to cause a reversal
+- The break occurs during a distribution phase, not manipulation
+
+:::callout
+CONTEXT IS EVERYTHING
+A sweep of sell-side liquidity in a HTF bullish market is high-probability for a reversal higher — that's the algorithm taking fuel for the next leg up. A break of sell-side liquidity in a HTF bearish market is more likely continuation lower. Same event, different context, opposite conclusion. This is why Module 02 (Market Structure) had to come first.
+:::`
+      },
+      {
+        id: 'buyside-and-sellside-in-practice',
+        title: 'Buy-Side & Sell-Side Liquidity in Practice',
+        readingTime: 6,
+        globalNum: 24,
+        content: `Let's get practical. Here's how to identify and mark liquidity on your charts.
+
+## Step-by-Step: Marking Liquidity
+
+:::steps
+1. Open your NQ chart on the 1-hour timeframe
+2. Identify all swing highs and swing lows using the 3-bar swing method (Module 02)
+3. Draw a horizontal line at each swing high — extend it to the right. Label it BSL.
+4. Draw a horizontal line at each swing low — extend it to the right. Label it SSL.
+5. Look for clusters: multiple swing highs at similar levels = high-grade BSL. Multiple swing lows at similar levels = high-grade SSL.
+6. Highlight the most obvious, cleanest levels — these are IPDA's highest-priority targets.
+:::
+
+## What Makes a Level "Clean"?
+
+A clean liquidity level is one that hasn't been swept yet. Once price runs through a level and takes the liquidity, that level is **spent** — the orders have been triggered, the liquidity is gone.
+
+**Clean levels** (untouched) are the ones to watch. **Dirty levels** (already swept) are less relevant.
+
+This is why you extend your lines to the right — you want to see which levels haven't been tagged yet. Those are the remaining targets.
+
+## Layering Timeframes
+
+Liquidity exists on every timeframe, and higher-timeframe liquidity is more significant:
+
+**Weekly/Daily swing highs and lows:** Major liquidity pools. These are the primary targets that can drive moves lasting days.
+
+**4H/1H swing highs and lows:** Session-level liquidity. These drive intraday moves and are your primary reference for day trading.
+
+**15m/5m swing highs and lows:** Micro liquidity. Used for fine-tuning entries and identifying short-term sweeps within larger moves.
+
+:::callout
+PRACTICAL TIP
+When doing your pre-market analysis, mark liquidity on at least two timeframes: the daily (for overall targets) and the 1-hour (for session-level targets). Ask yourself: what is the nearest untouched BSL? What is the nearest untouched SSL? One of those is likely where price is heading today.
+:::
+
+![diagram](NQ 1H chart with multiple swing highs and lows marked. Clean levels highlighted with solid lines, already-swept levels shown as dashed/faded lines. BSL and SSL labels on each.)`
+      },
+      {
+        id: 'internal-vs-external-range-liquidity',
+        title: 'Internal vs. External Range Liquidity',
+        readingTime: 6,
+        globalNum: 25,
+        content: `This concept ties liquidity directly to dealing ranges (which you'll learn in full detail in Module 07). For now, you need to understand the two categories of liquidity targets.
+
+## External Range Liquidity
+
+External range liquidity sits **outside** the current dealing range — above the range high and below the range low. These are the swing high and swing low that define the range itself.
+
+When IPDA targets external range liquidity, it's looking to **expand the range** — to sweep the highs or lows and potentially establish a new dealing range.
+
+## Internal Range Liquidity
+
+Internal range liquidity sits **inside** the current dealing range. This includes:
+- FVGs (Fair Value Gaps) within the range
+- Order blocks within the range
+- Swing highs and lows that formed inside the range
+- The equilibrium (50%) level of the range
+
+When IPDA targets internal range liquidity, it's **rebalancing** — filling FVGs, testing order blocks, and offering fair value within the existing range.
+
+## The Oscillation
+
+This is one of the most powerful concepts for anticipating price:
+
+**The market constantly oscillates between internal and external range liquidity.**
+
+:::steps
+1. IPDA sweeps external liquidity (runs the highs or lows of the range)
+2. Price moves back inside the range to seek internal targets (FVGs, OBs)
+3. After filling internal targets, price moves back toward external liquidity on the other side
+4. Cycle repeats — unless manual intervention changes the dynamic
+:::
+
+![diagram](A dealing range shown as a box. External liquidity labeled above and below the box. Internal liquidity targets (FVGs, OBs) labeled inside the box. Arrows showing the oscillation pattern: external → internal → external.)
+
+Understanding this oscillation tells you what to expect next:
+
+- **Price just swept the lows (external SSL)?** Expect a move back inside the range toward internal targets.
+- **Price just filled an FVG (internal)?** Expect a move toward the external liquidity at the range highs or lows.
+
+:::callout
+WHY THIS MATTERS FOR YOUR TRADING
+When you can identify whether IPDA is currently seeking internal or external targets, you know the approximate destination of the next move. Combined with time (killzones) and PD arrays (next module), this gives you a complete picture: where price is going, when it's likely to go there, and what levels it will react to along the way.
+:::
+
+With liquidity covered, you now understand WHAT the algorithm is targeting. In Module 06, you'll learn the specific price levels — the PD Arrays — where the algorithm leaves its footprints and where you'll find your trade entries.`
+      }
+    ],
+    quiz: {
+      title: 'Quiz: Liquidity',
+      passingScore: 80,
+      questions: [
+        { id:'q05-r1', section:'recall', type:'multiple_choice', question:'What is Buy-Side Liquidity (BSL) and where does it rest?', options:['Sell orders below old lows','Buy stop orders resting above old swing highs','Limit orders at the current price','Volume at the bid price'], correctAnswer:1, explanation:'BSL consists of buy stop orders (from short sellers\' stop losses, breakout entries, and take profits) resting above old swing highs.' },
+        { id:'q05-r2', section:'recall', type:'multiple_choice', question:'What creates concentrated liquidity pools at equal highs?', options:['Market makers placing limit orders','Retail traders seeing \'resistance\' and placing short entries with stops just above the equal highs','News events causing volatility','Random order flow'], correctAnswer:1, explanation:'Retail traders interpret equal highs as strong resistance. They enter short positions with stop-loss buy orders just above, creating a dense cluster of buy-stop liquidity — a prime target for the algorithm.' },
+        { id:'q05-r3', section:'recall', type:'multiple_choice', question:'What is the difference between a liquidity sweep and a breakout?', options:['A sweep reverses after taking the liquidity; a breakout continues through with sustained displacement','A sweep happens on higher timeframes; a breakout happens on lower timeframes','There is no difference','A sweep is bullish; a breakout is bearish'], correctAnswer:0, explanation:'A liquidity sweep pierces through a level to trigger resting orders but reverses — the move was only to collect fuel. A breakout pushes through with displacement and continues — it\'s genuine directional movement.' },
+        { id:'q05-r4', section:'recall', type:'multiple_choice', question:'What is the difference between internal and external range liquidity?', options:['Internal is on lower timeframes, external is on higher timeframes','Internal liquidity is inside the dealing range (FVGs, OBs); external is outside the range (the highs and lows defining the range)','Internal is buy-side, external is sell-side','There is no meaningful difference'], correctAnswer:1, explanation:'Internal range liquidity = targets inside the dealing range (FVGs, order blocks, minor swing points). External range liquidity = the highs and lows defining the range boundaries. Price oscillates between the two.' },
+        { id:'q05-r5', section:'recall', type:'multiple_choice', question:'Why does Smart Money need liquidity?', options:['To make their charts look better','To fill their large positions — they need counterparty orders to buy from or sell to','To trigger their own stop losses','Liquidity is not important to Smart Money'], correctAnswer:1, explanation:'Large institutional positions require massive counterparty order flow. Smart Money can\'t just buy 5,000 contracts at one price — they need pools of sell orders (liquidity) to absorb their position. Liquidity sweeps provide this.' },
+        { id:'q05-a1', section:'applied', type:'chart_analysis', question:'Mark all BSL and SSL levels on this chart. Identify which levels are \'clean\' (untouched) and which have already been swept.', explanation:'Draw horizontal lines at each swing high (BSL) and swing low (SSL). If price has already wicked through or traded past the level, it\'s been swept and is less relevant. Clean/untouched levels are the active targets.' },
+        { id:'q05-a2', section:'applied', type:'chart_analysis', question:'Price has just wicked below a previous swing low and closed back above it on a single candle. Is this a valid liquidity sweep? What would you expect next?', explanation:'A single-candle wick below a swing low that closes back above is a classic sell-side liquidity sweep. If the next candle doesn\'t break below the sweep candle\'s low, this is a valid reversal signal. Expect price to move higher toward internal range liquidity or the opposing BSL.' },
+        { id:'q05-a3', section:'applied', type:'multiple_choice', question:'NQ is in a bullish HTF trend. Price drops and sweeps below yesterday\'s low, triggering sell stops. The daily trend is still bullish. Is this more likely a sweep (reversal) or a breakout (continuation)?', options:['Breakout — the lows were broken so the trend is now bearish','Sweep — in a bullish HTF trend, taking SSL is likely the manipulation phase before the next leg higher','Cannot determine without more information','Neither — this is just random movement'], correctAnswer:1, explanation:'In a bullish HTF trend, sweeping sell-side liquidity below a recent low is classic manipulation — the algorithm is collecting fuel (sell stops) for Smart Money to fill long positions. Expect reversal higher. If the HTF trend were bearish, the break would more likely be continuation.' },
+        { id:'q05-a4', section:'applied', type:'chart_analysis', question:'Is price currently targeting internal or external range liquidity on this chart? What do you expect the next move to be?', explanation:'Determine if price recently swept external liquidity (range highs/lows) — if so, expect a move back to internal targets. If price is currently at internal levels (mid-range FVGs/OBs), expect a push toward external liquidity next.' }
+      ]
+    }
   },
   {
-    number: 6, id: 'price-delivery-arrays', title: 'Price Delivery Arrays',
+    number: 6,
+    id: 'price-delivery-arrays',
+    title: 'Price Delivery Arrays',
     subtitle: 'These are the footprints of institutional sponsorship.',
-    locked: true, comingSoon: true, lessons: []
+    locked: false,
+    lessons: [
+      {
+        id: 'what-are-pd-arrays',
+        title: 'What are PD Arrays?',
+        readingTime: 5,
+        globalNum: 26,
+        content: `You've learned that IPDA targets liquidity and areas of inefficient price action. PD Arrays are the **specific price levels** where the algorithm stores its reference points and where you'll find your trade entries.
+
+## The Definition
+
+**PD Arrays (Premium/Discount Arrays)** are key price levels stored in IPDA's repricing logic. They act as support and resistance — but not in the retail sense of "price bounced here before." These levels have algorithmic significance. They're data points the algorithm references when deciding where to deliver price next.
+
+Each array has specific levels that can be **graded** (how strong is it?) and **calibrated** (where exactly within it should price react?).
+
+## The PD Array Matrix
+
+The arrays are organized in a hierarchy based on their distance from current price. In a **premium** market (above equilibrium), these arrays act as resistance. In a **discount** market (below equilibrium), they act as support.
+
+From closest to farthest from current price:
+
+:::steps
+1. **Fair Value Gap (FVG)** — Closest to price, most frequently encountered
+2. **Mitigation Block** — Failed order block area, used for position mitigation
+3. **Breaker Block** — Failed structure that flips from support to resistance (or vice versa)
+4. **Order Block** — Institutional entry points, the footprint of Smart Money positioning
+5. **Rejection Block** — Areas of strong price rejection (long wicks)
+6. **Old High / Old Low** — The liquidity pools at previous swing extremes
+:::
+
+![diagram](The PD Array Matrix shown as a vertical list. Current price in the center. Above price (Premium): FVG, Mitigation Block, Breaker, Order Block, Rejection Block, Old High — each labeled as resistance. Below price (Discount): the same arrays mirrored, each labeled as support.)
+
+:::callout
+NO ZONES — ONLY LEVELS
+A critical distinction: in ICT logic, we do not trade "zones." Each PD array has specific price levels within it. An order block has a high, an open, a mean threshold (50%), and a low. You're not trading "somewhere in this area" — you're watching specific levels for reactions. Precision matters.
+:::
+
+In the following lessons, we'll break down each array in detail. By the end of this module, you'll be able to look at any chart and identify exactly where IPDA is likely to react.`
+      },
+      {
+        id: 'the-fair-value-gap',
+        title: 'The Fair Value Gap (FVG)',
+        readingTime: 8,
+        globalNum: 27,
+        content: `The Fair Value Gap is the most common and most versatile PD array you'll encounter. Understanding FVGs is essential — they appear on every chart, every day, and they're the foundation for many of the trade models in Module 08.
+
+## What Creates a FVG?
+
+When IPDA moves price too quickly in one direction, it leaves an area where only one side of the market was served — either only buying or only selling. This inefficiency is a Fair Value Gap.
+
+On the chart, a FVG is a **three-candle pattern** where the middle candle is large enough that its body creates a gap between the wicks of the candles on either side. The gap is the area where only one-directional delivery occurred.
+
+## BISI — Buyside Imbalance, Sellside Inefficiency
+
+A **bullish FVG (BISI)** forms during an upward move:
+- Three candles moving upward
+- The gap is between the **high of candle 1** and the **low of candle 3**
+- Within this gap, only buying occurred — there was no sellside delivery
+- IPDA will return to this gap to offer sellside delivery (fair value)
+
+When price returns to a BISI, it's rebalancing the inefficiency. In a bullish market, this rebalance often acts as **support** — price dips into the FVG, gets rebalanced, and continues higher.
+
+## SIBI — Sellside Imbalance, Buyside Inefficiency
+
+A **bearish FVG (SIBI)** forms during a downward move:
+- Three candles moving downward
+- The gap is between the **low of candle 1** and the **high of candle 3**
+- Within this gap, only selling occurred — there was no buyside delivery
+- IPDA will return to this gap to offer buyside delivery (fair value)
+
+When price returns to a SIBI, in a bearish market this often acts as **resistance** — price rallies into the FVG, gets rebalanced, and continues lower.
+
+![diagram](Two panels: Left shows a BISI forming during an up move — three bullish candles with the gap between candle 1 high and candle 3 low highlighted and labeled 'BISI — Only buyside delivered.' Right shows a SIBI forming during a down move with the equivalent gap labeled 'SIBI — Only sellside delivered.')
+
+## The Three Levels of a FVG
+
+Every FVG has three reference levels:
+
+**Premium Level (High of the FVG):** In a bullish context, if price has closed above this level, it should act as support. Stronger if the FVG has been partially rebalanced.
+
+**Discount Level (Low of the FVG):** In a bearish context, if price has closed below this level, it should act as resistance. Stronger if the FVG has been partially rebalanced.
+
+**Consequent Encroachment (C.E.):** The **50% midpoint** of the FVG. This is a key reaction level — price often reacts right at the CE. Think of it as the equilibrium of the imbalance.
+
+:::callout
+C.E. IS YOUR PRECISION TOOL
+When price returns to a FVG, watch the Consequent Encroachment level closely. In a strong trend, price often touches the CE and reverses — it doesn't need to fill the entire gap. This gives you a precise entry level rather than guessing "somewhere in the FVG."
+:::
+
+## Rebalancing vs. Rebalanced
+
+A FVG goes through stages:
+
+**Open:** The FVG has not been revisited. It's a fresh inefficiency.
+
+**Partially rebalanced:** Price has returned into the FVG but hasn't traded through the entire gap. The portion that's been revisited now has both buy and sell delivery.
+
+**Fully rebalanced:** Price has traded through the entire FVG — both sides have been served. The gap is "closed." A fully rebalanced FVG that price passes through a third time should act as strong support/resistance.
+
+## FVGs as Displacement Footprints
+
+FVGs are created by displacement — aggressive price movement. This means they're the literal footprints of institutional order flow. A large FVG on the 1-hour chart means someone with serious capital just moved the market. The FVG they leave behind is both a target for rebalancing AND a reference level for future price delivery.`
+      },
+      {
+        id: 'volume-imbalance-and-gap-imbalance',
+        title: 'Volume Imbalance & Gap Imbalance',
+        readingTime: 5,
+        globalNum: 28,
+        content: `Beyond the standard FVG, there are two related imbalance types that indicate urgency in price delivery.
+
+## Volume Imbalance (V.I.)
+
+A Volume Imbalance occurs between two adjacent candles where the **candle bodies don't overlap** — there's a gap between the close of one candle and the open of the next. The wicks may overlap (there is some up-and-down movement in that area), but since the bulk of volume transacts in the candle body, the lack of body overlap represents an imbalance in volume delivery.
+
+Think of it as a lighter version of a FVG — there was some delivery in the area (wick overlap), but not enough to be considered efficient.
+
+![diagram](Two adjacent candles with bodies that don't overlap. The gap between the close of candle 1 and the open of candle 2 is highlighted as 'V.I. — Volume Imbalance.' Wicks overlap in the gap area.)
+
+## Gap Imbalance (G.I.)
+
+A Gap Imbalance is a **true gap** — an area of price where there was absolutely no price delivery at all. Not even wick overlap. This is the most extreme form of imbalance.
+
+Gap Imbalances are less common on NQ during regular trading hours (the market is very liquid), but they can occur:
+- At the Sunday open (gap between Friday's close and Sunday's open)
+- Around major news events
+- Between sessions in less liquid markets
+
+![diagram](Two adjacent candles with NO overlap at all — not even wicks. The empty space between them is highlighted as 'G.I. — Gap Imbalance / True Gap.')
+
+## How to Trade V.I. and G.I.
+
+Both behave like FVGs but with different levels of significance:
+
+**Gap Imbalance:** Very high significance. A true void in price delivery is a strong magnet for price to return and rebalance. These often fill quickly.
+
+**Volume Imbalance:** Moderate significance. Price may or may not fully rebalance a V.I. — it depends on the strength of the trend and the timeframe.
+
+:::callout
+PRIORITY ORDER
+When marking your chart, prioritize: FVGs first (most common, most tradeable), then Gap Imbalances (rare but powerful), then Volume Imbalances (supplementary information). Don't overcomplicate your charts by marking every V.I. — focus on the ones that align with your bias and killzone.
+:::`
+      },
+      {
+        id: 'the-order-block',
+        title: 'The Order Block',
+        readingTime: 8,
+        globalNum: 29,
+        content: `The Order Block is one of the most important PD arrays in the entire framework. It represents the **price level where Smart Money positioned itself** before a significant move. When price returns to an order block, it's returning to a level of institutional interest.
+
+## Bullish Order Block
+
+A bullish order block is the **last down-close candle (or consecutive down-close candles)** before a significant move higher.
+
+For a bullish order block to be valid:
+
+:::steps
+1. There must be a down-close candle (bearish candle) that runs sellside liquidity — it takes out a previous low
+2. This candle occurs at or near a higher-timeframe support level or PD array
+3. The order block is confirmed when price **closes above the high** of the down-close candle — this validates the institutional interest
+4. Higher quality: a FVG forms directly above the order block (displacement confirms the institutional entry)
+:::
+
+## Bearish Order Block
+
+A bearish order block is the **last up-close candle (or consecutive up-close candles)** before a significant move lower.
+
+For a bearish order block to be valid, reverse all the bullish criteria:
+- An up-close candle that runs buyside liquidity
+- At or near a higher-timeframe resistance level
+- Confirmed when price closes below the low of the up-close candle
+- Higher quality with a FVG directly below
+
+![diagram](Bullish order block formation in 6 steps: 1) Previous low with SSL below, 2) Down-close candle sweeps the low, 3) Candle is at HTF support, 4) Next candle closes above the OB high with displacement/FVG above, 5) Price returns to the OB, 6) Reaction from the OB sends price higher.)
+
+## Order Block Key Levels
+
+Every order block has four reference levels:
+
+**High:** The highest point of the OB candle(s). This is the first level price encounters on a return.
+
+**Open:** The opening price of the OB candle. Often a key reaction level.
+
+**Mean Threshold (50%):** The midpoint between the high and the low. This is the critical level — if price violates the mean threshold, the order block is weakening.
+
+**Low:** The lowest point of the OB candle(s). If price closes below this (for a bullish OB), the order block has failed.
+
+:::callout
+THE MEAN THRESHOLD RULE
+When price returns to a bullish order block, the most sensitive area is from the high down to the mean threshold (50%). You do NOT want to see price close below the mean threshold. If it does, the order block is likely invalid — Smart Money's orders have been overwhelmed. Use the mean threshold as your line in the sand.
+:::
+
+## Grading Order Blocks
+
+Not all order blocks are equal. Here's how to grade them:
+
+**A+ Order Block:**
+- Has a FVG directly above/below it (displacement)
+- Located at or near the equilibrium of a larger dealing range
+- Aligns with the HTF trend direction
+- Formed during a killzone
+- First return to the OB (untouched)
+
+**B Grade Order Block:**
+- Valid formation but missing one or two of the above criteria
+- Second return to the OB (partially tested)
+
+**Avoid:**
+- No displacement/FVG
+- Against the HTF trend
+- Formed during dead time
+- Already tested multiple times`
+      },
+      {
+        id: 'the-breaker-block',
+        title: 'The Breaker Block',
+        readingTime: 7,
+        globalNum: 30,
+        content: `A Breaker Block is what happens when a swing point fails — an order block that gets broken through and then **flips its role.** What was support becomes resistance, or what was resistance becomes support. It's a powerful concept because it identifies trapped traders.
+
+## Bearish Breaker Formation
+
+Here's how a bearish breaker forms, step by step:
+
+:::steps
+1. A **swing high** forms (price peaks and turns down)
+2. A **swing low** forms (price bottoms and turns up) — this swing low contains an order block (the last down-close candles)
+3. Price makes a **higher high** — breaking above the previous swing high and triggering buy stops above it
+4. Price then **reverses hard** and breaks below the previous swing low — the move to the higher high was a trap
+5. The down-close candle(s) from the swing low are now the **Breaker Block** — they were previously acting as support (order block), but that support has been broken
+6. When price returns to this broken level, it now acts as **resistance** — the breaker provides an opportunity to sell
+:::
+
+![diagram](Step-by-step bearish breaker: swing high forms, swing low forms with OB candles highlighted, price makes higher high triggering BSL, price reverses and breaks below swing low, the OB candles are now labeled 'Bearish Breaker,' price returns to the breaker and sells off.)
+
+## Why Breakers Work
+
+The breaker level represents **trapped longs.** During step 2, traders bought at the swing low order block. In step 3, they felt validated as price made a higher high. In step 4, their world fell apart — price reversed and broke their support.
+
+Now these trapped longs are underwater. Many are still holding, hoping to "get back to breakeven." When price returns to the breaker level (step 6), these traders exit their longs (selling), which provides resistance. Smart Money uses this return to add to short positions.
+
+## Bullish Breaker
+
+Reverse the entire formation:
+- Swing low → swing high → lower low (sweeping SSL) → reversal above the swing high
+- The up-close candles from the swing high become the bullish breaker
+- Trapped shorts exit when price returns, providing support
+
+:::callout
+BREAKER VS. ORDER BLOCK
+An order block is an active level of institutional interest — it's where Smart Money entered. A breaker is a *failed* order block — the level was broken, trapping traders. The breaker now works in the opposite direction because of those trapped positions. If an order block holds, it's an OB. If it fails and flips, it's a breaker.
+:::`
+      },
+      {
+        id: 'the-mitigation-block',
+        title: 'The Mitigation Block',
+        readingTime: 7,
+        globalNum: 31,
+        content: `The Mitigation Block is similar to the Breaker Block with one critical difference in the structure that creates it. Understanding this difference is what allows you to correctly identify each one on a chart.
+
+## The Key Difference: Higher High vs. Lower High
+
+**Breaker Block:** Forms when price makes a **higher high** (runs buy stops) before reversing. The move to the higher high is a fake-out — a manipulation to trigger BSL.
+
+**Mitigation Block:** Forms when price makes a **lower high** (fails to take buy stops) before continuing lower. There's no fake-out above the previous high — the trend is already clearly bearish.
+
+## Bearish Mitigation Block Formation
+
+:::steps
+1. A **swing high** forms
+2. A **swing low** forms — this swing low contains the down-close candle(s) that will become the mitigation block
+3. Price rallies but only makes a **lower high** — it does NOT exceed the previous swing high
+4. Price then reverses and breaks below the previous swing low
+5. The down-close candle(s) from step 2 = the **Mitigation Block**
+6. When price returns to this level, Smart Money uses it to **mitigate** (close out) their losing long positions and add to shorts
+:::
+
+![diagram](Side-by-side comparison: Left panel shows Breaker formation with a higher high before the reversal. Right panel shows Mitigation Block formation with a lower high before the reversal. The structural difference is highlighted with annotations.)
+
+## Why It's Called "Mitigation"
+
+Mitigation means to reduce the severity of something. When Smart Money has a losing long position from the swing low, they need price to return to that level so they can exit at breakeven or a smaller loss. The return to the mitigation block allows them to **mitigate their losses** — close the bad position and reposition in the correct direction.
+
+## Bullish Mitigation Block
+
+Reverse the formation:
+- Swing low → swing high → higher low (not a lower low) → price breaks above the swing high
+- The up-close candles from the swing high become the bullish mitigation block
+- Price returns, Smart Money mitigates shorts and adds longs
+
+:::callout
+BREAKER OR MITIGATION BLOCK? USE THIS TEST
+Look at the swing AFTER the potential block forms. Did price make a new extreme that exceeded the previous swing? If YES → Breaker (the fake-out to trigger stops was the setup). If NO → Mitigation Block (no fake-out needed, the trend was already clear). This is the one question that distinguishes them.
+:::`
+      },
+      {
+        id: 'displacement-and-institutional-sponsorship',
+        title: 'Displacement & Institutional Sponsorship',
+        readingTime: 6,
+        globalNum: 32,
+        content: `Now that you know all the major PD arrays, let's talk about the force that creates them: **displacement.** And the tool that confirms institutional involvement: **SMT Divergence.**
+
+## Displacement Revisited
+
+We introduced displacement in Module 02 as the force that confirms a Market Structure Shift. Now you can see it through the lens of PD arrays:
+
+Displacement is what creates FVGs. It's what validates order blocks. It's what breaks structure and forms breakers. Without displacement, none of these patterns have conviction behind them.
+
+On the chart, displacement looks like: **one or more large-body candles with minimal wicks, all moving aggressively in one direction.** The candles are telling you that someone with significant capital just moved the market decisively.
+
+:::callout
+THE ELEPHANT IN THE POOL
+ICT uses the analogy of an elephant stepping into a children's pool. The elephant's foot is so large that it causes a visible displacement of water. In the same way, when a large institution enters the market, their order is so large that it causes a visible displacement of price — creating FVGs, confirming order blocks, and shifting structure.
+:::
+
+## SMT Divergence — Smart Money Tool
+
+SMT Divergence is how you detect **institutional sponsorship** behind a move. The concept: algorithms that control correlated asset prices work synergistically. When these correlations break, it's a footprint of institutional positioning.
+
+## How SMT Works with Correlated Pairs
+
+For assets that normally move **together** (e.g., ES and NQ):
+- If ES makes a lower low but NQ makes a **higher low**, NQ is showing strength
+- NQ's unwillingness to make a new low signals institutional buying — they're accumulating NQ
+- ES going lower was just a liquidity sweep; NQ's higher low confirms the sweep is done
+- This divergence suggests both will move higher, with NQ leading
+
+For assets that normally move **inversely** (e.g., DXY and EUR/USD):
+- If DXY fails to make a new low while EUR/USD runs buy stops to a new high
+- DXY's strength (failing to drop) suggests EUR/USD's new high is just a liquidity grab
+- Expect EUR/USD to reverse lower
+
+![diagram](Two panels showing SMT divergence: Top panel shows Correlated Pair 1 (ES) making a lower low while Correlated Pair 2 (NQ) makes a higher low — divergence labeled. Bottom panel shows the same concept with inverse correlation.)
+
+## Using SMT in Your Trading
+
+SMT isn't a standalone signal — it's a **confluence tool.** It's most powerful when it confirms something you're already seeing:
+
+- You see a sell-side liquidity sweep on NQ at a discount order block during the NY killzone → Check ES. Did ES make a lower low while NQ held a higher low? → SMT confirms institutional buying. High conviction long.
+
+- Your analysis says to sell, but NQ and ES are both making higher lows in sync → No divergence, trend is healthy. Your sell idea may be premature.
+
+SMT adds another layer of confirmation. It's not required for every trade, but when it's present, it significantly increases your conviction.`
+      }
+    ],
+    quiz: {
+      title: 'Quiz: Price Delivery Arrays',
+      passingScore: 80,
+      questions: [
+        { id:'q06-r1', section:'recall', type:'multiple_choice', question:'What does FVG stand for and what causes it?', options:['Fair Volume Gap — caused by low volume','Fair Value Gap — caused by IPDA repricing too quickly in one direction, leaving an inefficiency','Forward Value Gauge — a predictive indicator','Fibonacci Value Grid — a grid overlay tool'], correctAnswer:1, explanation:'FVG = Fair Value Gap. It\'s created when IPDA moves price too quickly in one direction, leaving an area where only one side (buy or sell) was served. The algorithm returns to these gaps to offer fair value.' },
+        { id:'q06-r2', section:'recall', type:'multiple_choice', question:'What is the difference between a BISI and a SIBI?', options:['BISI is bearish, SIBI is bullish','BISI = Buyside Imbalance/Sellside Inefficiency (bullish FVG); SIBI = Sellside Imbalance/Buyside Inefficiency (bearish FVG)','They are the same thing','BISI is on higher timeframes, SIBI is on lower timeframes'], correctAnswer:1, explanation:'BISI forms during upward moves (only buying occurred — sellside inefficient). SIBI forms during downward moves (only selling occurred — buyside inefficient). BISI acts as support, SIBI acts as resistance.' },
+        { id:'q06-r3', section:'recall', type:'multiple_choice', question:'What is Consequent Encroachment?', options:['The high of a FVG','The low of a FVG','The 50% midpoint of a FVG','The candle that creates the FVG'], correctAnswer:2, explanation:'Consequent Encroachment (C.E.) is the 50% midpoint of a FVG. It\'s a key reaction level — price often touches the CE and reverses without needing to fill the entire gap.' },
+        { id:'q06-r4', section:'recall', type:'multiple_choice', question:'What makes a bullish order block valid?', options:['Any green candle on the chart','The last down-close candle(s) before a move higher, that sweeps sellside liquidity, at a HTF support level, confirmed by a close above its high','A candle that touches a moving average','Any candle near a round number'], correctAnswer:1, explanation:'A valid bullish OB requires: down-close candle(s) that run SSL, located at HTF support, confirmed when price closes above the OB high. Higher quality if displacement/FVG forms above it.' },
+        { id:'q06-r5', section:'recall', type:'multiple_choice', question:'What is the key structural difference between a breaker block and a mitigation block?', options:['Breakers are bullish, mitigation blocks are bearish','In a breaker, price makes a new extreme (higher high / lower low) before reversing; in a mitigation block, it makes a lower high / higher low (fails to make a new extreme)','Breakers form on lower timeframes','There is no difference'], correctAnswer:1, explanation:'The critical distinction: a breaker forms after a fake-out to a new extreme (triggering stops). A mitigation block forms when price fails to make a new extreme — no fake-out, the trend is already clear.' },
+        { id:'q06-r6', section:'recall', type:'multiple_choice', question:'What is displacement?', options:['Price moving sideways','A sudden, forceful price movement shown by large-body candles with minimal wicks — the footprint of institutional order flow','The distance between support and resistance','A type of indicator'], correctAnswer:1, explanation:'Displacement is aggressive, impulsive price movement — large candles, small wicks, one clear direction. It creates FVGs, confirms order blocks, and signals that institutional capital has entered the market.' },
+        { id:'q06-r7', section:'recall', type:'multiple_choice', question:'In the PD Array Matrix, list the arrays from closest to farthest from current price.', options:['Order Block, Breaker, FVG, Old High/Low, Mitigation Block, Rejection Block','FVG, Mitigation Block, Breaker Block, Order Block, Rejection Block, Old High/Low','Old High/Low, Rejection Block, Order Block, FVG, Breaker, Mitigation Block','The order doesn\'t matter'], correctAnswer:1, explanation:'From closest to farthest from price: FVG → Mitigation Block → Breaker Block → Order Block → Rejection Block → Old High/Low. The closer arrays are encountered first as price moves toward them.' },
+        { id:'q06-a1', section:'applied', type:'chart_analysis', question:'Identify all FVGs on this chart and label each as BISI or SIBI.', explanation:'Look for three-candle patterns where the middle candle creates a gap between the wicks of candles 1 and 3. If the gap formed during an up move = BISI. During a down move = SIBI.' },
+        { id:'q06-a2', section:'applied', type:'chart_analysis', question:'Is this a valid bullish order block? Walk through all the validation criteria.', explanation:'Check: 1) Is it a down-close candle? 2) Did it sweep sellside liquidity? 3) Is it at a HTF support level? 4) Did price close above its high? 5) Is there a FVG directly above (displacement)? The more criteria met, the higher the grade.' },
+        { id:'q06-a3', section:'applied', type:'chart_analysis', question:'Has a breaker block formed on this chart? Walk through the formation steps.', explanation:'Look for: swing high → swing low → higher high (BSL triggered) → reversal below swing low. The candles at the swing low are the bearish breaker. For bullish: swing low → swing high → lower low (SSL triggered) → reversal above swing high.' },
+        { id:'q06-a4', section:'applied', type:'chart_analysis', question:'Draw the FVG\'s Premium level, Discount level, and Consequent Encroachment on this chart.', explanation:'Premium = the high of the FVG (candle 1 high or candle 3 low, whichever defines the upper boundary). Discount = the low of the FVG. C.E. = exactly halfway between premium and discount.' },
+        { id:'q06-a5', section:'applied', type:'chart_analysis', question:'You\'re comparing NQ and ES charts. ES made a lower low while NQ held a higher low at a discount order block. Is there SMT divergence? What does it suggest?', explanation:'Yes — this is bullish SMT divergence. NQ is showing relative strength by refusing to make a new low while its correlated pair (ES) does. Combined with the discount OB, this suggests institutional accumulation in NQ. High conviction for a long trade.' }
+      ]
+    }
   },
   {
-    number: 7, id: 'dealing-ranges-and-fair-value', title: 'Dealing Ranges & Fair Value',
-    subtitle: 'Buy at discount. Sell at premium.',
-    locked: true, comingSoon: true, lessons: []
+    number: 7,
+    id: 'dealing-ranges-and-fair-value',
+    title: 'Dealing Ranges & Fair Value',
+    subtitle: 'Buy at discount. Sell at premium. It\'s that simple — and that hard.',
+    locked: false,
+    lessons: [
+      {
+        id: 'the-dealing-range',
+        title: 'The Dealing Range',
+        readingTime: 6,
+        globalNum: 33,
+        content: `Everything you've learned so far — structure, the algorithm, time, liquidity, PD arrays — comes together inside the dealing range. This is the framework that organizes all of it.
+
+## What Creates a Dealing Range?
+
+A dealing range is established when IPDA runs **both buyside and sellside liquidity** to create a new swing. Specifically:
+
+:::steps
+1. Price runs **sellside liquidity** (sweeps below old lows) — creating a new low
+2. Price then runs **buyside liquidity** (sweeps above old highs) — creating a new high
+3. The range between this new low and new high = the current **dealing range**
+:::
+
+The dealing range is the sandbox IPDA is currently playing in. Until a new dealing range is created (by running liquidity beyond the current range), all price action occurs within this framework.
+
+![diagram](Price action showing: 1) Sellstops purged below old lows creating a new low, 2) Price rallies and runs buystops above old highs creating a new high, 3) A box drawn around the range between the new low and new high labeled 'New Dealing Range.')
+
+## What Happens Inside a Dealing Range?
+
+Once established, IPDA works within the dealing range:
+
+- It seeks **PD arrays and FVGs** within the range (internal range liquidity)
+- It seeks **minor swing highs and lows** within the range
+- It oscillates between internal and external targets
+- It uses the range's equilibrium as a reference for premium/discount
+
+The dealing range is not a static box — it's a **living framework** that tells you where price is relative to value and where it's likely to go next.
+
+:::callout
+DEALING RANGES ARE FRACTAL
+Just like market structure and AMD, dealing ranges exist on every timeframe. The weekly chart has its own dealing range. The daily chart has one inside it. The 1-hour chart has smaller ones inside those. Your job is to identify the dealing range on the timeframe you're trading and use it to frame your analysis.
+:::`
+      },
+      {
+        id: 'premium-vs-discount',
+        title: 'Premium vs. Discount',
+        readingTime: 6,
+        globalNum: 34,
+        content: `This is one of the simplest concepts in the curriculum — and one of the most impactful. If you do nothing else but follow this rule, you'll avoid the majority of bad trades.
+
+## The Rule
+
+**Buy in discount. Sell in premium. Never the reverse.**
+
+## How to Determine Premium and Discount
+
+Take your dealing range and find the **50% level** — this is the **equilibrium.** You can do this manually (average of the high and low) or use a Fibonacci tool set from 0% at the low to 100% at the high.
+
+**Premium:** Everything ABOVE the 50% level. Price is expensive relative to the range. This is where you look for **sell setups.**
+
+**Discount:** Everything BELOW the 50% level. Price is cheap relative to the range. This is where you look for **buy setups.**
+
+![diagram](A dealing range split at the 50% level. Upper half shaded red/warm labeled 'PREMIUM — Sell Zone.' Lower half shaded green/cool labeled 'DISCOUNT — Buy Zone.' The 50% line labeled 'Equilibrium.' Price action shown oscillating within the range.)
+
+## Why This Filter is So Powerful
+
+Think about what most retail traders do: they buy breakouts at the top of ranges (premium) and sell breakdowns at the bottom of ranges (discount). They're buying expensive and selling cheap — the exact opposite of what Smart Money does.
+
+Smart Money buys in discount (where price is cheap and PD arrays offer support) and sells in premium (where price is expensive and PD arrays offer resistance).
+
+This single filter — "Am I in premium or discount?" — eliminates a huge number of bad trades. If your analysis says to buy but price is in premium, something is wrong. Either your analysis is off or you need to wait for price to come to discount first.
+
+:::callout
+THE NON-NEGOTIABLE RULE
+Before any trade, ask: is price in premium or discount of the current dealing range? If you're looking to buy but you're in premium — WAIT. If you're looking to sell but you're in discount — WAIT. This discipline alone will dramatically improve your win rate.
+:::`
+      },
+      {
+        id: 'equilibrium-and-ote',
+        title: 'Equilibrium & Optimal Trade Entry',
+        readingTime: 6,
+        globalNum: 35,
+        content: `The equilibrium level is more than just the border between premium and discount. It's a key reference level in its own right, and it's the foundation for finding Optimal Trade Entries.
+
+## Equilibrium as a Magnet
+
+Price gravitates toward equilibrium after displacement. When price is extended deep into premium, it wants to return toward equilibrium. When it's deep in discount, the same pull applies. Equilibrium represents **fair value** for the current range — neither expensive nor cheap.
+
+This is also why higher-probability order blocks tend to form **near equilibrium** — Smart Money positions itself at fair value, not at extreme prices.
+
+## The Optimal Trade Entry (OTE)
+
+The OTE is a Fibonacci-based concept for identifying the **highest-probability entry zone** within a retracement.
+
+Here's how to find it:
+
+:::steps
+1. Identify a completed swing (swing low to swing high, or swing high to swing low)
+2. Apply the Fibonacci retracement tool: **0% at the start** of the swing, **100% at the end**
+3. The **OTE zone** is the area between the **61.8% and 78.6% retracement levels**
+4. Within this zone, look for a PD array (FVG, order block) — that's your entry
+:::
+
+For a bullish OTE: price swings up, retraces back down to the 61.8%-78.6% zone (which is in discount), and you look for a PD array to enter long.
+
+For a bearish OTE: price swings down, retraces back up to the 61.8%-78.6% zone (which is in premium), and you look for a PD array to enter short.
+
+![diagram](A bullish swing with Fibonacci retracement overlay. 0% at the swing low, 100% at the swing high. The 50% level labeled 'Equilibrium.' The zone between 61.8% and 78.6% highlighted and labeled 'OTE Zone.' An order block is shown within the OTE zone as the entry point.)
+
+:::callout
+OTE + PD ARRAY = PRECISION
+The OTE zone alone is a region, not a level. The PD array within the OTE zone is the specific level. When a FVG or order block sits inside the OTE zone and aligns with your HTF bias and killzone timing — that's an A+ entry. You've combined structure, price level, retracement depth, and time. That's confluence.
+:::`
+      },
+      {
+        id: 'balanced-price-range',
+        title: 'Balanced Price Range',
+        readingTime: 5,
+        globalNum: 36,
+        content: `A Balanced Price Range (BPR) occurs when the market creates two opposing FVGs in rapid succession — a tug-of-war between buyers and sellers that temporarily traps price in a range.
+
+## How a BPR Forms
+
+:::steps
+1. A strong bearish displacement creates a **SIBI** (bearish FVG)
+2. Shortly after, a strong bullish displacement creates a **BISI** (bullish FVG)
+3. The overlap between these two FVGs = the **Balanced Price Range**
+4. Price oscillates within this range, repeatedly testing both extremes
+:::
+
+The BPR is essentially a micro dealing range defined by opposing institutional moves. Both sides have made their presence known, and the range between their FVGs is the battlefield.
+
+![diagram](Two opposing displacements creating overlapping FVGs. The bearish displacement creates a SIBI from top. The bullish displacement creates a BISI from bottom. The overlapping area is highlighted as 'Balanced Price Range.' Price is shown chopping within this range.)
+
+## Trading the BPR
+
+Within a BPR, price is **ranging** — it's testing both sides, filling both FVGs. This is NOT a good environment for directional trades. The BPR tells you to wait.
+
+**The trade comes when price breaks out of the BPR:**
+- If price breaks above the BPR with displacement → bullish bias, look for pullback entries
+- If price breaks below the BPR with displacement → bearish bias, look for pullback entries
+
+The breakout from a BPR is often significant because both sides have been tested and the winning side now has clear direction.
+
+:::callout
+BPR = PATIENCE SIGNAL
+When you identify a Balanced Price Range, don't force trades inside it. Mark the upper and lower boundaries and wait for one side to break with conviction. The BPR is the accumulation phase; the breakout is the beginning of distribution.
+:::`
+      },
+      {
+        id: 'reading-a-range-putting-it-together',
+        title: 'Reading a Range: Putting It All Together',
+        readingTime: 7,
+        globalNum: 37,
+        content: `Let's consolidate everything from Modules 05, 06, and 07 into a single, repeatable process for reading any chart.
+
+## The 5-Step Range Analysis
+
+:::steps
+1. **Identify the current dealing range.** Where did BSL and SSL most recently get taken? The high and low of that swing = your range. Draw a box around it.
+2. **Mark equilibrium (50%).** Split the range in half. Everything above = premium. Everything below = discount. This immediately tells you which direction to trade.
+3. **Determine your location.** Where is current price within the range? Premium or discount? This tells you whether to look for buys (discount) or sells (premium).
+4. **Find PD arrays in the appropriate zone.** In discount: look for bullish OBs, BISI FVGs, and bullish breakers. In premium: look for bearish OBs, SIBI FVGs, and bearish breakers. These are your potential entry levels.
+5. **Wait for time alignment.** Is a killzone active? Is a high-impact news event approaching? The PD array only activates when time aligns with price.
+:::
+
+## A Worked Example
+
+Let's walk through this on a hypothetical NQ chart:
+
+**Step 1:** Yesterday, NQ swept the lows at 18,200 (SSL taken) and then rallied to sweep the highs at 18,600 (BSL taken). Dealing range = 18,200 to 18,600.
+
+**Step 2:** Equilibrium = 18,400. Premium = 18,400 to 18,600. Discount = 18,200 to 18,400.
+
+**Step 3:** Price is currently at 18,320. That's in discount. We should be looking for **buys.**
+
+**Step 4:** There's a bullish order block at 18,280-18,300 with a BISI FVG directly above it. The CE of the FVG is at 18,310. This is our entry zone.
+
+**Step 5:** It's 9:45 AM EST — we're in the NY killzone, approaching the 09:50-10:10 macro window. Time is aligned.
+
+**Conclusion:** Look for a bullish reaction from the 18,280-18,310 area. Stop below the OB low (18,270). Target the equilibrium (18,400) for first partial and the BSL at 18,600 for the full target.
+
+![diagram](Fully annotated dealing range example: range from 18,200 to 18,600, equilibrium at 18,400, premium and discount zones shaded, bullish OB at 18,280-18,300, FVG above it with CE at 18,310, current price at 18,320, entry and stop marked, target levels shown.)
+
+:::callout
+THIS IS YOUR PRE-MARKET ANALYSIS
+Every day before the session, run through these 5 steps on the 1H and Daily charts. Write down your dealing range, equilibrium, location, PD arrays, and the time windows you're watching. This takes 15 minutes and gives you a complete game plan before a single candle prints.
+:::
+
+You now have every concept you need to read a chart at a professional level. You understand structure, the algorithm, time, liquidity, PD arrays, and dealing ranges. In Module 08, we put it all together into specific, repeatable trade models — the exact setups you'll use to enter and exit trades.`
+      }
+    ],
+    quiz: {
+      title: 'Quiz: Dealing Ranges & Fair Value',
+      passingScore: 80,
+      questions: [
+        { id:'q07-r1', section:'recall', type:'multiple_choice', question:'How is a dealing range established?', options:['By drawing a box around any consolidation','When IPDA runs both buyside and sellside liquidity to create a new swing high and swing low','By connecting two moving averages','When price touches a round number'], correctAnswer:1, explanation:'A dealing range is created when IPDA sweeps both BSL (creating a new high) and SSL (creating a new low). The range between this new high and low is the current dealing range.' },
+        { id:'q07-r2', section:'recall', type:'multiple_choice', question:'What is above the 50% level called? Below?', options:['Support above, resistance below','Premium above, discount below','Bullish above, bearish below','The upper and lower halves'], correctAnswer:1, explanation:'Above 50% (equilibrium) = Premium — where you look to sell. Below 50% = Discount — where you look to buy.' },
+        { id:'q07-r3', section:'recall', type:'multiple_choice', question:'What is the OTE zone in Fibonacci terms?', options:['0% to 50%','38.2% to 50%','61.8% to 78.6%','78.6% to 100%'], correctAnswer:2, explanation:'The Optimal Trade Entry (OTE) zone sits between the 61.8% and 78.6% Fibonacci retracement levels. This is the sweet spot for high-probability entries on pullbacks.' },
+        { id:'q07-r4', section:'recall', type:'multiple_choice', question:'What creates a Balanced Price Range?', options:['Two moving averages crossing','Two opposing displacements (bearish and bullish) creating overlapping FVGs in a short time period','Equal highs and equal lows','A consolidation pattern'], correctAnswer:1, explanation:'A BPR forms when two opposing displacements create two FVGs (one SIBI, one BISI) that overlap. The overlapping area is the Balanced Price Range — a temporary equilibrium zone.' },
+        { id:'q07-r5', section:'recall', type:'multiple_choice', question:'Should you buy in premium or discount?', options:['Premium','Discount','Either — it doesn\'t matter','Only at equilibrium'], correctAnswer:1, explanation:'Always buy in discount (below the 50% level of the dealing range) and sell in premium (above 50%). This ensures you\'re buying cheap and selling expensive — aligned with Smart Money positioning.' },
+        { id:'q07-a1', section:'applied', type:'chart_analysis', question:'Draw the current dealing range on this chart and mark the equilibrium level.', explanation:'Find the most recent swing where both BSL and SSL were taken. The high = the BSL sweep, the low = the SSL sweep. Draw a box. The midpoint of that box = equilibrium.' },
+        { id:'q07-a2', section:'applied', type:'chart_analysis', question:'Is price currently in premium or discount on this chart? What type of setup should you be looking for?', explanation:'Compare current price to the dealing range equilibrium. If above = premium (look for sells at PD arrays). If below = discount (look for buys at PD arrays).' },
+        { id:'q07-a3', section:'applied', type:'chart_analysis', question:'Identify the OTE zone on this chart. Is there a PD array (FVG or order block) inside the OTE zone?', explanation:'Apply Fibonacci from the swing low to swing high (or vice versa). The 61.8%-78.6% retracement area is the OTE zone. Look for FVGs or order blocks within this zone — that\'s where your entry would be.' },
+        { id:'q07-a4', section:'applied', type:'multiple_choice', question:'NQ dealing range is 18,200 to 18,600. Equilibrium is 18,400. There\'s a bullish order block at 18,280 and a bearish order block at 18,520. Price is currently at 18,300. What is your bias and which PD array are you watching?', options:['Bearish bias — watch the bearish OB at 18,520 for a short entry','Bullish bias — watch the bullish OB at 18,280 for a long entry, since price is in discount','No trade — wait for price to reach equilibrium','Short from current price at 18,300'], correctAnswer:1, explanation:'Price is at 18,300 — below equilibrium (18,400) — which means we\'re in discount. In discount, you look for buys. The bullish OB at 18,280 is your entry level. The bearish OB at 18,520 is a potential target, not an entry (you don\'t sell from discount).' }
+      ]
+    }
   },
   {
-    number: 8, id: 'trade-models', title: 'Trade Models',
-    subtitle: 'You need one model you trust completely.',
-    locked: true, comingSoon: true, lessons: []
+    number: 8,
+    id: 'trade-models',
+    title: 'Trade Models',
+    subtitle: 'You don\'t need 10 strategies. You need one model you trust completely.',
+    locked: false,
+    lessons: [
+      {
+        id: 'power-of-3',
+        title: 'Power of 3 (AMD on the Daily Candle)',
+        readingTime: 6,
+        globalNum: 38,
+        content: `The Power of 3 (Po3) is not a new concept — it's the AMD cycle applied specifically to the daily candle. It gives you a framework for understanding how each trading day unfolds and where to position yourself.
+
+## The Daily Candle as AMD
+
+Every daily candle has an Open, High, Low, and Close. When you map these to the AMD cycle:
+
+**Buy Day:** Open → Low (Manipulation/Judas Swing) → High (Distribution/Expansion) → Close near the high
+- The open is near the bottom of the candle
+- Price drops below the open first (manipulation), then rallies above it (distribution)
+- Close is near the top
+
+**Sell Day:** Open → High (Manipulation/Judas Swing) → Low (Distribution/Expansion) → Close near the low
+- The open is near the top of the candle
+- Price rallies above the open first (manipulation), then drops below it (distribution)
+- Close is near the bottom
+
+## The Midnight Open
+
+The reference price for Po3 is the **midnight New York time (12:00 AM EST) opening price.** This is the "open" in the OHLC of the true day.
+
+Your objective:
+- On a buy day: buy **at or below** the midnight open as the low is being formed
+- On a sell day: sell **at or above** the midnight open as the high is being formed
+
+You are not concerned with predicting the close. Your goal is to capture the **bulk of the expansion move** — the distribution phase.
+
+![diagram](Two OHLC bars side by side: Left = Buy Day showing 12am Open near the bottom, Low just below it, High at the top, Close near the high. Right = Sell Day showing 12am Open near the top, High just above it, Low at the bottom, Close near the low. Manipulation and distribution phases labeled on each.)
+
+:::callout
+HOW TO USE PO3 IN PRACTICE
+Po3 is your daily framework, not a standalone entry signal. It tells you: after midnight, which side of the open is manipulation (the trap) and which side is distribution (the real move). Combine this with killzone timing — the manipulation typically occurs during London or early NY, and the distribution unfolds during the NY session.
+:::`
+      },
+      {
+        id: 'the-judas-swing',
+        title: 'The Judas Swing',
+        readingTime: 5,
+        globalNum: 39,
+        content: `The Judas Swing is the manipulation phase of Po3/AMD — the false move designed to trap retail traders before the real move begins. Understanding it means you'll never get trapped by it again.
+
+## Characteristics of the Judas Swing
+
+The Judas Swing:
+- Occurs **early in the killzone** (London open or early NY)
+- Moves in the **opposite direction** of the day's intended move
+- **Sweeps liquidity** — takes out stops above or below the Asian range or overnight range
+- Creates the appearance of a trend start (retail traders chase it)
+- Then **reverses** as the real distribution begins
+
+## Identifying the Judas Swing in Real-Time
+
+This is the challenge — how do you know you're in the Judas Swing while it's happening, not after?
+
+Clues that the current move is the Judas Swing:
+
+:::steps
+1. **Time:** It's happening during London open (2-5 AM EST) or early NY (7-8:30 AM EST) — classic manipulation windows
+2. **Direction vs. HTF bias:** The move contradicts your HTF analysis. If the daily is bullish but price is dropping at the London open, that drop is likely the Judas.
+3. **Liquidity target reached:** The move sweeps an obvious liquidity pool (the Asian range high/low, yesterday's high/low)
+4. **MSS forms:** After the sweep, you see displacement in the opposite direction with a Market Structure Shift on the LTF
+:::
+
+Once you see points 3 and 4 — liquidity swept and MSS confirmed — the Judas Swing is likely complete and the real move is beginning.
+
+![diagram](Intraday NQ chart showing: Asian range consolidation, London open Judas Swing sweeping below the Asian low (SSL taken), MSS forms with displacement candles, NY session expansion higher. Time labels and killzone windows marked.)
+
+:::callout
+THE JUDAS SWING IS YOUR ENTRY WINDOW
+Most traders fear the Judas Swing because it stops them out. You should love it — because it's the manipulation phase that creates your entry. After the Judas Swing completes (liquidity swept + MSS), the PD arrays it leaves behind are your entry levels for the real move.
+:::`
+      },
+      {
+        id: 'the-silver-bullet-model',
+        title: 'The Silver Bullet Model',
+        readingTime: 6,
+        globalNum: 40,
+        content: `The Silver Bullet is one of the most specific and repeatable intraday models. It's defined by time windows and a simple entry mechanism: a FVG that forms within the window.
+
+## The Three Silver Bullet Windows (EST)
+
+:::steps
+1. **3:00 AM – 4:00 AM** — The London Silver Bullet
+2. **10:00 AM – 11:00 AM** — The NY AM Silver Bullet (most relevant for NQ)
+3. **2:00 PM – 3:00 PM** — The NY PM Silver Bullet
+:::
+
+## The Setup
+
+Within any Silver Bullet window:
+
+:::steps
+1. **Identify your bias** using HTF analysis (dealing range, premium/discount, HTF structure)
+2. **Wait for a FVG to form** within the Silver Bullet time window that aligns with your bias
+3. **Enter on the return to the FVG** — price should retrace back to the FVG after creating it
+4. **Stop loss** below the FVG (for longs) or above the FVG (for shorts)
+5. **Target** the opposing liquidity pool — the nearest untouched BSL or SSL
+:::
+
+## Why the Silver Bullet Works
+
+These specific time windows correspond to moments when IPDA frequently initiates or continues its daily moves. The FVG that forms within the window is the algorithm's footprint — displacement showing you which direction it's committed to.
+
+The beauty of this model is its **simplicity and specificity.** You know exactly when to look (the three windows), exactly what to look for (a FVG), and exactly where to enter (the return to the FVG).
+
+![diagram](NQ 5-minute chart showing the 10:00-11:00 AM Silver Bullet window highlighted. A bearish FVG forms at 10:15 AM. Price creates the FVG during displacement lower, retraces back up to the FVG at 10:30 AM (entry), then continues lower to the SSL target.)
+
+:::callout
+THE 10 AM SILVER BULLET
+For NQ traders, the 10:00-11:00 AM window is the most relevant Silver Bullet. This is when London traders are closing positions, NY volume is strong, and the daily direction is often becoming clear. If you only trade one Silver Bullet window, make it this one.
+:::`
+      },
+      {
+        id: 'the-liquidity-sweep-model',
+        title: 'The Liquidity Sweep Model',
+        readingTime: 7,
+        globalNum: 41,
+        content: `The Liquidity Sweep Model is a multi-timeframe setup that starts with a sweep on the higher timeframe and drills down to the lower timeframe for a precise entry.
+
+## Step 1: Spot a Valid Liquidity Sweep on the HTF
+
+On your 1H or 15m chart, look for a **single-candle liquidity sweep:**
+- Price sweeps above BSL (or below SSL) with a single candle
+- The candle wicks through the liquidity level and closes back on the opposite side
+- This is IPDA collecting the fuel it needs for the reversal
+
+Critical validation: **the next candle must NOT exceed the sweep candle's extreme.** If price continues through, it's a breakout — not a sweep.
+
+## Step 2: Drop to the LTF and Wait for CHoCH
+
+Switch to the 5m or 1m chart and wait for a **Change of Character** — the first break of a swing point against the direction of the sweep. This confirms that the LTF structure is shifting in favor of the reversal.
+
+## Step 3: Identify Entry Level
+
+After the CHoCH, look for:
+- The **order block** that caused the CHoCH — the last candle in the old direction before the shift
+- A **FVG** that formed during the displacement of the CHoCH
+- Or combine them: treat the FVG and OB as a single entry zone and enter at the midpoint
+
+## Step 4: Set Stop Loss and Target
+
+**Stop loss:** Below the order block (for longs) or above it (for shorts). Add a small buffer for spread.
+
+**Target:** The nearest opposing liquidity pool. For a bullish setup (after an SSL sweep), target the BSL above. For bearish (after a BSL sweep), target the SSL below.
+
+![diagram](Three-panel sequence: Panel 1 (HTF): single-candle sweep of SSL below old lows. Panel 2 (LTF): CHoCH forms with displacement, FVG and OB are visible. Panel 3 (LTF): entry at the OB/FVG, stop below OB, target at BSL above. Labels: 'HTF Sweep → LTF CHoCH → Entry on PD Array.')
+
+:::callout
+THIS IS THE CORE MODEL
+If you master one model from this entire curriculum, make it this one. The Liquidity Sweep Model combines every concept you've learned: HTF liquidity identification, LTF structure confirmation, PD array entry, and clear risk management. It's the highest-probability setup in the framework.
+:::`
+      },
+      {
+        id: 'the-0950-1010-macro',
+        title: 'The 09:50–10:10 Macro',
+        readingTime: 5,
+        globalNum: 42,
+        content: `The 09:50-10:10 AM EST window is a specific NQ phenomenon where the algorithm frequently initiates the day's primary move.
+
+## Why This Window Matters
+
+The cash market opens at 9:30 AM EST. The first 20 minutes (9:30-9:50) are often **pure manipulation** — the algorithm uses the opening volatility to sweep liquidity and trap traders. Retail traders who enter on the "opening move" are frequently the ones providing liquidity.
+
+At approximately 9:50 AM, the manipulation phase often ends and the **real displacement** begins. By 10:10 AM, the algorithm's intended direction for the session is usually visible.
+
+## What to Watch For
+
+During the 09:50-10:10 window, look for:
+
+:::steps
+1. **A FVG forming** — displacement that creates a fair value gap in the direction of your HTF bias
+2. **An order block reaction** — price touching a key OB level and showing displacement away from it
+3. **A liquidity sweep completing** — the 9:30-9:50 move takes liquidity, and the 9:50+ move reverses
+4. **An MSS** — the first Market Structure Shift on the 5m chart after 9:50
+:::
+
+![diagram](NQ 5-minute chart showing: 9:30 AM open with volatile manipulation candles from 9:30-9:50, then a clear directional move starting at 9:50 with displacement candles and a FVG forming. The 09:50-10:10 window is highlighted. Labels show 'Manipulation' for 9:30-9:50 and 'Distribution begins' at 9:50.)
+
+:::callout
+COMBINE WITH YOUR BIAS
+The 09:50-10:10 window isn't a standalone signal. It tells you WHEN to pay attention — but your HTF analysis tells you WHICH DIRECTION. If your daily analysis says bullish and the 9:30-9:50 move sweeps sellside liquidity, then a bullish MSS at 9:50 confirms your thesis perfectly. That's your entry.
+:::`
+      },
+      {
+        id: 'choosing-your-model',
+        title: 'Choosing Your Model',
+        readingTime: 6,
+        globalNum: 43,
+        content: `You now know four trade models: Power of 3 / Judas Swing, Silver Bullet, Liquidity Sweep, and the 09:50-10:10 Macro. You do not trade all of them. You pick one — maybe two — and master them.
+
+## Why Specialize?
+
+Every model has different characteristics: entry timing, average hold time, number of trades per day, and emotional demands. Trying to trade all of them leads to confusion, overtrading, and inconsistency.
+
+The traders who make money consistently aren't the ones with the most tools. They're the ones who've mastered one tool so deeply that they can execute it without hesitation.
+
+## Matching Model to Personality
+
+This is what makes the KIANI approach different. We don't just teach concepts — we help you find the model that fits how your brain works.
+
+**If you're patient and methodical:** The Liquidity Sweep Model. It requires waiting for a HTF setup, dropping to the LTF for confirmation, and executing with clear structure. Fewer trades, higher quality.
+
+**If you like specific routines and time-based triggers:** The Silver Bullet. You know exactly when to sit down (the three windows), what to look for (a FVG), and when to walk away. Very structured, very repeatable.
+
+**If you prefer the opening session and are comfortable with fast-paced action:** The 09:50-10:10 Macro. Requires focus during a specific 20-minute window and the ability to act quickly on displacement.
+
+**If you're a big-picture thinker:** Power of 3 / Judas Swing. This model uses the daily bias framework to position before or during the manipulation phase, then holds through the expansion. Longer holds, bigger moves.
+
+:::callout
+THE KIANI DIFFERENTIATOR
+During your coaching calls, we'll work with you individually to determine which model fits your personality, risk tolerance, and schedule. This isn't one-size-fits-all. A model that works perfectly for one trader might be completely wrong for another — not because the model is flawed, but because the trader's psychology doesn't match it.
+:::
+
+## The Process from Here
+
+:::steps
+1. **Paper trade each model for at least 5 sessions** to feel how it works in practice
+2. **Journal your experience** — not just the P&L, but how you felt. Were you comfortable waiting? Did you feel rushed? Were you second-guessing entries?
+3. **Choose one primary model** based on which one felt the most natural and produced the most consistent execution
+4. **Master it** — take 50+ trades with this single model in paper trading before going live
+5. **Only then** consider adding a secondary model for different market conditions
+:::
+
+You now have everything you need to identify setups and take trades. Modules 09-12 will teach you how to analyze across timeframes, manage risk, handle the psychology of live trading, and prepare for prop firm evaluations. The concepts are done — now we refine the execution.`
+      }
+    ],
+    quiz: {
+      title: 'Quiz: Trade Models',
+      passingScore: 80,
+      questions: [
+        { id:'q08-r1', section:'recall', type:'multiple_choice', question:'What is the reference price for the Power of 3 concept?', options:['The previous day\'s close','The midnight New York time (12:00 AM EST) opening price','The 9:30 AM cash market open','The Asian session high'], correctAnswer:1, explanation:'The Power of 3 uses the midnight (12:00 AM EST) opening price as the day\'s reference. On buy days, manipulation goes below this level; distribution goes above it.' },
+        { id:'q08-r2', section:'recall', type:'multiple_choice', question:'What is the Judas Swing?', options:['The main expansion move of the day','A reversal pattern involving three candles','The false manipulation move early in the session that moves opposite the day\'s intended direction, sweeping liquidity before the real move','The closing price of the daily candle'], correctAnswer:2, explanation:'The Judas Swing is the manipulation phase — a deceptive move opposite the real direction, designed to sweep liquidity and trap retail traders. It typically occurs during London open or early NY.' },
+        { id:'q08-r3', section:'recall', type:'multiple_choice', question:'What are the three Silver Bullet time windows (EST)?', options:['8:00-9:00 AM, 12:00-1:00 PM, 3:00-4:00 PM','3:00-4:00 AM, 10:00-11:00 AM, 2:00-3:00 PM','9:30-10:00 AM, 11:00-12:00 PM, 1:00-2:00 PM','6:00-7:00 AM, 9:00-10:00 AM, 1:00-2:00 PM'], correctAnswer:1, explanation:'The three Silver Bullet windows are 3:00-4:00 AM (London), 10:00-11:00 AM (NY AM — most relevant for NQ), and 2:00-3:00 PM (NY PM). Look for FVGs forming within these windows.' },
+        { id:'q08-r4', section:'recall', type:'multiple_choice', question:'After identifying a liquidity sweep on the HTF, what do you look for on the LTF?', options:['A moving average crossover','A Change of Character (CHoCH) confirming the LTF structure is shifting in favor of the reversal','A double bottom or double top pattern','Volume exceeding the 20-period average'], correctAnswer:1, explanation:'After a HTF liquidity sweep, drop to the LTF and wait for a CHoCH — the first break of structure against the direction of the sweep. This confirms the reversal is underway and provides your entry framework (OB or FVG from the CHoCH).' },
+        { id:'q08-r5', section:'recall', type:'multiple_choice', question:'What typically happens during the 9:30-9:50 AM period on NQ, and what changes around 9:50?', options:['Price consolidates from 9:30-9:50, then consolidates more after 9:50','The 9:30-9:50 period is often manipulation (the algorithm sweeps liquidity with opening volatility), and around 9:50 the real directional move frequently begins','Nothing significant — all times are equal','The market closes at 9:50 and reopens later'], correctAnswer:1, explanation:'The first 20 minutes after the cash open (9:30-9:50) are frequently manipulation — the algorithm uses opening volatility to sweep stops. Around 9:50, the real displacement often begins, making 09:50-10:10 a key window for the day\'s intended move.' },
+        { id:'q08-r6', section:'recall', type:'multiple_choice', question:'Should you trade every model or specialize in one?', options:['Trade all models simultaneously for maximum opportunities','Specialize in one primary model that matches your personality and schedule','Only trade the Silver Bullet, ignore everything else','Alternate between models randomly each day'], correctAnswer:1, explanation:'Specialize. Each model has different timing, hold duration, and psychological demands. Master one model with 50+ paper trades before considering a second. Consistency comes from depth, not breadth.' },
+        { id:'q08-a1', section:'applied', type:'chart_analysis', question:'Identify the Power of 3 phases on this daily NQ chart. Was this a buy day or sell day? Where was the midnight open relative to the high, low, and close?', explanation:'Find the midnight opening price. If the open is near the low and close is near the high = buy day (manipulation below open, distribution above). If open is near the high and close is near the low = sell day.' },
+        { id:'q08-a2', section:'applied', type:'chart_analysis', question:'Is there a valid Silver Bullet setup in this chart? Check the time window, identify the FVG, and determine if the return entry was available.', explanation:'Verify: 1) Did the FVG form within a Silver Bullet window (3-4 AM, 10-11 AM, or 2-3 PM EST)? 2) Does it align with HTF bias? 3) Did price retrace to the FVG after creating it? If all three = valid Silver Bullet setup.' },
+        { id:'q08-a3', section:'applied', type:'chart_analysis', question:'On this HTF chart, has a valid liquidity sweep occurred? Mark the sweep. What would you look for on the LTF to confirm your entry?', explanation:'Identify the single-candle sweep (wick through old high/low that closes back). On the LTF, you\'d look for a CHoCH with displacement, then enter on the OB or FVG left behind. Stop below/above the OB, target the opposing liquidity pool.' },
+        { id:'q08-a4', section:'applied', type:'open_response', question:'Based on your personality, daily schedule, and what you\'ve learned about each trade model, which model appeals to you most and why? There is no wrong answer — this is about self-awareness.', explanation:'This is a reflection question. Consider: Do you prefer patience or quick decisions? Do you have specific hours available? Are you more comfortable with time-based rules (Silver Bullet) or structural analysis (Liquidity Sweep)? Your honest answer guides your development path.' }
+      ]
+    }
   },
   {
     number: 9, id: 'multi-timeframe-analysis', title: 'Multi-Timeframe Analysis',
