@@ -1170,9 +1170,11 @@
 </div>
 <script>
 (function() {
-  // SHA-256 hash of the password — change HASH to update the password
-  // Current password: "kiani2026"
-  var HASH = '1d0db54b431f60a50c09a57638e24380297bcbe3f98a13fd9951523d9979841c';
+  // SHA-256 hashes — change to update passwords
+  // Student password: "kiani2026"
+  var HASH_STUDENT = '1d0db54b431f60a50c09a57638e24380297bcbe3f98a13fd9951523d9979841c';
+  // Admin password: "admin2026" — unlocks all modules
+  var HASH_ADMIN = '6051fc84a7a0d74c225fb18a496b09952da5642e60723ecae543298edd7d82d6';
 
   async function sha256(str) {
     var buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
@@ -1196,8 +1198,11 @@
     var val = input.value.trim();
     if (!val) return;
     var hash = await sha256(val);
-    if (hash === HASH) {
+    if (hash === HASH_STUDENT || hash === HASH_ADMIN) {
       sessionStorage.setItem('curriculum_auth', 'true');
+      if (hash === HASH_ADMIN) {
+        sessionStorage.setItem('curriculum_admin', 'true');
+      }
       gate.classList.add('hidden');
       document.querySelectorAll('body > *:not(.pw-gate):not(script)').forEach(function(el) { el.style.display = ''; });
     } else {
@@ -3706,8 +3711,12 @@ function saveProgress() {
 }
 
 // ─── Helpers ───
+function isAdminMode() {
+  return sessionStorage.getItem('curriculum_admin') === 'true';
+}
+
 function getUnlockedModules() {
-  // All non-locked modules are accessible
+  if (isAdminMode()) return CURRICULUM;
   return CURRICULUM.filter(m => !m.locked && !m.comingSoon);
 }
 
@@ -3744,7 +3753,7 @@ function getLastActiveFlatIndex() {
 function renderSidebar() {
   const nav = document.getElementById('sidebarNav');
   nav.innerHTML = CURRICULUM.map((mod, mi) => {
-    const isLocked = mod.locked || mod.comingSoon;
+    const isLocked = !isAdminMode() && (mod.locked || mod.comingSoon);
     const isOpen = !isLocked && mi === currentView.module;
     const hasLessons = mod.lessons.length > 0;
 
@@ -3806,7 +3815,7 @@ function renderContent() {
 
 function renderLessonContent() {
   const mod = CURRICULUM[currentView.module];
-  if (!mod || mod.locked || mod.comingSoon || !mod.lessons.length) {
+  if (!mod || (!isAdminMode() && (mod.locked || mod.comingSoon)) || !mod.lessons.length) {
     renderLockedContent(mod);
     return;
   }
