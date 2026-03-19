@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0a0a0a" id="themeColor">
+<title>Checkout — Daniel Kiani</title>
+<meta name="robots" content="noindex, nofollow">
+
+<!-- Favicon -->
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --font: 'JetBrains Mono', monospace;
+    --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  [data-theme="dark"] {
+    --bg: #0a0a0a;
+    --fg: #d4d4d4;
+    --muted: #525252;
+    --dim: #3a3a3a;
+    --border: #1f1f1f;
+    --accent: #a0a0a0;
+    --hover: #ffffff;
+    --center-fill: #e85d2a;
+    --item-hover: #181818;
+    --error: #ef4444;
+    --success: #22c55e;
+  }
+
+  [data-theme="light"] {
+    --bg: #f0ede8;
+    --fg: #1a1a1a;
+    --muted: #8a8a8a;
+    --dim: #b0aca6;
+    --border: #ddd9d4;
+    --accent: #555;
+    --hover: #000000;
+    --center-fill: #e85d2a;
+    --item-hover: #f7f5f2;
+    --error: #dc2626;
+    --success: #16a34a;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--font);
+    -webkit-font-smoothing: antialiased;
+    transition: background 0.5s var(--ease), color 0.5s var(--ease);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  ::selection { background: rgba(128,128,128,0.15); }
+
+  /* ─── Theme Toggle ─── */
+  .theme-toggle {
+    position: fixed;
+    top: 1.5rem;
+    right: 1.5rem;
+    z-index: 100;
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: var(--font);
+    font-size: 0.55rem;
+    letter-spacing: 0.06em;
+    padding: 0.3rem 0.6rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-transform: uppercase;
+    min-width: 44px;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .theme-toggle:hover { color: var(--hover); border-color: var(--accent); }
+
+  /* ─── Container ─── */
+  .checkout-container {
+    width: 100%;
+    max-width: 460px;
+    padding: 2rem;
+  }
+
+  /* ─── Header ─── */
+  .checkout-header {
+    margin-bottom: 2.5rem;
+  }
+
+  .checkout-title {
+    font-size: 1.4rem;
+    font-weight: 400;
+    margin-bottom: 0.5rem;
+  }
+
+  .checkout-subtitle {
+    font-size: 0.6rem;
+    font-weight: 300;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+  }
+
+  /* ─── Price ─── */
+  .price-section {
+    display: flex;
+    align-items: baseline;
+    gap: 0.8rem;
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .price {
+    font-size: 1.8rem;
+    font-weight: 400;
+    color: var(--fg);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .price-original {
+    font-size: 0.8rem;
+    font-weight: 300;
+    color: var(--muted);
+    text-decoration: line-through;
+    display: none;
+  }
+
+  .price-label {
+    font-size: 0.55rem;
+    font-weight: 300;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  /* ─── Discount Code ─── */
+  .discount-section {
+    margin-bottom: 2rem;
+  }
+
+  .discount-row {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .discount-input {
+    flex: 1;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--fg);
+    font-family: var(--font);
+    font-size: 0.65rem;
+    font-weight: 300;
+    padding: 0.7rem 0.8rem;
+    outline: none;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    transition: border-color 0.3s;
+  }
+
+  .discount-input::placeholder {
+    color: var(--dim);
+    text-transform: none;
+    font-weight: 300;
+  }
+
+  .discount-input:focus { border-color: var(--accent); }
+
+  .discount-btn {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: var(--font);
+    font-size: 0.55rem;
+    font-weight: 400;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 0.7rem 1rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    white-space: nowrap;
+  }
+
+  .discount-btn:hover { color: var(--hover); border-color: var(--accent); }
+
+  .discount-msg {
+    font-size: 0.55rem;
+    font-weight: 300;
+    margin-top: 0.5rem;
+    min-height: 1.2em;
+    transition: color 0.3s;
+  }
+
+  .discount-msg.error { color: var(--error); }
+  .discount-msg.success { color: var(--success); }
+
+  /* ─── Payment Element ─── */
+  .payment-section {
+    margin-bottom: 1.5rem;
+  }
+
+  .section-label {
+    font-size: 0.55rem;
+    font-weight: 400;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 0.8rem;
+  }
+
+  #payment-element {
+    min-height: 100px;
+  }
+
+  /* ─── Terms Checkbox ─── */
+  .terms-section {
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+  }
+
+  .terms-checkbox {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    min-width: 16px;
+    border: 1px solid var(--border);
+    background: transparent;
+    cursor: pointer;
+    margin-top: 2px;
+    transition: all 0.3s;
+    position: relative;
+  }
+
+  .terms-checkbox:checked {
+    border-color: var(--center-fill);
+    background: var(--center-fill);
+  }
+
+  .terms-checkbox:checked::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 5px;
+    width: 4px;
+    height: 8px;
+    border: solid var(--bg);
+    border-width: 0 1.5px 1.5px 0;
+    transform: rotate(45deg);
+  }
+
+  .terms-label {
+    font-size: 0.58rem;
+    font-weight: 300;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  .terms-label a {
+    color: var(--fg);
+    text-decoration: none;
+    border-bottom: 1px solid var(--border);
+    transition: border-color 0.3s;
+  }
+
+  .terms-label a:hover { border-color: var(--fg); }
+
+  /* ─── Pay Button ─── */
+  .pay-btn {
+    width: 100%;
+    background: var(--center-fill);
+    border: none;
+    color: #fff;
+    font-family: var(--font);
+    font-size: 0.7rem;
+    font-weight: 400;
+    letter-spacing: 0.06em;
+    padding: 1rem;
+    cursor: pointer;
+    transition: all 0.3s var(--ease);
+    text-transform: uppercase;
+  }
+
+  .pay-btn:hover { opacity: 0.9; }
+
+  .pay-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+
+  /* ─── Messages ─── */
+  .payment-msg {
+    font-size: 0.58rem;
+    font-weight: 300;
+    margin-top: 1rem;
+    text-align: center;
+    min-height: 1.2em;
+  }
+
+  .payment-msg.error { color: var(--error); }
+  .payment-msg.success { color: var(--success); }
+
+  /* ─── Success State ─── */
+  .success-view {
+    text-align: center;
+    display: none;
+  }
+
+  .success-view .check-icon {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--center-fill);
+    margin: 0 auto 1.5rem;
+  }
+
+  .success-view h2 {
+    font-size: 1rem;
+    font-weight: 300;
+    margin-bottom: 0.6rem;
+  }
+
+  .success-view p {
+    font-size: 0.65rem;
+    font-weight: 300;
+    color: var(--muted);
+    line-height: 1.8;
+  }
+
+  /* ─── Loading Spinner ─── */
+  .spinner {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border: 1.5px solid rgba(255,255,255,0.3);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+    vertical-align: middle;
+    margin-right: 0.4rem;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ─── Responsive ─── */
+  @media (max-width: 600px) {
+    .checkout-container { padding: 2rem 1.5rem; }
+    .checkout-title { font-size: 1.2rem; }
+    .price { font-size: 1.4rem; }
+    .theme-toggle { top: 1rem; right: 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">Light</button>
+
+<div class="checkout-container">
+
+  <!-- Checkout Form -->
+  <div id="checkoutView">
+    <div class="checkout-header">
+      <div class="checkout-title" id="checkoutTitle">Course Access</div>
+      <div class="checkout-subtitle" id="checkoutSubtitle">Trading Course — Daniel Kiani</div>
+    </div>
+
+    <div class="price-section">
+      <div>
+        <span class="price" id="priceDisplay">$797</span>
+        <span class="price-original" id="priceOriginal"></span>
+      </div>
+      <div class="price-label">one-time</div>
+    </div>
+
+    <!-- Discount Code -->
+    <div class="discount-section">
+      <div class="discount-row">
+        <input type="text" class="discount-input" id="discountInput" placeholder="Discount code">
+        <button class="discount-btn" id="discountBtn" onclick="applyDiscount()">Apply</button>
+      </div>
+      <div class="discount-msg" id="discountMsg"></div>
+    </div>
+
+    <!-- Payment -->
+    <div class="payment-section">
+      <div class="section-label">Payment</div>
+      <div id="payment-element"></div>
+    </div>
+
+    <!-- Terms -->
+    <div class="terms-section">
+      <input type="checkbox" class="terms-checkbox" id="termsCheck">
+      <label class="terms-label" for="termsCheck">
+        I have read and agree to the <a href="/terms" target="_blank">Terms of Service & Refund Policy</a>
+      </label>
+    </div>
+
+    <!-- Submit -->
+    <button class="pay-btn" id="payBtn" onclick="handlePayment()" disabled>Pay $797</button>
+    <div class="payment-msg" id="paymentMsg"></div>
+  </div>
+
+  <!-- Success -->
+  <div class="success-view" id="successView">
+    <div class="check-icon"></div>
+    <h2>Payment confirmed.</h2>
+    <p>Welcome aboard.<br>You'll receive next steps shortly.</p>
+  </div>
+
+</div>
+
+<!-- Stripe.js -->
+<script src="https://js.stripe.com/v3/"></script>
+<script>
+// ─── PLANS ───
+const PLANS = {
+  course: {
+    title: 'Course Access',
+    subtitle: 'Trading Course — Daniel Kiani',
+    amount: 79700,
+  },
+  mentorship: {
+    title: 'Course + 1:1 Mentorship',
+    subtitle: 'Trading Course — Daniel Kiani',
+    amount: 499700,
+  }
+};
+
+// ─── Resolve plan from URL ───
+const urlParams = new URLSearchParams(window.location.search);
+const planKey = urlParams.get('plan') || 'course';
+const plan = PLANS[planKey] || PLANS.course;
+
+// ─── CONFIG ───
+const STRIPE_PK = 'pk_live_51JQdJHBF92YC6aePpxRsJcfabpN5McHTbO2ZIMzuumyUSIgmZMbUhYEpIxX99ciltzU0PLMa1fGXVyPaxxvef97L00QtWjG87D';
+const BACKEND_URL = 'https://script.google.com/macros/s/AKfycbx-bAMG5bC8PypLx5cruZXE8YrQ5vjIN_LbN5co9vVBBe4Dfy30BhuBwmHOljvc1UR4Og/exec';
+
+let stripe, elements, paymentElement;
+let currentAmount = plan.amount;
+let clientSecret = null;
+
+// ─── Set page content based on plan ───
+document.getElementById('checkoutTitle').textContent = plan.title;
+document.getElementById('checkoutSubtitle').textContent = plan.subtitle;
+document.getElementById('priceDisplay').textContent = formatPrice(currentAmount);
+document.getElementById('payBtn').textContent = 'Pay ' + formatPrice(currentAmount);
+
+// ─── JSONP helper (bypasses CORS) ───
+function jsonp(params) {
+  return new Promise((resolve, reject) => {
+    const cbName = '_cb_' + Date.now() + Math.random().toString(36).slice(2,6);
+    window[cbName] = function(data) {
+      delete window[cbName];
+      document.body.removeChild(script);
+      resolve(data);
+    };
+    const qs = new URLSearchParams(params);
+    qs.set('callback', cbName);
+    const script = document.createElement('script');
+    script.src = BACKEND_URL + '?' + qs.toString();
+    script.onerror = function() {
+      delete window[cbName];
+      document.body.removeChild(script);
+      reject(new Error('Request failed'));
+    };
+    document.body.appendChild(script);
+  });
+}
+
+// ─── Init Stripe ───
+async function initStripe() {
+  stripe = Stripe(STRIPE_PK);
+
+  try {
+    const data = await jsonp({ action: 'create_payment', amount: currentAmount });
+
+    if (!data.clientSecret) {
+      document.getElementById('paymentMsg').textContent = data.error || 'Unable to initialize payment.';
+      document.getElementById('paymentMsg').className = 'payment-msg error';
+      return;
+    }
+
+    clientSecret = data.clientSecret;
+    const theme = document.documentElement.getAttribute('data-theme');
+
+    elements = stripe.elements({
+      clientSecret: clientSecret,
+      appearance: getStripeAppearance(theme),
+      fonts: [{ cssSrc: 'https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400&display=swap' }]
+    });
+
+    paymentElement = elements.create('payment', {
+      layout: {
+        type: 'accordion',
+        defaultCollapsed: false,
+        radios: false,
+        spacedAccordionItems: true
+      },
+      wallets: { applePay: 'auto', googlePay: 'auto' }
+    });
+    paymentElement.mount('#payment-element');
+  } catch (err) {
+    document.getElementById('paymentMsg').textContent = 'Unable to initialize payment.';
+    document.getElementById('paymentMsg').className = 'payment-msg error';
+  }
+}
+
+function getStripeAppearance(theme) {
+  const isDark = theme === 'dark';
+  return {
+    theme: isDark ? 'night' : 'stripe',
+    variables: {
+      fontFamily: "'JetBrains Mono', monospace",
+      fontSizeBase: '13px',
+      fontWeightNormal: '300',
+      colorPrimary: '#e85d2a',
+      colorBackground: isDark ? '#0a0a0a' : '#f0ede8',
+      colorText: isDark ? '#d4d4d4' : '#1a1a1a',
+      colorDanger: isDark ? '#ef4444' : '#dc2626',
+      borderRadius: '0px',
+      spacingUnit: '4px',
+      colorTextPlaceholder: isDark ? '#3a3a3a' : '#b0aca6',
+    },
+    rules: {
+      '.Input': {
+        border: '1px solid ' + (isDark ? '#1f1f1f' : '#ddd9d4'),
+        boxShadow: 'none',
+        transition: 'border-color 0.3s',
+      },
+      '.Input:focus': {
+        border: '1px solid ' + (isDark ? '#a0a0a0' : '#555'),
+        boxShadow: 'none',
+      },
+      '.Tab': {
+        border: '1px solid ' + (isDark ? '#1f1f1f' : '#ddd9d4'),
+        boxShadow: 'none',
+      },
+      '.Tab:hover': {
+        border: '1px solid ' + (isDark ? '#a0a0a0' : '#555'),
+      },
+      '.Tab--selected': {
+        border: '1px solid #e85d2a',
+        boxShadow: 'none',
+      },
+      '.Label': {
+        fontWeight: '300',
+        fontSize: '11px',
+        letterSpacing: '0.06em',
+        textTransform: 'uppercase',
+        color: isDark ? '#525252' : '#8a8a8a',
+      }
+    }
+  };
+}
+
+// ─── Discount Codes ───
+async function applyDiscount() {
+  const code = document.getElementById('discountInput').value.trim().toUpperCase();
+  const msg = document.getElementById('discountMsg');
+
+  if (!code) return;
+
+  document.getElementById('discountBtn').textContent = '...';
+
+  try {
+    const data = await jsonp({ action: 'validate_discount', code: code });
+
+    if (data.valid) {
+      currentAmount = data.amount;
+      const formatted = formatPrice(currentAmount);
+
+      document.getElementById('priceDisplay').textContent = formatted;
+      document.getElementById('priceOriginal').style.display = 'inline';
+      document.getElementById('payBtn').textContent = 'Pay ' + formatted;
+
+      msg.textContent = data.label || 'Discount applied';
+      msg.className = 'discount-msg success';
+
+      document.getElementById('discountInput').disabled = true;
+      document.getElementById('discountBtn').disabled = true;
+      document.getElementById('discountBtn').textContent = 'Applied';
+
+      // Update PaymentIntent amount and refresh Elements
+      const piId = clientSecret.split('_secret_')[0];
+      await jsonp({ action: 'update_payment', pi: piId, amount: currentAmount });
+      elements.fetchUpdates();
+    } else {
+      msg.textContent = 'Invalid code';
+      msg.className = 'discount-msg error';
+      document.getElementById('discountBtn').textContent = 'Apply';
+    }
+  } catch (err) {
+    msg.textContent = 'Error validating code';
+    msg.className = 'discount-msg error';
+    document.getElementById('discountBtn').textContent = 'Apply';
+  }
+}
+
+// ─── Terms checkbox enables pay button ───
+document.getElementById('termsCheck').addEventListener('change', function() {
+  document.getElementById('payBtn').disabled = !this.checked;
+});
+
+// ─── Handle Payment ───
+async function handlePayment() {
+  const btn = document.getElementById('payBtn');
+  const msg = document.getElementById('paymentMsg');
+
+  if (!document.getElementById('termsCheck').checked) {
+    msg.textContent = 'Please agree to the terms';
+    msg.className = 'payment-msg error';
+    return;
+  }
+
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span>Processing...';
+  msg.textContent = '';
+
+  const { error } = await stripe.confirmPayment({
+    elements,
+    confirmParams: {
+      return_url: window.location.origin + '/start?plan=' + planKey + '&success=true',
+    },
+    redirect: 'if_required',
+  });
+
+  if (error) {
+    msg.textContent = error.message;
+    msg.className = 'payment-msg error';
+    btn.disabled = false;
+    btn.textContent = 'Pay ' + formatPrice(currentAmount);
+  } else {
+    document.getElementById('checkoutView').style.display = 'none';
+    document.getElementById('successView').style.display = 'block';
+  }
+}
+
+// Check for redirect return (Klarna/Affirm)
+if (urlParams.get('success') === 'true' || urlParams.get('redirect_status') === 'succeeded') {
+  document.getElementById('checkoutView').style.display = 'none';
+  document.getElementById('successView').style.display = 'block';
+}
+
+function formatPrice(cents) {
+  return '$' + (cents / 100).toLocaleString('en-US', { minimumFractionDigits: 0 });
+}
+
+// ─── Theme Toggle ───
+function toggleTheme() {
+  const html = document.documentElement;
+  const btn = document.getElementById('themeBtn');
+  const tc = document.getElementById('themeColor');
+  if (html.getAttribute('data-theme') === 'dark') {
+    html.setAttribute('data-theme', 'light');
+    btn.textContent = 'Dark';
+    tc.content = '#f0ede8';
+  } else {
+    html.setAttribute('data-theme', 'dark');
+    btn.textContent = 'Light';
+    tc.content = '#0a0a0a';
+  }
+  if (elements) {
+    elements.update({ appearance: getStripeAppearance(html.getAttribute('data-theme')) });
+  }
+}
+
+// ─── Init ───
+initStripe();
+</script>
+
+</body>
+</html>

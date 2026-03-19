@@ -1037,10 +1037,14 @@
     text-align: center;
     cursor: pointer;
     transition: border-color 0.2s, background 0.2s;
+    text-decoration: none;
+    color: inherit;
   }
   .paywall-tier:hover {
     border-color: var(--accent);
     background: var(--item-hover);
+    text-decoration: none;
+    color: inherit;
   }
   .paywall-tier .tier-label {
     font-size: 11px;
@@ -1049,6 +1053,7 @@
     color: var(--muted);
     margin-bottom: 0.75rem;
     font-weight: 500;
+    text-decoration: none;
   }
   .paywall-tier .tier-price {
     font-size: 28px;
@@ -1060,6 +1065,7 @@
     font-size: 11px;
     color: var(--muted);
     line-height: 1.5;
+    text-decoration: none;
   }
   .paywall-tier.featured {
     border-color: var(--accent);
@@ -1306,12 +1312,12 @@
     <h2>Unlock the Full Course</h2>
     <p class="paywall-sub">You've seen the foundation — now get access to all 12 modules, quizzes, and the complete Smart Money Structure framework.</p>
     <div class="paywall-tiers">
-      <a class="paywall-tier" href="https://buy.stripe.com/placeholder_course" target="_blank" rel="noopener">
+      <a class="paywall-tier" href="/start?plan=course">
         <div class="tier-label">Course Access</div>
         <div class="tier-price">$797</div>
         <div class="tier-desc">Full 12-module curriculum<br>All quizzes & resources<br>Lifetime access</div>
       </a>
-      <a class="paywall-tier featured" href="https://buy.stripe.com/placeholder_mentorship" target="_blank" rel="noopener">
+      <a class="paywall-tier featured" href="/start?plan=mentorship">
         <div class="tier-label">Course + 1:1 Mentorship</div>
         <div class="tier-price">$4,997</div>
         <div class="tier-desc">Everything in Course Access<br>Direct 1:1 coaching with Daniel<br>Personalized trade reviews</div>
