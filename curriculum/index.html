@@ -971,6 +971,171 @@
     max-width: 400px;
   }
 
+  /* ─── Paywall Modal ─── */
+  .paywall-overlay {
+    position: fixed; inset: 0; z-index: 9999;
+    background: rgba(0,0,0,0.75);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+  }
+  .paywall-overlay.visible {
+    opacity: 1;
+    pointer-events: all;
+  }
+  .paywall-box {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    max-width: 520px;
+    width: 90%;
+    padding: 3rem 2.5rem;
+    text-align: center;
+    position: relative;
+  }
+  .paywall-close {
+    position: absolute;
+    top: 1rem; right: 1rem;
+    background: none; border: none;
+    color: var(--muted); cursor: pointer;
+    font-size: 18px; line-height: 1;
+    padding: 4px;
+  }
+  .paywall-close:hover { color: var(--fg); }
+  .paywall-box h2 {
+    color: var(--fg);
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.3px;
+  }
+  .paywall-box .paywall-sub {
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .paywall-tiers {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  @media (max-width: 550px) {
+    .paywall-tiers { flex-direction: column; }
+    .paywall-box { padding: 2rem 1.5rem; }
+  }
+  .paywall-tier {
+    flex: 1;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.5rem 1.25rem;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .paywall-tier:hover {
+    border-color: var(--accent);
+    background: var(--item-hover);
+  }
+  .paywall-tier .tier-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--muted);
+    margin-bottom: 0.75rem;
+    font-weight: 500;
+  }
+  .paywall-tier .tier-price {
+    font-size: 28px;
+    font-weight: 600;
+    color: var(--fg);
+    margin-bottom: 0.75rem;
+  }
+  .paywall-tier .tier-desc {
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+  .paywall-tier.featured {
+    border-color: var(--accent);
+    position: relative;
+  }
+  .paywall-tier.featured::before {
+    content: 'RECOMMENDED';
+    position: absolute;
+    top: -10px; left: 50%; transform: translateX(-50%);
+    background: var(--accent);
+    color: var(--bg);
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    padding: 2px 10px;
+    border-radius: 3px;
+  }
+  .paywall-already {
+    color: var(--muted);
+    font-size: 12px;
+  }
+  .paywall-already a {
+    color: var(--fg);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    cursor: pointer;
+  }
+  .paywall-already a:hover {
+    color: var(--accent);
+  }
+
+  /* ─── Access Code Gate (replaces old pw-gate) ─── */
+  .access-gate {
+    position: fixed; inset: 0; z-index: 10000;
+    background: var(--bg);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font);
+  }
+  .access-gate.hidden { display: none; }
+  .access-gate-box {
+    text-align: center;
+    max-width: 360px; width: 90%;
+  }
+  .access-gate-box h2 {
+    color: var(--fg);
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 6px;
+    letter-spacing: 0.5px;
+  }
+  .access-gate-box p {
+    color: var(--muted);
+    font-size: 11px;
+    margin-bottom: 24px;
+  }
+  .access-gate-box .back-link {
+    display: inline-block;
+    margin-top: 16px;
+    color: var(--muted);
+    font-size: 11px;
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .access-gate-box .back-link:hover { color: var(--fg); }
+
+  /* Lesson lock icon in sidebar */
+  .lesson-item .lesson-lock {
+    width: 10px;
+    height: 10px;
+    color: var(--muted);
+    opacity: 0.5;
+    flex-shrink: 0;
+    margin-left: auto;
+  }
+
   /* ─── Mobile Hamburger ─── */
   .hamburger {
     display: none;
@@ -1095,29 +1260,6 @@
   }
 
   /* ─── Password Gate ─── */
-  .pw-gate {
-    position: fixed; inset: 0; z-index: 9999;
-    background: var(--bg);
-    display: flex; align-items: center; justify-content: center;
-    font-family: var(--font);
-  }
-  .pw-gate.hidden { display: none; }
-  .pw-box {
-    text-align: center;
-    max-width: 360px; width: 90%;
-  }
-  .pw-box h2 {
-    color: var(--fg);
-    font-size: 14px;
-    font-weight: 500;
-    margin-bottom: 6px;
-    letter-spacing: 0.5px;
-  }
-  .pw-box p {
-    color: var(--muted);
-    font-size: 11px;
-    margin-bottom: 24px;
-  }
   .pw-input-wrap {
     position: relative;
   }
@@ -1157,23 +1299,47 @@
 </head>
 <body>
 
-<!-- ─── Password Gate ─── -->
-<div class="pw-gate" id="pwGate">
-  <div class="pw-box">
-    <h2>CURRICULUM</h2>
-    <p>Enter the password to continue.</p>
-    <div class="pw-input-wrap">
-      <input type="password" id="pwInput" placeholder="Password" autocomplete="off" spellcheck="false">
+<!-- ─── Paywall Modal ─── -->
+<div class="paywall-overlay" id="paywallOverlay">
+  <div class="paywall-box">
+    <button class="paywall-close" onclick="closePaywall()">&times;</button>
+    <h2>Unlock the Full Course</h2>
+    <p class="paywall-sub">You've seen the foundation — now get access to all 12 modules, quizzes, and the complete Smart Money Structure framework.</p>
+    <div class="paywall-tiers">
+      <a class="paywall-tier" href="https://buy.stripe.com/placeholder_course" target="_blank" rel="noopener">
+        <div class="tier-label">Course Access</div>
+        <div class="tier-price">$797</div>
+        <div class="tier-desc">Full 12-module curriculum<br>All quizzes & resources<br>Lifetime access</div>
+      </a>
+      <a class="paywall-tier featured" href="https://buy.stripe.com/placeholder_mentorship" target="_blank" rel="noopener">
+        <div class="tier-label">Course + 1:1 Mentorship</div>
+        <div class="tier-price">$4,997</div>
+        <div class="tier-desc">Everything in Course Access<br>Direct 1:1 coaching with Daniel<br>Personalized trade reviews</div>
+      </a>
     </div>
-    <div class="pw-hint" id="pwHint">Incorrect password.</div>
+    <p class="paywall-already">Already paid? <a onclick="showAccessGate()">Enter your access code</a></p>
   </div>
 </div>
+
+<!-- ─── Access Code Gate ─── -->
+<div class="access-gate hidden" id="accessGate">
+  <div class="access-gate-box">
+    <h2>ENTER ACCESS CODE</h2>
+    <p>Enter the unique code you received after purchase.</p>
+    <div class="pw-input-wrap">
+      <input type="password" id="accessInput" placeholder="Access code" autocomplete="off" spellcheck="false">
+    </div>
+    <div class="pw-hint" id="accessHint">Invalid access code.</div>
+    <a class="back-link" onclick="hideAccessGate()">← Back</a>
+  </div>
+</div>
+
 <script>
 (function() {
-  // SHA-256 hashes — change to update passwords
-  // Student password: "kiani2026"
+  // SHA-256 hashes for access codes
+  // Student code: "kiani2026"
   var HASH_STUDENT = '1d0db54b431f60a50c09a57638e24380297bcbe3f98a13fd9951523d9979841c';
-  // Admin password: "admin2026" — unlocks all modules
+  // Admin code: "admin2026" — unlocks all modules including coming soon
   var HASH_ADMIN = '6051fc84a7a0d74c225fb18a496b09952da5642e60723ecae543298edd7d82d6';
 
   async function sha256(str) {
@@ -1181,44 +1347,54 @@
     return Array.from(new Uint8Array(buf)).map(function(b) { return b.toString(16).padStart(2, '0'); }).join('');
   }
 
-  var gate = document.getElementById('pwGate');
-  var input = document.getElementById('pwInput');
-  var hint = document.getElementById('pwHint');
+  // Access code gate
+  window.showAccessGate = function() {
+    closePaywall();
+    document.getElementById('accessGate').classList.remove('hidden');
+    document.getElementById('accessInput').focus();
+  };
+  window.hideAccessGate = function() {
+    document.getElementById('accessGate').classList.add('hidden');
+  };
 
-  // Already authed this session
-  if (sessionStorage.getItem('curriculum_auth') === 'true') {
-    gate.classList.add('hidden');
-  } else {
-    // Hide page content until authed
-    document.querySelectorAll('body > *:not(.pw-gate):not(script)').forEach(function(el) { el.style.display = 'none'; });
-  }
+  var accessInput = document.getElementById('accessInput');
+  var accessHint = document.getElementById('accessHint');
 
-  input.addEventListener('keydown', async function(e) {
+  accessInput.addEventListener('keydown', async function(e) {
     if (e.key !== 'Enter') return;
-    var val = input.value.trim();
+    var val = accessInput.value.trim();
     if (!val) return;
     var hash = await sha256(val);
     if (hash === HASH_STUDENT || hash === HASH_ADMIN) {
-      sessionStorage.setItem('curriculum_auth', 'true');
+      localStorage.setItem('curriculum_paid', 'true');
       if (hash === HASH_ADMIN) {
         sessionStorage.setItem('curriculum_admin', 'true');
       }
-      gate.classList.add('hidden');
-      document.querySelectorAll('body > *:not(.pw-gate):not(script)').forEach(function(el) { el.style.display = ''; });
-      // Re-render sidebar/content in case admin mode unlocked modules
-      if (hash === HASH_ADMIN && typeof renderSidebar === 'function') {
+      document.getElementById('accessGate').classList.add('hidden');
+      if (typeof renderSidebar === 'function') {
         renderSidebar();
         renderContent();
       }
     } else {
-      input.classList.add('pw-error');
-      hint.classList.add('visible');
-      setTimeout(function() { input.classList.remove('pw-error'); }, 400);
-      setTimeout(function() { hint.classList.remove('visible'); }, 2000);
+      accessInput.classList.add('pw-error');
+      accessHint.classList.add('visible');
+      setTimeout(function() { accessInput.classList.remove('pw-error'); }, 400);
+      setTimeout(function() { accessHint.classList.remove('visible'); }, 2000);
     }
   });
 
-  input.focus();
+  // Paywall controls
+  window.showPaywall = function() {
+    document.getElementById('paywallOverlay').classList.add('visible');
+  };
+  window.closePaywall = function() {
+    document.getElementById('paywallOverlay').classList.remove('visible');
+  };
+
+  // Close paywall on overlay click
+  document.getElementById('paywallOverlay').addEventListener('click', function(e) {
+    if (e.target === this) closePaywall();
+  });
 })();
 </script>
 
@@ -3720,9 +3896,25 @@ function isAdminMode() {
   return sessionStorage.getItem('curriculum_admin') === 'true';
 }
 
+function isPaidUser() {
+  return localStorage.getItem('curriculum_paid') === 'true';
+}
+
+// Free preview: only first 2 lessons of module 1
+function isFreeLesson(mi, li) {
+  return mi === 0 && li <= 1;
+}
+
+function isLessonAccessible(mi, li) {
+  if (isAdminMode() || isPaidUser()) return true;
+  return isFreeLesson(mi, li);
+}
+
 function getUnlockedModules() {
   if (isAdminMode()) return CURRICULUM;
-  return CURRICULUM.filter(m => !m.locked && !m.comingSoon);
+  if (isPaidUser()) return CURRICULUM.filter(m => !m.locked && !m.comingSoon);
+  // Free users only get module 1
+  return CURRICULUM.filter((m, i) => i === 0);
 }
 
 function getTotalActiveLessons() {
@@ -3757,12 +3949,16 @@ function getLastActiveFlatIndex() {
 // ─── Render Sidebar ───
 function renderSidebar() {
   const nav = document.getElementById('sidebarNav');
-  nav.innerHTML = CURRICULUM.map((mod, mi) => {
-    const isLocked = !isAdminMode() && (mod.locked || mod.comingSoon);
-    const isOpen = !isLocked && mi === currentView.module;
-    const hasLessons = mod.lessons.length > 0;
+  const paid = isPaidUser();
+  const admin = isAdminMode();
 
-    if (isLocked) {
+  nav.innerHTML = CURRICULUM.map((mod, mi) => {
+    const isComingSoon = !admin && (mod.locked || mod.comingSoon);
+    const isModuleLocked = !admin && !paid && mi > 0;
+    const isOpen = !isComingSoon && !isModuleLocked && mi === currentView.module;
+
+    // Coming soon modules (no content yet) — always show lock
+    if (isComingSoon) {
       return `
         <div class="module-group" data-module="${mi}">
           <div class="module-header locked">
@@ -3774,6 +3970,20 @@ function renderSidebar() {
       `;
     }
 
+    // Locked modules for free users — show lock icon, clickable to trigger paywall
+    if (isModuleLocked) {
+      return `
+        <div class="module-group" data-module="${mi}">
+          <div class="module-header locked" onclick="showPaywall()" style="cursor:pointer;">
+            <span class="module-number">${String(mod.number).padStart(2, '0')}</span>
+            <span class="module-title">${mod.title}</span>
+            <svg class="module-lock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          </div>
+        </div>
+      `;
+    }
+
+    // Accessible module — show lessons
     return `
       <div class="module-group${isOpen ? ' open' : ''}" data-module="${mi}">
         <button class="module-header" onclick="toggleModule(${mi})">
@@ -3785,17 +3995,20 @@ function renderSidebar() {
           ${mod.lessons.map((lesson, li) => {
             const isActive = currentView.type === 'lesson' && mi === currentView.module && li === currentView.lesson;
             const isCompleted = completedLessons.has(lesson.id);
+            const lessonLocked = !admin && !paid && !isFreeLesson(mi, li);
             return `
-              <button class="lesson-item${isActive ? ' active' : ''}${isCompleted ? ' completed' : ''}" onclick="goToLesson(${mi}, ${li})">
+              <button class="lesson-item${isActive ? ' active' : ''}${isCompleted ? ' completed' : ''}" onclick="${lessonLocked ? 'showPaywall()' : `goToLesson(${mi}, ${li})`}">
                 <span class="lesson-check"></span>
                 <span class="lesson-label">${lesson.title}</span>
+                ${lessonLocked ? '<svg class="lesson-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>' : ''}
               </button>
             `;
           }).join('')}
           ${mod.quiz ? `
-            <button class="lesson-item${currentView.type === 'quiz' && mi === currentView.module ? ' active' : ''}${isModulePassed(mod.id) ? ' completed' : ''}" onclick="goToQuiz(${mi})" style="font-style:italic;">
+            <button class="lesson-item${currentView.type === 'quiz' && mi === currentView.module ? ' active' : ''}${isModulePassed(mod.id) ? ' completed' : ''}" onclick="${(!admin && !paid) ? 'showPaywall()' : `goToQuiz(${mi})`}" style="font-style:italic;">
               <span class="lesson-check"></span>
               <span class="lesson-label">Module Quiz</span>
+              ${(!admin && !paid) ? '<svg class="lesson-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>' : ''}
             </button>
           ` : ''}
         </div>
@@ -3820,7 +4033,7 @@ function renderContent() {
 
 function renderLessonContent() {
   const mod = CURRICULUM[currentView.module];
-  if (!mod || (!isAdminMode() && (mod.locked || mod.comingSoon)) || !mod.lessons.length) {
+  if (!mod || (!isAdminMode() && (mod.locked || mod.comingSoon)) || !mod.lessons.length || !isLessonAccessible(currentView.module, currentView.lesson)) {
     renderLockedContent(mod);
     return;
   }
@@ -3872,13 +4085,18 @@ function renderLessonContent() {
 
 function renderLockedContent(mod) {
   const wrap = document.getElementById('contentWrap');
+  const isComingSoon = mod && (mod.locked || mod.comingSoon);
   wrap.innerHTML = `
     <div class="fade-in">
       <div class="locked-content">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
         <h2>${mod ? mod.title : 'Locked'}</h2>
-        <p>${mod && mod.subtitle ? mod.subtitle : 'This module is coming soon.'}</p>
-        <p style="margin-top:0.5rem;">Content for this module will be available in a future update.</p>
+        ${isComingSoon
+          ? `<p>${mod.subtitle || 'This module is coming soon.'}</p>
+             <p style="margin-top:0.5rem;">Content for this module will be available in a future update.</p>`
+          : `<p>This content requires full course access.</p>
+             <p style="margin-top:1rem;"><a href="javascript:showPaywall()" style="color:var(--accent);text-decoration:underline;text-underline-offset:2px;cursor:pointer;">Unlock the full course →</a></p>`
+        }
       </div>
     </div>
   `;
@@ -3895,6 +4113,11 @@ function updateProgress() {
 
 // ─── Navigation ───
 function goToLesson(mi, li) {
+  // Check access before navigating
+  if (!isLessonAccessible(mi, li)) {
+    showPaywall();
+    return;
+  }
   currentView = { type: 'lesson', module: mi, lesson: li };
   saveProgress();
   renderSidebar();
@@ -3909,6 +4132,11 @@ function goToNext() {
   const lastFlat = getLastActiveFlatIndex();
   if (flat < lastFlat) {
     const pos = getPositionFromFlat(flat + 1);
+    // Check if next lesson requires payment
+    if (!isLessonAccessible(pos.module, pos.lesson)) {
+      showPaywall();
+      return;
+    }
     goToLesson(pos.module, pos.lesson);
   }
 }
@@ -3993,6 +4221,7 @@ function isModulePassed(modId) {
 
 // ─── Quiz Rendering ───
 function goToQuiz(mi) {
+  if (!isAdminMode() && !isPaidUser()) { showPaywall(); return; }
   currentView = { type: 'quiz', module: mi, lesson: 0 };
   saveProgress();
   renderSidebar();
