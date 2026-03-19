@@ -1205,6 +1205,11 @@
       }
       gate.classList.add('hidden');
       document.querySelectorAll('body > *:not(.pw-gate):not(script)').forEach(function(el) { el.style.display = ''; });
+      // Re-render sidebar/content in case admin mode unlocked modules
+      if (hash === HASH_ADMIN && typeof renderSidebar === 'function') {
+        renderSidebar();
+        renderContent();
+      }
     } else {
       input.classList.add('pw-error');
       hint.classList.add('visible');
