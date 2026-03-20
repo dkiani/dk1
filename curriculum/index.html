@@ -3948,7 +3948,20 @@ Most trades target levels within the 20-day range. Keep it simple — you don't 
 
 Understanding data ranges prevents drawing levels from months ago that are no longer relevant. For day-to-day trading, the 20-day and 40-day ranges contain the active levels.`
       }
-    ]
+    ],
+    quiz: {
+      title: 'Quiz: Multi-Timeframe Analysis',
+      passingScore: 80,
+      questions: [
+        { id:'q09-r1', section:'recall', type:'multiple_choice', question:'What is the correct order for top-down analysis?', options:['5m to 15m to 1H to 4H to Daily to Weekly','Weekly to Daily to 4H to 1H to 15m to 5m','Daily to Weekly to 1H to 5m','Start on whichever timeframe has the clearest pattern'], correctAnswer:1, explanation:'Always start at the highest timeframe (Weekly) and work down to execution (5m).' },
+        { id:'q09-r2', section:'recall', type:'multiple_choice', question:'What does the HTF tell you vs the LTF?', options:['HTF = when to enter; LTF = direction','HTF = direction (what to do); LTF = when and where to enter','Both tell you the same thing','HTF is only for macro context'], correctAnswer:1, explanation:'HTF tells you direction. LTF tells you timing and entry level.' },
+        { id:'q09-r3', section:'recall', type:'multiple_choice', question:'What makes an A+ setup?', options:['Strong signal on any single timeframe','At least two timeframes agreeing','A setup during FOMC','All timeframes aligned: HTF bias clear, correct zone, PD array present, LTF aligned, active killzone'], correctAnswer:3, explanation:'Full alignment across all five elements.' },
+        { id:'q09-r4', section:'recall', type:'multiple_choice', question:'What are the three IPDA data ranges?', options:['5, 10, 20 day','30, 60, 90 day','20, 40, 60 day','Weekly, monthly, quarterly'], correctAnswer:2, explanation:'20-day, 40-day, 60-day lookback windows.' },
+        { id:'q09-a1', section:'applied', type:'multiple_choice', question:'Daily bullish in discount with OB at 18,300. 1H just CHoCH\'d bearish. What do you do?', options:['Go long immediately','Go short','Wait for 1H to realign bullish — pullback not complete','Switch instruments'], correctAnswer:2, explanation:'Partial misalignment — wait for the 1H to shift back bullish before entering.' },
+        { id:'q09-a2', section:'applied', type:'multiple_choice', question:'Weekly bullish, Daily discount at OB, 4H higher lows, 1H BOS up, 9:55 AM EST. How many alignment criteria met?', options:['3 of 5','4 of 5','Cannot determine','All 5 — A+ setup'], correctAnswer:3, explanation:'All five criteria met. Execute with conviction.' },
+        { id:'q09-a3', section:'applied', type:'multiple_choice', question:'You built a bullish narrative but NY open sweeps your level with a bearish MSS. What now?', options:['Hold your narrative','Average down','Reassess — the MSS may invalidate your thesis','Ignore the 5m'], correctAnswer:2, explanation:'A narrative is a hypothesis. When evidence contradicts it, reassess.' }
+      ]
+    }
   },
   {
     number: 10,
@@ -4117,7 +4130,21 @@ The profit target rule. When you're up $600 on a $500 target and see another set
 
 The single most destructive behavior. Entering immediately after a loss, increased size, lowered standards, anger. If you recognize any of these: close the platform.`
       }
-    ]
+    ],
+    quiz: {
+      title: 'Quiz: Execution & Risk Management',
+      passingScore: 80,
+      questions: [
+        { id:'q10-r1', section:'recall', type:'multiple_choice', question:'Where does your stop loss go?', options:['Above the PD array','Fixed 10-point distance','Other side of the PD array with buffer','Previous candle low'], correctAnswer:2, explanation:'On the other side of the PD array. If price trades through it, your thesis was wrong.' },
+        { id:'q10-r2', section:'recall', type:'multiple_choice', question:'Minimum R:R ratio?', options:['1:1','1.5:1','2:1','3:1'], correctAnswer:2, explanation:'Minimum 2:1. 10-point stop = 20-point minimum target.' },
+        { id:'q10-r3', section:'recall', type:'multiple_choice', question:'Position sizing formula on NQ?', options:['Account / stop distance','Always 3 contracts','(Account x Risk%) / (Stop Points x $20)','Account / entry price'], correctAnswer:2, explanation:'Position Size = (Account x Risk%) / (Stop Distance x Point Value).' },
+        { id:'q10-r4', section:'recall', type:'multiple_choice', question:'What is a circuit breaker?', options:['Technical indicator','Prop firm drawdown rule','Pre-defined rule forcing you to stop trading','Emergency button'], correctAnswer:2, explanation:'Pre-set rules: break after 2 losses, done at daily limit, no trading when emotional.' },
+        { id:'q10-r5', section:'recall', type:'multiple_choice', question:'When to increase position size?', options:['After winning streak','On A+ setups','Strong trend','Never — size comes from account growth'], correctAnswer:3, explanation:'Never increase based on confidence. Consistent sizing protects you.' },
+        { id:'q10-a1', section:'applied', type:'multiple_choice', question:'$50K account, 1% risk, 12-point stop on NQ. How many contracts?', options:['1','2','3','4'], correctAnswer:1, explanation:'$500 risk / ($240 per contract) = 2.08 -> 2 contracts.' },
+        { id:'q10-a2', section:'applied', type:'multiple_choice', question:'2 losses totaling $600. Daily limit is $750. What to do?', options:['One more trade','Double size to recover','Stop for the day','Switch instruments'], correctAnswer:2, explanation:'2 consecutive losses = mandatory break. Too close to daily limit. Stop.' },
+        { id:'q10-a3', section:'applied', type:'multiple_choice', question:'Trade is +15pts on a 10pt stop (1.5R). What to do?', options:['Take full profits','Add to position','Move stop to breakeven, hold for 2R target','Lock in 10pts'], correctAnswer:2, explanation:'At 1.5R, move stop to breakeven and let it run to your planned target.' }
+      ]
+    }
   },
   {
     number: 11,
@@ -4234,7 +4261,20 @@ Your edge isn't the system — it's the specific subset that works best for you.
 
 Use Notion, Google Sheets, TradeZella, Tradervue, or pen and paper. The best journal is the one you actually fill out.`
       }
-    ]
+    ],
+    quiz: {
+      title: 'Quiz: Trading Psychology',
+      passingScore: 80,
+      questions: [
+        { id:'q11-r1', section:'recall', type:'multiple_choice', question:'Biggest mistake during a losing streak?', options:['Too few trades','Trading too small','Reviewing journal','Changing system mid-drawdown'], correctAnswer:3, explanation:'Changing your system during a drawdown resets the clock.' },
+        { id:'q11-r2', section:'recall', type:'multiple_choice', question:'Name the emotional triggers.', options:['Following analysis','Position sizing formula','Revenge trading, FOMO, overconfidence, inability to stop when ahead','Waiting for alignment'], correctAnswer:2, explanation:'The four destroyers.' },
+        { id:'q11-r3', section:'recall', type:'multiple_choice', question:'The 5 Mind Gym prompts?', options:['OHLC + Volume','Entry, stop, target, size, timeframe','S&R, trend, volume, indicators','HTF bias, PD arrays, max loss, sit-out conditions, emotional state 1-10'], correctAnswer:3, explanation:'The 5 prompts that prevent emotional mistakes.' },
+        { id:'q11-r4', section:'recall', type:'multiple_choice', question:'Below 6/10 emotional state — what to do?', options:['Trade normally','Increase size','Half size or sit out','Only A+ setups'], correctAnswer:2, explanation:'Compromised state = compromised results. Reduce or sit out.' },
+        { id:'q11-a1', section:'applied', type:'multiple_choice', question:'Up $800, target was $500. Another setup forming. What do you do?', options:['Take it — meets criteria','Double size','Half size compromise','Stop — exceeded target, session over'], correctAnswer:3, explanation:'Target exceeded. Rules say you\'re done.' },
+        { id:'q11-a2', section:'applied', type:'multiple_choice', question:'3 losses in a row. System is 58% over 200+ trades. Broken?', options:['Yes, switch systems','Week off','Increase size to recover','No — reduce size, maintain process, journal, review weekend'], correctAnswer:3, explanation:'3 consecutive losses is normal at 58%. System is fine.' },
+        { id:'q11-a3', section:'applied', type:'multiple_choice', question:'Journal shows 70% losses in PM, 85% profits in AM. What to change?', options:['Nothing','Only trade PM to improve','Add indicators for PM','Stop trading PM, focus on AM'], correctAnswer:3, explanation:'Cut the leak. Focus where your edge is strongest.' }
+      ]
+    }
   },
   {
     number: 12,
@@ -4374,7 +4414,21 @@ Trading is a career, not a windfall. You are building a business. On the days it
 
 Welcome to KIANI. Now go execute.`
       }
-    ]
+    ],
+    quiz: {
+      title: 'Quiz: Prop Firm Readiness — Final Assessment',
+      passingScore: 80,
+      questions: [
+        { id:'q12-r1', section:'recall', type:'multiple_choice', question:'Minimum paper trading time?', options:['1 day','1 week','Not necessary','2 weeks of consistent rule-following'], correctAnswer:3, explanation:'Minimum 2 weeks proving consistent execution.' },
+        { id:'q12-r2', section:'recall', type:'multiple_choice', question:'What is the consistency rule?', options:['Win every day','20+ trades per day','No single day > 30-50% of total profits','No consistency rule'], correctAnswer:2, explanation:'Prevents passing on one lucky day.' },
+        { id:'q12-r3', section:'recall', type:'multiple_choice', question:'When to scale to multiple accounts?', options:['Immediately','After first eval pass','After this curriculum','After 1+ month consistent profitability on one account'], correctAnswer:3, explanation:'Prove consistency on one account first.' },
+        { id:'q12-r4', section:'recall', type:'multiple_choice', question:'KIANI approach to evals?', options:['Trade aggressively','First hour only','Normal week: consistent daily targets and sizing','Max leverage on A+ setups'], correctAnswer:2, explanation:'Calculate daily target, size normally, follow all rules.' },
+        { id:'q12-a1', section:'applied', type:'multiple_choice', question:'Day 3 of 5-day eval. $900 of $1,500 target. $800 drawdown left. Plan?', options:['Size up to finish day 4','Day off','Switch models','Continue normal — $300/day for 2 more days'], correctAnswer:3, explanation:'$600 over 2 days = normal daily target. Don\'t change anything.' },
+        { id:'q12-a2', section:'applied', type:'multiple_choice', question:'First funded day. Hit $300 target in 30 minutes. What now?', options:['Keep trading','One more at half size','Trade other accounts','Stop — target hit, protect the win'], correctAnswer:3, explanation:'Target hit, session over. This discipline keeps funded accounts alive.' },
+        { id:'q12-a3', section:'applied', type:'open_response', question:'Write your personal trading plan: model, killzone, entry criteria, stop placement, target, daily loss limit, profit target, and one rule you will never break.', explanation:'Specific to your situation and personality. Bring to coaching call.' },
+        { id:'q12-a4', section:'applied', type:'open_response', question:'Design your ideal daily schedule: wake-up, morning protocol, Mind Gym, trading session, journal, shutdown.', explanation:'Include specific times. Your schedule is your operating system.' }
+      ]
+    }
   }
 ];
 
