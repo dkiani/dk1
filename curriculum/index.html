@@ -2718,7 +2718,7 @@ With time and sessions covered, you now know WHAT drives price (the algorithm), 
         { id:'q04-r4', section:'recall', type:'multiple_choice', question:'What is the midnight opening price used for?', options:['Setting your stop loss','It\'s the reference price for the daily Power of 3 — the anchor for determining buy days vs sell days','Calculating your position size','It has no practical use'], correctAnswer:1, explanation:'The midnight opening price (12:00 AM EST) is the true daily opening price that IPDA references. On buy days, price manipulates below it before expanding above. On sell days, the opposite.' },
         { id:'q04-r5', section:'recall', type:'multiple_choice', question:"According to ICT, what does 'TIME then PRICE' mean?", options:['Always check the time before checking the price','IPDA first checks if the correct time window is active before seeking price targets','Trade the first 30 minutes of the session','Price is less important than timing your entries'], correctAnswer:1, explanation:'TIME then PRICE means IPDA operates on a schedule — it first checks whether the appropriate time window (killzone) is active, then looks for its price targets (liquidity, FVGs, PD arrays).' },
         { id:'q04-a2', section:'recall', type:'multiple_choice', question:"You look at yesterday's daily candle on NQ: it opened near 18,400 (the midnight open), the low was 18,360, the high was 18,550, and it closed at 18,530. Was this a Classic Buy Day or Classic Sell Day?", options:['Classic Buy Day — opened near the low, closed near the high','Classic Sell Day — opened near the high, closed near the low','Neither — this was a range day','Cannot determine from this information'], correctAnswer:0, explanation:'The open (18,400) was much closer to the low (18,360) than the high (18,550), and the close (18,530) was near the high. This is a Classic Buy Day: manipulation swept the low early, then price expanded and closed near the top.' },
-        { id:'q04-a3', section:'recall', type:'multiple_choice', question:'CPI data is releasing tomorrow at 8:30 AM EST. You have a long position from yesterday that\'s currently in profit. What should you consider?', options:['Add to the position before the news for maximum profit','Consider tightening your stop or closing before the release — the initial spike is often manipulation','Switch to a short position','Move your stop loss further away to avoid getting stopped out by volatility'], correctAnswer:1, explanation:'High-impact news creates extreme volatility. The initial spike is often manipulation (the Judas Swing compressed into seconds). Tightening your stop or closing protects your profit. Moving your stop further away exposes you to larger losses. Adding before news is gambling.' }
+        { id:'q04-a3', section:'recall', type:'multiple_choice', question:'CPI data is releasing at 8:30 AM EST today. You are planning your intraday scalps. What is the best approach?', options:['Enter a position at 8:25 AM to front-run the move','Wait for the initial spike to settle, then look for a setup during the 9:30–10:00 AM window','Avoid trading entirely for the rest of the day','Trade the Asian session instead since CPI only affects NY'], correctAnswer:1, explanation:'High-impact news like CPI creates extreme volatility. The initial spike at 8:30 AM is often manipulation (the Judas Swing compressed into seconds). The smart approach is to wait for the dust to settle and look for a clean setup after the open, when the real move typically begins. Front-running news is gambling.' }
       ]
     }
   },
@@ -4300,7 +4300,7 @@ function goToQuiz(mi) {
   document.querySelector('.sidebar-overlay').classList.remove('open');
 }
 
-function renderQuizContent(mi, scrollToResults) {
+function renderQuizContent(mi, scrollToResults, noScroll) {
   const mod = CURRICULUM[mi];
   if (!mod || !mod.quiz) return;
   const quiz = mod.quiz;
@@ -4347,7 +4347,7 @@ function renderQuizContent(mi, scrollToResults) {
   if (scrollToResults) {
     const results = document.getElementById('quizActions');
     if (results) results.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  } else {
+  } else if (!noScroll) {
     document.getElementById('mainContent').scrollTo(0, 0);
   }
 }
@@ -4416,7 +4416,7 @@ function quizSelectAnswer(qId, optionIndex, submitted) {
   const qs = getQuizState(mod.id);
   qs.answers[qId] = optionIndex;
   saveQuizState();
-  renderQuizContent(mi);
+  renderQuizContent(mi, false, true);
 }
 
 function quizTextAnswer(qId, value) {
