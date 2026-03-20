@@ -3951,9 +3951,173 @@ Understanding data ranges prevents drawing levels from months ago that are no lo
     ]
   },
   {
-    number: 10, id: 'execution-and-risk-management', title: 'Execution & Risk Management',
+    number: 10,
+    id: 'execution-and-risk-management',
+    title: 'Execution & Risk Management',
     subtitle: 'The best analysis means nothing without proper execution.',
-    locked: true, comingSoon: true, lessons: []
+    locked: false,
+    lessons: [
+      {
+        id: 'entry-techniques',
+        title: 'Entry Techniques',
+        readingTime: 6,
+        globalNum: 48,
+        content: `Two primary entry methods, each with tradeoffs.
+
+## Limit Order Entries
+
+Place your order at a specific price and walk away. You identify a PD array, set a buy limit at the CE or OB level, with a stop on the other side.
+
+**Pros:** No screen time required, removes emotional decisions, exact price fill, works for traders who can't watch every candle.
+
+**Cons:** May miss trades if price reverses before reaching your limit, no confirmation the level is holding.
+
+## Market Order Entries (Confirmation-Based)
+
+Watch the LTF and enter when structure shifts in your favor. Price approaches your PD array, you see a bullish CHoCH with displacement and FVG on the 5m, and enter on the FVG return.
+
+**Pros:** Confirmation the level is holding, tighter stop possible, higher win rate.
+
+**Cons:** Requires screen time, might miss fast moves, slightly worse fill price.
+
+:::callout
+WHICH SHOULD YOU USE?
+Live watchers who enjoy reading LTF price action: confirmation entries. Set-and-forget traders: limit orders at PD arrays. Both work — pick what you'll execute consistently.
+:::
+
+## The Refinement Trade
+
+Highest-precision entry: identify a HTF PD array (daily OB), find a LTF PD array nested inside it (15m FVG within the daily OB). Limit order at the LTF level. Tight stop, precise level, HTF backing.`
+      },
+      {
+        id: 'stop-loss-placement',
+        title: 'Stop Loss Placement',
+        readingTime: 6,
+        globalNum: 49,
+        content: `Every trade has a stop. No exceptions.
+
+## The Core Rule
+
+Stop goes on the **other side** of the PD array. If price trades through the entire array, your thesis is wrong.
+
+**Bullish OB entry:** Stop below the OB low with 2-5 point buffer.
+**BISI FVG entry:** Stop below the FVG discount level.
+**LTF CHoCH entry:** Stop below the swing low created by the CHoCH.
+
+:::callout
+THE BUFFER
+Always add 2-5 points below your stop level on NQ. A stop at the exact OB low is asking to get swept by a tick before the move.
+:::
+
+## What NOT to Do
+
+Don't move your stop closer to reduce risk (increases stop-out probability). Don't widen your stop (trade fewer contracts instead). Don't remove your stop (ever).
+
+## Trailing Stops
+
+:::steps
+1. At 1R profit: move stop to breakeven
+2. At 2R: trail behind new swing points
+3. Continue trailing as structure forms
+4. When trailing stop is hit, you've captured the move
+:::`
+      },
+      {
+        id: 'position-sizing',
+        title: 'Position Sizing & Risk Per Trade',
+        readingTime: 6,
+        globalNum: 50,
+        content: `Position sizing determines whether you survive long enough to become profitable.
+
+## The Rule
+
+Never risk more than **1-2%** per trade. For newer traders, 1% until proven consistent.
+
+## The Formula
+
+**Position Size = (Account x Risk%) / (Stop Distance x Point Value)**
+
+NQ = $20/point. MNQ = $2/point.
+
+**Example 1:** $25K account, 2% risk, 10pt stop on NQ. Risk = $500. Per contract = $200. Size = 2 contracts.
+
+**Example 2:** $25K account, 1% risk, 15pt stop on MNQ. Risk = $250. Per contract = $30. Size = 8 contracts.
+
+**Example 3:** $50K account, 1% risk, 8pt stop on NQ. Risk = $500. Per contract = $160. Size = 3 contracts.
+
+:::callout
+THE MATH PROTECTS YOU
+At 1% risk, 10 consecutive losses leaves you with 90% of your account. At 5% risk, 10 losses puts you at 50% — needing 100% return to recover.
+:::
+
+Always round down. Never round up. Reduce size during losing streaks. Never increase size based on confidence.`
+      },
+      {
+        id: 'targets-and-rr',
+        title: 'Targets & Risk-to-Reward',
+        readingTime: 5,
+        globalNum: 51,
+        content: `## Minimum 2:1 R:R
+
+10-point stop = 20-point minimum target. Even at 40% win rate:
+- 4 winners x 20pts = 80pts gained
+- 6 losers x 10pts = 60pts lost
+- Net: +20pts profit
+
+## Target Priority
+
+:::steps
+1. **Opposing liquidity pool** — nearest untouched BSL/SSL
+2. **Unfilled FVG** on the opposite side
+3. **Dealing range extreme** — range high or low
+4. **Equilibrium** — the 50% level as first target
+:::
+
+## Partial Profits
+
+:::steps
+1. At 1R: move stop to breakeven
+2. At 2R: take 50% off, lock in profit
+3. Let remaining 50% run to full target with trailing stop
+:::
+
+:::callout
+DON'T CUT WINNERS SHORT
+The most common mistake after a losing streak: panic-closing at 5 points when your target is 20. Trust the structure you identified.
+:::`
+      },
+      {
+        id: 'daily-rules',
+        title: 'Daily Rules & Circuit Breakers',
+        readingTime: 5,
+        globalNum: 52,
+        content: `## Daily Loss Limit
+
+2-3 losing trades OR a dollar amount, whichever comes first. Hit the limit = done for the day.
+
+## Daily Profit Target
+
+When you hit it, you're done. Prevents giving back profits.
+
+## Circuit Breakers
+
+:::steps
+1. **2 consecutive losses:** 15-minute mandatory break
+2. **Daily loss limit hit:** Session over, no exceptions
+3. **Emotional state compromised:** Anger, FOMO, revenge = no trade
+4. **Pre-market rating below 6/10:** Reduced size or sit out
+:::
+
+:::callout
+THE HARDEST RULE
+The profit target rule. When you're up $600 on a $500 target and see another setup — don't. The setup will be there tomorrow. Your profit won't be if you give it back.
+:::
+
+## Revenge Trading
+
+The single most destructive behavior. Entering immediately after a loss, increased size, lowered standards, anger. If you recognize any of these: close the platform.`
+      }
+    ]
   },
   {
     number: 11, id: 'trading-psychology-and-discipline', title: 'Trading Psychology & Discipline',
