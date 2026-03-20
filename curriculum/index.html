@@ -4237,9 +4237,144 @@ Use Notion, Google Sheets, TradeZella, Tradervue, or pen and paper. The best jou
     ]
   },
   {
-    number: 12, id: 'prop-firm-readiness', title: 'Prop Firm Readiness & Live Trading',
+    number: 12,
+    id: 'prop-firm-readiness',
+    title: 'Prop Firm Readiness & Live Trading',
     subtitle: "Paper trading isn't practice. It's proof.",
-    locked: true, comingSoon: true, lessons: []
+    locked: false,
+    lessons: [
+      {
+        id: 'paper-trading-protocol',
+        title: 'Paper Trading Protocol',
+        readingTime: 5,
+        globalNum: 57,
+        content: `:::callout
+PAPER TRADING ONLY
+Do NOT trade real money yet. Minimum 2 weeks of paper trading. Non-negotiable.
+:::
+
+## Setup
+
+:::steps
+1. TradingView Trading Panel → Paper Trading
+2. Set balance to match your target prop firm account
+3. Apply ALL rules: sizing formula, daily limits, circuit breakers, journal
+:::
+
+Treat it as real money. The purpose is proving you can execute consistently — not practicing concepts.
+
+## Ready to Go Live When
+
+:::steps
+1. 2 consecutive weeks following rules
+2. Consistent execution of chosen model
+3. Journal completed for every trade
+4. Circuit breakers honored
+5. Positive or breakeven results
+:::`
+      },
+      {
+        id: 'prop-firm-rules',
+        title: 'Understanding Prop Firm Rules',
+        readingTime: 6,
+        globalNum: 58,
+        content: `## How Evaluations Work
+
+:::steps
+1. Purchase an evaluation (simulated account with rules)
+2. Trade until you hit the profit target
+3. Pass = receive funded account with real capital
+4. Trade funded account, split profits (80/20 or 90/10)
+:::
+
+## Key Rules
+
+**Profit Target:** Amount needed to pass (e.g., $1,500 on $25K account).
+
+**Maximum Drawdown:** Account can't decline past this (e.g., $1,500). Hit it = failed.
+
+**Trailing vs Static Drawdown:** Trailing moves up with profits. Static stays at starting point. Know which yours uses.
+
+**Daily Loss Limit:** Max per-day loss, separate from overall drawdown.
+
+**Consistency Rule:** No single day > 30-50% of total profits.
+
+**Minimum Trading Days:** Usually 5-10 days minimum.
+
+:::callout
+WHY MOST FAIL
+Trading too aggressively to hit the target quickly. Sizing up, taking marginal setups, blowing drawdown. The eval is not a sprint.
+:::
+
+## The KIANI Approach
+
+Daily target = profit target / minimum days. Size using formula based on drawdown limit. Follow all rules. Don't try to finish early.`
+      },
+      {
+        id: 'scaling',
+        title: 'Account Management & Scaling',
+        readingTime: 5,
+        globalNum: 59,
+        content: `## Start with One Account
+
+Pass one eval. Trade one funded account. Prove consistency over one full month before scaling.
+
+## Copy Trading for Scale
+
+TradeSyncer replicates trades across multiple accounts. One decision, multiple accounts earning. But one bad decision hits everywhere.
+
+:::steps
+1. **Month 1:** One account. Prove consistency. Take payouts.
+2. **Month 2-3:** If profitable, add 1-2 accounts. Copy trade.
+3. **Month 4+:** Gradually scale. Never add during drawdown.
+:::
+
+:::callout
+THE PAYOUT RULE
+Every payout eligible = take it. Money in prop accounts is at risk. Money in your bank is yours. Pay yourself first.
+:::
+
+Keep a master spreadsheet: account, firm, balance, drawdown remaining, monthly P&L, payout history.`
+      },
+      {
+        id: 'the-long-game',
+        title: 'The Long Game',
+        readingTime: 5,
+        globalNum: 60,
+        content: `## The Math of Consistency
+
+$300/day x 20 days = $6,000/month. Across 3 accounts = $18,000/month. Across 5 = $30,000/month.
+
+No big days required. Just $300/day — 15 points on 1 NQ contract.
+
+## What This Program Gave You
+
+:::steps
+1. A framework for reading markets
+2. Specific trade models with clear entries, stops, targets
+3. Risk management — sizing, limits, circuit breakers
+4. Psychological tools — Mind Gym, journal, emotional awareness
+5. A path to funded trading — paper protocol, eval strategy, scaling
+:::
+
+:::callout
+THE FINAL RULE
+Trading is a career, not a windfall. You are building a business. On the days it beats you, come back tomorrow. On the days you beat it, come back tomorrow.
+:::
+
+## Your Next Steps
+
+:::steps
+1. Paper trade 2 weeks minimum
+2. Start prop firm eval when paper trading proves consistency
+3. Continue coaching calls
+4. Journal every trade. Review weekly.
+5. Be patient. Be consistent. Be disciplined.
+:::
+
+Welcome to KIANI. Now go execute.`
+      }
+    ]
   }
 ];
 
