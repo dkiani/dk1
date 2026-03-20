@@ -3896,12 +3896,8 @@ function renderMarkdown(text) {
       continue;
     }
 
-    // Image/diagram placeholder
+    // Image/diagram placeholder — hidden until images are added
     if (line.startsWith('![diagram](')) {
-      closeParagraph();
-      const desc = line.match(/!\[diagram\]\((.+?)\)/);
-      const caption = desc ? desc[1] : 'Diagram';
-      html += `<div class="img-placeholder">${caption}</div>`;
       i++;
       continue;
     }
@@ -4219,15 +4215,21 @@ function goToPrev() {
 function toggleComplete() {
   const mod = CURRICULUM[currentView.module];
   const lesson = mod.lessons[currentView.lesson];
-  if (completedLessons.has(lesson.id)) {
+  const wasCompleted = completedLessons.has(lesson.id);
+  if (wasCompleted) {
     completedLessons.delete(lesson.id);
   } else {
     completedLessons.add(lesson.id);
   }
   saveProgress();
   renderSidebar();
-  renderContent();
   updateProgress();
+  // If marking done (not unmarking), advance to next lesson
+  if (!wasCompleted) {
+    goToNext();
+  } else {
+    renderContent();
+  }
 }
 
 // ─── Mobile Sidebar ───
@@ -4298,7 +4300,7 @@ function goToQuiz(mi) {
   document.querySelector('.sidebar-overlay').classList.remove('open');
 }
 
-function renderQuizContent(mi) {
+function renderQuizContent(mi, scrollToResults) {
   const mod = CURRICULUM[mi];
   if (!mod || !mod.quiz) return;
   const quiz = mod.quiz;
@@ -4342,7 +4344,12 @@ function renderQuizContent(mi) {
     </div>
   `;
 
-  document.getElementById('mainContent').scrollTo(0, 0);
+  if (scrollToResults) {
+    const results = document.getElementById('quizActions');
+    if (results) results.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  } else {
+    document.getElementById('mainContent').scrollTo(0, 0);
+  }
 }
 
 function renderQuizQuestion(q, idx, qs, letters, prefix) {
@@ -4388,13 +4395,16 @@ function renderQuizQuestion(q, idx, qs, letters, prefix) {
 
 function renderQuizResults(mod, qs, quiz) {
   const passed = qs.score >= quiz.passingScore;
+  const mi = CURRICULUM.indexOf(mod);
+  const hasNextModule = mi < CURRICULUM.length - 1;
   return `
     <div class="quiz-results">
       <div class="quiz-score ${passed ? 'passing' : 'failing'}">${qs.score}%</div>
       <div class="quiz-results-text">${passed
         ? 'You passed! The next module is now unlocked.'
         : `You need ${quiz.passingScore}% to pass. Review the lessons and try again.`}</div>
-      ${!passed ? `<button class="quiz-retry-btn" onclick="retryQuiz(${CURRICULUM.indexOf(mod)})">Retry Quiz</button>` : ''}
+      ${!passed ? `<button class="quiz-retry-btn" onclick="retryQuiz(${mi})">Retry Quiz</button>` : ''}
+      ${passed && hasNextModule ? `<button class="quiz-submit-btn" onclick="goToLesson(${mi + 1}, 0)" style="margin-top:1rem;">Continue to Next Module <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></button>` : ''}
     </div>
   `;
 }
@@ -4431,7 +4441,7 @@ function submitQuiz(mi) {
   qs.score = mcQuestions.length > 0 ? Math.round((correct / mcQuestions.length) * 100) : 100;
   qs.submitted = true;
   saveQuizState();
-  renderQuizContent(mi);
+  renderQuizContent(mi, true);
 }
 
 function retryQuiz(mi) {
