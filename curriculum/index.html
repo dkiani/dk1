@@ -3896,12 +3896,8 @@ function renderMarkdown(text) {
       continue;
     }
 
-    // Image/diagram placeholder
+    // Image/diagram placeholder — hidden until images are added
     if (line.startsWith('![diagram](')) {
-      closeParagraph();
-      const desc = line.match(/!\[diagram\]\((.+?)\)/);
-      const caption = desc ? desc[1] : 'Diagram';
-      html += `<div class="img-placeholder">${caption}</div>`;
       i++;
       continue;
     }
