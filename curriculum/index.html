@@ -1311,17 +1311,13 @@
     <button class="paywall-close" onclick="closePaywall()">&times;</button>
     <h2>Unlock the Full Course</h2>
     <p class="paywall-sub">You've seen the foundation — now get access to all 12 modules, quizzes, and the complete Smart Money Structure framework.</p>
-    <div class="paywall-tiers">
-      <a class="paywall-tier" href="/start?plan=course">
-        <div class="tier-label">Course Access</div>
-        <div class="tier-price">$797</div>
-        <div class="tier-desc">Full 12-module curriculum<br>All quizzes & resources<br>Lifetime access</div>
+    <div class="paywall-tiers" style="flex-direction:column;align-items:center;gap:1rem;">
+      <a class="paywall-tier featured" href="/start?plan=course" style="max-width:340px;width:100%;">
+        <div class="tier-label">Full Curriculum Access</div>
+        <div class="tier-price">$1,497</div>
+        <div class="tier-desc">All 12 modules &amp; quizzes<br>Complete Smart Money framework<br>Lifetime access</div>
       </a>
-      <a class="paywall-tier featured" href="/start?plan=mentorship">
-        <div class="tier-label">Course + 1:1 Mentorship</div>
-        <div class="tier-price">$4,997</div>
-        <div class="tier-desc">Everything in Course Access<br>Direct 1:1 coaching with Daniel<br>Personalized trade reviews</div>
-      </a>
+      <a href="/apply" style="font-size:13px;color:var(--muted);text-decoration:underline;margin-top:0.25rem;">Apply for 1:1 Coaching &rarr;</a>
     </div>
     <p class="paywall-already">Already paid? <a onclick="showAccessGate()">Enter your access code</a></p>
   </div>
@@ -1342,15 +1338,70 @@
 
 <script>
 (function() {
-  // SHA-256 hashes for access codes
-  // Student code: "kiani2026"
-  var HASH_STUDENT = '1d0db54b431f60a50c09a57638e24380297bcbe3f98a13fd9951523d9979841c';
+  // ─── Session Logger URL ───
+  // Replace with your deployed Google Apps Script URL from session-logger-apps-script.js
+  var SESSION_LOG_URL = 'PASTE_YOUR_SESSION_LOGGER_APPS_SCRIPT_URL_HERE';
+
+  // ─── Student access codes ───
+  // Map of SHA-256 hash → student label
+  // To add a new student:
+  //   1. Pick a unique code (e.g. "student-jane-2026")
+  //   2. Generate its SHA-256: echo -n "student-jane-2026" | shasum -a 256
+  //   3. Add the hash and name below
+  var STUDENT_CODES = {
+    // "kiani2026"
+    '1d0db54b431f60a50c09a57638e24380297bcbe3f98a13fd9951523d9979841c': 'Student (Legacy)'
+    // Add per-student codes here:
+    // 'hash_here': 'Student Name',
+  };
+
   // Admin code: "admin2026" — unlocks all modules including coming soon
   var HASH_ADMIN = '6051fc84a7a0d74c225fb18a496b09952da5642e60723ecae543298edd7d82d6';
 
   async function sha256(str) {
     var buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
     return Array.from(new Uint8Array(buf)).map(function(b) { return b.toString(16).padStart(2, '0'); }).join('');
+  }
+
+  // ─── Session logging ───
+  async function logSession(studentName, codeUsed) {
+    if (SESSION_LOG_URL.indexOf('PASTE_YOUR') !== -1) return; // skip if not configured
+
+    // Fetch IP + location
+    var ipData = {};
+    try {
+      var resp = await fetch('https://ipapi.co/json/');
+      ipData = await resp.json();
+    } catch (e) { /* silently skip if blocked */ }
+
+    var ua = navigator.userAgent;
+    var device = /Mobile|Android|iPhone|iPad/.test(ua) ? 'Mobile' : 'Desktop';
+    var browser = 'Unknown';
+    if (ua.indexOf('Firefox') > -1) browser = 'Firefox';
+    else if (ua.indexOf('Edg') > -1) browser = 'Edge';
+    else if (ua.indexOf('Chrome') > -1) browser = 'Chrome';
+    else if (ua.indexOf('Safari') > -1) browser = 'Safari';
+
+    var payload = {
+      timestamp: new Date().toISOString(),
+      student: studentName,
+      code: codeUsed,
+      ip: ipData.ip || '',
+      city: ipData.city || '',
+      region: ipData.region || '',
+      country: ipData.country_name || '',
+      device: device,
+      browser: browser
+    };
+
+    try {
+      fetch(SESSION_LOG_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+    } catch (e) { /* fire and forget */ }
   }
 
   // Access code gate
@@ -1371,10 +1422,20 @@
     var val = accessInput.value.trim();
     if (!val) return;
     var hash = await sha256(val);
-    if (hash === HASH_STUDENT || hash === HASH_ADMIN) {
+
+    var isAdmin = (hash === HASH_ADMIN);
+    var studentName = STUDENT_CODES[hash] || null;
+
+    if (studentName || isAdmin) {
       localStorage.setItem('curriculum_paid', 'true');
-      if (hash === HASH_ADMIN) {
+      if (isAdmin) {
         sessionStorage.setItem('curriculum_admin', 'true');
+      }
+      // Log the session
+      logSession(isAdmin ? 'Admin' : studentName, val);
+      // Store student name for future reference
+      if (studentName) {
+        localStorage.setItem('curriculum_student', studentName);
       }
       document.getElementById('accessGate').classList.add('hidden');
       if (typeof renderSidebar === 'function') {
