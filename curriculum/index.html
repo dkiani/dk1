@@ -3792,9 +3792,163 @@ You now have everything you need to identify setups and take trades. Modules 09-
     }
   },
   {
-    number: 9, id: 'multi-timeframe-analysis', title: 'Multi-Timeframe Analysis',
+    number: 9,
+    id: 'multi-timeframe-analysis',
+    title: 'Multi-Timeframe Analysis',
     subtitle: 'The HTF is the story. The LTF is the sentence.',
-    locked: true, comingSoon: true, lessons: []
+    locked: false,
+    lessons: [
+      {
+        id: 'the-top-down-approach',
+        title: 'The Top-Down Approach',
+        readingTime: 6,
+        globalNum: 44,
+        content: `You now have every individual tool: structure, liquidity, PD arrays, dealing ranges, trade models. The question is — how do you combine them across timeframes to build a complete trade idea? The answer is the top-down approach.
+
+## The Principle
+
+Always start with the highest relevant timeframe and work your way down. Never start on the 5-minute chart and try to figure out what's happening. That's like reading one sentence in the middle of a book and trying to understand the plot.
+
+## The Timeframe Hierarchy
+
+:::steps
+1. **Weekly** — Where is price in the macro picture? What's the dominant trend? Where are the major liquidity pools?
+2. **Daily** — What's the current dealing range? Are we in premium or discount? Any recent liquidity sweeps?
+3. **4-Hour** — What's the intermediate structure doing? Any PD arrays forming that align with the daily bias?
+4. **1-Hour** — Where is the intraday structure? Is there a BOS or CHoCH forming? This is your primary structure timeframe.
+5. **15-Minute** — Where are the entry-level PD arrays? FVGs, order blocks at this level refine your entry.
+6. **5-Minute** — This is your execution timeframe. The final trigger — the CHoCH, the FVG return, the OB reaction — happens here.
+:::
+
+## What Each Tier Tells You
+
+The higher timeframes answer **what to do.** The lower timeframes answer **when and where to do it.**
+
+The Weekly and Daily tell you the trend is bullish, you're in discount, and there's a daily order block below. That's your directional bias.
+
+The 1H and 15m tell you price is pulling back toward that daily OB, and structure hasn't broken bearish yet. That's your structural context.
+
+The 5m tells you price just swept the low, a CHoCH formed with displacement, and there's a FVG to enter on. That's your execution trigger.
+
+:::callout
+THE NON-NEGOTIABLE RULE
+Never take a lower-timeframe trade that contradicts the higher-timeframe narrative. If the daily says sell and you see a buy setup on the 5-minute chart, that buy setup is a counter-trend scalp at best and a trap at worst. The HTF always wins.
+:::
+
+## How Long Does This Take?
+
+Once practiced, the full top-down analysis takes about 15 minutes. It's a checklist, not an art project.`
+      },
+      {
+        id: 'building-the-narrative',
+        title: 'Building the Narrative',
+        readingTime: 7,
+        globalNum: 45,
+        content: `The narrative is your story for the day. It's a structured hypothesis based on your top-down analysis, built before the session starts.
+
+## The 4-Step Narrative
+
+:::steps
+1. **Weekly bias:** Where is price in the macro dealing range? If in the discount half with bullish trend, macro bias is long.
+2. **Daily context:** What PD arrays are in play? Recent liquidity sweeps? Is price in premium or discount of the daily dealing range?
+3. **4H/1H structure:** Is intermediate structure aligned with daily bias? If daily says bullish but 4H just CHoCH'd bearish, the pullback is still in progress.
+4. **Session plan:** What direction? What levels? Which killzone? What invalidates the idea?
+:::
+
+## A Worked Example
+
+**Step 1 — Weekly:** NQ bullish trend, below weekly equilibrium. Bias = bullish.
+
+**Step 2 — Daily:** Dealing range 18,200-18,800. Equilibrium 18,500. Price at 18,350 (discount). Daily bullish OB at 18,280-18,320. SSL at 18,250 was swept last session.
+
+**Step 3 — 4H/1H:** 4H printed bullish CHoCH. 1H making higher lows. Structure aligning bullish.
+
+**Step 4 — Plan:** Looking for longs. Entry zone: daily OB at 18,280-18,320 on a 5m CHoCH/FVG during NY AM session. Target: 18,500 first partial, 18,800 full target. Invalidation: break below 18,200.
+
+:::callout
+WRITE IT DOWN
+Don't just think through the narrative — write it in your journal before the session. This anchors your decisions to calm analysis, not mid-session emotions.
+:::
+
+## When the Narrative is Wrong
+
+The narrative is a hypothesis, not a guarantee. If price invalidates your thesis, don't fight it. Step back and reassess.`
+      },
+      {
+        id: 'htf-ltf-alignment',
+        title: 'HTF & LTF Alignment',
+        readingTime: 6,
+        globalNum: 46,
+        content: `The highest-probability trades occur when higher and lower timeframes agree on direction.
+
+## Full Alignment (A+ Setup)
+
+- Weekly/Daily bias bullish
+- Price in discount of daily dealing range
+- Discount PD array present (OB, FVG)
+- 4H/1H structure bullish (HH/HL, recent BOS)
+- 5m/15m CHoCH or FVG entry during NY killzone
+- All timeframes agree: buy.
+
+These setups don't come every day — but when they do, they're where you make your money.
+
+## Misalignment
+
+**Partial misalignment (caution):** Daily bullish, but 1H just CHoCH'd bearish. Pullback isn't complete — wait for 1H to realign.
+
+**Full misalignment (no trade):** Daily bullish but 4H shifted bearish with displacement. Sit out until clarity returns.
+
+:::callout
+PATIENCE IS THE EDGE
+The willingness to wait for alignment is what separates profitable traders from struggling ones. A week of waiting for an A+ setup beats five days of forcing B and C grade trades.
+:::
+
+## The Alignment Checklist
+
+Before every trade:
+
+:::steps
+1. Is my HTF bias clear?
+2. Is price in the right zone?
+3. Is there a PD array at my entry level?
+4. Is LTF structure aligned with my bias?
+5. Is it the right time (active killzone)?
+:::
+
+Five yeses = execute with conviction. Any no = wait or pass.`
+      },
+      {
+        id: 'ipda-data-ranges',
+        title: 'IPDA Data Ranges',
+        readingTime: 5,
+        globalNum: 47,
+        content: `IPDA doesn't look at the entire history of NQ. It references specific lookback periods.
+
+## The Three Data Ranges
+
+:::steps
+1. **20-day range** — Most recent ~4 weeks. Highest-priority targets for intraday trades.
+2. **40-day range** — Last ~8 weeks. Broader structural levels for larger moves.
+3. **60-day range** — Last ~12 weeks. Macro liquidity pools for the biggest moves.
+:::
+
+## How to Use Data Ranges
+
+:::steps
+1. Go back 20 trading days on the daily chart. Mark the highest high and lowest low — these are nearest external targets.
+2. Within that range, identify major FVGs, OBs, and breakers — these are internal targets.
+3. If 20-day levels are already swept, expand to 40-day.
+4. The 60-day range is your macro context.
+:::
+
+:::callout
+PRACTICAL APPLICATION
+Most trades target levels within the 20-day range. Keep it simple — you don't need every level across all three ranges. The 20-day high and low are your primary external targets. FVGs and OBs within the 20-day range are your primary internal targets.
+:::
+
+Understanding data ranges prevents drawing levels from months ago that are no longer relevant. For day-to-day trading, the 20-day and 40-day ranges contain the active levels.`
+      }
+    ]
   },
   {
     number: 10, id: 'execution-and-risk-management', title: 'Execution & Risk Management',
