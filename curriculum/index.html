@@ -4300,7 +4300,7 @@ function goToQuiz(mi) {
   document.querySelector('.sidebar-overlay').classList.remove('open');
 }
 
-function renderQuizContent(mi, scrollToResults) {
+function renderQuizContent(mi, scrollToResults, noScroll) {
   const mod = CURRICULUM[mi];
   if (!mod || !mod.quiz) return;
   const quiz = mod.quiz;
@@ -4347,7 +4347,7 @@ function renderQuizContent(mi, scrollToResults) {
   if (scrollToResults) {
     const results = document.getElementById('quizActions');
     if (results) results.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  } else {
+  } else if (!noScroll) {
     document.getElementById('mainContent').scrollTo(0, 0);
   }
 }
@@ -4416,7 +4416,7 @@ function quizSelectAnswer(qId, optionIndex, submitted) {
   const qs = getQuizState(mod.id);
   qs.answers[qId] = optionIndex;
   saveQuizState();
-  renderQuizContent(mi);
+  renderQuizContent(mi, false, true);
 }
 
 function quizTextAnswer(qId, value) {
