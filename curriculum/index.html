@@ -4352,6 +4352,22 @@ function renderQuizContent(mi, scrollToResults, noScroll) {
   }
 }
 
+// Deterministic shuffle based on question id
+function getShuffledOrder(qId, count) {
+  let hash = 0;
+  for (let i = 0; i < qId.length; i++) {
+    hash = ((hash << 5) - hash) + qId.charCodeAt(i);
+    hash |= 0;
+  }
+  const order = Array.from({length: count}, (_, i) => i);
+  for (let i = count - 1; i > 0; i--) {
+    hash = Math.abs(((hash << 5) - hash + i) | 0);
+    const j = hash % (i + 1);
+    [order[i], order[j]] = [order[j], order[i]];
+  }
+  return order;
+}
+
 function renderQuizQuestion(q, idx, qs, letters, prefix) {
   const answered = qs.answers[q.id] !== undefined;
   const submitted = qs.submitted;
@@ -4369,18 +4385,20 @@ function renderQuizQuestion(q, idx, qs, letters, prefix) {
   }
 
   if (q.type === 'multiple_choice' && q.options) {
+    const order = getShuffledOrder(q.id, q.options.length);
     return `
       <div class="quiz-question">
         <div class="quiz-question-number">${prefix}${idx + 1}</div>
         <div class="quiz-question-text">${q.question}</div>
         <div class="quiz-options">
-          ${q.options.map((opt, oi) => {
+          ${order.map((origIdx, displayIdx) => {
+            const opt = q.options[origIdx];
             let cls = 'quiz-option';
-            if (submitted && oi === q.correctAnswer) cls += ' correct';
-            else if (submitted && qs.answers[q.id] === oi && oi !== q.correctAnswer) cls += ' incorrect';
-            else if (!submitted && qs.answers[q.id] === oi) cls += ' selected';
-            return `<button class="${cls}" onclick="quizSelectAnswer('${q.id}', ${oi}, ${submitted})" ${submitted ? 'disabled' : ''}>
-              <span class="quiz-option-letter">${letters[oi]}</span>
+            if (submitted && origIdx === q.correctAnswer) cls += ' correct';
+            else if (submitted && qs.answers[q.id] === origIdx && origIdx !== q.correctAnswer) cls += ' incorrect';
+            else if (!submitted && qs.answers[q.id] === origIdx) cls += ' selected';
+            return `<button class="${cls}" onclick="quizSelectAnswer('${q.id}', ${origIdx}, ${submitted})" ${submitted ? 'disabled' : ''}>
+              <span class="quiz-option-letter">${letters[displayIdx]}</span>
               <span>${opt}</span>
             </button>`;
           }).join('')}
