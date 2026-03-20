@@ -4219,15 +4219,21 @@ function goToPrev() {
 function toggleComplete() {
   const mod = CURRICULUM[currentView.module];
   const lesson = mod.lessons[currentView.lesson];
-  if (completedLessons.has(lesson.id)) {
+  const wasCompleted = completedLessons.has(lesson.id);
+  if (wasCompleted) {
     completedLessons.delete(lesson.id);
   } else {
     completedLessons.add(lesson.id);
   }
   saveProgress();
   renderSidebar();
-  renderContent();
   updateProgress();
+  // If marking done (not unmarking), advance to next lesson
+  if (!wasCompleted) {
+    goToNext();
+  } else {
+    renderContent();
+  }
 }
 
 // ─── Mobile Sidebar ───
@@ -4298,7 +4304,7 @@ function goToQuiz(mi) {
   document.querySelector('.sidebar-overlay').classList.remove('open');
 }
 
-function renderQuizContent(mi) {
+function renderQuizContent(mi, scrollToResults) {
   const mod = CURRICULUM[mi];
   if (!mod || !mod.quiz) return;
   const quiz = mod.quiz;
@@ -4342,7 +4348,12 @@ function renderQuizContent(mi) {
     </div>
   `;
 
-  document.getElementById('mainContent').scrollTo(0, 0);
+  if (scrollToResults) {
+    const results = document.getElementById('quizActions');
+    if (results) results.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  } else {
+    document.getElementById('mainContent').scrollTo(0, 0);
+  }
 }
 
 function renderQuizQuestion(q, idx, qs, letters, prefix) {
@@ -4431,7 +4442,7 @@ function submitQuiz(mi) {
   qs.score = mcQuestions.length > 0 ? Math.round((correct / mcQuestions.length) * 100) : 100;
   qs.submitted = true;
   saveQuizState();
-  renderQuizContent(mi);
+  renderQuizContent(mi, true);
 }
 
 function retryQuiz(mi) {
