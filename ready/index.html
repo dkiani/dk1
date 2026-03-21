@@ -555,7 +555,7 @@ async function applyDiscount() {
   document.getElementById('discountBtn').textContent = '...';
 
   try {
-    const data = await jsonp({ action: 'validate_discount', code: code });
+    const data = await jsonp({ action: 'validate_discount', code: code, base_amount: currentAmount });
 
     if (data.valid) {
       currentAmount = data.amount;
