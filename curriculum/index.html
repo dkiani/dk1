@@ -3792,24 +3792,643 @@ You now have everything you need to identify setups and take trades. Modules 09-
     }
   },
   {
-    number: 9, id: 'multi-timeframe-analysis', title: 'Multi-Timeframe Analysis',
+    number: 9,
+    id: 'multi-timeframe-analysis',
+    title: 'Multi-Timeframe Analysis',
     subtitle: 'The HTF is the story. The LTF is the sentence.',
-    locked: true, comingSoon: true, lessons: []
+    locked: false,
+    lessons: [
+      {
+        id: 'the-top-down-approach',
+        title: 'The Top-Down Approach',
+        readingTime: 6,
+        globalNum: 44,
+        content: `You now have every individual tool: structure, liquidity, PD arrays, dealing ranges, trade models. The question is — how do you combine them across timeframes to build a complete trade idea? The answer is the top-down approach.
+
+## The Principle
+
+Always start with the highest relevant timeframe and work your way down. Never start on the 5-minute chart and try to figure out what's happening. That's like reading one sentence in the middle of a book and trying to understand the plot.
+
+## The Timeframe Hierarchy
+
+:::steps
+1. **Weekly** — Where is price in the macro picture? What's the dominant trend? Where are the major liquidity pools?
+2. **Daily** — What's the current dealing range? Are we in premium or discount? Any recent liquidity sweeps?
+3. **4-Hour** — What's the intermediate structure doing? Any PD arrays forming that align with the daily bias?
+4. **1-Hour** — Where is the intraday structure? Is there a BOS or CHoCH forming? This is your primary structure timeframe.
+5. **15-Minute** — Where are the entry-level PD arrays? FVGs, order blocks at this level refine your entry.
+6. **5-Minute** — This is your execution timeframe. The final trigger — the CHoCH, the FVG return, the OB reaction — happens here.
+:::
+
+## What Each Tier Tells You
+
+The higher timeframes answer **what to do.** The lower timeframes answer **when and where to do it.**
+
+The Weekly and Daily tell you the trend is bullish, you're in discount, and there's a daily order block below. That's your directional bias.
+
+The 1H and 15m tell you price is pulling back toward that daily OB, and structure hasn't broken bearish yet. That's your structural context.
+
+The 5m tells you price just swept the low, a CHoCH formed with displacement, and there's a FVG to enter on. That's your execution trigger.
+
+:::callout
+THE NON-NEGOTIABLE RULE
+Never take a lower-timeframe trade that contradicts the higher-timeframe narrative. If the daily says sell and you see a buy setup on the 5-minute chart, that buy setup is a counter-trend scalp at best and a trap at worst. The HTF always wins.
+:::
+
+## How Long Does This Take?
+
+Once practiced, the full top-down analysis takes about 15 minutes. It's a checklist, not an art project.`
+      },
+      {
+        id: 'building-the-narrative',
+        title: 'Building the Narrative',
+        readingTime: 7,
+        globalNum: 45,
+        content: `The narrative is your story for the day. It's a structured hypothesis based on your top-down analysis, built before the session starts.
+
+## The 4-Step Narrative
+
+:::steps
+1. **Weekly bias:** Where is price in the macro dealing range? If in the discount half with bullish trend, macro bias is long.
+2. **Daily context:** What PD arrays are in play? Recent liquidity sweeps? Is price in premium or discount of the daily dealing range?
+3. **4H/1H structure:** Is intermediate structure aligned with daily bias? If daily says bullish but 4H just CHoCH'd bearish, the pullback is still in progress.
+4. **Session plan:** What direction? What levels? Which killzone? What invalidates the idea?
+:::
+
+## A Worked Example
+
+**Step 1 — Weekly:** NQ bullish trend, below weekly equilibrium. Bias = bullish.
+
+**Step 2 — Daily:** Dealing range 18,200-18,800. Equilibrium 18,500. Price at 18,350 (discount). Daily bullish OB at 18,280-18,320. SSL at 18,250 was swept last session.
+
+**Step 3 — 4H/1H:** 4H printed bullish CHoCH. 1H making higher lows. Structure aligning bullish.
+
+**Step 4 — Plan:** Looking for longs. Entry zone: daily OB at 18,280-18,320 on a 5m CHoCH/FVG during NY AM session. Target: 18,500 first partial, 18,800 full target. Invalidation: break below 18,200.
+
+:::callout
+WRITE IT DOWN
+Don't just think through the narrative — write it in your journal before the session. This anchors your decisions to calm analysis, not mid-session emotions.
+:::
+
+## When the Narrative is Wrong
+
+The narrative is a hypothesis, not a guarantee. If price invalidates your thesis, don't fight it. Step back and reassess.`
+      },
+      {
+        id: 'htf-ltf-alignment',
+        title: 'HTF & LTF Alignment',
+        readingTime: 6,
+        globalNum: 46,
+        content: `The highest-probability trades occur when higher and lower timeframes agree on direction.
+
+## Full Alignment (A+ Setup)
+
+- Weekly/Daily bias bullish
+- Price in discount of daily dealing range
+- Discount PD array present (OB, FVG)
+- 4H/1H structure bullish (HH/HL, recent BOS)
+- 5m/15m CHoCH or FVG entry during NY killzone
+- All timeframes agree: buy.
+
+These setups don't come every day — but when they do, they're where you make your money.
+
+## Misalignment
+
+**Partial misalignment (caution):** Daily bullish, but 1H just CHoCH'd bearish. Pullback isn't complete — wait for 1H to realign.
+
+**Full misalignment (no trade):** Daily bullish but 4H shifted bearish with displacement. Sit out until clarity returns.
+
+:::callout
+PATIENCE IS THE EDGE
+The willingness to wait for alignment is what separates profitable traders from struggling ones. A week of waiting for an A+ setup beats five days of forcing B and C grade trades.
+:::
+
+## The Alignment Checklist
+
+Before every trade:
+
+:::steps
+1. Is my HTF bias clear?
+2. Is price in the right zone?
+3. Is there a PD array at my entry level?
+4. Is LTF structure aligned with my bias?
+5. Is it the right time (active killzone)?
+:::
+
+Five yeses = execute with conviction. Any no = wait or pass.`
+      },
+      {
+        id: 'ipda-data-ranges',
+        title: 'IPDA Data Ranges',
+        readingTime: 5,
+        globalNum: 47,
+        content: `IPDA doesn't look at the entire history of NQ. It references specific lookback periods.
+
+## The Three Data Ranges
+
+:::steps
+1. **20-day range** — Most recent ~4 weeks. Highest-priority targets for intraday trades.
+2. **40-day range** — Last ~8 weeks. Broader structural levels for larger moves.
+3. **60-day range** — Last ~12 weeks. Macro liquidity pools for the biggest moves.
+:::
+
+## How to Use Data Ranges
+
+:::steps
+1. Go back 20 trading days on the daily chart. Mark the highest high and lowest low — these are nearest external targets.
+2. Within that range, identify major FVGs, OBs, and breakers — these are internal targets.
+3. If 20-day levels are already swept, expand to 40-day.
+4. The 60-day range is your macro context.
+:::
+
+:::callout
+PRACTICAL APPLICATION
+Most trades target levels within the 20-day range. Keep it simple — you don't need every level across all three ranges. The 20-day high and low are your primary external targets. FVGs and OBs within the 20-day range are your primary internal targets.
+:::
+
+Understanding data ranges prevents drawing levels from months ago that are no longer relevant. For day-to-day trading, the 20-day and 40-day ranges contain the active levels.`
+      }
+    ],
+    quiz: {
+      title: 'Quiz: Multi-Timeframe Analysis',
+      passingScore: 80,
+      questions: [
+        { id:'q09-r1', section:'recall', type:'multiple_choice', question:'What is the correct order for top-down analysis?', options:['5m to 15m to 1H to 4H to Daily to Weekly','Weekly to Daily to 4H to 1H to 15m to 5m','Daily to Weekly to 1H to 5m','Start on whichever timeframe has the clearest pattern'], correctAnswer:1, explanation:'Always start at the highest timeframe (Weekly) and work down to execution (5m).' },
+        { id:'q09-r2', section:'recall', type:'multiple_choice', question:'What does the HTF tell you vs the LTF?', options:['HTF = when to enter; LTF = direction','HTF = direction (what to do); LTF = when and where to enter','Both tell you the same thing','HTF is only for macro context'], correctAnswer:1, explanation:'HTF tells you direction. LTF tells you timing and entry level.' },
+        { id:'q09-r3', section:'recall', type:'multiple_choice', question:'What makes an A+ setup?', options:['Strong signal on any single timeframe','At least two timeframes agreeing','A setup during FOMC','All timeframes aligned: HTF bias clear, correct zone, PD array present, LTF aligned, active killzone'], correctAnswer:3, explanation:'Full alignment across all five elements.' },
+        { id:'q09-r4', section:'recall', type:'multiple_choice', question:'What are the three IPDA data ranges?', options:['5, 10, 20 day','30, 60, 90 day','20, 40, 60 day','Weekly, monthly, quarterly'], correctAnswer:2, explanation:'20-day, 40-day, 60-day lookback windows.' },
+        { id:'q09-a1', section:'applied', type:'multiple_choice', question:'Daily bullish in discount with OB at 18,300. 1H just CHoCH\'d bearish. What do you do?', options:['Go long immediately','Go short','Wait for 1H to realign bullish — pullback not complete','Switch instruments'], correctAnswer:2, explanation:'Partial misalignment — wait for the 1H to shift back bullish before entering.' },
+        { id:'q09-a2', section:'applied', type:'multiple_choice', question:'Weekly bullish, Daily discount at OB, 4H higher lows, 1H BOS up, 9:55 AM EST. How many alignment criteria met?', options:['3 of 5','4 of 5','Cannot determine','All 5 — A+ setup'], correctAnswer:3, explanation:'All five criteria met. Execute with conviction.' },
+        { id:'q09-a3', section:'applied', type:'multiple_choice', question:'You built a bullish narrative but NY open sweeps your level with a bearish MSS. What now?', options:['Hold your narrative','Average down','Reassess — the MSS may invalidate your thesis','Ignore the 5m'], correctAnswer:2, explanation:'A narrative is a hypothesis. When evidence contradicts it, reassess.' }
+      ]
+    }
   },
   {
-    number: 10, id: 'execution-and-risk-management', title: 'Execution & Risk Management',
+    number: 10,
+    id: 'execution-and-risk-management',
+    title: 'Execution & Risk Management',
     subtitle: 'The best analysis means nothing without proper execution.',
-    locked: true, comingSoon: true, lessons: []
+    locked: false,
+    lessons: [
+      {
+        id: 'entry-techniques',
+        title: 'Entry Techniques',
+        readingTime: 6,
+        globalNum: 48,
+        content: `Two primary entry methods, each with tradeoffs.
+
+## Limit Order Entries
+
+Place your order at a specific price and walk away. You identify a PD array, set a buy limit at the CE or OB level, with a stop on the other side.
+
+**Pros:** No screen time required, removes emotional decisions, exact price fill, works for traders who can't watch every candle.
+
+**Cons:** May miss trades if price reverses before reaching your limit, no confirmation the level is holding.
+
+## Market Order Entries (Confirmation-Based)
+
+Watch the LTF and enter when structure shifts in your favor. Price approaches your PD array, you see a bullish CHoCH with displacement and FVG on the 5m, and enter on the FVG return.
+
+**Pros:** Confirmation the level is holding, tighter stop possible, higher win rate.
+
+**Cons:** Requires screen time, might miss fast moves, slightly worse fill price.
+
+:::callout
+WHICH SHOULD YOU USE?
+Live watchers who enjoy reading LTF price action: confirmation entries. Set-and-forget traders: limit orders at PD arrays. Both work — pick what you'll execute consistently.
+:::
+
+## The Refinement Trade
+
+Highest-precision entry: identify a HTF PD array (daily OB), find a LTF PD array nested inside it (15m FVG within the daily OB). Limit order at the LTF level. Tight stop, precise level, HTF backing.`
+      },
+      {
+        id: 'stop-loss-placement',
+        title: 'Stop Loss Placement',
+        readingTime: 6,
+        globalNum: 49,
+        content: `Every trade has a stop. No exceptions.
+
+## The Core Rule
+
+Stop goes on the **other side** of the PD array. If price trades through the entire array, your thesis is wrong.
+
+**Bullish OB entry:** Stop below the OB low with 2-5 point buffer.
+**BISI FVG entry:** Stop below the FVG discount level.
+**LTF CHoCH entry:** Stop below the swing low created by the CHoCH.
+
+:::callout
+THE BUFFER
+Always add 2-5 points below your stop level on NQ. A stop at the exact OB low is asking to get swept by a tick before the move.
+:::
+
+## What NOT to Do
+
+Don't move your stop closer to reduce risk (increases stop-out probability). Don't widen your stop (trade fewer contracts instead). Don't remove your stop (ever).
+
+## Trailing Stops
+
+:::steps
+1. At 1R profit: move stop to breakeven
+2. At 2R: trail behind new swing points
+3. Continue trailing as structure forms
+4. When trailing stop is hit, you've captured the move
+:::`
+      },
+      {
+        id: 'position-sizing',
+        title: 'Position Sizing & Risk Per Trade',
+        readingTime: 6,
+        globalNum: 50,
+        content: `Position sizing determines whether you survive long enough to become profitable.
+
+## The Rule
+
+Never risk more than **1-2%** per trade. For newer traders, 1% until proven consistent.
+
+## The Formula
+
+**Position Size = (Account x Risk%) / (Stop Distance x Point Value)**
+
+NQ = $20/point. MNQ = $2/point.
+
+**Example 1:** $25K account, 2% risk, 10pt stop on NQ. Risk = $500. Per contract = $200. Size = 2 contracts.
+
+**Example 2:** $25K account, 1% risk, 15pt stop on MNQ. Risk = $250. Per contract = $30. Size = 8 contracts.
+
+**Example 3:** $50K account, 1% risk, 8pt stop on NQ. Risk = $500. Per contract = $160. Size = 3 contracts.
+
+:::callout
+THE MATH PROTECTS YOU
+At 1% risk, 10 consecutive losses leaves you with 90% of your account. At 5% risk, 10 losses puts you at 50% — needing 100% return to recover.
+:::
+
+Always round down. Never round up. Reduce size during losing streaks. Never increase size based on confidence.`
+      },
+      {
+        id: 'targets-and-rr',
+        title: 'Targets & Risk-to-Reward',
+        readingTime: 5,
+        globalNum: 51,
+        content: `## Minimum 2:1 R:R
+
+10-point stop = 20-point minimum target. Even at 40% win rate:
+- 4 winners x 20pts = 80pts gained
+- 6 losers x 10pts = 60pts lost
+- Net: +20pts profit
+
+## Target Priority
+
+:::steps
+1. **Opposing liquidity pool** — nearest untouched BSL/SSL
+2. **Unfilled FVG** on the opposite side
+3. **Dealing range extreme** — range high or low
+4. **Equilibrium** — the 50% level as first target
+:::
+
+## Partial Profits
+
+:::steps
+1. At 1R: move stop to breakeven
+2. At 2R: take 50% off, lock in profit
+3. Let remaining 50% run to full target with trailing stop
+:::
+
+:::callout
+DON'T CUT WINNERS SHORT
+The most common mistake after a losing streak: panic-closing at 5 points when your target is 20. Trust the structure you identified.
+:::`
+      },
+      {
+        id: 'daily-rules',
+        title: 'Daily Rules & Circuit Breakers',
+        readingTime: 5,
+        globalNum: 52,
+        content: `## Daily Loss Limit
+
+2-3 losing trades OR a dollar amount, whichever comes first. Hit the limit = done for the day.
+
+## Daily Profit Target
+
+When you hit it, you're done. Prevents giving back profits.
+
+## Circuit Breakers
+
+:::steps
+1. **2 consecutive losses:** 15-minute mandatory break
+2. **Daily loss limit hit:** Session over, no exceptions
+3. **Emotional state compromised:** Anger, FOMO, revenge = no trade
+4. **Pre-market rating below 6/10:** Reduced size or sit out
+:::
+
+:::callout
+THE HARDEST RULE
+The profit target rule. When you're up $600 on a $500 target and see another setup — don't. The setup will be there tomorrow. Your profit won't be if you give it back.
+:::
+
+## Revenge Trading
+
+The single most destructive behavior. Entering immediately after a loss, increased size, lowered standards, anger. If you recognize any of these: close the platform.`
+      }
+    ],
+    quiz: {
+      title: 'Quiz: Execution & Risk Management',
+      passingScore: 80,
+      questions: [
+        { id:'q10-r1', section:'recall', type:'multiple_choice', question:'Where does your stop loss go?', options:['Above the PD array','Fixed 10-point distance','Other side of the PD array with buffer','Previous candle low'], correctAnswer:2, explanation:'On the other side of the PD array. If price trades through it, your thesis was wrong.' },
+        { id:'q10-r2', section:'recall', type:'multiple_choice', question:'Minimum R:R ratio?', options:['1:1','1.5:1','2:1','3:1'], correctAnswer:2, explanation:'Minimum 2:1. 10-point stop = 20-point minimum target.' },
+        { id:'q10-r3', section:'recall', type:'multiple_choice', question:'Position sizing formula on NQ?', options:['Account / stop distance','Always 3 contracts','(Account x Risk%) / (Stop Points x $20)','Account / entry price'], correctAnswer:2, explanation:'Position Size = (Account x Risk%) / (Stop Distance x Point Value).' },
+        { id:'q10-r4', section:'recall', type:'multiple_choice', question:'What is a circuit breaker?', options:['Technical indicator','Prop firm drawdown rule','Pre-defined rule forcing you to stop trading','Emergency button'], correctAnswer:2, explanation:'Pre-set rules: break after 2 losses, done at daily limit, no trading when emotional.' },
+        { id:'q10-r5', section:'recall', type:'multiple_choice', question:'When to increase position size?', options:['After winning streak','On A+ setups','Strong trend','Never — size comes from account growth'], correctAnswer:3, explanation:'Never increase based on confidence. Consistent sizing protects you.' },
+        { id:'q10-a1', section:'applied', type:'multiple_choice', question:'$50K account, 1% risk, 12-point stop on NQ. How many contracts?', options:['1','2','3','4'], correctAnswer:1, explanation:'$500 risk / ($240 per contract) = 2.08 -> 2 contracts.' },
+        { id:'q10-a2', section:'applied', type:'multiple_choice', question:'2 losses totaling $600. Daily limit is $750. What to do?', options:['One more trade','Double size to recover','Stop for the day','Switch instruments'], correctAnswer:2, explanation:'2 consecutive losses = mandatory break. Too close to daily limit. Stop.' },
+        { id:'q10-a3', section:'applied', type:'multiple_choice', question:'Trade is +15pts on a 10pt stop (1.5R). What to do?', options:['Take full profits','Add to position','Move stop to breakeven, hold for 2R target','Lock in 10pts'], correctAnswer:2, explanation:'At 1.5R, move stop to breakeven and let it run to your planned target.' }
+      ]
+    }
   },
   {
-    number: 11, id: 'trading-psychology-and-discipline', title: 'Trading Psychology & Discipline',
+    number: 11,
+    id: 'trading-psychology-and-discipline',
+    title: 'Trading Psychology & Discipline',
     subtitle: 'You are the edge and the risk.',
-    locked: true, comingSoon: true, lessons: []
+    locked: false,
+    lessons: [
+      {
+        id: 'losing-streaks',
+        title: 'The Psychology of a Losing Streak',
+        readingTime: 6,
+        globalNum: 53,
+        content: `Every trader experiences losing streaks. Even at 60% win rate, 3-4 consecutive losses happen regularly.
+
+## The Psychological Trap
+
+:::steps
+1. Losses drop your confidence
+2. Low confidence causes hesitation on good setups
+3. Hesitation means missed winners or late entries
+4. More losses confirm "the system is broken"
+5. You change your system — the worst possible decision
+:::
+
+:::callout
+HOW TO SURVIVE A LOSING STREAK
+Reduce size by 50%. Continue executing the same setups with the same rules. Journal every trade. Review weekly to confirm you're following process. The streak will end.
+:::
+
+Losses are not failures. They are the cost of doing business — your rent for being in the market.`
+      },
+      {
+        id: 'emotional-triggers',
+        title: 'Emotional Triggers & Self-Sabotage',
+        readingTime: 6,
+        globalNum: 54,
+        content: `## The Four Destroyers
+
+**Revenge Trading:** Entering to recoup losses. Countermeasure: 15-minute break after 2 consecutive losses.
+
+**FOMO:** Chasing moves you missed. Countermeasure: setups form every day. No last train.
+
+**Overconfidence:** Sizing up after wins, skipping analysis. Countermeasure: fixed position sizing always.
+
+**Inability to Stop When Ahead:** Taking extra trades past your target. Countermeasure: target hit = session over.
+
+:::callout
+THE PATTERN
+Every trigger is emotional, not analytical. Before each trade ask: Am I entering because my system tells me to, or because my emotions tell me to? If you can't articulate the structural reason, don't take it.
+:::
+
+## 5-Second Emotional Check
+
+- Calm? → Proceed
+- Angry about last trade? → Don't trade
+- Excited because market is moving? → Wait for your setup
+- Afraid of missing out? → Another setup tomorrow
+- Trying to hit a number? → You've hit enough`
+      },
+      {
+        id: 'pre-market-mind-gym',
+        title: 'The Pre-Market Mind Gym',
+        readingTime: 5,
+        globalNum: 55,
+        content: `10 minutes before each session. Prevents 90% of emotional mistakes.
+
+## The 5 Prompts
+
+:::steps
+1. **What is my HTF bias today and why?** Forces analysis before emotions kick in.
+2. **What PD arrays am I watching?** Gives you a plan instead of reacting to random candles.
+3. **What is my max loss today?** Makes the limit concrete.
+4. **What would make me sit out?** Gives permission to NOT trade.
+5. **How am I feeling? (1-10)** Below 6 = half size or sit out.
+:::
+
+:::callout
+WHY THIS WORKS
+Moves decision-making to a calm state BEFORE the session. During live trading, cortisol flows and emotions are loud. The Mind Gym anchors you to what you wrote when thinking clearly.
+:::`
+      },
+      {
+        id: 'trading-journal',
+        title: 'Building Your Trading Journal',
+        readingTime: 6,
+        globalNum: 56,
+        content: `Your journal shows things about your trading that you can't see in real-time.
+
+## What to Log
+
+:::steps
+1. Date and time of entry/exit
+2. Session/killzone
+3. Setup type (trade model)
+4. HTF bias/narrative
+5. Entry level and reason
+6. Stop loss level and distance
+7. Target and R:R
+8. Result (points, R multiple)
+9. Emotional state during trade
+10. Screenshot at entry/exit
+11. Notes — what went right/wrong
+:::
+
+## Weekly Review
+
+Spend 30 minutes each weekend reviewing for patterns. Where do wins cluster? Where do losses cluster? Time of day? Setup type? Emotional state?
+
+:::callout
+THE JOURNAL REVEALS YOUR EDGE
+Your edge isn't the system — it's the specific subset that works best for you. Maybe you're great at OB entries but poor at FVG entries. Maybe you're sharp on Tuesdays and sloppy on Fridays. The data is there if you collect it.
+:::
+
+Use Notion, Google Sheets, TradeZella, Tradervue, or pen and paper. The best journal is the one you actually fill out.`
+      }
+    ],
+    quiz: {
+      title: 'Quiz: Trading Psychology',
+      passingScore: 80,
+      questions: [
+        { id:'q11-r1', section:'recall', type:'multiple_choice', question:'Biggest mistake during a losing streak?', options:['Too few trades','Trading too small','Reviewing journal','Changing system mid-drawdown'], correctAnswer:3, explanation:'Changing your system during a drawdown resets the clock.' },
+        { id:'q11-r2', section:'recall', type:'multiple_choice', question:'Name the emotional triggers.', options:['Following analysis','Position sizing formula','Revenge trading, FOMO, overconfidence, inability to stop when ahead','Waiting for alignment'], correctAnswer:2, explanation:'The four destroyers.' },
+        { id:'q11-r3', section:'recall', type:'multiple_choice', question:'The 5 Mind Gym prompts?', options:['OHLC + Volume','Entry, stop, target, size, timeframe','S&R, trend, volume, indicators','HTF bias, PD arrays, max loss, sit-out conditions, emotional state 1-10'], correctAnswer:3, explanation:'The 5 prompts that prevent emotional mistakes.' },
+        { id:'q11-r4', section:'recall', type:'multiple_choice', question:'Below 6/10 emotional state — what to do?', options:['Trade normally','Increase size','Half size or sit out','Only A+ setups'], correctAnswer:2, explanation:'Compromised state = compromised results. Reduce or sit out.' },
+        { id:'q11-a1', section:'applied', type:'multiple_choice', question:'Up $800, target was $500. Another setup forming. What do you do?', options:['Take it — meets criteria','Double size','Half size compromise','Stop — exceeded target, session over'], correctAnswer:3, explanation:'Target exceeded. Rules say you\'re done.' },
+        { id:'q11-a2', section:'applied', type:'multiple_choice', question:'3 losses in a row. System is 58% over 200+ trades. Broken?', options:['Yes, switch systems','Week off','Increase size to recover','No — reduce size, maintain process, journal, review weekend'], correctAnswer:3, explanation:'3 consecutive losses is normal at 58%. System is fine.' },
+        { id:'q11-a3', section:'applied', type:'multiple_choice', question:'Journal shows 70% losses in PM, 85% profits in AM. What to change?', options:['Nothing','Only trade PM to improve','Add indicators for PM','Stop trading PM, focus on AM'], correctAnswer:3, explanation:'Cut the leak. Focus where your edge is strongest.' }
+      ]
+    }
   },
   {
-    number: 12, id: 'prop-firm-readiness', title: 'Prop Firm Readiness & Live Trading',
+    number: 12,
+    id: 'prop-firm-readiness',
+    title: 'Prop Firm Readiness & Live Trading',
     subtitle: "Paper trading isn't practice. It's proof.",
-    locked: true, comingSoon: true, lessons: []
+    locked: false,
+    lessons: [
+      {
+        id: 'paper-trading-protocol',
+        title: 'Paper Trading Protocol',
+        readingTime: 5,
+        globalNum: 57,
+        content: `:::callout
+PAPER TRADING ONLY
+Do NOT trade real money yet. Minimum 2 weeks of paper trading. Non-negotiable.
+:::
+
+## Setup
+
+:::steps
+1. TradingView Trading Panel → Paper Trading
+2. Set balance to match your target prop firm account
+3. Apply ALL rules: sizing formula, daily limits, circuit breakers, journal
+:::
+
+Treat it as real money. The purpose is proving you can execute consistently — not practicing concepts.
+
+## Ready to Go Live When
+
+:::steps
+1. 2 consecutive weeks following rules
+2. Consistent execution of chosen model
+3. Journal completed for every trade
+4. Circuit breakers honored
+5. Positive or breakeven results
+:::`
+      },
+      {
+        id: 'prop-firm-rules',
+        title: 'Understanding Prop Firm Rules',
+        readingTime: 6,
+        globalNum: 58,
+        content: `## How Evaluations Work
+
+:::steps
+1. Purchase an evaluation (simulated account with rules)
+2. Trade until you hit the profit target
+3. Pass = receive funded account with real capital
+4. Trade funded account, split profits (80/20 or 90/10)
+:::
+
+## Key Rules
+
+**Profit Target:** Amount needed to pass (e.g., $1,500 on $25K account).
+
+**Maximum Drawdown:** Account can't decline past this (e.g., $1,500). Hit it = failed.
+
+**Trailing vs Static Drawdown:** Trailing moves up with profits. Static stays at starting point. Know which yours uses.
+
+**Daily Loss Limit:** Max per-day loss, separate from overall drawdown.
+
+**Consistency Rule:** No single day > 30-50% of total profits.
+
+**Minimum Trading Days:** Usually 5-10 days minimum.
+
+:::callout
+WHY MOST FAIL
+Trading too aggressively to hit the target quickly. Sizing up, taking marginal setups, blowing drawdown. The eval is not a sprint.
+:::
+
+## The KIANI Approach
+
+Daily target = profit target / minimum days. Size using formula based on drawdown limit. Follow all rules. Don't try to finish early.`
+      },
+      {
+        id: 'scaling',
+        title: 'Account Management & Scaling',
+        readingTime: 5,
+        globalNum: 59,
+        content: `## Start with One Account
+
+Pass one eval. Trade one funded account. Prove consistency over one full month before scaling.
+
+## Copy Trading for Scale
+
+TradeSyncer replicates trades across multiple accounts. One decision, multiple accounts earning. But one bad decision hits everywhere.
+
+:::steps
+1. **Month 1:** One account. Prove consistency. Take payouts.
+2. **Month 2-3:** If profitable, add 1-2 accounts. Copy trade.
+3. **Month 4+:** Gradually scale. Never add during drawdown.
+:::
+
+:::callout
+THE PAYOUT RULE
+Every payout eligible = take it. Money in prop accounts is at risk. Money in your bank is yours. Pay yourself first.
+:::
+
+Keep a master spreadsheet: account, firm, balance, drawdown remaining, monthly P&L, payout history.`
+      },
+      {
+        id: 'the-long-game',
+        title: 'The Long Game',
+        readingTime: 5,
+        globalNum: 60,
+        content: `## The Math of Consistency
+
+$300/day x 20 days = $6,000/month. Across 3 accounts = $18,000/month. Across 5 = $30,000/month.
+
+No big days required. Just $300/day — 15 points on 1 NQ contract.
+
+## What This Program Gave You
+
+:::steps
+1. A framework for reading markets
+2. Specific trade models with clear entries, stops, targets
+3. Risk management — sizing, limits, circuit breakers
+4. Psychological tools — Mind Gym, journal, emotional awareness
+5. A path to funded trading — paper protocol, eval strategy, scaling
+:::
+
+:::callout
+THE FINAL RULE
+Trading is a career, not a windfall. You are building a business. On the days it beats you, come back tomorrow. On the days you beat it, come back tomorrow.
+:::
+
+## Your Next Steps
+
+:::steps
+1. Paper trade 2 weeks minimum
+2. Start prop firm eval when paper trading proves consistency
+3. Continue coaching calls
+4. Journal every trade. Review weekly.
+5. Be patient. Be consistent. Be disciplined.
+:::
+
+Welcome to KIANI. Now go execute.`
+      }
+    ],
+    quiz: {
+      title: 'Quiz: Prop Firm Readiness — Final Assessment',
+      passingScore: 80,
+      questions: [
+        { id:'q12-r1', section:'recall', type:'multiple_choice', question:'Minimum paper trading time?', options:['1 day','1 week','Not necessary','2 weeks of consistent rule-following'], correctAnswer:3, explanation:'Minimum 2 weeks proving consistent execution.' },
+        { id:'q12-r2', section:'recall', type:'multiple_choice', question:'What is the consistency rule?', options:['Win every day','20+ trades per day','No single day > 30-50% of total profits','No consistency rule'], correctAnswer:2, explanation:'Prevents passing on one lucky day.' },
+        { id:'q12-r3', section:'recall', type:'multiple_choice', question:'When to scale to multiple accounts?', options:['Immediately','After first eval pass','After this curriculum','After 1+ month consistent profitability on one account'], correctAnswer:3, explanation:'Prove consistency on one account first.' },
+        { id:'q12-r4', section:'recall', type:'multiple_choice', question:'KIANI approach to evals?', options:['Trade aggressively','First hour only','Normal week: consistent daily targets and sizing','Max leverage on A+ setups'], correctAnswer:2, explanation:'Calculate daily target, size normally, follow all rules.' },
+        { id:'q12-a1', section:'applied', type:'multiple_choice', question:'Day 3 of 5-day eval. $900 of $1,500 target. $800 drawdown left. Plan?', options:['Size up to finish day 4','Day off','Switch models','Continue normal — $300/day for 2 more days'], correctAnswer:3, explanation:'$600 over 2 days = normal daily target. Don\'t change anything.' },
+        { id:'q12-a2', section:'applied', type:'multiple_choice', question:'First funded day. Hit $300 target in 30 minutes. What now?', options:['Keep trading','One more at half size','Trade other accounts','Stop — target hit, protect the win'], correctAnswer:3, explanation:'Target hit, session over. This discipline keeps funded accounts alive.' },
+        { id:'q12-a3', section:'applied', type:'open_response', question:'Write your personal trading plan: model, killzone, entry criteria, stop placement, target, daily loss limit, profit target, and one rule you will never break.', explanation:'Specific to your situation and personality. Bring to coaching call.' },
+        { id:'q12-a4', section:'applied', type:'open_response', question:'Design your ideal daily schedule: wake-up, morning protocol, Mind Gym, trading session, journal, shutdown.', explanation:'Include specific times. Your schedule is your operating system.' }
+      ]
+    }
   }
 ];
 

@@ -30,6 +30,7 @@ var DISCOUNT_CODES = {
   'RICH': { amount_off: 500000, label: '$5,000 off applied' },
   'TEST': { amount_off: 772600, label: '$7,726 off applied' },
   'INNERCIRCLE': { amount_off: 777200, label: 'Discount applied' },
+  'DISCIPLE': { percent_off: 70, label: '70% off applied' },
 
   // Add more codes as needed
 };
