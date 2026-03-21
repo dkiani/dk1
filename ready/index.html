@@ -635,7 +635,7 @@ if (params.get('success') === 'true' || params.get('redirect_status') === 'succe
 }
 
 function formatPrice(cents) {
-  return '$' + (cents / 100).toLocaleString('en-US', { minimumFractionDigits: 0 });
+  return '$' + (cents / 100).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
 
 // ─── Theme Toggle ───
