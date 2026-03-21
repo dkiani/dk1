@@ -98,7 +98,7 @@ function doGet(e) {
     if (!discount) {
       result = { valid: false };
     } else {
-      var baseAmount = parseInt(p.base_amount) || 1477700;
+      var baseAmount = parseInt(p.base_amount) || 149700;
       var newAmount = baseAmount;
       if (discount.percent_off) {
         newAmount = Math.round(baseAmount * (1 - discount.percent_off / 100));
