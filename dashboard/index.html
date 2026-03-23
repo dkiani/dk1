@@ -1,0 +1,1295 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0a0a0a" id="themeColor">
+<title>Dashboard — Daniel Kiani</title>
+<meta name="robots" content="noindex, nofollow">
+
+<!-- Favicon -->
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --font: 'JetBrains Mono', monospace;
+    --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  [data-theme="dark"] {
+    --bg: #0a0a0a;
+    --fg: #d4d4d4;
+    --muted: #525252;
+    --dim: #3a3a3a;
+    --border: #1f1f1f;
+    --accent: #a0a0a0;
+    --hover: #ffffff;
+    --center-fill: #e85d2a;
+    --panel-bg: #111111;
+    --panel-border: #1e1e1e;
+    --item-hover: #181818;
+    --error: #ef4444;
+    --success: #22c55e;
+    --card-bg: #111111;
+    --card-border: #1e1e1e;
+    --input-bg: #0a0a0a;
+  }
+
+  [data-theme="light"] {
+    --bg: #f0ede8;
+    --fg: #1a1a1a;
+    --muted: #8a8a8a;
+    --dim: #b0aca6;
+    --border: #ddd9d4;
+    --accent: #555;
+    --hover: #000000;
+    --center-fill: #e85d2a;
+    --panel-bg: #ffffff;
+    --panel-border: #e5e2dd;
+    --item-hover: #f7f5f2;
+    --error: #dc2626;
+    --success: #16a34a;
+    --card-bg: #ffffff;
+    --card-border: #e5e2dd;
+    --input-bg: #f0ede8;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--font);
+    -webkit-font-smoothing: antialiased;
+    transition: background 0.5s var(--ease), color 0.5s var(--ease);
+    min-height: 100vh;
+  }
+
+  ::selection { background: rgba(128,128,128,0.15); }
+
+  /* ─── Theme Toggle ─── */
+  .theme-toggle {
+    position: fixed;
+    top: 1.5rem;
+    right: 1.5rem;
+    z-index: 100;
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: var(--font);
+    font-size: 0.55rem;
+    letter-spacing: 0.06em;
+    padding: 0.3rem 0.6rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-transform: uppercase;
+    min-width: 44px;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .theme-toggle:hover { color: var(--hover); border-color: var(--accent); }
+
+  /* ─── Auth Container (Login/Signup) ─── */
+  .auth-container {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 2rem;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .auth-header {
+    margin-bottom: 2.5rem;
+  }
+
+  .auth-header h1 {
+    font-size: 1.1rem;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.5rem;
+  }
+
+  .auth-header p {
+    font-size: 0.7rem;
+    color: var(--muted);
+    font-weight: 300;
+  }
+
+  /* ─── Auth Tabs ─── */
+  .auth-tabs {
+    display: flex;
+    gap: 0;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .auth-tab {
+    flex: 1;
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-family: var(--font);
+    font-size: 0.65rem;
+    font-weight: 300;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 0.8rem 0;
+    cursor: pointer;
+    transition: all 0.3s;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+  }
+
+  .auth-tab:hover { color: var(--fg); }
+  .auth-tab.active {
+    color: var(--fg);
+    border-bottom-color: var(--center-fill);
+  }
+
+  /* ─── Form ─── */
+  .auth-form { display: none; flex-direction: column; gap: 1rem; }
+  .auth-form.active { display: flex; }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .form-label {
+    font-size: 0.6rem;
+    font-weight: 300;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .form-input {
+    background: var(--input-bg);
+    border: 1px solid var(--border);
+    color: var(--fg);
+    font-family: var(--font);
+    font-size: 0.75rem;
+    font-weight: 300;
+    padding: 0.7rem 0.8rem;
+    outline: none;
+    transition: border-color 0.3s;
+  }
+
+  .form-input:focus { border-color: var(--accent); }
+  .form-input::placeholder { color: var(--dim); }
+
+  .auth-btn {
+    background: var(--fg);
+    color: var(--bg);
+    border: none;
+    font-family: var(--font);
+    font-size: 0.7rem;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    padding: 0.8rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-top: 0.5rem;
+  }
+
+  .auth-btn:hover { opacity: 0.85; }
+  .auth-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  /* ─── Divider ─── */
+  .auth-divider {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 0.5rem 0;
+  }
+
+  .auth-divider::before,
+  .auth-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .auth-divider span {
+    font-size: 0.55rem;
+    color: var(--dim);
+    font-weight: 300;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  /* ─── Google Button ─── */
+  .google-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--fg);
+    font-family: var(--font);
+    font-size: 0.7rem;
+    font-weight: 300;
+    padding: 0.7rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    width: 100%;
+  }
+
+  .google-btn:hover { border-color: var(--accent); }
+
+  .google-btn svg {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+  }
+
+  /* ─── Message ─── */
+  .auth-msg {
+    font-size: 0.65rem;
+    font-weight: 300;
+    text-align: center;
+    min-height: 1.2rem;
+    transition: all 0.3s;
+  }
+  .auth-msg.error { color: var(--error); }
+  .auth-msg.success { color: var(--success); }
+
+  /* ─── Forgot password link ─── */
+  .forgot-link {
+    font-size: 0.6rem;
+    color: var(--muted);
+    font-weight: 300;
+    text-decoration: none;
+    cursor: pointer;
+    transition: color 0.3s;
+    text-align: right;
+    margin-top: -0.5rem;
+  }
+  .forgot-link:hover { color: var(--fg); }
+
+  /* ═══════════════════════════════════════════
+     DASHBOARD (shown after login)
+     ═══════════════════════════════════════════ */
+
+  .dashboard { display: none; }
+  .dashboard.active { display: block; }
+  .auth-view.hidden { display: none; }
+
+  .dash-container {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 3rem 2rem 4rem;
+  }
+
+  /* ─── Top bar ─── */
+  .dash-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 3rem;
+  }
+
+  .dash-greeting h1 {
+    font-size: 1.1rem;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+  }
+
+  .dash-greeting p {
+    font-size: 0.65rem;
+    color: var(--muted);
+    font-weight: 300;
+    margin-top: 0.25rem;
+  }
+
+  .dash-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    font-weight: 400;
+    color: var(--muted);
+    overflow: hidden;
+    cursor: pointer;
+    transition: border-color 0.3s;
+    border: 1px solid var(--border);
+  }
+
+  .dash-avatar:hover { border-color: var(--accent); }
+  .dash-avatar img { width: 100%; height: 100%; object-fit: cover; }
+
+  /* ─── Products Grid ─── */
+  .dash-section-label {
+    font-size: 0.55rem;
+    font-weight: 300;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 1rem;
+  }
+
+  .product-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+  }
+
+  .product-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    padding: 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .product-card:hover {
+    border-color: var(--accent);
+    background: var(--item-hover);
+  }
+
+  .product-card-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+
+  .product-card-title {
+    font-size: 0.8rem;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+  }
+
+  .product-card-meta {
+    font-size: 0.6rem;
+    color: var(--muted);
+    font-weight: 300;
+  }
+
+  .product-card-progress {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    flex-shrink: 0;
+  }
+
+  .progress-bar-container {
+    width: 100px;
+    height: 3px;
+    background: var(--border);
+    overflow: hidden;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    background: var(--center-fill);
+    transition: width 0.6s var(--ease);
+  }
+
+  .progress-text {
+    font-size: 0.6rem;
+    color: var(--muted);
+    font-weight: 300;
+    min-width: 28px;
+    text-align: right;
+  }
+
+  .product-card-arrow {
+    color: var(--dim);
+    transition: color 0.3s, transform 0.3s;
+    flex-shrink: 0;
+    margin-left: 1rem;
+  }
+
+  .product-card:hover .product-card-arrow {
+    color: var(--fg);
+    transform: translateX(3px);
+  }
+
+  /* ─── Locked product ─── */
+  .product-card.locked {
+    opacity: 0.5;
+    cursor: default;
+  }
+
+  .product-card.locked:hover {
+    border-color: var(--card-border);
+    background: var(--card-bg);
+  }
+
+  .product-lock-badge {
+    font-size: 0.5rem;
+    font-weight: 300;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--dim);
+    border: 1px solid var(--border);
+    padding: 0.2rem 0.5rem;
+  }
+
+  /* ─── Account section ─── */
+  .dash-account {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .account-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+
+  .account-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.65rem;
+    font-weight: 300;
+  }
+
+  .account-row-label {
+    color: var(--muted);
+  }
+
+  .account-row-value {
+    color: var(--fg);
+  }
+
+  .sign-out-btn {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: var(--font);
+    font-size: 0.6rem;
+    font-weight: 300;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-top: 1.5rem;
+  }
+
+  .sign-out-btn:hover { color: var(--error); border-color: var(--error); }
+
+  /* ─── User menu dropdown ─── */
+  .user-menu-wrap { position: relative; }
+
+  .user-menu {
+    display: none;
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    right: 0;
+    background: var(--panel-bg);
+    border: 1px solid var(--panel-border);
+    min-width: 160px;
+    z-index: 200;
+  }
+
+  .user-menu.open { display: block; }
+
+  .user-menu-item {
+    display: block;
+    width: 100%;
+    background: none;
+    border: none;
+    color: var(--fg);
+    font-family: var(--font);
+    font-size: 0.65rem;
+    font-weight: 300;
+    padding: 0.7rem 1rem;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.2s;
+  }
+
+  .user-menu-item:hover { background: var(--item-hover); }
+  .user-menu-item.danger { color: var(--error); }
+  .user-menu-item.danger:hover { background: var(--item-hover); }
+
+  /* ─── Loading ─── */
+  .loading-screen {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    color: var(--muted);
+    font-weight: 300;
+  }
+
+  /* ─── Password reset view ─── */
+  .reset-view { display: none; }
+  .reset-view.active {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .back-link {
+    font-size: 0.6rem;
+    color: var(--muted);
+    font-weight: 300;
+    cursor: pointer;
+    transition: color 0.3s;
+    margin-bottom: 0.5rem;
+  }
+  .back-link:hover { color: var(--fg); }
+
+  /* ─── Admin Panel ─── */
+  .admin-panel {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
+    display: none;
+  }
+
+  .admin-panel.visible { display: block; }
+
+  .admin-search-row {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .admin-search-row .form-input { flex: 1; }
+
+  .admin-search-btn {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--fg);
+    font-family: var(--font);
+    font-size: 0.65rem;
+    font-weight: 300;
+    padding: 0 1rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    white-space: nowrap;
+  }
+
+  .admin-search-btn:hover { border-color: var(--accent); }
+
+  .admin-user-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+  }
+
+  .admin-user-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    padding: 1rem 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .admin-user-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    min-width: 0;
+    flex: 1;
+  }
+
+  .admin-user-name {
+    font-size: 0.7rem;
+    font-weight: 400;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .admin-user-email {
+    font-size: 0.6rem;
+    color: var(--muted);
+    font-weight: 300;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .admin-user-actions {
+    display: flex;
+    gap: 0.5rem;
+    flex-shrink: 0;
+  }
+
+  .admin-action-btn {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: var(--font);
+    font-size: 0.55rem;
+    font-weight: 300;
+    letter-spacing: 0.04em;
+    padding: 0.35rem 0.6rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-transform: uppercase;
+  }
+
+  .admin-action-btn:hover { border-color: var(--accent); color: var(--fg); }
+  .admin-action-btn.granted { border-color: var(--success); color: var(--success); }
+  .admin-action-btn.revoke { border-color: var(--error); color: var(--error); }
+
+  .admin-badge {
+    font-size: 0.5rem;
+    font-weight: 300;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 0.2rem 0.4rem;
+    border: 1px solid var(--success);
+    color: var(--success);
+  }
+
+  .admin-stats {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .admin-stat {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .admin-stat-value {
+    font-size: 1.2rem;
+    font-weight: 400;
+  }
+
+  .admin-stat-label {
+    font-size: 0.55rem;
+    font-weight: 300;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .admin-msg {
+    font-size: 0.6rem;
+    font-weight: 300;
+    color: var(--muted);
+    margin-top: 0.5rem;
+  }
+
+  /* ─── Responsive ─── */
+  @media (max-width: 600px) {
+    .dash-container { padding: 2rem 1.25rem 3rem; }
+    .auth-container { padding: 2rem 1.25rem; }
+    .progress-bar-container { width: 60px; }
+    .admin-user-card { flex-direction: column; align-items: flex-start; }
+    .admin-stats { flex-wrap: wrap; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Theme toggle -->
+<button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">Light</button>
+
+<!-- Loading screen (shown while Firebase initializes) -->
+<div class="loading-screen" id="loadingScreen">loading...</div>
+
+<!-- ═══ AUTH VIEW ═══ -->
+<div class="auth-view" id="authView" style="display:none;">
+  <div class="auth-container">
+    <div class="auth-header">
+      <h1>Welcome back</h1>
+      <p>Sign in to access your products and track your progress.</p>
+    </div>
+
+    <!-- Google sign in -->
+    <button class="google-btn" onclick="signInWithGoogle()">
+      <svg viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+      Continue with Google
+    </button>
+
+    <div class="auth-divider"><span>or</span></div>
+
+    <!-- Tabs -->
+    <div class="auth-tabs">
+      <button class="auth-tab active" onclick="switchTab('login')" id="tabLogin">Sign In</button>
+      <button class="auth-tab" onclick="switchTab('signup')" id="tabSignup">Create Account</button>
+    </div>
+
+    <!-- Login Form -->
+    <form class="auth-form active" id="loginForm" onsubmit="handleLogin(event)">
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <input class="form-input" type="email" id="loginEmail" placeholder="you@example.com" required autocomplete="email">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <input class="form-input" type="password" id="loginPassword" placeholder="your password" required autocomplete="current-password">
+      </div>
+      <a class="forgot-link" onclick="showResetView()">Forgot password?</a>
+      <button class="auth-btn" type="submit" id="loginBtn">Sign In</button>
+      <div class="auth-msg" id="loginMsg"></div>
+    </form>
+
+    <!-- Signup Form -->
+    <form class="auth-form" id="signupForm" onsubmit="handleSignup(event)">
+      <div class="form-group">
+        <label class="form-label">Full Name</label>
+        <input class="form-input" type="text" id="signupName" placeholder="Your name" required autocomplete="name">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <input class="form-input" type="email" id="signupEmail" placeholder="you@example.com" required autocomplete="email">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <input class="form-input" type="password" id="signupPassword" placeholder="min 6 characters" required minlength="6" autocomplete="new-password">
+      </div>
+      <button class="auth-btn" type="submit" id="signupBtn">Create Account</button>
+      <div class="auth-msg" id="signupMsg"></div>
+    </form>
+
+    <!-- Password Reset -->
+    <div class="reset-view" id="resetView">
+      <div class="back-link" onclick="hideResetView()">Back to sign in</div>
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <input class="form-input" type="email" id="resetEmail" placeholder="you@example.com" required>
+      </div>
+      <button class="auth-btn" onclick="handleReset()">Send Reset Link</button>
+      <div class="auth-msg" id="resetMsg"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ DASHBOARD VIEW ═══ -->
+<div class="dashboard" id="dashView">
+  <div class="dash-container">
+
+    <!-- Top bar -->
+    <div class="dash-topbar">
+      <div class="dash-greeting">
+        <h1 id="greetingText">Welcome back</h1>
+        <p id="greetingEmail"></p>
+      </div>
+      <div class="user-menu-wrap">
+        <div class="dash-avatar" id="userAvatar" onclick="toggleUserMenu()"></div>
+        <div class="user-menu" id="userMenu">
+          <button class="user-menu-item danger" onclick="handleSignOut()">Sign out</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Products -->
+    <div class="dash-section-label">Your Products</div>
+    <div class="product-cards" id="productCards">
+      <!-- Rendered by JS -->
+    </div>
+
+    <!-- Admin Panel (only visible to admin) -->
+    <div class="admin-panel" id="adminPanel">
+      <div class="dash-section-label">Admin</div>
+      <div class="admin-stats" id="adminStats"></div>
+      <div class="admin-search-row">
+        <input class="form-input" type="text" id="adminSearchInput" placeholder="Search by email..." onkeydown="if(event.key==='Enter')searchUsers()">
+        <button class="admin-search-btn" onclick="searchUsers()">Search</button>
+        <button class="admin-search-btn" onclick="loadAllUsers()">All Users</button>
+      </div>
+      <div class="admin-user-list" id="adminUserList"></div>
+      <div class="admin-msg" id="adminMsg"></div>
+    </div>
+
+    <!-- Account info -->
+    <div class="dash-account">
+      <div class="dash-section-label">Account</div>
+      <div class="account-info">
+        <div class="account-row">
+          <span class="account-row-label">Email</span>
+          <span class="account-row-value" id="accountEmail"></span>
+        </div>
+        <div class="account-row">
+          <span class="account-row-label">Member since</span>
+          <span class="account-row-value" id="accountSince"></span>
+        </div>
+      </div>
+      <button class="sign-out-btn" onclick="handleSignOut()">Sign Out</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══ Firebase SDK ═══ -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-app.js";
+import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, sendPasswordResetEmail, updateProfile, signOut } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-auth.js";
+import { getFirestore, doc, getDoc, setDoc, updateDoc, serverTimestamp, collection, getDocs, query, where, orderBy } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-firestore.js";
+
+// ─── Firebase Config ───
+const firebaseConfig = {
+  apiKey: "AIzaSyC5x4f-nauB726AsH_jX7BqUcs3ic7cI4k",
+  authDomain: "kianivc.firebaseapp.com",
+  projectId: "kianivc",
+  storageBucket: "kianivc.firebasestorage.app",
+  messagingSenderId: "724854585002",
+  appId: "1:724854585002:web:37a7ec41c6ffd2f3cb02d3",
+  measurementId: "G-Y1EV6P6KL2"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+const googleProvider = new GoogleAuthProvider();
+
+// ─── Products definition ───
+const PRODUCTS = [
+  {
+    id: 'curriculum',
+    title: 'Trading Curriculum',
+    description: '59 lessons across 12 modules',
+    url: '/curriculum',
+    totalLessons: 59,
+  }
+];
+
+// ─── Admin UIDs — add your Firebase UID here after first login ───
+const ADMIN_UIDS = [];
+let isAdmin = false;
+
+// ─── Auth State ───
+onAuthStateChanged(auth, async (user) => {
+  document.getElementById('loadingScreen').style.display = 'none';
+  if (user) {
+    await ensureUserDoc(user);
+    // Check admin status from Firestore admin doc or hardcoded list
+    isAdmin = ADMIN_UIDS.includes(user.uid) || await checkAdminStatus(user.uid);
+    showDashboard(user);
+    if (isAdmin) {
+      document.getElementById('adminPanel').classList.add('visible');
+      loadAllUsers();
+    }
+  } else {
+    showAuth();
+  }
+});
+
+// ─── Check if user is admin via Firestore ───
+async function checkAdminStatus(uid) {
+  try {
+    const adminDoc = await getDoc(doc(db, 'admin', 'config'));
+    if (adminDoc.exists()) {
+      const adminUIDs = adminDoc.data().adminUIDs || [];
+      return adminUIDs.includes(uid);
+    }
+  } catch (e) { /* not admin */ }
+  return false;
+}
+
+// ─── Ensure user doc exists in Firestore ───
+async function ensureUserDoc(user) {
+  const ref = doc(db, 'users', user.uid);
+  const snap = await getDoc(ref);
+  if (!snap.exists()) {
+    await setDoc(ref, {
+      email: user.email,
+      displayName: user.displayName || '',
+      photoURL: user.photoURL || '',
+      createdAt: serverTimestamp(),
+      products: {},
+      progress: {
+        curriculum: { completedLessons: [], lastPosition: null }
+      }
+    });
+  }
+}
+
+// ─── Load user data and show dashboard ───
+async function showDashboard(user) {
+  document.getElementById('authView').style.display = 'none';
+  document.getElementById('dashView').classList.add('active');
+
+  // Greeting
+  const name = user.displayName ? user.displayName.split(' ')[0] : '';
+  document.getElementById('greetingText').textContent = name ? `Welcome back, ${name}` : 'Welcome back';
+  document.getElementById('greetingEmail').textContent = user.email;
+
+  // Avatar
+  const avatar = document.getElementById('userAvatar');
+  if (user.photoURL) {
+    avatar.innerHTML = `<img src="${user.photoURL}" alt="avatar" referrerpolicy="no-referrer">`;
+  } else {
+    avatar.textContent = (user.displayName || user.email || '?')[0].toUpperCase();
+  }
+
+  // Account info
+  document.getElementById('accountEmail').textContent = user.email;
+  const created = user.metadata.creationTime ? new Date(user.metadata.creationTime) : new Date();
+  document.getElementById('accountSince').textContent = created.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+
+  // Load user data from Firestore
+  const ref = doc(db, 'users', user.uid);
+  const snap = await getDoc(ref);
+  const userData = snap.exists() ? snap.data() : {};
+  const products = userData.products || {};
+  const progress = userData.progress || {};
+
+  // Also sync: if they had localStorage progress, migrate it
+  await migrateLocalProgress(user.uid, progress);
+
+  // Render product cards
+  renderProducts(products, progress);
+}
+
+// ─── Migrate localStorage progress to Firestore (one-time) ───
+async function migrateLocalProgress(uid, existingProgress) {
+  try {
+    const localSaved = localStorage.getItem('dk-curriculum-progress-v2');
+    const localPos = localStorage.getItem('dk-curriculum-position-v2');
+    const migrated = localStorage.getItem('dk-progress-migrated-' + uid);
+
+    if (migrated) return; // Already migrated for this user
+
+    const currProgress = existingProgress.curriculum || {};
+    const existingLessons = currProgress.completedLessons || [];
+
+    if (localSaved) {
+      const localLessons = JSON.parse(localSaved);
+      if (localLessons.length > 0 && localLessons.length > existingLessons.length) {
+        // Local has more progress — merge into Firestore
+        const merged = [...new Set([...existingLessons, ...localLessons])];
+        const ref = doc(db, 'users', uid);
+        await updateDoc(ref, {
+          'progress.curriculum.completedLessons': merged,
+          'progress.curriculum.lastPosition': localPos ? JSON.parse(localPos) : null
+        });
+      }
+    }
+
+    // Mark as migrated
+    localStorage.setItem('dk-progress-migrated-' + uid, 'true');
+  } catch (e) {
+    // Silent fail — migration is best-effort
+  }
+}
+
+// ─── Render product cards ───
+function renderProducts(products, progress) {
+  const container = document.getElementById('productCards');
+
+  container.innerHTML = PRODUCTS.map(p => {
+    const hasAccess = products[p.id] === true || localStorage.getItem('curriculum_paid') === 'true';
+    const prog = progress[p.id] || {};
+    const completed = (prog.completedLessons || []).length;
+    const pct = p.totalLessons ? Math.round((completed / p.totalLessons) * 100) : 0;
+
+    if (hasAccess) {
+      return `
+        <a class="product-card" href="${p.url}">
+          <div class="product-card-info">
+            <div class="product-card-title">${p.title}</div>
+            <div class="product-card-meta">${p.description}</div>
+          </div>
+          <div class="product-card-progress">
+            <div class="progress-bar-container">
+              <div class="progress-bar-fill" style="width: ${pct}%"></div>
+            </div>
+            <span class="progress-text">${pct}%</span>
+            <svg class="product-card-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
+          </div>
+        </a>
+      `;
+    } else {
+      return `
+        <div class="product-card locked">
+          <div class="product-card-info">
+            <div class="product-card-title">${p.title}</div>
+            <div class="product-card-meta">${p.description}</div>
+          </div>
+          <span class="product-lock-badge">Not purchased</span>
+        </div>
+      `;
+    }
+  }).join('');
+}
+
+// ─── Show auth view ───
+function showAuth() {
+  document.getElementById('authView').style.display = '';
+  document.getElementById('dashView').classList.remove('active');
+}
+
+// ─── Auth functions (exposed to window) ───
+window.signInWithGoogle = async function() {
+  try {
+    await signInWithPopup(auth, googleProvider);
+  } catch (err) {
+    document.getElementById('loginMsg').textContent = err.message;
+    document.getElementById('loginMsg').className = 'auth-msg error';
+  }
+};
+
+window.handleLogin = async function(e) {
+  e.preventDefault();
+  const email = document.getElementById('loginEmail').value;
+  const password = document.getElementById('loginPassword').value;
+  const btn = document.getElementById('loginBtn');
+  const msg = document.getElementById('loginMsg');
+
+  btn.disabled = true;
+  btn.textContent = '...';
+  msg.textContent = '';
+
+  try {
+    await signInWithEmailAndPassword(auth, email, password);
+  } catch (err) {
+    msg.textContent = friendlyError(err.code);
+    msg.className = 'auth-msg error';
+    btn.disabled = false;
+    btn.textContent = 'Sign In';
+  }
+};
+
+window.handleSignup = async function(e) {
+  e.preventDefault();
+  const name = document.getElementById('signupName').value.trim();
+  const email = document.getElementById('signupEmail').value;
+  const password = document.getElementById('signupPassword').value;
+  const btn = document.getElementById('signupBtn');
+  const msg = document.getElementById('signupMsg');
+
+  btn.disabled = true;
+  btn.textContent = '...';
+  msg.textContent = '';
+
+  try {
+    const cred = await createUserWithEmailAndPassword(auth, email, password);
+    if (name) {
+      await updateProfile(cred.user, { displayName: name });
+    }
+  } catch (err) {
+    msg.textContent = friendlyError(err.code);
+    msg.className = 'auth-msg error';
+    btn.disabled = false;
+    btn.textContent = 'Create Account';
+  }
+};
+
+window.handleReset = async function() {
+  const email = document.getElementById('resetEmail').value;
+  const msg = document.getElementById('resetMsg');
+
+  if (!email) {
+    msg.textContent = 'Enter your email address.';
+    msg.className = 'auth-msg error';
+    return;
+  }
+
+  try {
+    await sendPasswordResetEmail(auth, email);
+    msg.textContent = 'Reset link sent. Check your inbox.';
+    msg.className = 'auth-msg success';
+  } catch (err) {
+    msg.textContent = friendlyError(err.code);
+    msg.className = 'auth-msg error';
+  }
+};
+
+window.handleSignOut = async function() {
+  await signOut(auth);
+  document.getElementById('userMenu').classList.remove('open');
+};
+
+// ─── UI helpers (exposed to window) ───
+window.switchTab = function(tab) {
+  document.getElementById('tabLogin').classList.toggle('active', tab === 'login');
+  document.getElementById('tabSignup').classList.toggle('active', tab === 'signup');
+  document.getElementById('loginForm').classList.toggle('active', tab === 'login');
+  document.getElementById('signupForm').classList.toggle('active', tab === 'signup');
+  document.getElementById('resetView').classList.remove('active');
+  document.getElementById('loginMsg').textContent = '';
+  document.getElementById('signupMsg').textContent = '';
+};
+
+window.showResetView = function() {
+  document.getElementById('loginForm').classList.remove('active');
+  document.getElementById('signupForm').classList.remove('active');
+  document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('resetView').classList.add('active');
+};
+
+window.hideResetView = function() {
+  document.getElementById('resetView').classList.remove('active');
+  document.getElementById('loginForm').classList.add('active');
+  document.getElementById('tabLogin').classList.add('active');
+};
+
+window.toggleUserMenu = function() {
+  document.getElementById('userMenu').classList.toggle('open');
+};
+
+// Close menu on outside click
+document.addEventListener('click', (e) => {
+  if (!e.target.closest('.user-menu-wrap')) {
+    document.getElementById('userMenu').classList.remove('open');
+  }
+});
+
+// ─── Admin: Load all users ───
+window.loadAllUsers = async function() {
+  if (!isAdmin) return;
+  const list = document.getElementById('adminUserList');
+  const stats = document.getElementById('adminStats');
+  list.innerHTML = '<div class="admin-msg">Loading...</div>';
+
+  try {
+    const usersRef = collection(db, 'users');
+    const snap = await getDocs(usersRef);
+    const users = [];
+    snap.forEach(d => users.push({ uid: d.id, ...d.data() }));
+
+    // Stats
+    const totalUsers = users.length;
+    const withAccess = users.filter(u => u.products && u.products.curriculum).length;
+    stats.innerHTML = `
+      <div class="admin-stat"><span class="admin-stat-value">${totalUsers}</span><span class="admin-stat-label">Total Users</span></div>
+      <div class="admin-stat"><span class="admin-stat-value">${withAccess}</span><span class="admin-stat-label">With Access</span></div>
+    `;
+
+    renderAdminUsers(users);
+  } catch (e) {
+    list.innerHTML = '<div class="admin-msg">Failed to load users.</div>';
+  }
+};
+
+// ─── Admin: Search users ───
+window.searchUsers = async function() {
+  if (!isAdmin) return;
+  const q = document.getElementById('adminSearchInput').value.trim().toLowerCase();
+  if (!q) { loadAllUsers(); return; }
+
+  const list = document.getElementById('adminUserList');
+  list.innerHTML = '<div class="admin-msg">Searching...</div>';
+
+  try {
+    const usersRef = collection(db, 'users');
+    const snap = await getDocs(usersRef);
+    const users = [];
+    snap.forEach(d => {
+      const data = { uid: d.id, ...d.data() };
+      if ((data.email || '').toLowerCase().includes(q) || (data.displayName || '').toLowerCase().includes(q)) {
+        users.push(data);
+      }
+    });
+    renderAdminUsers(users);
+    if (users.length === 0) {
+      list.innerHTML = '<div class="admin-msg">No users found.</div>';
+    }
+  } catch (e) {
+    list.innerHTML = '<div class="admin-msg">Search failed.</div>';
+  }
+};
+
+// ─── Admin: Render user list ───
+function renderAdminUsers(users) {
+  const list = document.getElementById('adminUserList');
+  list.innerHTML = users.map(u => {
+    const hasAccess = u.products && u.products.curriculum;
+    const progress = u.progress && u.progress.curriculum ? (u.progress.curriculum.completedLessons || []).length : 0;
+
+    return `
+      <div class="admin-user-card">
+        <div class="admin-user-info">
+          <div class="admin-user-name">${u.displayName || 'No name'}</div>
+          <div class="admin-user-email">${u.email || 'No email'} — ${progress}/59 lessons</div>
+        </div>
+        <div class="admin-user-actions">
+          ${hasAccess
+            ? `<span class="admin-badge">Access</span> <button class="admin-action-btn revoke" onclick="revokeAccess('${u.uid}')">Revoke</button>`
+            : `<button class="admin-action-btn" onclick="grantAccess('${u.uid}')">Grant Access</button>`
+          }
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+// ─── Admin: Grant access ───
+window.grantAccess = async function(uid) {
+  try {
+    const ref = doc(db, 'users', uid);
+    await updateDoc(ref, { 'products.curriculum': true });
+    loadAllUsers();
+  } catch (e) {
+    document.getElementById('adminMsg').textContent = 'Failed to grant access.';
+  }
+};
+
+// ─── Admin: Revoke access ───
+window.revokeAccess = async function(uid) {
+  try {
+    const ref = doc(db, 'users', uid);
+    await updateDoc(ref, { 'products.curriculum': false });
+    loadAllUsers();
+  } catch (e) {
+    document.getElementById('adminMsg').textContent = 'Failed to revoke access.';
+  }
+};
+
+// ─── Friendly error messages ───
+function friendlyError(code) {
+  const map = {
+    'auth/user-not-found': 'No account found with that email.',
+    'auth/wrong-password': 'Incorrect password.',
+    'auth/invalid-credential': 'Invalid email or password.',
+    'auth/email-already-in-use': 'An account with that email already exists.',
+    'auth/weak-password': 'Password must be at least 6 characters.',
+    'auth/invalid-email': 'Please enter a valid email address.',
+    'auth/too-many-requests': 'Too many attempts. Try again later.',
+    'auth/network-request-failed': 'Network error. Check your connection.',
+  };
+  return map[code] || 'Something went wrong. Try again.';
+}
+</script>
+
+<!-- Theme script (non-module, runs immediately) -->
+<script>
+  // Theme
+  const savedTheme = localStorage.getItem('dk-theme');
+  if (savedTheme) {
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    document.getElementById('themeBtn').textContent = savedTheme === 'dark' ? 'Light' : 'Dark';
+    document.getElementById('themeColor').content = savedTheme === 'dark' ? '#0a0a0a' : '#f0ede8';
+  }
+
+  function toggleTheme() {
+    const current = document.documentElement.getAttribute('data-theme');
+    const next = current === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('dk-theme', next);
+    document.getElementById('themeBtn').textContent = next === 'dark' ? 'Light' : 'Dark';
+    document.getElementById('themeColor').content = next === 'dark' ? '#0a0a0a' : '#f0ede8';
+  }
+</script>
+
+</body>
+</html>

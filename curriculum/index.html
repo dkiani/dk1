@@ -16,6 +16,93 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
+
+<!-- Firebase SDK -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-auth.js";
+import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyC5x4f-nauB726AsH_jX7BqUcs3ic7cI4k",
+  authDomain: "kianivc.firebaseapp.com",
+  projectId: "kianivc",
+  storageBucket: "kianivc.firebasestorage.app",
+  messagingSenderId: "724854585002",
+  appId: "1:724854585002:web:37a7ec41c6ffd2f3cb02d3"
+};
+
+const fbApp = initializeApp(firebaseConfig);
+const fbAuth = getAuth(fbApp);
+const fbDb = getFirestore(fbApp);
+
+// Expose to global scope for the non-module scripts
+window._fbAuth = fbAuth;
+window._fbDb = fbDb;
+
+// Track current Firebase user
+window._fbUser = null;
+window._fbReady = false;
+
+onAuthStateChanged(fbAuth, async (user) => {
+  window._fbUser = user;
+  window._fbReady = true;
+
+  if (user) {
+    // User is signed in — grant access and load cloud progress
+    localStorage.setItem('curriculum_paid', 'true');
+
+    try {
+      const ref = doc(fbDb, 'users', user.uid);
+      const snap = await getDoc(ref);
+      if (snap.exists()) {
+        const data = snap.data();
+        const products = data.products || {};
+        const progress = data.progress || {};
+        const currProg = progress.curriculum || {};
+
+        // Grant access if they have the product
+        if (products.curriculum) {
+          localStorage.setItem('curriculum_paid', 'true');
+        }
+
+        // Load cloud progress — merge with local (cloud wins if more complete)
+        const cloudLessons = currProg.completedLessons || [];
+        if (typeof completedLessons !== 'undefined' && cloudLessons.length > 0) {
+          const localArr = [...completedLessons];
+          if (cloudLessons.length >= localArr.length) {
+            completedLessons = new Set(cloudLessons);
+          } else {
+            // Local has more — merge both
+            cloudLessons.forEach(id => completedLessons.add(id));
+          }
+          // Save merged result locally
+          localStorage.setItem('dk-curriculum-progress-v2', JSON.stringify([...completedLessons]));
+
+          // Re-render if functions are available
+          if (typeof renderSidebar === 'function') {
+            renderSidebar();
+            renderContent();
+            updateProgress();
+          }
+        }
+
+        // Restore position from cloud if no local position
+        if (currProg.lastPosition && !localStorage.getItem('dk-curriculum-position-v2')) {
+          currentView = currProg.lastPosition;
+          localStorage.setItem('dk-curriculum-position-v2', JSON.stringify(currentView));
+          if (typeof renderSidebar === 'function') {
+            renderSidebar();
+            renderContent();
+          }
+        }
+      }
+    } catch (e) {
+      // Silent fail — local progress still works
+    }
+  }
+});
+</script>
 <style>
   *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -4579,6 +4666,28 @@ function saveProgress() {
     localStorage.setItem('dk-curriculum-progress-v2', JSON.stringify([...completedLessons]));
     localStorage.setItem('dk-curriculum-position-v2', JSON.stringify(currentView));
   } catch(e) {}
+
+  // Sync to Firestore if user is signed in
+  syncToFirestore();
+}
+
+// Debounced Firestore sync (avoids excessive writes)
+let _syncTimer = null;
+function syncToFirestore() {
+  if (_syncTimer) clearTimeout(_syncTimer);
+  _syncTimer = setTimeout(async () => {
+    try {
+      if (!window._fbUser || !window._fbDb) return;
+      const { doc, updateDoc } = await import("https://www.gstatic.com/firebasejs/11.7.1/firebase-firestore.js");
+      const ref = doc(window._fbDb, 'users', window._fbUser.uid);
+      await updateDoc(ref, {
+        'progress.curriculum.completedLessons': [...completedLessons],
+        'progress.curriculum.lastPosition': currentView
+      });
+    } catch (e) {
+      // Silent fail — localStorage is the fallback
+    }
+  }, 1500);
 }
 
 // ─── Helpers ───

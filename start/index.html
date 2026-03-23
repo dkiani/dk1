@@ -649,6 +649,7 @@ async function handlePayment() {
   } else {
     document.getElementById('checkoutView').style.display = 'none';
     document.getElementById('successView').style.display = 'block';
+    grantFirebaseAccess();
   }
 }
 
@@ -656,6 +657,40 @@ async function handlePayment() {
 if (urlParams.get('success') === 'true' || urlParams.get('redirect_status') === 'succeeded') {
   document.getElementById('checkoutView').style.display = 'none';
   document.getElementById('successView').style.display = 'block';
+  grantFirebaseAccess();
+}
+
+// Grant product access in Firestore if user is signed in
+async function grantFirebaseAccess() {
+  try {
+    const { initializeApp } = await import("https://www.gstatic.com/firebasejs/11.7.1/firebase-app.js");
+    const { getAuth } = await import("https://www.gstatic.com/firebasejs/11.7.1/firebase-auth.js");
+    const { getFirestore, doc, updateDoc } = await import("https://www.gstatic.com/firebasejs/11.7.1/firebase-firestore.js");
+
+    const fbApp = initializeApp({
+      apiKey: "AIzaSyC5x4f-nauB726AsH_jX7BqUcs3ic7cI4k",
+      authDomain: "kianivc.firebaseapp.com",
+      projectId: "kianivc",
+      storageBucket: "kianivc.firebasestorage.app",
+      messagingSenderId: "724854585002",
+      appId: "1:724854585002:web:37a7ec41c6ffd2f3cb02d3"
+    });
+    const auth = getAuth(fbApp);
+    const db = getFirestore(fbApp);
+
+    // Wait a moment for auth state to resolve
+    const user = auth.currentUser;
+    if (!user) return; // Not signed in — localStorage still works as fallback
+
+    const product = planKey === 'mentorship' ? 'mentorship' : 'curriculum';
+    const ref = doc(db, 'users', user.uid);
+    await updateDoc(ref, {
+      ['products.' + product]: true,
+      ['products.curriculum']: true // Both plans include curriculum access
+    });
+  } catch (e) {
+    // Silent fail — localStorage curriculum_paid still works
+  }
 }
 
 function formatPrice(cents) {
