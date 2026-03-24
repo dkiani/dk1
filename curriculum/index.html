@@ -49,9 +49,7 @@ onAuthStateChanged(fbAuth, async (user) => {
   window._fbReady = true;
 
   if (user) {
-    // User is signed in — grant access and load cloud progress
-    localStorage.setItem('curriculum_paid', 'true');
-
+    // User is signed in — check Firestore for access
     try {
       const ref = doc(fbDb, 'users', user.uid);
       const snap = await getDoc(ref);
@@ -61,9 +59,11 @@ onAuthStateChanged(fbAuth, async (user) => {
         const progress = data.progress || {};
         const currProg = progress.curriculum || {};
 
-        // Grant access if they have the product
+        // Grant or revoke access based on the product flag
         if (products.curriculum) {
           localStorage.setItem('curriculum_paid', 'true');
+        } else {
+          localStorage.removeItem('curriculum_paid');
         }
 
         // Load cloud progress — merge with local (cloud wins if more complete)
