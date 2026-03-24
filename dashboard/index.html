@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="light">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -987,6 +987,8 @@ onAuthStateChanged(auth, async (user) => {
     if (isAdmin) {
       document.getElementById('adminPanel').classList.add('visible');
       loadAllUsers();
+    } else {
+      document.getElementById('adminPanel').classList.remove('visible');
     }
   } else {
     showAuth();
@@ -1023,6 +1025,8 @@ window.handlePasswordChange = async function(e) {
     if (isAdmin) {
       document.getElementById('adminPanel').classList.add('visible');
       loadAllUsers();
+    } else {
+      document.getElementById('adminPanel').classList.remove('visible');
     }
   } catch (err) {
     msg.textContent = friendlyError(err.code);
@@ -1047,6 +1051,8 @@ window.linkGoogle = async function() {
     if (isAdmin) {
       document.getElementById('adminPanel').classList.add('visible');
       loadAllUsers();
+    } else {
+      document.getElementById('adminPanel').classList.remove('visible');
     }
   } catch (err) {
     if (err.code === 'auth/credential-already-in-use') {
