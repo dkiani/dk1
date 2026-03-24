@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0a0a0a" id="themeColor">
+<title>Onboarding — Daniel Kiani</title>
+<meta name="robots" content="noindex, nofollow">
+
+<!-- Open Graph / Link Preview -->
+<meta property="og:title" content="welcome aboard.">
+<meta property="og:description" content="Complete your onboarding — Daniel Kiani">
+<meta property="og:url" content="https://kiani.vc/onboarding">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="welcome aboard.">
+<meta name="twitter:description" content="Complete your onboarding — Daniel Kiani">
+
+<!-- Favicon -->
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180">
+
+<!-- Preload font -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --font: 'JetBrains Mono', monospace;
+    --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  [data-theme="dark"] {
+    --bg: #0a0a0a;
+    --fg: #d4d4d4;
+    --muted: #525252;
+    --dim: #3a3a3a;
+    --border: #1f1f1f;
+    --accent: #a0a0a0;
+    --hover: #ffffff;
+    --center-fill: #e85d2a;
+    --item-hover: #181818;
+    --error: #ef4444;
+    --success: #22c55e;
+  }
+
+  [data-theme="light"] {
+    --bg: #f0ede8;
+    --fg: #1a1a1a;
+    --muted: #8a8a8a;
+    --dim: #b0aca6;
+    --border: #ddd9d4;
+    --accent: #555;
+    --hover: #000000;
+    --center-fill: #e85d2a;
+    --item-hover: #f7f5f2;
+    --error: #dc2626;
+    --success: #16a34a;
+  }
+
+  html {
+    height: 100%;
+    overflow: hidden;
+    overscroll-behavior: none;
+  }
+
+  body {
+    height: 100%;
+    overflow: hidden;
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--font);
+    -webkit-font-smoothing: antialiased;
+    transition: background 0.5s var(--ease), color 0.5s var(--ease);
+    overscroll-behavior: none;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    touch-action: manipulation;
+  }
+
+  ::selection { background: rgba(128,128,128,0.15); }
+
+  /* ─── Progress Bar ─── */
+  .progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 2px;
+    background: var(--center-fill);
+    transition: width 0.6s var(--ease);
+    z-index: 100;
+  }
+
+  /* ─── Step Counter ─── */
+  .step-counter {
+    position: fixed;
+    top: 1.5rem;
+    left: 1.5rem;
+    font-size: 0.55rem;
+    font-weight: 300;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    font-variant-numeric: tabular-nums;
+    z-index: 100;
+    transition: opacity 0.3s;
+  }
+
+  /* ─── Theme Toggle ─── */
+  .theme-toggle {
+    position: fixed;
+    top: 1.5rem;
+    right: 1.5rem;
+    z-index: 100;
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: var(--font);
+    font-size: 0.55rem;
+    letter-spacing: 0.06em;
+    padding: 0.3rem 0.6rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-transform: uppercase;
+    min-width: 44px;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .theme-toggle:hover { color: var(--hover); border-color: var(--accent); }
+
+  /* ─── Back Button ─── */
+  .back-btn {
+    position: fixed;
+    bottom: 1.5rem;
+    left: 1.5rem;
+    z-index: 100;
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: var(--font);
+    font-size: 0.55rem;
+    letter-spacing: 0.06em;
+    padding: 0.3rem 0.6rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-transform: uppercase;
+    min-width: 44px;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .back-btn:hover { color: var(--hover); border-color: var(--accent); }
+  .back-btn.hidden { opacity: 0; pointer-events: none; }
+
+  /* ─── Enter Hint (desktop only) ─── */
+  .enter-hint {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    font-size: 0.5rem;
+    font-weight: 300;
+    color: var(--dim);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    z-index: 100;
+    transition: opacity 0.3s;
+  }
+
+  /* ─── Questions Container ─── */
+  .questions {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+
+  .question {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s var(--ease), transform 0.5s var(--ease);
+    transform: translateY(20px);
+  }
+
+  .question.active {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+  }
+
+  .question.exit-up {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+
+  .question-inner {
+    width: 100%;
+    max-width: 520px;
+    padding: 0 2rem;
+  }
+
+  /* ─── Question Number ─── */
+  .question-num {
+    font-size: 0.55rem;
+    font-weight: 400;
+    color: var(--center-fill);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 1.2rem;
+  }
+
+  /* ─── Question Text ─── */
+  .question-text {
+    font-size: 1rem;
+    font-weight: 300;
+    line-height: 1.7;
+    margin-bottom: 2rem;
+    color: var(--fg);
+  }
+
+  /* ─── Text Input with inline submit ─── */
+  .input-row {
+    display: flex;
+    align-items: stretch;
+    border-bottom: 1px solid var(--border);
+    transition: border-color 0.3s;
+  }
+
+  .input-row:focus-within {
+    border-bottom-color: var(--center-fill);
+  }
+
+  .text-input {
+    flex: 1;
+    min-width: 0;
+    background: transparent;
+    border: none;
+    color: var(--fg);
+    font-family: var(--font);
+    font-size: 16px;
+    font-weight: 300;
+    padding: 0.75rem 0;
+    outline: none;
+    letter-spacing: 0.02em;
+  }
+
+  .text-input::placeholder {
+    color: var(--dim);
+    font-weight: 300;
+  }
+
+  /* Inline submit button — mobile only */
+  .input-submit {
+    background: none;
+    border: none;
+    color: var(--dim);
+    cursor: pointer;
+    padding: 0.5rem 0.25rem 0.5rem 0.75rem;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.3s;
+    flex-shrink: 0;
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  .input-submit:hover,
+  .input-submit:active { color: var(--center-fill); }
+
+  .input-submit svg {
+    width: 18px;
+    height: 18px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .input-row:focus-within .input-submit { color: var(--accent); }
+
+  /* ─── Multiple Choice ─── */
+  .choices {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .choice {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--border);
+    cursor: pointer;
+    transition: all 0.3s var(--ease);
+    user-select: none;
+    min-height: 48px;
+  }
+
+  .choice:hover {
+    border-color: var(--accent);
+    background: var(--item-hover);
+  }
+
+  .choice:active {
+    background: var(--item-hover);
+    border-color: var(--accent);
+  }
+
+  .choice.selected {
+    border-color: var(--center-fill);
+  }
+
+  .choice-key {
+    font-size: 0.55rem;
+    font-weight: 400;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    width: 14px;
+    text-align: center;
+    flex-shrink: 0;
+    transition: color 0.3s;
+  }
+
+  .choice.selected .choice-key {
+    color: var(--center-fill);
+  }
+
+  .choice-label {
+    font-size: 0.72rem;
+    font-weight: 300;
+    color: var(--accent);
+    transition: color 0.3s;
+  }
+
+  .choice:hover .choice-label { color: var(--fg); }
+  .choice.selected .choice-label { color: var(--fg); }
+
+  /* ─── End Screens ─── */
+  .thankyou-icon {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--center-fill);
+    margin-bottom: 1.5rem;
+  }
+
+  .thankyou-title {
+    font-size: 1rem;
+    font-weight: 300;
+    margin-bottom: 0.6rem;
+  }
+
+  .thankyou-sub {
+    font-size: 0.65rem;
+    font-weight: 300;
+    color: var(--muted);
+    line-height: 1.8;
+  }
+
+  .thankyou-sub a {
+    color: var(--fg);
+    text-decoration: none;
+    border-bottom: 1px solid var(--border);
+    transition: border-color 0.3s;
+  }
+
+  .thankyou-sub a:hover { border-color: var(--fg); }
+
+  /* ─── Loading / Processing Screen ─── */
+  .processing-spinner {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--center-fill);
+    margin-bottom: 1.5rem;
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.8); }
+  }
+
+  .processing-text {
+    font-size: 0.75rem;
+    font-weight: 300;
+    color: var(--muted);
+    margin-top: 0.5rem;
+  }
+
+  .error-text {
+    font-size: 0.65rem;
+    font-weight: 300;
+    color: var(--error);
+    margin-top: 1rem;
+    line-height: 1.6;
+  }
+
+  .retry-btn {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--fg);
+    font-family: var(--font);
+    font-size: 0.65rem;
+    font-weight: 300;
+    padding: 0.6rem 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-top: 1.5rem;
+  }
+
+  .retry-btn:hover { border-color: var(--accent); }
+
+  /* ─── Email validation ─── */
+  .input-error {
+    font-size: 0.55rem;
+    color: var(--error);
+    font-weight: 300;
+    margin-top: 0.4rem;
+    min-height: 1rem;
+    transition: opacity 0.3s;
+  }
+
+  /* ─── Responsive ─── */
+  @media (max-width: 600px) {
+    .question-inner { padding: 0 1.5rem; }
+    .question-text { font-size: 0.92rem; line-height: 1.6; margin-bottom: 1.5rem; }
+    .choice { padding: 0.8rem 1rem; min-height: 52px; }
+    .choice-label { font-size: 0.7rem; }
+    .choices { gap: 0.6rem; }
+    .step-counter { top: 1rem; left: 1rem; }
+    .theme-toggle { top: 1rem; right: 1rem; }
+    .back-btn { bottom: 1rem; left: 1rem; }
+    .enter-hint { display: none; }
+    .input-submit { display: flex; }
+
+    .question {
+      align-items: flex-start;
+      padding-top: 18vh;
+    }
+  }
+
+  /* ─── Safe area insets (notch phones) ─── */
+  @supports (padding: env(safe-area-inset-bottom)) {
+    .back-btn { bottom: calc(1.5rem + env(safe-area-inset-bottom)); }
+    .enter-hint { bottom: calc(1.5rem + env(safe-area-inset-bottom)); }
+  }
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progressBar" style="width: 0%"></div>
+<div class="step-counter" id="stepCounter">01 / 06</div>
+<button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">Light</button>
+<button class="back-btn hidden" id="backBtn" onclick="prevQuestion()">&larr; Back</button>
+<div class="enter-hint" id="enterHint">Press Enter &darr;</div>
+
+<div class="questions" id="questions">
+
+  <!-- Q1: Name -->
+  <div class="question active" data-type="text" data-step="1">
+    <div class="question-inner">
+      <div class="question-num">01</div>
+      <div class="question-text">What is your name?</div>
+      <div class="input-row">
+        <input type="text" class="text-input" placeholder="Type your full name..." autocomplete="name" enterkeyhint="next" autofocus>
+        <button class="input-submit" onclick="nextQuestion()" aria-label="Next">
+          <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q2: Email -->
+  <div class="question" data-type="email" data-step="2">
+    <div class="question-inner">
+      <div class="question-num">02</div>
+      <div class="question-text">What is your email address?</div>
+      <div class="input-row">
+        <input type="email" class="text-input" placeholder="you@example.com" autocomplete="email" enterkeyhint="next">
+        <button class="input-submit" onclick="nextQuestion()" aria-label="Next">
+          <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+      </div>
+      <div class="input-error" id="emailError"></div>
+    </div>
+  </div>
+
+  <!-- Q3: Location -->
+  <div class="question" data-type="text" data-step="3">
+    <div class="question-inner">
+      <div class="question-num">03</div>
+      <div class="question-text">Where are you based?</div>
+      <div class="input-row">
+        <input type="text" class="text-input" placeholder="City, Country" autocomplete="off" enterkeyhint="next">
+        <button class="input-submit" onclick="nextQuestion()" aria-label="Next">
+          <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q4: Dream travel destination -->
+  <div class="question" data-type="text" data-step="4">
+    <div class="question-inner">
+      <div class="question-num">04</div>
+      <div class="question-text">What's your dream travel destination?</div>
+      <div class="input-row">
+        <input type="text" class="text-input" placeholder="Anywhere in the world..." autocomplete="off" enterkeyhint="next">
+        <button class="input-submit" onclick="nextQuestion()" aria-label="Next">
+          <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q5: Favorite way to spend a day off -->
+  <div class="question" data-type="text" data-step="5">
+    <div class="question-inner">
+      <div class="question-num">05</div>
+      <div class="question-text">What's your favorite way to spend a day off?</div>
+      <div class="input-row">
+        <input type="text" class="text-input" placeholder="Type your answer..." autocomplete="off" enterkeyhint="next">
+        <button class="input-submit" onclick="nextQuestion()" aria-label="Next">
+          <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q6: Trading experience -->
+  <div class="question" data-type="choice" data-step="6">
+    <div class="question-inner">
+      <div class="question-num">06</div>
+      <div class="question-text">Any past trading experience?</div>
+      <div class="choices">
+        <div class="choice" data-value="None, this is brand new for me" onclick="selectChoice(this)">
+          <span class="choice-key">A</span>
+          <span class="choice-label">None, this is brand new for me</span>
+        </div>
+        <div class="choice" data-value="Less than 6 months" onclick="selectChoice(this)">
+          <span class="choice-key">B</span>
+          <span class="choice-label">Less than 6 months</span>
+        </div>
+        <div class="choice" data-value="6-12 months" onclick="selectChoice(this)">
+          <span class="choice-key">C</span>
+          <span class="choice-label">6 &ndash; 12 months</span>
+        </div>
+        <div class="choice" data-value="Over a year" onclick="selectChoice(this)">
+          <span class="choice-key">D</span>
+          <span class="choice-label">Over a year</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Processing Screen -->
+  <div class="question" data-type="processing" data-step="processing">
+    <div class="question-inner">
+      <div class="processing-spinner" id="processingSpinner"></div>
+      <div class="thankyou-title" id="processingTitle">Setting up your account...</div>
+      <div class="processing-text" id="processingText">This will only take a moment.</div>
+      <div class="error-text" id="processingError" style="display: none;"></div>
+      <button class="retry-btn" id="retryBtn" style="display: none;" onclick="createAccount()">Try Again</button>
+    </div>
+  </div>
+
+  <!-- Success Screen -->
+  <div class="question" data-type="end" data-step="end">
+    <div class="question-inner">
+      <div class="thankyou-icon"></div>
+      <div class="thankyou-title">You're all set.</div>
+      <div class="thankyou-sub">
+        Check your email for sign-in instructions.<br>
+        Your temporary password has been sent to <strong id="sentToEmail"></strong>.<br><br>
+        <a href="/dashboard">Go to sign in &rarr;</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══ Firebase SDK ═══ -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword, updateProfile, signOut } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-auth.js";
+import { getFirestore, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-firestore.js";
+
+// ─── Firebase Config ───
+const firebaseConfig = {
+  apiKey: "AIzaSyC5x4f-nauB726AsH_jX7BqUcs3ic7cI4k",
+  authDomain: "kianivc.firebaseapp.com",
+  projectId: "kianivc",
+  storageBucket: "kianivc.firebasestorage.app",
+  messagingSenderId: "724854585002",
+  appId: "1:724854585002:web:37a7ec41c6ffd2f3cb02d3",
+  measurementId: "G-Y1EV6P6KL2"
+};
+
+// Use a secondary app so we don't affect any existing auth session
+const secondaryApp = initializeApp(firebaseConfig, 'onboarding');
+const secondaryAuth = getAuth(secondaryApp);
+const db = getFirestore(secondaryApp);
+
+// ─── Google Apps Script endpoint for sending welcome emails ───
+const EMAIL_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwzIH8vbHcUT3EeIqKqpkIYIruEnLH9z8YHrNj9lzV98XDKyuFS0FFoXK9O93hgAMZ3jQ/exec';
+
+// ─── Generate a temporary password ───
+function generateTempPassword() {
+  const chars = 'ABCDEFGHJKMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789';
+  let password = '';
+  for (let i = 0; i < 10; i++) {
+    password += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return password;
+}
+
+// ─── Create account and send email ───
+window.createAccount = async function() {
+  const name = window._onboardingAnswers['1'];
+  const email = window._onboardingAnswers['2'];
+  const location = window._onboardingAnswers['3'];
+  const tempPassword = generateTempPassword();
+
+  const spinner = document.getElementById('processingSpinner');
+  const title = document.getElementById('processingTitle');
+  const text = document.getElementById('processingText');
+  const errorEl = document.getElementById('processingError');
+  const retryBtn = document.getElementById('retryBtn');
+
+  // Reset UI
+  spinner.className = 'processing-spinner';
+  title.textContent = 'Setting up your account...';
+  text.textContent = 'This will only take a moment.';
+  errorEl.style.display = 'none';
+  retryBtn.style.display = 'none';
+
+  try {
+    // Step 1: Create Firebase Auth user
+    title.textContent = 'Creating your account...';
+    const cred = await createUserWithEmailAndPassword(secondaryAuth, email, tempPassword);
+    await updateProfile(cred.user, { displayName: name });
+
+    // Step 2: Write user doc to Firestore
+    title.textContent = 'Saving your info...';
+    await setDoc(doc(db, 'users', cred.user.uid), {
+      email: email,
+      displayName: name,
+      photoURL: '',
+      createdAt: serverTimestamp(),
+      mustChangePassword: true,
+      onboarding: {
+        name: name,
+        email: email,
+        location: window._onboardingAnswers['3'] || '',
+        dreamDestination: window._onboardingAnswers['4'] || '',
+        dayOff: window._onboardingAnswers['5'] || '',
+        tradingExperience: window._onboardingAnswers['6'] || '',
+        completedAt: new Date().toISOString()
+      },
+      products: {
+        curriculum: true
+      },
+      progress: {
+        curriculum: { completedLessons: [], lastPosition: null }
+      }
+    });
+
+    // Step 3: Sign out from secondary app (user shouldn't be logged in here)
+    await signOut(secondaryAuth);
+
+    // Step 4: Send welcome email via Google Apps Script
+    title.textContent = 'Sending your login details...';
+    try {
+      await fetch(EMAIL_SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'onboarding_welcome',
+          name: name,
+          email: email,
+          tempPassword: tempPassword
+        })
+      });
+    } catch (emailErr) {
+      // Email sending is best-effort; account is still created
+      console.warn('Email send may have failed:', emailErr);
+    }
+
+    // Step 5: Show success
+    document.getElementById('sentToEmail').textContent = email;
+    goToScreen('end');
+
+  } catch (err) {
+    console.error('Account creation error:', err);
+    spinner.style.animation = 'none';
+    spinner.style.background = 'var(--error)';
+
+    let errorMsg = 'Something went wrong. Please try again.';
+    if (err.code === 'auth/email-already-in-use') {
+      errorMsg = 'An account with this email already exists. Try signing in at kiani.vc/dashboard instead.';
+      retryBtn.style.display = 'none';
+    } else {
+      retryBtn.style.display = '';
+    }
+
+    title.textContent = 'Oops.';
+    text.textContent = '';
+    errorEl.textContent = errorMsg;
+    errorEl.style.display = '';
+  }
+};
+
+// ─── Screen navigation helper ───
+function goToScreen(stepName) {
+  const allQuestions = document.querySelectorAll('.question');
+  allQuestions.forEach(q => {
+    q.classList.remove('active', 'exit-up');
+  });
+  const target = document.querySelector(`.question[data-step="${stepName}"]`);
+  if (target) target.classList.add('active');
+
+  // Hide chrome on end screens
+  document.getElementById('stepCounter').style.opacity = '0';
+  document.getElementById('backBtn').classList.add('hidden');
+  document.getElementById('enterHint').style.opacity = '0';
+  document.getElementById('progressBar').style.width = '100%';
+}
+window.goToScreen = goToScreen;
+</script>
+
+<script>
+// ─── Questionnaire Logic (vanilla, non-module) ───
+const questions = document.querySelectorAll('.question');
+const totalSteps = 6;
+let current = 0;
+window._onboardingAnswers = {};
+
+function updateUI() {
+  const step = Math.min(current + 1, totalSteps);
+  const isEnd = current >= totalSteps;
+
+  document.getElementById('progressBar').style.width = (current / totalSteps * 100) + '%';
+
+  const counter = document.getElementById('stepCounter');
+  if (isEnd) {
+    counter.style.opacity = '0';
+  } else {
+    counter.style.opacity = '1';
+    counter.textContent = String(step).padStart(2, '0') + ' / ' + String(totalSteps).padStart(2, '0');
+  }
+
+  const backBtn = document.getElementById('backBtn');
+  if (current === 0 || isEnd) {
+    backBtn.classList.add('hidden');
+  } else {
+    backBtn.classList.remove('hidden');
+  }
+
+  const hint = document.getElementById('enterHint');
+  if (isEnd) {
+    hint.style.opacity = '0';
+  } else if (questions[current].dataset.type === 'choice') {
+    hint.textContent = 'Or press A, B, C...';
+    hint.style.opacity = '1';
+  } else {
+    hint.textContent = 'Press Enter \u2193';
+    hint.style.opacity = '1';
+  }
+}
+
+function goTo(index) {
+  if (index < 0 || index >= questions.length) return;
+
+  const prev = questions[current];
+  const next = questions[index];
+
+  if (index > current) {
+    prev.classList.remove('active');
+    prev.classList.add('exit-up');
+    setTimeout(() => prev.classList.remove('exit-up'), 500);
+  } else {
+    prev.classList.remove('active');
+  }
+
+  next.classList.add('active');
+  current = index;
+  updateUI();
+
+  const input = next.querySelector('.text-input');
+  if (input) {
+    requestAnimationFrame(() => {
+      setTimeout(() => input.focus(), 50);
+    });
+  }
+}
+
+function isValidEmail(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+function nextQuestion() {
+  const q = questions[current];
+  const type = q.dataset.type;
+
+  if (type === 'text' || type === 'email') {
+    const input = q.querySelector('.text-input');
+    const val = input.value.trim();
+    if (!val) {
+      const row = q.querySelector('.input-row');
+      row.style.borderBottomColor = 'var(--center-fill)';
+      input.focus();
+      return;
+    }
+
+    // Email validation
+    if (type === 'email') {
+      const errorEl = document.getElementById('emailError');
+      if (!isValidEmail(val)) {
+        errorEl.textContent = 'Please enter a valid email address.';
+        input.focus();
+        return;
+      }
+      errorEl.textContent = '';
+    }
+
+    window._onboardingAnswers[q.dataset.step] = val;
+    input.blur();
+  }
+
+  if (type === 'choice') {
+    if (!window._onboardingAnswers[q.dataset.step]) {
+      q.querySelectorAll('.choice').forEach(c => {
+        c.style.borderColor = 'var(--center-fill)';
+        setTimeout(() => c.style.borderColor = '', 600);
+      });
+      return;
+    }
+  }
+
+  // If this was the last question, trigger account creation
+  if (current === totalSteps - 1) {
+    goTo(current + 1); // Go to processing screen
+    // Small delay so the screen transition completes
+    setTimeout(() => window.createAccount(), 300);
+    return;
+  }
+
+  goTo(current + 1);
+}
+
+function prevQuestion() {
+  if (document.activeElement) document.activeElement.blur();
+  if (current > 0) goTo(current - 1);
+}
+
+function selectChoice(el) {
+  const q = el.closest('.question');
+  q.querySelectorAll('.choice').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  window._onboardingAnswers[q.dataset.step] = el.dataset.value;
+
+  setTimeout(() => {
+    // If this is the last question, go to processing
+    if (current === totalSteps - 1) {
+      goTo(current + 1);
+      setTimeout(() => window.createAccount(), 300);
+    } else if (current < questions.length - 1) {
+      goTo(current + 1);
+    }
+  }, 350);
+}
+
+// Keyboard navigation
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    nextQuestion();
+  }
+
+  if (e.key === 'Backspace' && document.activeElement.tagName !== 'INPUT') {
+    e.preventDefault();
+    prevQuestion();
+  }
+
+  const q = questions[current];
+  if (q.dataset.type === 'choice' && document.activeElement.tagName !== 'INPUT') {
+    const keyMap = { a: 0, b: 1, c: 2, d: 3 };
+    const idx = keyMap[e.key.toLowerCase()];
+    if (idx !== undefined) {
+      const choices = q.querySelectorAll('.choice');
+      if (choices[idx]) selectChoice(choices[idx]);
+    }
+  }
+});
+
+// Theme toggle
+function toggleTheme() {
+  const html = document.documentElement;
+  const btn = document.getElementById('themeBtn');
+  const tc = document.getElementById('themeColor');
+  if (html.getAttribute('data-theme') === 'dark') {
+    html.setAttribute('data-theme', 'light');
+    btn.textContent = 'Dark';
+    tc.content = '#f0ede8';
+  } else {
+    html.setAttribute('data-theme', 'dark');
+    btn.textContent = 'Light';
+    tc.content = '#0a0a0a';
+  }
+}
+
+// Init
+updateUI();
+</script>
+
+</body>
+</html>

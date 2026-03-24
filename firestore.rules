@@ -1,6 +1,6 @@
 rules_version = '2';
 
-// Paste these rules into Firebase Console → Firestore → Rules tab
+// Deployed via Firebase Console — deploy updates with: firebase deploy --only firestore:rules
 service cloud.firestore {
   match /databases/{database}/documents {
 
