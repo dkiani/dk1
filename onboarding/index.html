@@ -467,7 +467,7 @@
 <body>
 
 <div class="progress-bar" id="progressBar" style="width: 0%"></div>
-<div class="step-counter" id="stepCounter">01 / 05</div>
+<div class="step-counter" id="stepCounter">01 / 06</div>
 <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">Dark</button>
 <button class="back-btn hidden" id="backBtn" onclick="prevQuestion()">&larr; Back</button>
 <div class="enter-hint" id="enterHint">Press Enter &darr;</div>
@@ -541,6 +541,36 @@
         <button class="input-submit" onclick="nextQuestion()" aria-label="Next">
           <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
         </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q6: Computer type -->
+  <div class="question" data-type="choice" data-step="6">
+    <div class="question-inner">
+      <div class="question-num">06</div>
+      <div class="question-text">What kind of computer do you have?</div>
+      <div class="choices">
+        <div class="choice" data-value="Mac" onclick="selectChoice(this)">
+          <span class="choice-key">A</span>
+          <span class="choice-label">Mac</span>
+        </div>
+        <div class="choice" data-value="Windows" onclick="selectChoice(this)">
+          <span class="choice-key">B</span>
+          <span class="choice-label">Windows</span>
+        </div>
+        <div class="choice" data-value="Chromebook" onclick="selectChoice(this)">
+          <span class="choice-key">C</span>
+          <span class="choice-label">Chromebook</span>
+        </div>
+        <div class="choice" data-value="Linux" onclick="selectChoice(this)">
+          <span class="choice-key">D</span>
+          <span class="choice-label">Linux</span>
+        </div>
+        <div class="choice" data-value="Other" onclick="selectChoice(this)">
+          <span class="choice-key">E</span>
+          <span class="choice-label">Other</span>
+        </div>
       </div>
     </div>
   </div>
@@ -646,6 +676,7 @@ window.createAccount = async function() {
         location: window._onboardingAnswers['3'] || '',
         somethingUnique: window._onboardingAnswers['4'] || '',
         mostInfluential: window._onboardingAnswers['5'] || '',
+        computerType: window._onboardingAnswers['6'] || '',
         theme: document.documentElement.getAttribute('data-theme') || 'light',
         completedAt: new Date().toISOString()
       },
@@ -725,7 +756,7 @@ window.goToScreen = goToScreen;
 <script>
 // ─── Questionnaire Logic (vanilla, non-module) ───
 const questions = document.querySelectorAll('.question');
-const totalSteps = 5;
+const totalSteps = 6;
 let current = 0;
 window._onboardingAnswers = {};
 
