@@ -958,8 +958,9 @@ const PRODUCTS = [
   }
 ];
 
-// ─── Admin UIDs — add your Firebase UID here after first login ───
+// ─── Admin — only these UIDs/emails can see the admin panel ───
 const ADMIN_UIDS = ['Tt3oWfwFdnZi75Zvc5WlYNwcXjM2'];
+const ADMIN_EMAILS = ['cryptokiani@gmail.com'];
 let isAdmin = false;
 
 // ─── Auth State ───
@@ -980,8 +981,8 @@ onAuthStateChanged(auth, async (user) => {
       return;
     }
 
-    // Check admin status from Firestore admin doc or hardcoded list
-    isAdmin = ADMIN_UIDS.includes(user.uid) || await checkAdminStatus(user.uid);
+    // Check admin status — must match UID or email
+    isAdmin = (ADMIN_UIDS.includes(user.uid) || ADMIN_EMAILS.includes(user.email)) && await checkAdminEligible(user);
     showDashboard(user);
     if (isAdmin) {
       document.getElementById('adminPanel').classList.add('visible');
@@ -1017,7 +1018,7 @@ window.handlePasswordChange = async function(e) {
     await updateDoc(doc(db, 'users', user.uid), { mustChangePassword: false });
     // Hide modal and show dashboard
     document.getElementById('pwModal').classList.remove('active');
-    isAdmin = ADMIN_UIDS.includes(user.uid) || await checkAdminStatus(user.uid);
+    isAdmin = (ADMIN_UIDS.includes(user.uid) || ADMIN_EMAILS.includes(user.email)) && await checkAdminEligible(user);
     showDashboard(user);
     if (isAdmin) {
       document.getElementById('adminPanel').classList.add('visible');
@@ -1041,7 +1042,7 @@ window.linkGoogle = async function() {
     await updateDoc(doc(db, 'users', user.uid), { mustChangePassword: false });
     // Hide modal and show dashboard
     document.getElementById('pwModal').classList.remove('active');
-    isAdmin = ADMIN_UIDS.includes(user.uid) || await checkAdminStatus(user.uid);
+    isAdmin = (ADMIN_UIDS.includes(user.uid) || ADMIN_EMAILS.includes(user.email)) && await checkAdminEligible(user);
     showDashboard(user);
     if (isAdmin) {
       document.getElementById('adminPanel').classList.add('visible');
@@ -1057,15 +1058,12 @@ window.linkGoogle = async function() {
   }
 };
 
-// ─── Check if user is admin via Firestore ───
-async function checkAdminStatus(uid) {
-  try {
-    const adminDoc = await getDoc(doc(db, 'admin', 'config'));
-    if (adminDoc.exists()) {
-      const adminUIDs = adminDoc.data().adminUIDs || [];
-      return adminUIDs.includes(uid);
-    }
-  } catch (e) { /* not admin */ }
+// ─── Check admin eligibility — must match hardcoded UID or email ───
+async function checkAdminEligible(user) {
+  // Primary check: hardcoded lists (most secure)
+  if (ADMIN_UIDS.includes(user.uid) || ADMIN_EMAILS.includes(user.email)) {
+    return true;
+  }
   return false;
 }
 
