@@ -697,6 +697,92 @@
     margin-top: 0.5rem;
   }
 
+  /* ─── Onboarding Detail Modal ─── */
+  .onboarding-modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+  }
+
+  .onboarding-modal-overlay.active {
+    display: flex;
+  }
+
+  .onboarding-modal {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    max-width: 460px;
+    width: 100%;
+    padding: 2.5rem;
+    position: relative;
+  }
+
+  .onboarding-modal-close {
+    position: absolute;
+    top: 1rem;
+    right: 1.2rem;
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-size: 1rem;
+    cursor: pointer;
+    line-height: 1;
+  }
+
+  .onboarding-modal-close:hover { color: var(--fg); }
+
+  .onboarding-modal-name {
+    font-size: 0.9rem;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.3rem;
+  }
+
+  .onboarding-modal-email {
+    font-size: 0.65rem;
+    color: var(--muted);
+    font-weight: 300;
+    margin-bottom: 2rem;
+  }
+
+  .onboarding-qa {
+    margin-bottom: 1.4rem;
+  }
+
+  .onboarding-qa-label {
+    font-size: 0.55rem;
+    font-weight: 300;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-bottom: 0.3rem;
+  }
+
+  .onboarding-qa-value {
+    font-size: 0.7rem;
+    font-weight: 300;
+    line-height: 1.5;
+  }
+
+  .onboarding-qa-value.empty {
+    color: var(--muted);
+    font-style: italic;
+  }
+
+  .admin-user-name.clickable {
+    cursor: pointer;
+    transition: color 0.2s;
+  }
+
+  .admin-user-name.clickable:hover {
+    color: var(--accent);
+  }
+
   /* ─── Password Change Modal (overlay) ─── */
   .pw-modal-overlay {
     display: none;
@@ -894,6 +980,16 @@
       <button class="sign-out-btn" onclick="handleSignOut()">Sign Out</button>
     </div>
 
+  </div>
+</div>
+
+<!-- ═══ ONBOARDING DETAIL MODAL ═══ -->
+<div class="onboarding-modal-overlay" id="onboardingModal" onclick="if(event.target===this)closeOnboardingModal()">
+  <div class="onboarding-modal">
+    <button class="onboarding-modal-close" onclick="closeOnboardingModal()">&times;</button>
+    <div class="onboarding-modal-name" id="obModalName"></div>
+    <div class="onboarding-modal-email" id="obModalEmail"></div>
+    <div id="obModalAnswers"></div>
   </div>
 </div>
 
@@ -1378,7 +1474,10 @@ window.searchUsers = async function() {
 };
 
 // ─── Admin: Render user list ───
+let _adminUsersCache = [];
+
 function renderAdminUsers(users) {
+  _adminUsersCache = users;
   const list = document.getElementById('adminUserList');
   list.innerHTML = users.map(u => {
     const hasAccess = u.products && u.products.curriculum;
@@ -1387,7 +1486,7 @@ function renderAdminUsers(users) {
     return `
       <div class="admin-user-card">
         <div class="admin-user-info">
-          <div class="admin-user-name">${u.displayName || 'No name'}</div>
+          <div class="admin-user-name clickable" onclick="showOnboardingDetail('${u.uid}')">${u.displayName || 'No name'}</div>
           <div class="admin-user-email">${u.email || 'No email'} — ${progress}/59 lessons</div>
         </div>
         <div class="admin-user-actions">
@@ -1400,6 +1499,36 @@ function renderAdminUsers(users) {
     `;
   }).join('');
 }
+
+// ─── Admin: Show onboarding detail modal ───
+window.showOnboardingDetail = function(uid) {
+  const user = _adminUsersCache.find(u => u.uid === uid);
+  if (!user) return;
+
+  const ob = user.onboarding || {};
+  document.getElementById('obModalName').textContent = user.displayName || 'No name';
+  document.getElementById('obModalEmail').textContent = user.email || 'No email';
+
+  const questions = [
+    { label: 'Location', value: ob.location },
+    { label: 'Something unique about them', value: ob.somethingUnique },
+    { label: 'Most influential person', value: ob.mostInfluential },
+    { label: 'Computer type', value: ob.computerType },
+  ];
+
+  document.getElementById('obModalAnswers').innerHTML = questions.map(q => `
+    <div class="onboarding-qa">
+      <div class="onboarding-qa-label">${q.label}</div>
+      <div class="onboarding-qa-value${q.value ? '' : ' empty'}">${q.value || 'No answer'}</div>
+    </div>
+  `).join('');
+
+  document.getElementById('onboardingModal').classList.add('active');
+};
+
+window.closeOnboardingModal = function() {
+  document.getElementById('onboardingModal').classList.remove('active');
+};
 
 // ─── Admin: Grant access ───
 window.grantAccess = async function(uid) {
