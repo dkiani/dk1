@@ -1381,6 +1381,14 @@ window.handleReset = async function() {
 window.handleSignOut = async function() {
   await signOut(auth);
   document.getElementById('userMenu').classList.remove('open');
+
+  // Clear cached session data so stale state doesn't persist
+  localStorage.removeItem('curriculum_paid');
+  localStorage.removeItem('dk-curriculum-progress-v2');
+  localStorage.removeItem('dk-curriculum-position-v2');
+
+  // Force a clean reload so all UI resets properly
+  window.location.reload();
 };
 
 // ─── UI helpers (exposed to window) ───
@@ -1509,17 +1517,23 @@ window.showOnboardingDetail = function(uid) {
   document.getElementById('obModalName').textContent = user.displayName || 'No name';
   document.getElementById('obModalEmail').textContent = user.email || 'No email';
 
+  const addr = ob.mailingAddress || {};
+  const formattedAddr = addr.street
+    ? [addr.street, addr.apt, `${addr.city || ''}${addr.state ? ', ' + addr.state : ''} ${addr.zip || ''}`.trim(), addr.country].filter(Boolean).join('\n')
+    : '';
+
   const questions = [
     { label: 'Location', value: ob.location },
     { label: 'Something unique about them', value: ob.somethingUnique },
     { label: 'Most influential person', value: ob.mostInfluential },
     { label: 'Computer type', value: ob.computerType },
+    { label: 'Mailing address', value: formattedAddr },
   ];
 
   document.getElementById('obModalAnswers').innerHTML = questions.map(q => `
     <div class="onboarding-qa">
       <div class="onboarding-qa-label">${q.label}</div>
-      <div class="onboarding-qa-value${q.value ? '' : ' empty'}">${q.value || 'No answer'}</div>
+      <div class="onboarding-qa-value${q.value ? '' : ' empty'}" style="${q.label === 'Mailing address' ? 'white-space: pre-line;' : ''}">${q.value || 'No answer'}</div>
     </div>
   `).join('');
 
