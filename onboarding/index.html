@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="light">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="theme-color" content="#0a0a0a" id="themeColor">
+<meta name="theme-color" content="#f0ede8" id="themeColor">
 <title>Onboarding — Daniel Kiani</title>
 <meta name="robots" content="noindex, nofollow">
 
@@ -468,7 +468,7 @@
 
 <div class="progress-bar" id="progressBar" style="width: 0%"></div>
 <div class="step-counter" id="stepCounter">01 / 06</div>
-<button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">Light</button>
+<button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">Dark</button>
 <button class="back-btn hidden" id="backBtn" onclick="prevQuestion()">&larr; Back</button>
 <div class="enter-hint" id="enterHint">Press Enter &darr;</div>
 
@@ -517,13 +517,13 @@
     </div>
   </div>
 
-  <!-- Q4: Dream travel destination -->
+  <!-- Q4: Something most people don't know -->
   <div class="question" data-type="text" data-step="4">
     <div class="question-inner">
       <div class="question-num">04</div>
-      <div class="question-text">What's your dream travel destination?</div>
+      <div class="question-text">Tell me something about yourself that most people don't know</div>
       <div class="input-row">
-        <input type="text" class="text-input" placeholder="Anywhere in the world..." autocomplete="off" enterkeyhint="next">
+        <input type="text" class="text-input" placeholder="Type your answer..." autocomplete="off" enterkeyhint="next">
         <button class="input-submit" onclick="nextQuestion()" aria-label="Next">
           <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
         </button>
@@ -531,11 +531,11 @@
     </div>
   </div>
 
-  <!-- Q5: Favorite way to spend a day off -->
+  <!-- Q5: Most influential person -->
   <div class="question" data-type="text" data-step="5">
     <div class="question-inner">
       <div class="question-num">05</div>
-      <div class="question-text">What's your favorite way to spend a day off?</div>
+      <div class="question-text">Who is the most influential person in your life?</div>
       <div class="input-row">
         <input type="text" class="text-input" placeholder="Type your answer..." autocomplete="off" enterkeyhint="next">
         <button class="input-submit" onclick="nextQuestion()" aria-label="Next">
@@ -670,9 +670,10 @@ window.createAccount = async function() {
         name: name,
         email: email,
         location: window._onboardingAnswers['3'] || '',
-        dreamDestination: window._onboardingAnswers['4'] || '',
-        dayOff: window._onboardingAnswers['5'] || '',
+        somethingUnique: window._onboardingAnswers['4'] || '',
+        mostInfluential: window._onboardingAnswers['5'] || '',
         tradingExperience: window._onboardingAnswers['6'] || '',
+        theme: document.documentElement.getAttribute('data-theme') || 'light',
         completedAt: new Date().toISOString()
       },
       products: {
@@ -697,7 +698,8 @@ window.createAccount = async function() {
           action: 'onboarding_welcome',
           name: name,
           email: email,
-          tempPassword: tempPassword
+          tempPassword: tempPassword,
+          theme: document.documentElement.getAttribute('data-theme') || 'light'
         })
       });
     } catch (emailErr) {
@@ -912,7 +914,7 @@ document.addEventListener('keydown', e => {
   }
 });
 
-// Theme toggle
+// Theme toggle — saves to localStorage so dashboard inherits the choice
 function toggleTheme() {
   const html = document.documentElement;
   const btn = document.getElementById('themeBtn');
@@ -921,10 +923,12 @@ function toggleTheme() {
     html.setAttribute('data-theme', 'light');
     btn.textContent = 'Dark';
     tc.content = '#f0ede8';
+    localStorage.setItem('dk-theme', 'light');
   } else {
     html.setAttribute('data-theme', 'dark');
     btn.textContent = 'Light';
     tc.content = '#0a0a0a';
+    localStorage.setItem('dk-theme', 'dark');
   }
 }
 

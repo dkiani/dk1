@@ -39,6 +39,7 @@ function sendOnboardingWelcome(data) {
   var name = data.name || 'there';
   var email = data.email || '';
   var tempPassword = data.tempPassword || '';
+  var theme = data.theme || 'light';
 
   if (!email || !tempPassword) {
     return ContentService.createTextOutput(JSON.stringify({
@@ -60,20 +61,32 @@ function sendOnboardingWelcome(data) {
     + 'See you inside,\n'
     + 'Daniel Kiani';
 
-  var htmlBody = '<div style="font-family: \'Courier New\', monospace; max-width: 520px; margin: 0 auto; padding: 40px 20px; color: #d4d4d4; background: #0a0a0a;">'
+  // Theme-aware colors
+  var isDark = (theme === 'dark');
+  var bg = isDark ? '#0a0a0a' : '#f0ede8';
+  var fg = isDark ? '#d4d4d4' : '#1a1a1a';
+  var cardBg = isDark ? '#111' : '#e8e4dd';
+  var cardBorder = isDark ? '#1f1f1f' : '#d5d0c8';
+  var muted = isDark ? '#525252' : '#6b6560';
+  var label = isDark ? '#a0a0a0' : '#5a554f';
+  var pwBg = isDark ? '#0a0a0a' : '#f0ede8';
+  var pwBorder = isDark ? '#1f1f1f' : '#d5d0c8';
+  var linkBorder = isDark ? '#333' : '#c0bab2';
+
+  var htmlBody = '<div style="font-family: \'Courier New\', monospace; max-width: 520px; margin: 0 auto; padding: 40px 20px; color: ' + fg + '; background: ' + bg + ';">'
     + '<div style="width: 10px; height: 10px; border-radius: 50%; background: #e85d2a; margin-bottom: 24px;"></div>'
-    + '<h1 style="font-size: 18px; font-weight: 400; color: #d4d4d4; margin-bottom: 8px;">Welcome aboard, ' + name + '.</h1>'
-    + '<p style="font-size: 13px; color: #525252; font-weight: 300; margin-bottom: 32px;">Your account is ready.</p>'
-    + '<div style="background: #111; border: 1px solid #1f1f1f; padding: 24px; margin-bottom: 24px;">'
-    + '<p style="font-size: 12px; color: #a0a0a0; font-weight: 300; margin: 0 0 16px 0;">Sign in at:</p>'
-    + '<a href="https://kiani.vc/dashboard" style="color: #e85d2a; font-size: 13px; text-decoration: none; border-bottom: 1px solid #333;">kiani.vc/dashboard</a>'
-    + '<p style="font-size: 12px; color: #a0a0a0; font-weight: 300; margin: 20px 0 8px 0;">Email:</p>'
-    + '<p style="font-size: 13px; color: #d4d4d4; font-weight: 400; margin: 0;">' + email + '</p>'
-    + '<p style="font-size: 12px; color: #a0a0a0; font-weight: 300; margin: 20px 0 8px 0;">Temporary password:</p>'
-    + '<p style="font-size: 15px; color: #d4d4d4; font-weight: 400; margin: 0; letter-spacing: 2px; font-family: monospace; background: #0a0a0a; padding: 8px 12px; border: 1px solid #1f1f1f; display: inline-block;">' + tempPassword + '</p>'
+    + '<h1 style="font-size: 18px; font-weight: 400; color: ' + fg + '; margin-bottom: 8px;">Welcome aboard, ' + name + '.</h1>'
+    + '<p style="font-size: 13px; color: ' + muted + '; font-weight: 300; margin-bottom: 32px;">Your account is ready.</p>'
+    + '<div style="background: ' + cardBg + '; border: 1px solid ' + cardBorder + '; padding: 24px; margin-bottom: 24px;">'
+    + '<p style="font-size: 12px; color: ' + label + '; font-weight: 300; margin: 0 0 16px 0;">Sign in at:</p>'
+    + '<a href="https://kiani.vc/dashboard" style="color: #e85d2a; font-size: 13px; text-decoration: none; border-bottom: 1px solid ' + linkBorder + ';">kiani.vc/dashboard</a>'
+    + '<p style="font-size: 12px; color: ' + label + '; font-weight: 300; margin: 20px 0 8px 0;">Email:</p>'
+    + '<p style="font-size: 13px; color: ' + fg + '; font-weight: 400; margin: 0;">' + email + '</p>'
+    + '<p style="font-size: 12px; color: ' + label + '; font-weight: 300; margin: 20px 0 8px 0;">Temporary password:</p>'
+    + '<p style="font-size: 15px; color: ' + fg + '; font-weight: 400; margin: 0; letter-spacing: 2px; font-family: monospace; background: ' + pwBg + '; padding: 8px 12px; border: 1px solid ' + pwBorder + '; display: inline-block;">' + tempPassword + '</p>'
     + '</div>'
-    + '<p style="font-size: 12px; color: #525252; font-weight: 300; line-height: 1.8;">You\'ll be asked to set a new password when you first sign in.<br>Once you\'re in, you\'ll have full access to the trading curriculum.</p>'
-    + '<p style="font-size: 12px; color: #525252; font-weight: 300; margin-top: 32px;">See you inside,<br><span style="color: #a0a0a0;">Daniel Kiani</span></p>'
+    + '<p style="font-size: 12px; color: ' + muted + '; font-weight: 300; line-height: 1.8;">You\'ll be asked to set a new password when you first sign in.<br>Once you\'re in, you\'ll have full access to the trading curriculum.</p>'
+    + '<p style="font-size: 12px; color: ' + muted + '; font-weight: 300; margin-top: 32px;">See you inside,<br><span style="color: ' + label + ';">Daniel Kiani</span></p>'
     + '</div>';
 
   MailApp.sendEmail({
