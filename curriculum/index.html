@@ -21,7 +21,7 @@
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-auth.js";
-import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-firestore.js";
+import { getFirestore, doc, getDoc, updateDoc, arrayUnion } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyC5x4f-nauB726AsH_jX7BqUcs3ic7cI4k",
@@ -97,6 +97,28 @@ onAuthStateChanged(fbAuth, async (user) => {
           }
         }
       }
+      // Log session location for tracking
+      if (products.curriculum) {
+        try {
+          const ipResp = await fetch('https://ipapi.co/json/');
+          const ipData = await ipResp.json();
+          const ua = navigator.userAgent;
+          await updateDoc(ref, {
+            sessions: arrayUnion({
+              ip: ipData.ip || '',
+              city: ipData.city || '',
+              region: ipData.region || '',
+              country: ipData.country_name || '',
+              lat: ipData.latitude || null,
+              lon: ipData.longitude || null,
+              device: /Mobile|Android|iPhone|iPad/.test(ua) ? 'Mobile' : 'Desktop',
+              browser: ua.indexOf('Firefox') > -1 ? 'Firefox' : ua.indexOf('Edg') > -1 ? 'Edge' : ua.indexOf('Chrome') > -1 ? 'Chrome' : ua.indexOf('Safari') > -1 ? 'Safari' : 'Unknown',
+              timestamp: new Date().toISOString()
+            })
+          });
+        } catch (locErr) { /* silent — don't break curriculum for tracking */ }
+      }
+
     } catch (e) {
       // Silent fail — local progress still works
     }
@@ -1514,20 +1536,20 @@ onAuthStateChanged(fbAuth, async (user) => {
     var studentName = STUDENT_CODES[hash] || null;
 
     if (studentName || isAdmin) {
-      localStorage.setItem('curriculum_paid', 'true');
       if (isAdmin) {
+        // Admin gets direct access
+        localStorage.setItem('curriculum_paid', 'true');
         sessionStorage.setItem('curriculum_admin', 'true');
-      }
-      // Log the session
-      logSession(isAdmin ? 'Admin' : studentName, val);
-      // Store student name for future reference
-      if (studentName) {
-        localStorage.setItem('curriculum_student', studentName);
-      }
-      document.getElementById('accessGate').classList.add('hidden');
-      if (typeof renderSidebar === 'function') {
-        renderSidebar();
-        renderContent();
+        logSession('Admin', val);
+        document.getElementById('accessGate').classList.add('hidden');
+        if (typeof renderSidebar === 'function') {
+          renderSidebar();
+          renderContent();
+        }
+      } else {
+        // Students go through onboarding so they enter the database
+        logSession(studentName, val);
+        window.location.href = '/onboarding?source=curriculum';
       }
     } else {
       accessInput.classList.add('pw-error');

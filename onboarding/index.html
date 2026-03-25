@@ -669,7 +669,7 @@
       <div class="thankyou-sub">
         Check your email for sign-in instructions.<br>
         Your temporary password has been sent to <strong id="sentToEmail"></strong>.<br><br>
-        <a href="/dashboard">Go to sign in &rarr;</a>
+        <a href="/dashboard" id="onboardingNextLink">Go to sign in &rarr;</a>
       </div>
     </div>
   </div>
@@ -700,6 +700,35 @@ const db = getFirestore(secondaryApp);
 
 // ─── Google Apps Script endpoint for sending welcome emails ───
 const EMAIL_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwzIH8vbHcUT3EeIqKqpkIYIruEnLH9z8YHrNj9lzV98XDKyuFS0FFoXK9O93hgAMZ3jQ/exec';
+
+// ─── Detect if user came from curriculum access code ───
+const urlParams = new URLSearchParams(window.location.search);
+const isFromCurriculum = urlParams.get('source') === 'curriculum';
+
+// ─── Fetch session location data for tracking ───
+async function getSessionLocation() {
+  try {
+    const resp = await fetch('https://ipapi.co/json/');
+    const data = await resp.json();
+    const ua = navigator.userAgent;
+    return {
+      ip: data.ip || '',
+      city: data.city || '',
+      region: data.region || '',
+      country: data.country_name || '',
+      lat: data.latitude || null,
+      lon: data.longitude || null,
+      device: /Mobile|Android|iPhone|iPad/.test(ua) ? 'Mobile' : 'Desktop',
+      browser: ua.indexOf('Firefox') > -1 ? 'Firefox' : ua.indexOf('Edg') > -1 ? 'Edge' : ua.indexOf('Chrome') > -1 ? 'Chrome' : ua.indexOf('Safari') > -1 ? 'Safari' : 'Unknown',
+      timestamp: new Date().toISOString()
+    };
+  } catch (e) {
+    return { ip: '', city: '', region: '', country: '', device: 'Unknown', browser: 'Unknown', timestamp: new Date().toISOString() };
+  }
+}
+
+// Pre-fetch location data so it's ready when account is created
+const sessionLocationPromise = getSessionLocation();
 
 // ─── Generate a temporary password ───
 function generateTempPassword() {
@@ -739,12 +768,14 @@ window.createAccount = async function() {
 
     // Step 2: Write user doc to Firestore
     title.textContent = 'Saving your info...';
+    const sessionLocation = await sessionLocationPromise;
     await setDoc(doc(db, 'users', cred.user.uid), {
       email: email,
       displayName: name,
       photoURL: '',
       createdAt: serverTimestamp(),
       mustChangePassword: true,
+      source: isFromCurriculum ? 'curriculum' : 'direct',
       onboarding: {
         name: name,
         email: email,
@@ -761,7 +792,8 @@ window.createAccount = async function() {
       },
       progress: {
         curriculum: { completedLessons: [], lastPosition: null }
-      }
+      },
+      sessions: [sessionLocation]
     });
 
     // Step 3: Sign out from secondary app (user shouldn't be logged in here)
@@ -789,6 +821,16 @@ window.createAccount = async function() {
 
     // Step 5: Show success
     document.getElementById('sentToEmail').textContent = email;
+
+    // If user came from curriculum, grant access and link back
+    if (isFromCurriculum) {
+      localStorage.setItem('curriculum_paid', 'true');
+      localStorage.setItem('curriculum_student', name);
+      const link = document.getElementById('onboardingNextLink');
+      link.href = '/curriculum';
+      link.textContent = 'Go to curriculum \u2192';
+    }
+
     goToScreen('end');
 
   } catch (err) {
