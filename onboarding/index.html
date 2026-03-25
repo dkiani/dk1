@@ -438,6 +438,45 @@
     transition: opacity 0.3s;
   }
 
+  /* ─── Mailing Address ─── */
+  .address-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .address-row {
+    display: flex;
+    gap: 1.5rem;
+  }
+
+  .address-row .input-row {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .address-row .input-row.small {
+    flex: 0 0 35%;
+  }
+
+  .question-subtitle {
+    font-size: 0.65rem;
+    font-weight: 300;
+    color: var(--dim);
+    margin-top: -1.4rem;
+    margin-bottom: 1.8rem;
+  }
+
+  @media (max-width: 600px) {
+    .address-row {
+      flex-direction: column;
+      gap: 0;
+    }
+    .address-row .input-row.small {
+      flex: 1;
+    }
+  }
+
   /* ─── Responsive ─── */
   @media (max-width: 600px) {
     .question-inner { padding: 0 1.5rem; }
@@ -467,7 +506,7 @@
 <body>
 
 <div class="progress-bar" id="progressBar" style="width: 0%"></div>
-<div class="step-counter" id="stepCounter">01 / 06</div>
+<div class="step-counter" id="stepCounter">01 / 07</div>
 <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">Dark</button>
 <button class="back-btn hidden" id="backBtn" onclick="prevQuestion()">&larr; Back</button>
 <div class="enter-hint" id="enterHint">Press Enter &darr;</div>
@@ -575,6 +614,42 @@
     </div>
   </div>
 
+  <!-- Q7: Mailing address -->
+  <div class="question" data-type="mailing-address" data-step="7">
+    <div class="question-inner">
+      <div class="question-num">07</div>
+      <div class="question-text">What is your mailing address?</div>
+      <div class="question-subtitle">(for your welcome gift!)</div>
+      <div class="address-fields">
+        <div class="input-row">
+          <input type="text" class="text-input" id="addrStreet" placeholder="Street address" autocomplete="street-address" enterkeyhint="next">
+        </div>
+        <div class="input-row">
+          <input type="text" class="text-input" id="addrApt" placeholder="Apt, suite, unit (optional)" autocomplete="address-line2" enterkeyhint="next">
+        </div>
+        <div class="address-row">
+          <div class="input-row">
+            <input type="text" class="text-input" id="addrCity" placeholder="City" autocomplete="address-level2" enterkeyhint="next">
+          </div>
+          <div class="input-row small">
+            <input type="text" class="text-input" id="addrState" placeholder="State" autocomplete="address-level1" enterkeyhint="next">
+          </div>
+        </div>
+        <div class="address-row">
+          <div class="input-row small">
+            <input type="text" class="text-input" id="addrZip" placeholder="ZIP code" autocomplete="postal-code" enterkeyhint="next">
+          </div>
+          <div class="input-row">
+            <input type="text" class="text-input" id="addrCountry" placeholder="Country" autocomplete="country-name" enterkeyhint="done">
+            <button class="input-submit" onclick="nextQuestion()" aria-label="Next">
+              <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Processing Screen -->
   <div class="question" data-type="processing" data-step="processing">
     <div class="question-inner">
@@ -677,6 +752,7 @@ window.createAccount = async function() {
         somethingUnique: window._onboardingAnswers['4'] || '',
         mostInfluential: window._onboardingAnswers['5'] || '',
         computerType: window._onboardingAnswers['6'] || '',
+        mailingAddress: window._onboardingAnswers['7'] || {},
         theme: document.documentElement.getAttribute('data-theme') || 'light',
         completedAt: new Date().toISOString()
       },
@@ -756,7 +832,7 @@ window.goToScreen = goToScreen;
 <script>
 // ─── Questionnaire Logic (vanilla, non-module) ───
 const questions = document.querySelectorAll('.question');
-const totalSteps = 6;
+const totalSteps = 7;
 let current = 0;
 window._onboardingAnswers = {};
 
@@ -786,6 +862,9 @@ function updateUI() {
     hint.style.opacity = '0';
   } else if (questions[current].dataset.type === 'choice') {
     hint.textContent = 'Or press A, B, C...';
+    hint.style.opacity = '1';
+  } else if (questions[current].dataset.type === 'mailing-address') {
+    hint.textContent = 'Tab between fields, Enter to continue';
     hint.style.opacity = '1';
   } else {
     hint.textContent = 'Press Enter \u2193';
@@ -852,6 +931,34 @@ function nextQuestion() {
     input.blur();
   }
 
+  if (type === 'mailing-address') {
+    const street = document.getElementById('addrStreet').value.trim();
+    const city = document.getElementById('addrCity').value.trim();
+    const state = document.getElementById('addrState').value.trim();
+    const zip = document.getElementById('addrZip').value.trim();
+    const country = document.getElementById('addrCountry').value.trim();
+    const apt = document.getElementById('addrApt').value.trim();
+
+    // Require at least street, city, and zip
+    if (!street || !city || !zip) {
+      const firstEmpty = !street ? document.getElementById('addrStreet') :
+                         !city ? document.getElementById('addrCity') :
+                         document.getElementById('addrZip');
+      firstEmpty.closest('.input-row').style.borderBottomColor = 'var(--center-fill)';
+      firstEmpty.focus();
+      return;
+    }
+
+    window._onboardingAnswers[q.dataset.step] = {
+      street: street,
+      apt: apt,
+      city: city,
+      state: state,
+      zip: zip,
+      country: country
+    };
+  }
+
   if (type === 'choice') {
     if (!window._onboardingAnswers[q.dataset.step]) {
       q.querySelectorAll('.choice').forEach(c => {
@@ -899,6 +1006,16 @@ function selectChoice(el) {
 document.addEventListener('keydown', e => {
   if (e.key === 'Enter') {
     e.preventDefault();
+    // For mailing address, Enter moves to next field; only submit from last field
+    const q = questions[current];
+    if (q && q.dataset.type === 'mailing-address') {
+      const inputs = Array.from(q.querySelectorAll('.text-input'));
+      const idx = inputs.indexOf(document.activeElement);
+      if (idx >= 0 && idx < inputs.length - 1) {
+        inputs[idx + 1].focus();
+        return;
+      }
+    }
     nextQuestion();
   }
 
