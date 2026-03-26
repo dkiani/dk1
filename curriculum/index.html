@@ -4726,14 +4726,22 @@ function isFreeLesson(mi, li) {
   return mi === 0 && li <= 1;
 }
 
+// Quiz gating: module 0 is always open; module N requires passing module N-1's quiz
+function isModuleUnlockedByQuiz(mi) {
+  if (mi === 0) return true;
+  const prevMod = CURRICULUM[mi - 1];
+  return prevMod && prevMod.quiz && isModulePassed(prevMod.id);
+}
+
 function isLessonAccessible(mi, li) {
-  if (isAdminMode() || isPaidUser()) return true;
+  if (isAdminMode()) return true;
+  if (isPaidUser()) return !CURRICULUM[mi].locked && !CURRICULUM[mi].comingSoon && isModuleUnlockedByQuiz(mi);
   return isFreeLesson(mi, li);
 }
 
 function getUnlockedModules() {
   if (isAdminMode()) return CURRICULUM;
-  if (isPaidUser()) return CURRICULUM.filter(m => !m.locked && !m.comingSoon);
+  if (isPaidUser()) return CURRICULUM.filter((m, i) => !m.locked && !m.comingSoon && isModuleUnlockedByQuiz(i));
   // Free users only get module 1
   return CURRICULUM.filter((m, i) => i === 0);
 }
@@ -4776,7 +4784,8 @@ function renderSidebar() {
   nav.innerHTML = CURRICULUM.map((mod, mi) => {
     const isComingSoon = !admin && (mod.locked || mod.comingSoon);
     const isModuleLocked = !admin && !paid && mi > 0;
-    const isOpen = !isComingSoon && !isModuleLocked && mi === currentView.module;
+    const isQuizLocked = !admin && paid && !isModuleUnlockedByQuiz(mi);
+    const isOpen = !isComingSoon && !isModuleLocked && !isQuizLocked && mi === currentView.module;
 
     // Coming soon modules (no content yet) — always show lock
     if (isComingSoon) {
@@ -4796,6 +4805,21 @@ function renderSidebar() {
       return `
         <div class="module-group" data-module="${mi}">
           <div class="module-header locked" onclick="showPaywall()" style="cursor:pointer;">
+            <span class="module-number">${String(mod.number).padStart(2, '0')}</span>
+            <span class="module-title">${mod.title}</span>
+            <svg class="module-lock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          </div>
+        </div>
+      `;
+    }
+
+    // Quiz-locked modules — paid user but hasn't passed previous module's quiz
+    if (isQuizLocked) {
+      const prevMod = CURRICULUM[mi - 1];
+      const prevModName = prevMod ? prevMod.title : 'previous module';
+      return `
+        <div class="module-group" data-module="${mi}">
+          <div class="module-header locked" onclick="alert('Pass the Module ${mi} quiz (${prevModName}) to unlock this module.')" style="cursor:pointer;">
             <span class="module-number">${String(mod.number).padStart(2, '0')}</span>
             <span class="module-title">${mod.title}</span>
             <svg class="module-lock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
@@ -4936,7 +4960,12 @@ function updateProgress() {
 function goToLesson(mi, li) {
   // Check access before navigating
   if (!isLessonAccessible(mi, li)) {
-    showPaywall();
+    if (isPaidUser() && !isModuleUnlockedByQuiz(mi)) {
+      const prevMod = CURRICULUM[mi - 1];
+      alert(`Pass the Module ${mi} quiz (${prevMod.title}) to unlock this module.`);
+    } else {
+      showPaywall();
+    }
     return;
   }
   currentView = { type: 'lesson', module: mi, lesson: li };
@@ -5049,6 +5078,11 @@ function isModulePassed(modId) {
 // ─── Quiz Rendering ───
 function goToQuiz(mi) {
   if (!isAdminMode() && !isPaidUser()) { showPaywall(); return; }
+  if (!isAdminMode() && !isModuleUnlockedByQuiz(mi)) {
+    const prevMod = CURRICULUM[mi - 1];
+    alert(`Pass the Module ${mi} quiz (${prevMod.title}) to unlock this module.`);
+    return;
+  }
   currentView = { type: 'quiz', module: mi, lesson: 0 };
   saveProgress();
   renderSidebar();
