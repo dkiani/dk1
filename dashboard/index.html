@@ -2473,14 +2473,14 @@ function friendlyError(code) {
     let html = stepHeader('02', 'Account Awareness', 'Know your numbers. Write them — don\'t guess them.');
 
     html += '<div class="pmr-section"><label class="pmr-label">How much drawdown do you have left on your active account?</label>';
-    html += '<div class="pmr-input-row"><span class="pmr-dollar-sign">$</span><input type="number" class="pmr-number-input" placeholder="e.g. 2500" oninput="pmrSet(\'drawdownLeft\',this.value)"></div>';
-
+    html += `<div class="pmr-input-row"><span class="pmr-dollar-sign">$</span><input type="number" class="pmr-number-input" placeholder="e.g. 2500" value="${answers.drawdownLeft}" oninput="pmrSetDrawdown(this.value)"></div>`;
+    html += '<div class="pmr-drawdown-warning">';
     if (dd > 0 && dd <= 500) {
       html += '<p class="pmr-warning danger">⚠️ You\'re in the danger zone. Consider sitting today out or trading micro only.</p>';
     } else if (dd > 500 && dd <= 1000) {
       html += '<p class="pmr-warning caution">Tight cushion. Trade conservatively — one clean setup max.</p>';
     }
-    html += '</div>';
+    html += '</div></div>';
 
     html += '<div class="pmr-section"><label class="pmr-label">Where are you relative to your payout target?</label><div class="pmr-chip-grid">';
     [['Far away','far'],['Getting close','close'],['Almost there','almost'],['Already hit it','hit']].forEach(([label, val]) => {
@@ -2680,6 +2680,24 @@ function friendlyError(code) {
 
   window.pmrSetMood = function(val) { answers.mood = val; render(); };
   window.pmrSet = function(key, val) { answers[key] = val; render(); };
+  window.pmrSetDrawdown = function(val) {
+    answers.drawdownLeft = val;
+    // Update warning without full re-render
+    const dd = parseFloat(val);
+    const warn = document.querySelector('.pmr-drawdown-warning');
+    if (warn) {
+      if (dd > 0 && dd <= 500) {
+        warn.innerHTML = '<p class="pmr-warning danger">⚠️ You\'re in the danger zone. Consider sitting today out or trading micro only.</p>';
+      } else if (dd > 500 && dd <= 1000) {
+        warn.innerHTML = '<p class="pmr-warning caution">Tight cushion. Trade conservatively — one clean setup max.</p>';
+      } else {
+        warn.innerHTML = '';
+      }
+    }
+    // Update continue button state
+    const btn = document.querySelector('#pmrContainer .pmr-btn');
+    if (btn) btn.disabled = !(answers.drawdownLeft && answers.accountFeeling);
+  };
   window.pmrJournal = function(val) {
     answers.journal = val;
     // Update char count without full re-render
