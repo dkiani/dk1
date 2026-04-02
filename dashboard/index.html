@@ -15,6 +15,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -849,6 +850,668 @@
     .admin-stats { flex-wrap: wrap; }
     .pw-modal { padding: 2rem 1.25rem; }
   }
+
+  /* ═══════════════════════════════════════════
+     DASHBOARD TABS
+     ═══════════════════════════════════════════ */
+  .dash-tabs {
+    display: flex;
+    gap: 0;
+    margin-bottom: 2.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .dash-tab {
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-family: var(--font);
+    font-size: 0.6rem;
+    font-weight: 300;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.7rem 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+  }
+
+  .dash-tab:hover { color: var(--fg); }
+  .dash-tab.active {
+    color: var(--fg);
+    border-bottom-color: var(--center-fill);
+  }
+
+  .dash-tab-content { display: none; }
+  .dash-tab-content.active { display: block; }
+
+  /* ═══════════════════════════════════════════
+     PRE-MARKET ROUTINE
+     ═══════════════════════════════════════════ */
+  .pmr-wrap {
+    max-width: 520px;
+    margin: 0 auto;
+    padding: 1rem 0 2rem;
+  }
+
+  @keyframes pmrFadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .pmr-fade-in {
+    animation: pmrFadeUp 0.4s ease-out;
+  }
+
+  /* Progress bar (routine steps) */
+  .pmr-progress-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+
+  .pmr-back-btn {
+    background: none;
+    border: none;
+    color: var(--muted);
+    cursor: pointer;
+    font-size: 0.65rem;
+    font-family: var(--font);
+    padding: 0;
+    transition: color 0.3s;
+  }
+
+  .pmr-back-btn:hover { color: var(--fg); }
+
+  .pmr-step-label {
+    color: var(--dim);
+    font-size: 0.6rem;
+    font-weight: 300;
+  }
+
+  .pmr-track {
+    height: 2px;
+    background: var(--border);
+    border-radius: 1px;
+    margin-bottom: 2rem;
+  }
+
+  .pmr-track-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--center-fill), #f0784a);
+    border-radius: 1px;
+    transition: width 0.4s var(--ease);
+  }
+
+  /* Step header */
+  .pmr-step-num {
+    font-size: 0.55rem;
+    letter-spacing: 4px;
+    color: var(--center-fill);
+    text-transform: uppercase;
+    margin-bottom: 0.6rem;
+    text-align: center;
+  }
+
+  .pmr-step-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem;
+    font-weight: 300;
+    color: var(--fg);
+    margin: 0 0 0.5rem;
+    text-align: center;
+  }
+
+  .pmr-step-sub {
+    color: var(--muted);
+    font-size: 0.7rem;
+    font-weight: 300;
+    margin: 0 0 2rem;
+    text-align: center;
+  }
+
+  /* Welcome */
+  .pmr-welcome { text-align: center; }
+
+  .pmr-welcome-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.2rem;
+    font-weight: 300;
+    color: var(--fg);
+    margin: 0 0 0.4rem;
+    line-height: 1.2;
+  }
+
+  .pmr-welcome-time {
+    color: var(--muted);
+    font-size: 0.7rem;
+    font-weight: 300;
+    margin-bottom: 2rem;
+  }
+
+  .pmr-divider {
+    width: 60px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--center-fill), transparent);
+    margin: 0 auto 2rem;
+  }
+
+  .pmr-welcome-desc {
+    color: var(--muted);
+    font-size: 0.75rem;
+    line-height: 1.8;
+    max-width: 400px;
+    margin: 0 auto 2.5rem;
+    font-weight: 300;
+  }
+
+  .pmr-welcome-desc em {
+    color: var(--center-fill);
+    font-style: italic;
+  }
+
+  /* Primary button */
+  .pmr-btn {
+    background: var(--center-fill);
+    color: #fff;
+    border: none;
+    padding: 0.7rem 2rem;
+    font-family: var(--font);
+    font-size: 0.7rem;
+    font-weight: 400;
+    cursor: pointer;
+    transition: all 0.3s;
+    letter-spacing: 0.02em;
+  }
+
+  .pmr-btn:hover { opacity: 0.9; }
+  .pmr-btn:disabled { opacity: 0.3; cursor: default; }
+
+  .pmr-btn-outline {
+    background: transparent;
+    border: 1px solid var(--center-fill);
+    color: var(--center-fill);
+    padding: 0.7rem 2rem;
+    font-family: var(--font);
+    font-size: 0.7rem;
+    font-weight: 400;
+    cursor: pointer;
+    transition: all 0.3s;
+    letter-spacing: 0.02em;
+  }
+
+  .pmr-btn-outline:hover { opacity: 0.8; }
+
+  /* Label */
+  .pmr-label {
+    display: block;
+    color: var(--fg);
+    font-size: 0.75rem;
+    font-weight: 300;
+    margin-bottom: 0.8rem;
+    text-align: center;
+    line-height: 1.5;
+  }
+
+  /* Mood buttons */
+  .pmr-mood-grid {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 2rem;
+  }
+
+  .pmr-mood-btn {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 0;
+    padding: 0.7rem 0.9rem;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.3rem;
+    min-width: 72px;
+    transition: all 0.2s;
+    font-family: var(--font);
+  }
+
+  .pmr-mood-btn:hover { border-color: var(--accent); }
+
+  .pmr-mood-btn.selected {
+    background: var(--item-hover);
+    border-color: var(--center-fill);
+  }
+
+  .pmr-mood-btn .emoji { font-size: 1.3rem; }
+
+  .pmr-mood-btn .label {
+    font-size: 0.55rem;
+    color: var(--muted);
+    font-weight: 300;
+    transition: color 0.2s;
+  }
+
+  .pmr-mood-btn.selected .label { color: var(--center-fill); }
+
+  /* Chip buttons (sleep, stress, payout) */
+  .pmr-chip-grid {
+    display: flex;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 2rem;
+  }
+
+  .pmr-chip {
+    padding: 0.5rem 1rem;
+    font-family: var(--font);
+    font-size: 0.7rem;
+    font-weight: 300;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    color: var(--muted);
+  }
+
+  .pmr-chip:hover { border-color: var(--accent); }
+
+  .pmr-chip.selected {
+    background: var(--item-hover);
+    border-color: var(--center-fill);
+    color: var(--center-fill);
+  }
+
+  /* Journal */
+  .pmr-journal-hint {
+    color: var(--dim);
+    font-size: 0.6rem;
+    text-align: center;
+    margin: 0 0 0.7rem;
+    font-style: italic;
+    font-weight: 300;
+  }
+
+  .pmr-textarea {
+    width: 100%;
+    max-width: 440px;
+    display: block;
+    margin: 0 auto;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    padding: 0.8rem 1rem;
+    font-size: 0.75rem;
+    color: var(--fg);
+    font-family: var(--font);
+    font-weight: 300;
+    resize: none;
+    height: 80px;
+    outline: none;
+    line-height: 1.6;
+    transition: border-color 0.3s;
+  }
+
+  .pmr-textarea:focus { border-color: var(--accent); }
+  .pmr-textarea::placeholder { color: var(--dim); }
+
+  .pmr-char-count {
+    color: var(--dim);
+    font-size: 0.55rem;
+    text-align: right;
+    max-width: 440px;
+    margin: 0.3rem auto 0;
+    font-weight: 300;
+  }
+
+  /* Number input (drawdown) */
+  .pmr-input-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .pmr-dollar-sign {
+    color: var(--muted);
+    font-size: 1.1rem;
+    font-weight: 300;
+  }
+
+  .pmr-number-input {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    padding: 0.6rem 1rem;
+    font-size: 1rem;
+    color: var(--fg);
+    width: 140px;
+    text-align: center;
+    font-family: var(--font);
+    font-weight: 300;
+    outline: none;
+    transition: border-color 0.3s;
+    -moz-appearance: textfield;
+  }
+
+  .pmr-number-input::-webkit-inner-spin-button,
+  .pmr-number-input::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  .pmr-number-input:focus { border-color: var(--accent); }
+
+  .pmr-warning {
+    font-size: 0.65rem;
+    text-align: center;
+    margin-top: 0.6rem;
+    font-style: italic;
+    font-weight: 300;
+  }
+
+  .pmr-warning.danger { color: var(--error); }
+  .pmr-warning.caution { color: #f59e0b; }
+
+  /* Awareness insights */
+  .pmr-journal-quote {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    padding: 0.8rem 1rem;
+    max-width: 440px;
+    margin: 0 auto 1.2rem;
+    font-style: italic;
+    color: var(--muted);
+    font-size: 0.7rem;
+    line-height: 1.7;
+    font-weight: 300;
+  }
+
+  .pmr-journal-quote .quote-mark {
+    color: var(--center-fill);
+    font-size: 0.9rem;
+    font-style: normal;
+  }
+
+  .pmr-insights {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    max-width: 440px;
+    margin: 0 auto 2rem;
+  }
+
+  .pmr-insight {
+    border: 1px solid var(--border);
+    padding: 1rem;
+    display: flex;
+    gap: 0.7rem;
+    align-items: flex-start;
+  }
+
+  .pmr-insight.critical {
+    background: rgba(239,68,68,0.06);
+    border-color: rgba(239,68,68,0.2);
+  }
+
+  .pmr-insight.warning {
+    background: rgba(245,158,11,0.06);
+    border-color: rgba(245,158,11,0.2);
+  }
+
+  .pmr-insight.caution {
+    background: rgba(232,93,42,0.06);
+    border-color: rgba(232,93,42,0.2);
+  }
+
+  .pmr-insight.good {
+    background: rgba(34,197,94,0.06);
+    border-color: rgba(34,197,94,0.2);
+  }
+
+  .pmr-insight .icon {
+    font-size: 1.1rem;
+    flex-shrink: 0;
+  }
+
+  .pmr-insight .text {
+    color: var(--fg);
+    font-size: 0.7rem;
+    line-height: 1.7;
+    margin: 0;
+    font-weight: 300;
+  }
+
+  /* Rules / commitments */
+  .pmr-rules {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    max-width: 460px;
+    margin: 0 auto 2rem;
+  }
+
+  .pmr-rule {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    padding: 1rem;
+    display: flex;
+    gap: 0.8rem;
+    align-items: flex-start;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.2s;
+    font-family: var(--font);
+  }
+
+  .pmr-rule:hover { border-color: var(--accent); }
+
+  .pmr-rule.checked {
+    border-color: var(--center-fill);
+    background: var(--item-hover);
+  }
+
+  .pmr-rule-check {
+    width: 18px;
+    height: 18px;
+    border: 1.5px solid var(--dim);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 2px;
+    transition: all 0.2s;
+    font-size: 0.65rem;
+    color: transparent;
+  }
+
+  .pmr-rule.checked .pmr-rule-check {
+    border-color: var(--center-fill);
+    color: var(--center-fill);
+  }
+
+  .pmr-rule-text {
+    color: var(--muted);
+    font-size: 0.7rem;
+    line-height: 1.7;
+    margin: 0;
+    font-weight: 300;
+    transition: color 0.2s;
+  }
+
+  .pmr-rule.checked .pmr-rule-text { color: var(--fg); }
+
+  .pmr-rules-hint {
+    color: var(--muted);
+    font-size: 0.6rem;
+    margin-top: 0.7rem;
+    text-align: center;
+    font-weight: 300;
+  }
+
+  /* Breathwork */
+  .pmr-breath-desc {
+    color: var(--muted);
+    font-size: 0.75rem;
+    line-height: 1.7;
+    margin-bottom: 2rem;
+    max-width: 380px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    font-weight: 300;
+  }
+
+  .pmr-breath-circle {
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    border: 1.5px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+    transition: transform 1s ease-in-out, box-shadow 1s ease-in-out;
+    flex-direction: column;
+  }
+
+  .pmr-breath-count {
+    font-size: 2rem;
+    font-weight: 300;
+    color: var(--center-fill);
+    font-family: 'Cormorant Garamond', serif;
+  }
+
+  .pmr-breath-phase {
+    font-size: 0.55rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: 300;
+  }
+
+  .pmr-breath-dots {
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+  }
+
+  .pmr-breath-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    transition: background 0.3s;
+  }
+
+  .pmr-breath-done {
+    text-align: center;
+  }
+
+  .pmr-breath-done-icon {
+    font-size: 2.5rem;
+    margin-bottom: 0.8rem;
+    color: var(--center-fill);
+  }
+
+  .pmr-breath-done-text {
+    color: var(--center-fill);
+    font-size: 1rem;
+    font-weight: 400;
+  }
+
+  /* Ready / summary */
+  .pmr-ready { text-align: center; }
+
+  .pmr-ready-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: var(--item-hover);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+    font-size: 1.5rem;
+  }
+
+  .pmr-ready-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.8rem;
+    font-weight: 300;
+    color: var(--fg);
+    margin: 0 0 0.7rem;
+  }
+
+  .pmr-ready-desc {
+    color: var(--muted);
+    font-size: 0.7rem;
+    max-width: 380px;
+    margin: 0 auto 2rem;
+    line-height: 1.7;
+    font-weight: 300;
+  }
+
+  .pmr-snapshot {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    padding: 1.2rem 1.5rem;
+    max-width: 340px;
+    margin: 0 auto 1.5rem;
+    text-align: left;
+  }
+
+  .pmr-snapshot-label {
+    font-size: 0.5rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 1rem;
+    font-weight: 300;
+  }
+
+  .pmr-snapshot-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.7rem;
+    font-weight: 300;
+  }
+
+  .pmr-snapshot-row:last-child { border-bottom: none; padding-bottom: 0; }
+
+  .pmr-snapshot-row .row-label { color: var(--muted); }
+  .pmr-snapshot-row .row-value { color: var(--fg); }
+
+  .pmr-quote {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem;
+    color: var(--center-fill);
+    font-style: italic;
+    margin: 0 0 2rem;
+    font-weight: 400;
+  }
+
+  /* Center helper */
+  .pmr-center { text-align: center; }
+
+  /* Section spacing */
+  .pmr-section { margin-bottom: 2rem; }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .pmr-mood-btn { min-width: 60px; padding: 0.6rem 0.7rem; }
+    .pmr-welcome-title { font-size: 1.7rem; }
+    .pmr-breath-circle { width: 130px; height: 130px; }
+    .pmr-breath-count { font-size: 1.6rem; }
+    .pmr-chip { padding: 0.45rem 0.7rem; font-size: 0.65rem; }
+    .pmr-snapshot { padding: 1rem; }
+  }
 </style>
 </head>
 <body>
@@ -945,39 +1608,55 @@
       </div>
     </div>
 
-    <!-- Products -->
-    <div class="dash-section-label">Your Products</div>
-    <div class="product-cards" id="productCards">
-      <!-- Rendered by JS -->
+    <!-- Dashboard Tabs -->
+    <div class="dash-tabs">
+      <button class="dash-tab active" id="tabDash" onclick="switchDashTab('main')">Dashboard</button>
+      <button class="dash-tab" id="tabRoutine" onclick="switchDashTab('routine')">Before the Bell</button>
     </div>
 
-    <!-- Admin Panel (only visible to admin) -->
-    <div class="admin-panel" id="adminPanel">
-      <div class="dash-section-label">Admin</div>
-      <div class="admin-stats" id="adminStats"></div>
-      <div class="admin-search-row">
-        <input class="form-input" type="text" id="adminSearchInput" placeholder="Search by email..." onkeydown="if(event.key==='Enter')searchUsers()">
-        <button class="admin-search-btn" onclick="searchUsers()">Search</button>
-        <button class="admin-search-btn" onclick="loadAllUsers()">All Users</button>
+    <!-- ═══ MAIN TAB ═══ -->
+    <div class="dash-tab-content active" id="dashMainContent">
+      <!-- Products -->
+      <div class="dash-section-label">Your Products</div>
+      <div class="product-cards" id="productCards">
+        <!-- Rendered by JS -->
       </div>
-      <div class="admin-user-list" id="adminUserList"></div>
-      <div class="admin-msg" id="adminMsg"></div>
+
+      <!-- Admin Panel (only visible to admin) -->
+      <div class="admin-panel" id="adminPanel">
+        <div class="dash-section-label">Admin</div>
+        <div class="admin-stats" id="adminStats"></div>
+        <div class="admin-search-row">
+          <input class="form-input" type="text" id="adminSearchInput" placeholder="Search by email..." onkeydown="if(event.key==='Enter')searchUsers()">
+          <button class="admin-search-btn" onclick="searchUsers()">Search</button>
+          <button class="admin-search-btn" onclick="loadAllUsers()">All Users</button>
+        </div>
+        <div class="admin-user-list" id="adminUserList"></div>
+        <div class="admin-msg" id="adminMsg"></div>
+      </div>
+
+      <!-- Account info -->
+      <div class="dash-account">
+        <div class="dash-section-label">Account</div>
+        <div class="account-info">
+          <div class="account-row">
+            <span class="account-row-label">Email</span>
+            <span class="account-row-value" id="accountEmail"></span>
+          </div>
+          <div class="account-row">
+            <span class="account-row-label">Member since</span>
+            <span class="account-row-value" id="accountSince"></span>
+          </div>
+        </div>
+        <button class="sign-out-btn" onclick="handleSignOut()">Sign Out</button>
+      </div>
     </div>
 
-    <!-- Account info -->
-    <div class="dash-account">
-      <div class="dash-section-label">Account</div>
-      <div class="account-info">
-        <div class="account-row">
-          <span class="account-row-label">Email</span>
-          <span class="account-row-value" id="accountEmail"></span>
-        </div>
-        <div class="account-row">
-          <span class="account-row-label">Member since</span>
-          <span class="account-row-value" id="accountSince"></span>
-        </div>
+    <!-- ═══ BEFORE THE BELL TAB ═══ -->
+    <div class="dash-tab-content" id="dashRoutineContent">
+      <div class="pmr-wrap" id="pmrContainer">
+        <!-- Rendered by JS -->
       </div>
-      <button class="sign-out-btn" onclick="handleSignOut()">Sign Out</button>
     </div>
 
   </div>
@@ -1600,6 +2279,427 @@ function friendlyError(code) {
     document.getElementById('themeBtn').textContent = next === 'dark' ? 'Light' : 'Dark';
     document.getElementById('themeColor').content = next === 'dark' ? '#0a0a0a' : '#f0ede8';
   }
+
+  // ─── Dashboard Tab Switching ───
+  function switchDashTab(tab) {
+    document.getElementById('tabDash').classList.toggle('active', tab === 'main');
+    document.getElementById('tabRoutine').classList.toggle('active', tab === 'routine');
+    document.getElementById('dashMainContent').classList.toggle('active', tab === 'main');
+    document.getElementById('dashRoutineContent').classList.toggle('active', tab === 'routine');
+    if (tab === 'routine' && typeof window.initPMR === 'function') {
+      window.initPMR();
+    }
+  }
+</script>
+
+<!-- ═══ Pre-Market Routine Logic ═══ -->
+<script>
+(function() {
+  const STEPS = ['welcome','checkin','accounts','awareness','rules','breathwork','ready'];
+
+  const MOODS = [
+    { emoji: '😤', label: 'Frustrated', color: '#ef4444', risk: 'high' },
+    { emoji: '😰', label: 'Anxious', color: '#f59e0b', risk: 'high' },
+    { emoji: '😐', label: 'Neutral', color: '#94a3b8', risk: 'low' },
+    { emoji: '🙂', label: 'Calm', color: '#22c55e', risk: 'low' },
+    { emoji: '🔥', label: 'Locked In', color: '#e85d2a', risk: 'low' },
+  ];
+
+  const SLEEP_OPTIONS = [
+    { label: 'Under 5 hrs', value: 'under5', flag: true },
+    { label: '5–6 hrs', value: '5to6', flag: true },
+    { label: '6–7 hrs', value: '6to7', flag: false },
+    { label: '7+ hrs', value: '7plus', flag: false },
+  ];
+
+  let step = 0;
+  let answers = resetAnswers();
+  let breathDone = false;
+  let breathInterval = null;
+  let initialized = false;
+
+  function resetAnswers() {
+    return {
+      mood: null,
+      sleep: null,
+      outsideStress: null,
+      journal: '',
+      drawdownLeft: '',
+      payoutTarget: '',
+      accountFeeling: null,
+      rules: { lossWalkAway: false, winStreak: false, noRevenge: false, sizeDown: false },
+    };
+  }
+
+  function el(id) { return document.getElementById(id); }
+
+  window.initPMR = function() {
+    if (!initialized) {
+      initialized = true;
+      render();
+    }
+  };
+
+  function render() {
+    const c = el('pmrContainer');
+    if (!c) return;
+
+    // Clear breathwork timer if navigating away
+    if (STEPS[step] !== 'breathwork' && breathInterval) {
+      clearInterval(breathInterval);
+      breathInterval = null;
+    }
+
+    let html = '';
+
+    // Progress bar (steps 1–5 only)
+    if (step > 0 && step < STEPS.length - 1) {
+      const progress = (step / (STEPS.length - 1)) * 100;
+      html += `
+        <div class="pmr-progress-bar">
+          <button class="pmr-back-btn" onclick="pmrBack()">← Back</button>
+          <span class="pmr-step-label">Step ${step} of ${STEPS.length - 2}</span>
+        </div>
+        <div class="pmr-track"><div class="pmr-track-fill" style="width:${progress}%"></div></div>
+      `;
+    }
+
+    html += '<div class="pmr-fade-in" key="' + step + '">';
+    html += renderStep();
+    html += '</div>';
+
+    c.innerHTML = html;
+
+    // Focus textarea if on checkin step
+    if (STEPS[step] === 'checkin') {
+      const ta = c.querySelector('.pmr-textarea');
+      if (ta) ta.value = answers.journal;
+    }
+    if (STEPS[step] === 'accounts') {
+      const inp = c.querySelector('.pmr-number-input');
+      if (inp) inp.value = answers.drawdownLeft;
+    }
+  }
+
+  function renderStep() {
+    const current = STEPS[step];
+
+    switch (current) {
+      case 'welcome': return renderWelcome();
+      case 'checkin': return renderCheckin();
+      case 'accounts': return renderAccounts();
+      case 'awareness': return renderAwareness();
+      case 'rules': return renderRules();
+      case 'breathwork': return renderBreathwork();
+      case 'ready': return renderReady();
+      default: return '';
+    }
+  }
+
+  function stepHeader(num, title, sub) {
+    return `
+      <div class="pmr-step-num">Step ${num}</div>
+      <h2 class="pmr-step-title">${title}</h2>
+      <p class="pmr-step-sub">${sub}</p>
+    `;
+  }
+
+  // ─── WELCOME ───
+  function renderWelcome() {
+    const now = new Date();
+    const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    return `
+      <div class="pmr-welcome">
+        <div class="pmr-step-num">Pre-Market Routine</div>
+        <h1 class="pmr-welcome-title">Before the Bell</h1>
+        <p class="pmr-welcome-time">${timeStr} · 5 minutes to clarity</p>
+        <div class="pmr-divider"></div>
+        <p class="pmr-welcome-desc">
+          The market doesn't care how you feel. But <em>you</em> need to. Let's get your mind right before you touch a single chart.
+        </p>
+        <button class="pmr-btn" onclick="pmrNext()">Let's Begin</button>
+      </div>
+    `;
+  }
+
+  // ─── CHECK-IN ───
+  function renderCheckin() {
+    const checkinOk = answers.mood && answers.sleep && answers.outsideStress && answers.journal.trim().length > 0;
+
+    let html = stepHeader('01', 'Mental Check-In', 'Be honest. No one sees this but you.');
+
+    // Mood
+    html += '<div class="pmr-section"><label class="pmr-label">How are you feeling right now?</label><div class="pmr-mood-grid">';
+    MOODS.forEach(m => {
+      const sel = answers.mood === m.label ? ' selected' : '';
+      html += `<button class="pmr-mood-btn${sel}" onclick="pmrSetMood('${m.label}')"><span class="emoji">${m.emoji}</span><span class="label">${m.label}</span></button>`;
+    });
+    html += '</div></div>';
+
+    // Sleep
+    html += '<div class="pmr-section"><label class="pmr-label">How much sleep did you get?</label><div class="pmr-chip-grid">';
+    SLEEP_OPTIONS.forEach(s => {
+      const sel = answers.sleep === s.value ? ' selected' : '';
+      html += `<button class="pmr-chip${sel}" onclick="pmrSet('sleep','${s.value}')">${s.label}</button>`;
+    });
+    html += '</div></div>';
+
+    // Stress
+    html += '<div class="pmr-section"><label class="pmr-label">Anything weighing on you outside of trading?</label><div class="pmr-chip-grid">';
+    [['No, I\'m clear','no'],['Yeah, some stuff','yes']].forEach(([label, val]) => {
+      const sel = answers.outsideStress === val ? ' selected' : '';
+      html += `<button class="pmr-chip${sel}" onclick="pmrSet('outsideStress','${val}')">${label}</button>`;
+    });
+    html += '</div></div>';
+
+    // Journal
+    html += `
+      <div class="pmr-section">
+        <label class="pmr-label">In 1–2 sentences, put how you're feeling into words.</label>
+        <p class="pmr-journal-hint">Writing it forces you to acknowledge it. That's the point.</p>
+        <textarea class="pmr-textarea" placeholder="I feel..." maxlength="280" oninput="pmrJournal(this.value)">${answers.journal}</textarea>
+        <p class="pmr-char-count">${answers.journal.length}/280</p>
+      </div>
+    `;
+
+    html += `<div class="pmr-center"><button class="pmr-btn" onclick="pmrNext()" ${checkinOk ? '' : 'disabled'}>Continue</button></div>`;
+    return html;
+  }
+
+  // ─── ACCOUNTS ───
+  function renderAccounts() {
+    const dd = parseFloat(answers.drawdownLeft);
+    const canContinue = answers.drawdownLeft && answers.accountFeeling;
+    let html = stepHeader('02', 'Account Awareness', 'Know your numbers. Write them — don\'t guess them.');
+
+    html += '<div class="pmr-section"><label class="pmr-label">How much drawdown do you have left on your active account?</label>';
+    html += '<div class="pmr-input-row"><span class="pmr-dollar-sign">$</span><input type="number" class="pmr-number-input" placeholder="e.g. 2500" oninput="pmrSet(\'drawdownLeft\',this.value)"></div>';
+
+    if (dd > 0 && dd <= 500) {
+      html += '<p class="pmr-warning danger">⚠️ You\'re in the danger zone. Consider sitting today out or trading micro only.</p>';
+    } else if (dd > 500 && dd <= 1000) {
+      html += '<p class="pmr-warning caution">Tight cushion. Trade conservatively — one clean setup max.</p>';
+    }
+    html += '</div>';
+
+    html += '<div class="pmr-section"><label class="pmr-label">Where are you relative to your payout target?</label><div class="pmr-chip-grid">';
+    [['Far away','far'],['Getting close','close'],['Almost there','almost'],['Already hit it','hit']].forEach(([label, val]) => {
+      const sel = answers.accountFeeling === val ? ' selected' : '';
+      html += `<button class="pmr-chip${sel}" onclick="pmrSet('accountFeeling','${val}')">${label}</button>`;
+    });
+    html += '</div></div>';
+
+    html += `<div class="pmr-center"><button class="pmr-btn" onclick="pmrNext()" ${canContinue ? '' : 'disabled'}>Continue</button></div>`;
+    return html;
+  }
+
+  // ─── AWARENESS ───
+  function renderAwareness() {
+    const insights = getInsights();
+    let html = stepHeader('03', 'Your Awareness Brief', 'Here\'s what your check-in is telling you.');
+
+    if (answers.journal.trim()) {
+      html += `<div class="pmr-journal-quote"><span class="quote-mark">"</span>${answers.journal.trim()}<span class="quote-mark">"</span></div>`;
+    }
+
+    html += '<div class="pmr-insights">';
+    insights.forEach(ins => {
+      html += `<div class="pmr-insight ${ins.type}"><span class="icon">${ins.icon}</span><p class="text">${ins.text}</p></div>`;
+    });
+    html += '</div>';
+
+    html += '<div class="pmr-center"><button class="pmr-btn" onclick="pmrNext()">I Hear This — Continue</button></div>';
+    return html;
+  }
+
+  // ─── RULES ───
+  function renderRules() {
+    const allChecked = Object.values(answers.rules).every(Boolean);
+    const rules = [
+      { key: 'lossWalkAway', text: 'If my first trade is a loss, I will close my charts, walk away for 15 minutes, and reset before even considering another trade.' },
+      { key: 'winStreak', text: 'After 2–3 winning trades, I will stop trading. I can decide later if I want to come back, but I will not take the next trade immediately.' },
+      { key: 'noRevenge', text: 'I will not revenge trade. If I feel the urge to "make it back," that is the signal to stop, not to trade.' },
+      { key: 'sizeDown', text: 'If my check-in flagged any risk factors, I commit to sizing down or sitting out entirely. Protecting capital IS making money.' },
+    ];
+
+    let html = stepHeader('04', 'Trading Commitments', 'Read each one. Check each one. Mean it.');
+    html += '<div class="pmr-rules">';
+    rules.forEach(r => {
+      const checked = answers.rules[r.key] ? ' checked' : '';
+      html += `<button class="pmr-rule${checked}" onclick="pmrToggleRule('${r.key}')"><div class="pmr-rule-check">✓</div><p class="pmr-rule-text">${r.text}</p></button>`;
+    });
+    html += '</div>';
+
+    html += `<div class="pmr-center"><button class="pmr-btn" onclick="pmrNext()" ${allChecked ? '' : 'disabled'}>I Commit</button>`;
+    if (!allChecked) html += '<p class="pmr-rules-hint">Check all commitments to continue</p>';
+    html += '</div>';
+    return html;
+  }
+
+  // ─── BREATHWORK ───
+  function renderBreathwork() {
+    let html = stepHeader('05', 'Reset Your Nervous System', '60 seconds of box breathing. This is non-negotiable.');
+
+    if (breathDone) {
+      html += `
+        <div class="pmr-breath-done">
+          <div class="pmr-breath-done-icon">✓</div>
+          <p class="pmr-breath-done-text">Nervous system reset.</p>
+        </div>
+        <div class="pmr-center" style="margin-top:1.5rem"><button class="pmr-btn" onclick="pmrNext()">I'm Ready</button></div>
+      `;
+    } else {
+      html += `
+        <div id="pmrBreathContent">
+          <p class="pmr-breath-desc">4 rounds of box breathing. Inhale 4 seconds, hold 4, exhale 4, hold 4. This resets your nervous system.</p>
+          <div class="pmr-center"><button class="pmr-btn" onclick="pmrStartBreath()">Begin Breathwork</button></div>
+        </div>
+      `;
+    }
+    return html;
+  }
+
+  // ─── READY ───
+  function renderReady() {
+    const moodData = MOODS.find(m => m.label === answers.mood);
+    const sleepLabel = SLEEP_OPTIONS.find(s => s.value === answers.sleep)?.label || '';
+    const dd = parseFloat(answers.drawdownLeft);
+    const ddColor = dd <= 500 ? 'var(--error)' : dd <= 1000 ? '#f59e0b' : 'var(--success)';
+    const journalSnip = answers.journal.trim().length > 60 ? answers.journal.trim().slice(0, 60) + '...' : answers.journal.trim();
+
+    return `
+      <div class="pmr-ready">
+        <div class="pmr-ready-icon">⚡</div>
+        <h2 class="pmr-ready-title">You're Ready</h2>
+        <p class="pmr-ready-desc">You've checked in with yourself, you know your numbers, you've committed to your rules, and you've reset your nervous system. Trade your process. Not your emotions.</p>
+        <div class="pmr-snapshot">
+          <div class="pmr-snapshot-label">Today's Snapshot</div>
+          <div class="pmr-snapshot-row"><span class="row-label">Mood</span><span class="row-value" style="color:${moodData?.color || 'var(--fg)'}">${moodData?.emoji || ''} ${answers.mood || ''}</span></div>
+          <div class="pmr-snapshot-row"><span class="row-label">Sleep</span><span class="row-value">${sleepLabel}</span></div>
+          <div class="pmr-snapshot-row"><span class="row-label">Drawdown Left</span><span class="row-value" style="color:${ddColor}">$${isNaN(dd) ? '0' : dd.toLocaleString()}</span></div>
+          <div class="pmr-snapshot-row"><span class="row-label">Journal</span><span class="row-value" style="font-style:italic;font-size:0.6rem;max-width:160px;text-align:right">"${journalSnip}"</span></div>
+          <div class="pmr-snapshot-row"><span class="row-label">Rules</span><span class="row-value" style="color:var(--success)">All committed ✓</span></div>
+        </div>
+        <p class="pmr-quote">"The goal is not to make money. The goal is to trade well."</p>
+        <button class="pmr-btn-outline" onclick="pmrReset()">Start Over</button>
+      </div>
+    `;
+  }
+
+  // ─── INSIGHTS LOGIC ───
+  function getInsights() {
+    const insights = [];
+    const moodData = MOODS.find(m => m.label === answers.mood);
+    if (moodData?.risk === 'high') {
+      insights.push({ icon: '⚠️', text: `You're feeling ${answers.mood?.toLowerCase()}. Recognize this before you trade. This emotion will try to drive your decisions. Stay mechanical.`, type: 'warning' });
+    }
+    const sleepData = SLEEP_OPTIONS.find(s => s.value === answers.sleep);
+    if (sleepData?.flag) {
+      insights.push({ icon: '🛏️', text: 'You\'re under-slept. Your reaction time, patience, and discipline are all compromised. Consider sizing down or sitting today out entirely.', type: 'warning' });
+    }
+    if (answers.outsideStress === 'yes') {
+      insights.push({ icon: '🧠', text: 'You\'ve got things on your mind outside of trading. That mental bandwidth gets consumed whether you realize it or not. Trade lighter today.', type: 'warning' });
+    }
+    const dd = parseFloat(answers.drawdownLeft);
+    if (!isNaN(dd) && dd > 0 && dd <= 1000) {
+      insights.push({ icon: '🛡️', text: `You only have $${dd.toLocaleString()} of drawdown left. This is not the day to be aggressive. Protect this account. Think: one clean trade, or no trade at all.`, type: 'critical' });
+    }
+    if (answers.accountFeeling === 'close' || answers.accountFeeling === 'almost') {
+      insights.push({ icon: '🎯', text: 'You\'re close to a payout target. Don\'t let excitement make you deviate from your process. The payout comes from following the plan, not forcing it.', type: 'caution' });
+    }
+    if (insights.length === 0) {
+      insights.push({ icon: '✅', text: 'You\'re in a solid headspace. Good sleep, calm mind, healthy account. Execute your process and trust the edge.', type: 'good' });
+    }
+    return insights;
+  }
+
+  // ─── BREATHWORK ENGINE ───
+  window.pmrStartBreath = function() {
+    const container = el('pmrBreathContent');
+    if (!container) return;
+
+    const phases = ['inhale','hold1','exhale','hold2'];
+    const phaseLabels = { inhale: 'Breathe In', hold1: 'Hold', exhale: 'Breathe Out', hold2: 'Hold' };
+    const totalCycles = 4;
+    let phaseIdx = 0;
+    let count = 4;
+    let cycle = 0;
+
+    function getScale() {
+      const p = phases[phaseIdx];
+      if (p === 'inhale') return 1 + ((4 - count) / 4) * 0.35;
+      if (p === 'exhale') return 1.35 - ((4 - count) / 4) * 0.35;
+      if (p === 'hold1') return 1.35;
+      return 1;
+    }
+
+    function renderBreathUI() {
+      const scale = getScale();
+      const glowSize = scale > 1.2 ? 30 : 12;
+      const glowAlpha = scale > 1.2 ? 0.2 : 0.08;
+      let dotsHtml = '';
+      for (let i = 0; i < totalCycles; i++) {
+        const bg = i < cycle ? 'var(--center-fill)' : 'var(--border)';
+        dotsHtml += `<div class="pmr-breath-dot" style="background:${bg}"></div>`;
+      }
+      container.innerHTML = `
+        <div class="pmr-breath-circle" style="transform:scale(${scale});box-shadow:0 0 ${glowSize}px rgba(232,93,42,${glowAlpha})">
+          <div class="pmr-breath-count">${count}</div>
+          <div class="pmr-breath-phase">${phaseLabels[phases[phaseIdx]]}</div>
+        </div>
+        <div class="pmr-breath-dots">${dotsHtml}</div>
+      `;
+    }
+
+    renderBreathUI();
+
+    if (breathInterval) clearInterval(breathInterval);
+    breathInterval = setInterval(function() {
+      count--;
+      if (count <= 0) {
+        if (phaseIdx === 3) {
+          cycle++;
+          if (cycle >= totalCycles) {
+            clearInterval(breathInterval);
+            breathInterval = null;
+            breathDone = true;
+            setTimeout(render, 800);
+            return;
+          }
+        }
+        phaseIdx = (phaseIdx + 1) % 4;
+        count = 4;
+      }
+      renderBreathUI();
+    }, 1000);
+  };
+
+  // ─── NAVIGATION & STATE ───
+  window.pmrNext = function() { if (step < STEPS.length - 1) { step++; render(); } };
+  window.pmrBack = function() { if (step > 0) { step--; render(); } };
+
+  window.pmrSetMood = function(val) { answers.mood = val; render(); };
+  window.pmrSet = function(key, val) { answers[key] = val; render(); };
+  window.pmrJournal = function(val) {
+    answers.journal = val;
+    // Update char count without full re-render
+    const cc = document.querySelector('.pmr-char-count');
+    if (cc) cc.textContent = val.length + '/280';
+    // Update continue button state
+    const btn = document.querySelector('#pmrContainer .pmr-btn');
+    const ok = answers.mood && answers.sleep && answers.outsideStress && val.trim().length > 0;
+    if (btn) btn.disabled = !ok;
+  };
+  window.pmrToggleRule = function(key) { answers.rules[key] = !answers.rules[key]; render(); };
+
+  window.pmrReset = function() {
+    step = 0;
+    answers = resetAnswers();
+    breathDone = false;
+    if (breathInterval) { clearInterval(breathInterval); breathInterval = null; }
+    render();
+  };
+})();
 </script>
 
 </body>
