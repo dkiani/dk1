@@ -9,11 +9,10 @@ import { AuthContext } from "@/lib/auth-context";
 import { UserProfile } from "@/types";
 
 export function Providers({ children }: { children: ReactNode }) {
-  // Theme — lazy init from localStorage, default to light
+  // Theme — read what the blocking script in layout.tsx already set
   const [theme, setTheme] = useState<Theme>(() => {
     if (typeof window !== "undefined") {
-      const saved = localStorage.getItem("journal-theme") as Theme | null;
-      if (saved === "dark" || saved === "light") return saved;
+      return (document.documentElement.getAttribute("data-theme") as Theme) || "light";
     }
     return "light";
   });
