@@ -1,0 +1,9 @@
+{
+  "redirects": [
+    {
+      "source": "/dashboard/:path*",
+      "destination": "https://dashboard.kiani.vc",
+      "permanent": true
+    }
+  ]
+}
