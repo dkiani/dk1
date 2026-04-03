@@ -2374,7 +2374,7 @@ window.loadJournalEntries = async function() {
   if (!user) return [];
   try {
     const journalRef = collection(db, 'users', user.uid, 'journal');
-    const q = query(journalRef, orderBy('createdAt', 'desc'), fsLimit(50));
+    const q = query(journalRef, orderBy('createdAt', 'desc'), fsLimit(1000));
     const snap = await getDocs(q);
     return snap.docs.map(d => ({ id: d.id, ...d.data() }));
   } catch (e) {
