@@ -42,7 +42,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" data-theme="dark" suppressHydrationWarning>
+    <html lang="en" data-theme="light" suppressHydrationWarning>
       <body className={`${mono.variable} font-mono antialiased min-h-screen`}>
         <Providers>{children}</Providers>
       </body>
