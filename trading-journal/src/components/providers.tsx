@@ -9,13 +9,14 @@ import { AuthContext } from "@/lib/auth-context";
 import { UserProfile } from "@/types";
 
 export function Providers({ children }: { children: ReactNode }) {
-  // Theme
-  const [theme, setTheme] = useState<Theme>("light");
-
-  useEffect(() => {
-    const saved = localStorage.getItem("journal-theme") as Theme | null;
-    if (saved) setTheme(saved);
-  }, []);
+  // Theme — lazy init from localStorage, default to light
+  const [theme, setTheme] = useState<Theme>(() => {
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("journal-theme") as Theme | null;
+      if (saved === "dark" || saved === "light") return saved;
+    }
+    return "light";
+  });
 
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", theme);
