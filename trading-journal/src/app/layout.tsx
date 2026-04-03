@@ -43,6 +43,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" data-theme="light" suppressHydrationWarning>
+      <head>
+        {/* Blocking script to set theme before first paint — prevents dark flash */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=localStorage.getItem("journal-theme");if(t==="dark")document.documentElement.setAttribute("data-theme","dark");else{document.documentElement.setAttribute("data-theme","light");if(t!=="light")localStorage.setItem("journal-theme","light")}}catch(e){}})()`,
+          }}
+        />
+      </head>
       <body className={`${mono.variable} font-mono antialiased min-h-screen`}>
         <Providers>{children}</Providers>
       </body>
