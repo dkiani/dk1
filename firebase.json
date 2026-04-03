@@ -3,42 +3,12 @@
     "rules": "firestore.rules",
     "indexes": "firestore.indexes.json"
   },
-  "hosting": [
-    {
-      "target": "main",
-      "public": ".",
-      "ignore": [
-        "firebase.json",
-        "firestore.rules",
-        "firestore.indexes.json",
-        ".firebaserc",
-        "**/.*",
-        "**/node_modules/**",
-        "dashboard/**",
-        "onboarding/**",
-        "responses/**"
-      ],
-      "redirects": [
-        {
-          "source": "/dashboard",
-          "destination": "https://dashboard.kiani.vc",
-          "type": 301
-        },
-        {
-          "source": "/dashboard/**",
-          "destination": "https://dashboard.kiani.vc",
-          "type": 301
-        }
-      ]
-    },
-    {
-      "target": "dashboard",
-      "public": "dashboard",
-      "ignore": [
-        "firebase.json",
-        "**/.*",
-        "**/node_modules/**"
-      ]
-    }
-  ]
+  "hosting": {
+    "public": "dashboard",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ]
+  }
 }
