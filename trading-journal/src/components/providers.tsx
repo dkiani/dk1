@@ -9,18 +9,17 @@ import { AuthContext } from "@/lib/auth-context";
 import { UserProfile } from "@/types";
 
 export function Providers({ children }: { children: ReactNode }) {
-  // Theme — lazy init from localStorage, default to light
-  const [theme, setTheme] = useState<Theme>(() => {
-    if (typeof window !== "undefined") {
-      const saved = localStorage.getItem("journal-theme") as Theme | null;
-      if (saved === "dark" || saved === "light") return saved;
-    }
-    return "light";
-  });
+  // Theme — default to light, respect localStorage only if explicitly set
+  const [theme, setTheme] = useState<Theme>("light");
+
+  useEffect(() => {
+    // Clear any stale dark theme preference so light is the new default
+    localStorage.removeItem("journal-theme");
+    document.documentElement.setAttribute("data-theme", "light");
+  }, []);
 
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", theme);
-    localStorage.setItem("journal-theme", theme);
   }, [theme]);
 
   const toggleTheme = useCallback(() => {
