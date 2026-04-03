@@ -1,5 +1,17 @@
 {
   "projects": {
     "default": "kianivc"
+  },
+  "targets": {
+    "kianivc": {
+      "hosting": {
+        "main": [
+          "kianivc"
+        ],
+        "dashboard": [
+          "kianivc-dashboard"
+        ]
+      }
+    }
   }
 }
