@@ -1,0 +1,34 @@
+"use client";
+
+import { useAuth } from "@/lib/auth-context";
+import { Sidebar } from "@/components/layout/sidebar";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+
+export default function AppLayout({ children }: { children: React.ReactNode }) {
+  const { user, loading } = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!loading && !user) {
+      router.push("/login");
+    }
+  }, [user, loading, router]);
+
+  if (loading) {
+    return (
+      <div className="h-screen flex items-center justify-center bg-bg-primary">
+        <div className="w-5 h-5 border-2 border-accent border-t-transparent rounded-full animate-spin" />
+      </div>
+    );
+  }
+
+  if (!user) return null;
+
+  return (
+    <div className="flex min-h-screen">
+      <Sidebar />
+      <main className="ml-56 flex-1 p-8">{children}</main>
+    </div>
+  );
+}
