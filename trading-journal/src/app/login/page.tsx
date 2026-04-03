@@ -82,8 +82,13 @@ export default function LoginPage() {
       await ensureUserDoc(result.user.uid, result.user.email, result.user.displayName);
       router.push("/dashboard");
     } catch (err: any) {
-      if (err.code !== "auth/popup-closed-by-user") {
-        setError("Google sign-in failed. Try again.");
+      console.error("Google sign-in error:", err.code, err.message);
+      if (err.code === "auth/unauthorized-domain") {
+        setError("Domain not authorized. Add localhost to Firebase Auth settings.");
+      } else if (err.code === "auth/popup-blocked") {
+        setError("Popup blocked. Allow popups for this site.");
+      } else if (err.code !== "auth/popup-closed-by-user") {
+        setError(`Google sign-in failed: ${err.code}`);
       }
     }
     setLoading(false);
