@@ -10,7 +10,7 @@ import { UserProfile } from "@/types";
 
 export function Providers({ children }: { children: ReactNode }) {
   // Theme
-  const [theme, setTheme] = useState<Theme>("dark");
+  const [theme, setTheme] = useState<Theme>("light");
 
   useEffect(() => {
     const saved = localStorage.getItem("journal-theme") as Theme | null;

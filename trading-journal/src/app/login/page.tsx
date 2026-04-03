@@ -54,11 +54,11 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-bg-primary px-4">
-      <div className="absolute top-4 right-4">
+    <div className="min-h-screen flex items-center justify-center bg-bg-primary px-6">
+      <div className="absolute top-6 right-6">
         <button
           onClick={toggleTheme}
-          className="p-2 rounded-md hover:bg-bg-tertiary transition-colors cursor-pointer"
+          className="p-2.5 rounded-lg hover:bg-bg-tertiary transition-colors cursor-pointer"
         >
           {theme === "dark" ? (
             <Sun className="w-4 h-4 text-text-muted" />
@@ -68,77 +68,79 @@ export default function LoginPage() {
         </button>
       </div>
 
-      <div className="w-full max-w-sm">
+      <div className="w-full max-w-xs">
         {/* Logo */}
-        <div className="flex items-center justify-center gap-2 mb-8">
+        <div className="flex items-center justify-center gap-2.5 mb-12">
           <TrendingUp className="w-5 h-5 text-accent" />
-          <span className="text-sm font-semibold tracking-tight">journal.kiani.vc</span>
+          <span className="text-sm font-semibold tracking-tight text-text-primary">
+            journal.kiani.vc
+          </span>
         </div>
 
-        <div className="bg-bg-card border border-border rounded-lg p-6">
-          <h1 className="text-sm font-semibold text-center mb-1">
-            {mode === "login" ? "Welcome back" : "Create account"}
-          </h1>
-          <p className="text-[10px] text-text-muted text-center mb-6">
-            {mode === "login"
-              ? "Sign in to your trading journal"
-              : "Start tracking your trades"}
-          </p>
+        {/* Heading */}
+        <h1 className="text-lg font-semibold text-center text-text-primary mb-1">
+          {mode === "login" ? "Welcome back" : "Create account"}
+        </h1>
+        <p className="text-xs text-text-muted text-center mb-8">
+          {mode === "login"
+            ? "Sign in to your trading journal"
+            : "Start tracking your trades"}
+        </p>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <label className="block text-[10px] uppercase tracking-wider text-text-muted mb-1.5">
-                Email
-              </label>
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                className="w-full px-3 py-2.5 bg-bg-input border border-border rounded-md text-xs text-text-primary focus:border-accent outline-none"
-              />
-            </div>
-            <div>
-              <label className="block text-[10px] uppercase tracking-wider text-text-muted mb-1.5">
-                Password
-              </label>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                minLength={6}
-                className="w-full px-3 py-2.5 bg-bg-input border border-border rounded-md text-xs text-text-primary focus:border-accent outline-none"
-              />
-            </div>
+        {/* Form */}
+        <form onSubmit={handleSubmit} className="space-y-5">
+          <div>
+            <label className="block text-[10px] uppercase tracking-wider text-text-muted mb-2">
+              Email
+            </label>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              className="w-full px-4 py-3 bg-bg-input border border-border rounded-lg text-sm text-text-primary focus:border-accent outline-none transition-colors"
+            />
+          </div>
+          <div>
+            <label className="block text-[10px] uppercase tracking-wider text-text-muted mb-2">
+              Password
+            </label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              minLength={6}
+              className="w-full px-4 py-3 bg-bg-input border border-border rounded-lg text-sm text-text-primary focus:border-accent outline-none transition-colors"
+            />
+          </div>
 
-            {error && (
-              <p className="text-[10px] text-red">{error}</p>
-            )}
+          {error && (
+            <p className="text-xs text-red">{error}</p>
+          )}
 
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full py-2.5 bg-accent text-white rounded-md text-xs font-medium hover:bg-accent-hover transition-colors cursor-pointer disabled:opacity-50"
-            >
-              {loading
-                ? "..."
-                : mode === "login"
-                  ? "Sign In"
-                  : "Create Account"}
-            </button>
-          </form>
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full py-3 bg-accent text-white rounded-lg text-sm font-medium hover:bg-accent-hover transition-colors cursor-pointer disabled:opacity-50"
+          >
+            {loading
+              ? "..."
+              : mode === "login"
+                ? "Sign In"
+                : "Create Account"}
+          </button>
+        </form>
 
-          <p className="text-[10px] text-text-muted text-center mt-4">
-            {mode === "login" ? "Don't have an account? " : "Already have an account? "}
-            <button
-              onClick={() => setMode(mode === "login" ? "signup" : "login")}
-              className="text-accent hover:underline cursor-pointer"
-            >
-              {mode === "login" ? "Sign up" : "Sign in"}
-            </button>
-          </p>
-        </div>
+        <p className="text-xs text-text-muted text-center mt-6">
+          {mode === "login" ? "Don't have an account? " : "Already have an account? "}
+          <button
+            onClick={() => setMode(mode === "login" ? "signup" : "login")}
+            className="text-accent hover:underline cursor-pointer"
+          >
+            {mode === "login" ? "Sign up" : "Sign in"}
+          </button>
+        </p>
       </div>
     </div>
   );
