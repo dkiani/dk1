@@ -840,7 +840,7 @@ window.createAccount = async function() {
 
     let errorMsg = 'Something went wrong. Please try again.';
     if (err.code === 'auth/email-already-in-use') {
-      errorMsg = 'An account with this email already exists. Try signing in at kiani.vc/dashboard instead.';
+      errorMsg = 'An account with this email already exists. Try signing in at dashboard.kiani.vc instead.';
       retryBtn.style.display = 'none';
     } else {
       retryBtn.style.display = '';
