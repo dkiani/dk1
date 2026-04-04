@@ -107,12 +107,12 @@ export default function NewTradePage() {
     router.push("/journal");
   }
 
-  const inputClass = "w-full px-3 py-2.5 bg-bg-input border border-border rounded-[4px] text-[0.8rem] text-text-primary placeholder:text-text-muted focus:border-accent outline-none transition-colors duration-150";
-  const labelClass = "block text-[0.65rem] uppercase tracking-[0.1em] text-text-secondary mb-2";
+  const inputClass = "w-full px-3 py-[0.7rem] bg-bg-input border border-border text-[0.75rem] font-light text-text-primary placeholder:text-text-muted focus:border-border-hover outline-none transition-colors duration-300";
+  const labelClass = "block text-[0.6rem] font-light uppercase tracking-[0.06em] text-text-muted mb-1.5";
 
   return (
     <div className="animate-fade-in" onPaste={handlePaste}>
-      <h1 className="text-[1.5rem] font-medium mb-8">Log Trade</h1>
+      <h1 className="text-[1.1rem] font-normal tracking-[-0.02em] mb-8">Log Trade</h1>
 
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Symbol + Asset Class */}
@@ -143,12 +143,12 @@ export default function NewTradePage() {
                   key={dir}
                   type="button"
                   onClick={() => setForm((f) => ({ ...f, direction: dir }))}
-                  className={`flex-1 py-2.5 rounded-[4px] text-[0.75rem] uppercase tracking-[0.1em] font-medium cursor-pointer transition-colors duration-150 border ${
+                  className={`flex-1 py-[0.7rem] text-[0.7rem] uppercase tracking-[0.06em] font-light cursor-pointer transition-colors duration-300 border ${
                     form.direction === dir
                       ? dir === "long"
                         ? "bg-green text-white border-green"
                         : "bg-red text-white border-red"
-                      : "bg-transparent border-border text-text-secondary hover:text-text-primary"
+                      : "bg-transparent border-border text-text-muted hover:text-text-primary"
                   }`}
                 >
                   {dir}
@@ -217,7 +217,7 @@ export default function NewTradePage() {
         {/* Screenshot Upload */}
         <div>
           <label className={labelClass}>Chart Screenshots</label>
-          <p className="text-[0.7rem] text-text-muted mb-3">
+          <p className="text-[0.65rem] text-text-muted font-light mb-3">
             Drag & drop, click to upload, or paste from clipboard (Ctrl+V)
           </p>
           <div
@@ -228,10 +228,10 @@ export default function NewTradePage() {
               e.stopPropagation();
               handleFileSelect(e.dataTransfer.files);
             }}
-            className="border border-dashed border-border rounded-[6px] p-8 text-center cursor-pointer hover:border-accent transition-colors duration-150"
+            className="border border-dashed border-border p-8 text-center cursor-pointer hover:border-border-hover transition-colors duration-300"
           >
             <Camera className="w-5 h-5 text-text-muted mx-auto mb-2" />
-            <p className="text-[0.8rem] text-text-muted">
+            <p className="text-[0.75rem] text-text-muted font-light">
               Click or drop chart screenshots here
             </p>
           </div>
@@ -241,7 +241,7 @@ export default function NewTradePage() {
             <div className="grid grid-cols-3 gap-3 mt-4">
               {previews.map((src, i) => (
                 <div key={i} className="relative group">
-                  <img src={src} alt={`Screenshot ${i + 1}`} className="w-full h-32 object-cover rounded-[6px] border border-border" />
+                  <img src={src} alt={`Screenshot ${i + 1}`} className="w-full h-32 object-cover border border-border" />
                   <button
                     type="button"
                     onClick={() => removeScreenshot(i)}
@@ -270,11 +270,11 @@ export default function NewTradePage() {
 
         {/* P&L Preview */}
         {form.entryPrice && form.exitPrice && form.quantity && (
-          <div className="bg-bg-surface border border-border rounded-[6px] p-6">
-            <span className="text-[0.65rem] uppercase tracking-[0.12em] text-text-secondary">
+          <div className="bg-bg-surface border border-border p-6">
+            <span className="text-[0.6rem] uppercase tracking-[0.06em] text-text-muted font-light">
               Estimated P&L
             </span>
-            <p className={`text-[1.8rem] font-semibold mt-1 leading-tight ${
+            <p className={`text-[1.5rem] font-medium mt-1 leading-tight ${
               calculatePnl(parseFloat(form.entryPrice), parseFloat(form.exitPrice), parseInt(form.quantity), form.direction) - (form.fees ? parseFloat(form.fees) : 0) >= 0 ? "text-green" : "text-red"
             }`}>
               ${(calculatePnl(parseFloat(form.entryPrice), parseFloat(form.exitPrice), parseInt(form.quantity), form.direction) - (form.fees ? parseFloat(form.fees) : 0)).toFixed(2)}
@@ -287,14 +287,14 @@ export default function NewTradePage() {
           <button
             type="submit"
             disabled={saving}
-            className="px-5 py-2.5 bg-accent text-white rounded-[4px] text-[0.75rem] uppercase tracking-[0.1em] font-medium hover:bg-accent-hover transition-colors duration-150 cursor-pointer disabled:opacity-40 border-0"
+            className="px-5 py-[0.7rem] bg-btn-bg text-btn-fg text-[0.7rem] tracking-[0.02em] font-normal hover:opacity-85 transition-opacity duration-300 cursor-pointer disabled:opacity-40 border-0"
           >
             {saving ? "Saving..." : "Save Trade"}
           </button>
           <button
             type="button"
             onClick={() => router.back()}
-            className="px-5 py-2.5 bg-transparent border border-border text-text-secondary rounded-[4px] text-[0.75rem] uppercase tracking-[0.1em] hover:text-text-primary hover:border-border-hover transition-colors duration-150 cursor-pointer"
+            className="px-5 py-[0.7rem] bg-transparent border border-border text-text-muted text-[0.7rem] tracking-[0.02em] font-light hover:text-text-primary hover:border-border-hover transition-colors duration-300 cursor-pointer"
           >
             Cancel
           </button>

@@ -2,23 +2,25 @@
 @import "tailwindcss";
 
 /* ============================================
-   Design System — matches kiani.vc/curriculum
+   Design System — matches dashboard.kiani.vc
    Dark mode is DEFAULT
    ============================================ */
 
 :root,
 [data-theme="dark"] {
   --bg-primary: #0a0a0a;
-  --bg-surface: #141414;
-  --bg-surface-hover: #1a1a1a;
-  --bg-input: #1a1a1a;
-  --text-primary: #e8e8e8;
+  --bg-surface: #111111;
+  --bg-surface-hover: #181818;
+  --bg-input: #0a0a0a;
+  --text-primary: #d4d4d4;
   --text-secondary: #888888;
-  --text-muted: #555555;
-  --border: #222222;
+  --text-muted: #525252;
+  --border: #1f1f1f;
   --border-hover: #333333;
-  --accent: #e85d3a;
+  --accent: #e85d2a;
   --accent-hover: #f06a47;
+  --btn-bg: #d4d4d4;
+  --btn-fg: #0a0a0a;
   --green: #4caf50;
   --green-bg: rgba(76, 175, 80, 0.08);
   --red: #e85d3a;
@@ -27,17 +29,19 @@
 }
 
 [data-theme="light"] {
-  --bg-primary: #fafafa;
+  --bg-primary: #f0ede8;
   --bg-surface: #ffffff;
-  --bg-surface-hover: #f5f5f5;
-  --bg-input: #ffffff;
+  --bg-surface-hover: #f7f5f2;
+  --bg-input: #f0ede8;
   --text-primary: #1a1a1a;
   --text-secondary: #666666;
-  --text-muted: #999999;
-  --border: #e0e0e0;
-  --border-hover: #cccccc;
-  --accent: #e85d3a;
+  --text-muted: #8a8a8a;
+  --border: #ddd9d4;
+  --border-hover: #ccc8c2;
+  --accent: #e85d2a;
   --accent-hover: #f06a47;
+  --btn-bg: #1a1a1a;
+  --btn-fg: #f0ede8;
   --green: #4caf50;
   --green-bg: rgba(76, 175, 80, 0.06);
   --red: #cf4436;
@@ -57,6 +61,8 @@
   --color-border-hover: var(--border-hover);
   --color-accent: var(--accent);
   --color-accent-hover: var(--accent-hover);
+  --color-btn-bg: var(--btn-bg);
+  --color-btn-fg: var(--btn-fg);
   --color-green: var(--green);
   --color-green-bg: var(--green-bg);
   --color-red: var(--red);
@@ -94,8 +100,7 @@ body {
 
 /* Selection */
 ::selection {
-  background: var(--accent);
-  color: white;
+  background: rgba(128,128,128,0.15);
 }
 
 /* Focus ring */
