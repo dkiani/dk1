@@ -51,22 +51,21 @@ export default function CalendarPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="w-4 h-4 border border-accent border-t-transparent rounded-full animate-spin" />
+        <div className="w-4 h-4 border border-border-hover border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
 
   return (
     <div className="animate-fade-in">
-      {/* Header */}
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-[1.5rem] font-medium">P&L Calendar</h1>
+          <h1 className="text-[1.1rem] font-normal tracking-[-0.02em]">P&L Calendar</h1>
           <div className="flex items-center gap-3 mt-1">
-            <span className={`text-[0.85rem] ${monthPnl >= 0 ? "text-green" : "text-red"}`}>
+            <span className={`text-[0.8rem] font-light ${monthPnl >= 0 ? "text-green" : "text-red"}`}>
               {monthPnl >= 0 ? "+" : ""}${monthPnl.toFixed(2)}
             </span>
-            <span className="text-[0.8rem] text-text-secondary">
+            <span className="text-[0.7rem] text-text-muted font-light">
               {greenDays} green / {redDays} red
             </span>
           </div>
@@ -77,31 +76,29 @@ export default function CalendarPage() {
       <div className="flex items-center justify-between mb-4">
         <button
           onClick={() => setCurrentMonth(subMonths(currentMonth, 1))}
-          className="p-2 rounded-[4px] hover:bg-bg-surface-hover transition-colors duration-150 cursor-pointer border-0 bg-transparent"
+          className="p-2 hover:bg-bg-surface-hover transition-colors duration-150 cursor-pointer border-0 bg-transparent"
         >
-          <ChevronLeft className="w-[14px] h-[14px] text-text-secondary" />
+          <ChevronLeft className="w-[14px] h-[14px] text-text-muted" />
         </button>
-        <h2 className="text-[0.85rem] font-medium">{format(currentMonth, "MMMM yyyy")}</h2>
+        <h2 className="text-[0.8rem] font-normal">{format(currentMonth, "MMMM yyyy")}</h2>
         <button
           onClick={() => setCurrentMonth(addMonths(currentMonth, 1))}
-          className="p-2 rounded-[4px] hover:bg-bg-surface-hover transition-colors duration-150 cursor-pointer border-0 bg-transparent"
+          className="p-2 hover:bg-bg-surface-hover transition-colors duration-150 cursor-pointer border-0 bg-transparent"
         >
-          <ChevronRight className="w-[14px] h-[14px] text-text-secondary" />
+          <ChevronRight className="w-[14px] h-[14px] text-text-muted" />
         </button>
       </div>
 
       {/* Calendar Grid */}
-      <div className="border border-border rounded-[6px] overflow-hidden">
-        {/* Day headers */}
+      <div className="border border-border overflow-hidden">
         <div className="grid grid-cols-7 border-b border-border">
           {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
-            <div key={day} className="px-3 py-2 text-[0.65rem] uppercase tracking-[0.12em] text-text-secondary text-center font-medium">
+            <div key={day} className="px-3 py-2 text-[0.6rem] uppercase tracking-[0.06em] text-text-muted text-center font-light">
               {day}
             </div>
           ))}
         </div>
 
-        {/* Days */}
         <div className="grid grid-cols-7">
           {Array.from({ length: startPadding }).map((_, i) => (
             <div key={`pad-${i}`} className="border-b border-r border-border h-24 bg-bg-surface" />
@@ -121,22 +118,22 @@ export default function CalendarPage() {
                   today ? "ring-1 ring-inset ring-accent" : ""
                 }`}
               >
-                <span className="text-[0.7rem] text-text-muted">
+                <span className="text-[0.65rem] text-text-muted font-light">
                   {format(day, "d")}
                 </span>
                 {hasTrades && (
                   <div className="mt-1">
                     <div className="flex items-center gap-1">
-                      <span className={`w-2 h-2 rounded-full ${
+                      <span className={`w-1.5 h-1.5 rounded-full ${
                         dayPnl > 0 ? "bg-green" : dayPnl < 0 ? "bg-red" : "bg-yellow"
                       }`} />
-                      <p className={`text-[0.75rem] font-medium ${
+                      <p className={`text-[0.7rem] font-normal ${
                         dayPnl >= 0 ? "text-green" : "text-red"
                       }`}>
                         {dayPnl >= 0 ? "+" : ""}${dayPnl.toFixed(0)}
                       </p>
                     </div>
-                    <p className="text-[0.6rem] text-text-muted mt-0.5">
+                    <p className="text-[0.55rem] text-text-muted mt-0.5 font-light">
                       {dayTrades.length} trade{dayTrades.length > 1 ? "s" : ""}
                     </p>
                   </div>
