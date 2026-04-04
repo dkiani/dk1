@@ -118,6 +118,10 @@ For Google OAuth (`signInWithPopup`) to work on the deployed site:
 - **Future**: Tradovate API integration (auto-import trades), analytics dashboard, rule tracking
 - **Business model**: Free tier for students, Student tier ($49/mo), Premium tier ($249/mo) with AI agent coaching
 
+## Bugs Fixed
+
+- **Dashboard redirect hijack**: The root `vercel.json` has a redirect sending `/dashboard/*` to `dashboard.kiani.vc` (for the main kiani.vc site). When we copied it into `trading-journal/vercel.json`, it hijacked the trading journal's own `/dashboard` route. Fix: `trading-journal/vercel.json` should be empty `{}` — it does NOT need the same redirects as the main site.
+
 ## Current Status
 
 - App is scaffolded and built with all core pages
