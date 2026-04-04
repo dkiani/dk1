@@ -44,7 +44,7 @@ export default function LoginPage() {
     setError("");
     setLoading(true);
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      const cred = await signInWithEmailAndPassword(auth, email, password);
       router.push("/journal");
     } catch (err: any) {
       console.error("Login error:", err.code, err.message);
@@ -63,7 +63,8 @@ export default function LoginPage() {
     setLoading(true);
     try {
       const cred = await createUserWithEmailAndPassword(auth, email, password);
-      await ensureUserDoc(cred.user.uid, cred.user.email, name);
+      // Don't block redirect on Firestore write — providers.tsx handles profile creation as fallback
+      ensureUserDoc(cred.user.uid, cred.user.email, name).catch(() => {});
       router.push("/journal");
     } catch (err: any) {
       console.error("Signup error:", err.code, err.message);

@@ -35,13 +35,50 @@ export function Providers({ children }: { children: ReactNode }) {
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
       setUser(firebaseUser);
       if (firebaseUser) {
-        try {
-          const profileDoc = await getDoc(doc(db, "users", firebaseUser.uid));
-          if (profileDoc.exists()) {
-            setProfile(profileDoc.data() as UserProfile);
+        // Retry profile fetch — Firestore auth token may not be ready immediately
+        let retries = 3;
+        while (retries > 0) {
+          try {
+            const profileDoc = await getDoc(doc(db, "users", firebaseUser.uid));
+            if (profileDoc.exists()) {
+              setProfile(profileDoc.data() as UserProfile);
+            } else {
+              // Doc doesn't exist yet — create it
+              const { setDoc: firestoreSetDoc } = await import("firebase/firestore");
+              await firestoreSetDoc(doc(db, "users", firebaseUser.uid), {
+                uid: firebaseUser.uid,
+                email: firebaseUser.email,
+                displayName: firebaseUser.displayName || "",
+                subscription: "free",
+                tradovateLinked: false,
+                createdAt: new Date().toISOString(),
+              });
+              setProfile({
+                uid: firebaseUser.uid,
+                email: firebaseUser.email || "",
+                displayName: firebaseUser.displayName || undefined,
+                subscription: "free",
+                tradovateLinked: false,
+                createdAt: new Date().toISOString(),
+              });
+            }
+            break;
+          } catch (err) {
+            retries--;
+            if (retries > 0) {
+              await new Promise((r) => setTimeout(r, 1000));
+            } else {
+              console.error("Failed to fetch user profile:", err);
+              // Still allow the user in with defaults
+              setProfile({
+                uid: firebaseUser.uid,
+                email: firebaseUser.email || "",
+                subscription: "free",
+                tradovateLinked: false,
+                createdAt: new Date().toISOString(),
+              });
+            }
           }
-        } catch (err) {
-          console.error("Failed to fetch user profile:", err);
         }
       } else {
         setProfile(null);
