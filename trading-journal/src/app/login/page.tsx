@@ -79,12 +79,18 @@ export default function LoginPage() {
     setLoading(true);
     try {
       const result = await signInWithPopup(auth, googleProvider);
-      await ensureUserDoc(result.user.uid, result.user.email, result.user.displayName);
+      console.log("Google auth success, uid:", result.user.uid);
+      try {
+        await ensureUserDoc(result.user.uid, result.user.email, result.user.displayName);
+      } catch (firestoreErr: any) {
+        console.error("Firestore error after Google sign-in:", firestoreErr.code, firestoreErr.message);
+        // Don't block sign-in if user doc creation fails — user is still authenticated
+      }
       router.push("/dashboard");
     } catch (err: any) {
       console.error("Google sign-in error:", err.code, err.message);
       if (err.code === "auth/unauthorized-domain") {
-        setError("Domain not authorized. Add localhost to Firebase Auth settings.");
+        setError("Domain not authorized. Add this domain to Firebase Auth settings.");
       } else if (err.code === "auth/popup-blocked") {
         setError("Popup blocked. Allow popups for this site.");
       } else if (err.code !== "auth/popup-closed-by-user") {

@@ -35,9 +35,13 @@ export function Providers({ children }: { children: ReactNode }) {
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
       setUser(firebaseUser);
       if (firebaseUser) {
-        const profileDoc = await getDoc(doc(db, "users", firebaseUser.uid));
-        if (profileDoc.exists()) {
-          setProfile(profileDoc.data() as UserProfile);
+        try {
+          const profileDoc = await getDoc(doc(db, "users", firebaseUser.uid));
+          if (profileDoc.exists()) {
+            setProfile(profileDoc.data() as UserProfile);
+          }
+        } catch (err) {
+          console.error("Failed to fetch user profile:", err);
         }
       } else {
         setProfile(null);
