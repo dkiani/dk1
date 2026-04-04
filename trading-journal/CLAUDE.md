@@ -118,6 +118,37 @@ For Google OAuth (`signInWithPopup`) to work on the deployed site:
 - **Future**: Tradovate API integration (auto-import trades), analytics dashboard, rule tracking
 - **Business model**: Free tier for students, Student tier ($49/mo), Premium tier ($249/mo) with AI agent coaching
 
+## Design System — Matching kiani.vc/curriculum Quality
+
+The trading journal must match the exact design quality and aesthetic of the `/curriculum` page on kiani.vc. This is the gold standard for all UI work.
+
+### Core Design Principles (from curriculum)
+1. **No box shadows** — completely flat design, hierarchy comes from borders only
+2. **3px border radius** — `rounded-[3px]` everywhere, never `rounded-md` or `rounded-lg`
+3. **Font weight 300** (light) as default body weight, 500 (medium) for headings/labels
+4. **Never use `font-semibold` (600) or `font-bold` (700)** — too heavy for this aesthetic
+5. **Precise px-based sizing** — `text-[11px]`, `text-[12px]`, `text-[13px]` not Tailwind defaults
+6. **JetBrains Mono** monospace font throughout
+7. **Custom easing** — `cubic-bezier(0.16, 1, 0.3, 1)` for all major transitions
+8. **Transitions**: `0.3s` default, `0.2s` for list items, `0.5s` for major state changes
+9. **Labels**: `text-[10px] uppercase tracking-[0.06em] font-medium text-text-muted`
+10. **Content max-width**: `720px` (matching curriculum main content area)
+11. **Sidebar width**: `280px` (matching curriculum sidebar at standard breakpoint)
+12. **Warm color palette**: `#e85d2a` accent (rust orange), beige backgrounds in light mode, true blacks in dark mode
+
+### CSS Variable System
+- Light: `--bg-primary: #f0ede8`, `--bg-card: #ffffff`, `--bg-tertiary: #f7f5f2`, `--bg-input: #f0ede8`
+- Dark: `--bg-primary: #0a0a0a`, `--bg-card: #111111`, `--bg-tertiary: #181818`, `--bg-input: #0a0a0a`
+- These match the curriculum's exact color tokens
+
+### What NOT To Do
+- No `rounded-lg` or `rounded-md` anywhere
+- No `box-shadow` or `var(--shadow)` — removed from the design system entirely
+- No `font-semibold` or `font-bold` — use `font-medium` (500) max
+- No `text-lg` or `text-xl` for page titles — use `text-[13px] font-medium`
+- No thick borders (`border-2`) — always `border` (1px)
+- No `bg-bg-secondary` for card backgrounds — use `bg-bg-card`
+
 ## Bugs Fixed
 
 - **Dashboard redirect hijack**: The root `vercel.json` has a redirect sending `/dashboard/*` to `dashboard.kiani.vc` (for the main kiani.vc site). When we copied it into `trading-journal/vercel.json`, it hijacked the trading journal's own `/dashboard` route. Fix: `trading-journal/vercel.json` should be empty `{}` — it does NOT need the same redirects as the main site.
@@ -131,4 +162,25 @@ For Google OAuth (`signInWithPopup`) to work on the deployed site:
 - AI analysis route exists but ANTHROPIC_API_KEY is empty
 - Screenshot upload is placeholder (URLs only, no actual upload to Storage yet)
 - Tradovate integration is marked "coming soon"
-- **Deploying to Vercel with Google sign-in working is the current priority**
+- App is deployed on Vercel with Google sign-in working
+
+## Change Log
+
+> **IMPORTANT**: Continue logging all updates and context changes in this file. Every significant change, bug fix, design decision, or architectural update should be documented here so context is never lost between sessions.
+
+### 2026-04-04 — Design System Overhaul (match /curriculum quality)
+- **Problem**: The trading journal UI looked low-quality compared to the curriculum page — rounded corners too large (8px), box shadows making it look soft, font weights too heavy (semibold/bold), content area too narrow (840px), sidebar too wide (256px)
+- **Root cause**: Used generic Tailwind classes (`rounded-lg`, `rounded-md`, `font-semibold`) instead of the precise, minimal design language from the curriculum
+- **Changes made**:
+  - `globals.css`: Removed all `--shadow` variables, changed `--bg-tertiary` to match curriculum (`#f7f5f2` light / `#181818` dark), changed `--bg-input` to match curriculum (`#f0ede8` light / `#0a0a0a` dark), added `--ease` CSS variable, added Firefox scrollbar styling
+  - `sidebar.tsx`: Changed width from `w-64` (256px) to `w-[280px]` (matching curriculum sidebar), changed font weights to `font-light` for nav items
+  - `(app)/layout.tsx`: Changed `ml-64` to `ml-[280px]`, added `min-w-0` to prevent flex overflow
+  - `dashboard/page.tsx`: Removed `box-shadow`, changed `max-w-[840px]` → `max-w-[720px]`, changed all `rounded-md/lg` → `rounded-[3px]`, changed title from `text-sm` to `text-[13px]`, changed value font from `text-lg` to `text-[18px]`
+  - `journal/page.tsx`: Changed `max-w-5xl` → `max-w-[720px]`, title to `text-[13px]`
+  - `journal/new/page.tsx`: All `rounded-md` → `rounded-[3px]`, all `font-semibold` → `font-medium`, extracted shared input/label classes, `border-2 border-dashed` → `border border-dashed`, title to `text-[13px]`
+  - `journal/[id]/page.tsx`: All `rounded-lg` → `rounded-[3px]`, all `font-semibold` → `font-medium`, `text-lg` → `text-[13px]`, `text-2xl` → `text-[24px]`, P&L banner given border instead of just bg
+  - `settings/page.tsx`: All `rounded-lg` → `rounded-[3px]`, all `font-semibold` → `font-medium`, `text-lg` → `text-[13px]`, all `text-xs` → precise px sizes, toggle switch sizing tightened
+  - `calendar/page.tsx`: `max-w-5xl` → `max-w-[720px]`, title to `text-[13px]`
+  - `subscribe/page.tsx`: All `rounded-lg/md` → `rounded-[3px]`, all `font-semibold/bold` → `font-medium`, matched pricing card style to curriculum paywall design, brand dot matches sidebar dot
+- **Files changed**: 10 files across the entire UI layer
+- **Result**: Every page now uses consistent 3px radius, no shadows, light font weights, precise sizing — identical design language to /curriculum

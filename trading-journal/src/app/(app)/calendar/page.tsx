@@ -62,11 +62,11 @@ export default function CalendarPage() {
   }
 
   return (
-    <div className="max-w-5xl animate-fade-in">
+    <div className="max-w-[720px] animate-fade-in">
       {/* Header */}
       <div className="flex items-center justify-between mb-10">
         <div>
-          <h1 className="text-sm font-medium tracking-tight">P&L Calendar</h1>
+          <h1 className="text-[13px] font-medium tracking-tight">P&L Calendar</h1>
           <div className="flex items-center gap-3 mt-1.5">
             <span className={`text-[11px] ${monthPnl >= 0 ? "text-green" : "text-red"}`}>
               {monthPnl >= 0 ? "+" : ""}${monthPnl.toFixed(2)}

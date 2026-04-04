@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/lib/auth-context";
 import { createTrade, calculatePnl } from "@/lib/trades";
 import { TradeDirection, AssetClass, TimeFrame } from "@/types";
-import { Upload, X, Camera } from "lucide-react";
+import { X, Camera } from "lucide-react";
 
 export default function NewTradePage() {
   const { user } = useAuth();
@@ -108,35 +108,34 @@ export default function NewTradePage() {
     router.push("/journal");
   }
 
-  return (
-    <div className="max-w-2xl" onPaste={handlePaste}>
-      <h1 className="text-lg font-semibold mb-6">Log Trade</h1>
+  const inputClass = "w-full px-3 py-2.5 bg-bg-input border border-border rounded-[3px] text-[12px] font-light text-text-primary placeholder:text-text-muted focus:border-accent outline-none transition-colors duration-300";
+  const labelClass = "block text-[10px] uppercase tracking-[0.06em] font-light text-text-muted mb-2";
 
-      <form onSubmit={handleSubmit} className="space-y-6">
+  return (
+    <div className="max-w-[720px] animate-fade-in" onPaste={handlePaste}>
+      <h1 className="text-[13px] font-medium tracking-tight mb-10">Log Trade</h1>
+
+      <form onSubmit={handleSubmit} className="space-y-5">
         {/* Symbol + Asset Class */}
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-[10px] uppercase tracking-wider text-text-muted mb-2">
-              Symbol
-            </label>
+            <label className={labelClass}>Symbol</label>
             <input
               name="symbol"
               value={form.symbol}
               onChange={handleChange}
               placeholder="ES, NQ, SPY..."
               required
-              className="w-full px-3 py-2.5 bg-bg-input border border-border rounded-md text-xs text-text-primary placeholder:text-text-muted focus:border-accent outline-none"
+              className={inputClass}
             />
           </div>
           <div>
-            <label className="block text-[10px] uppercase tracking-wider text-text-muted mb-2">
-              Asset Class
-            </label>
+            <label className={labelClass}>Asset Class</label>
             <select
               name="assetClass"
               value={form.assetClass}
               onChange={handleChange}
-              className="w-full px-3 py-2.5 bg-bg-input border border-border rounded-md text-xs text-text-primary focus:border-accent outline-none"
+              className={inputClass}
             >
               <option value="futures">Futures</option>
               <option value="options">Options</option>
@@ -150,16 +149,14 @@ export default function NewTradePage() {
         {/* Direction + Time Frame */}
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-[10px] uppercase tracking-wider text-text-muted mb-2">
-              Direction
-            </label>
+            <label className={labelClass}>Direction</label>
             <div className="flex gap-2">
               {(["long", "short"] as const).map((dir) => (
                 <button
                   key={dir}
                   type="button"
                   onClick={() => setForm((f) => ({ ...f, direction: dir }))}
-                  className={`flex-1 py-2.5 rounded-md text-xs uppercase font-medium cursor-pointer transition-colors ${
+                  className={`flex-1 py-2.5 rounded-[3px] text-[11px] uppercase font-medium cursor-pointer transition-all duration-300 border-0 ${
                     form.direction === dir
                       ? dir === "long"
                         ? "bg-green text-white"
@@ -173,14 +170,12 @@ export default function NewTradePage() {
             </div>
           </div>
           <div>
-            <label className="block text-[10px] uppercase tracking-wider text-text-muted mb-2">
-              Time Frame
-            </label>
+            <label className={labelClass}>Time Frame</label>
             <select
               name="timeFrame"
               value={form.timeFrame}
               onChange={handleChange}
-              className="w-full px-3 py-2.5 bg-bg-input border border-border rounded-md text-xs text-text-primary focus:border-accent outline-none"
+              className={inputClass}
             >
               {(["1m", "5m", "15m", "1h", "4h", "1d", "1w"] as TimeFrame[]).map((tf) => (
                 <option key={tf} value={tf}>{tf}</option>
@@ -192,9 +187,7 @@ export default function NewTradePage() {
         {/* Entry / Exit prices */}
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-[10px] uppercase tracking-wider text-text-muted mb-2">
-              Entry Price
-            </label>
+            <label className={labelClass}>Entry Price</label>
             <input
               name="entryPrice"
               type="number"
@@ -202,13 +195,11 @@ export default function NewTradePage() {
               value={form.entryPrice}
               onChange={handleChange}
               required
-              className="w-full px-3 py-2.5 bg-bg-input border border-border rounded-md text-xs text-text-primary focus:border-accent outline-none"
+              className={inputClass}
             />
           </div>
           <div>
-            <label className="block text-[10px] uppercase tracking-wider text-text-muted mb-2">
-              Exit Price
-            </label>
+            <label className={labelClass}>Exit Price</label>
             <input
               name="exitPrice"
               type="number"
@@ -216,7 +207,7 @@ export default function NewTradePage() {
               value={form.exitPrice}
               onChange={handleChange}
               placeholder="Leave blank if open"
-              className="w-full px-3 py-2.5 bg-bg-input border border-border rounded-md text-xs text-text-primary placeholder:text-text-muted focus:border-accent outline-none"
+              className={inputClass}
             />
           </div>
         </div>
@@ -224,22 +215,18 @@ export default function NewTradePage() {
         {/* Quantity + Fees */}
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-[10px] uppercase tracking-wider text-text-muted mb-2">
-              Quantity / Contracts
-            </label>
+            <label className={labelClass}>Quantity / Contracts</label>
             <input
               name="quantity"
               type="number"
               value={form.quantity}
               onChange={handleChange}
               required
-              className="w-full px-3 py-2.5 bg-bg-input border border-border rounded-md text-xs text-text-primary focus:border-accent outline-none"
+              className={inputClass}
             />
           </div>
           <div>
-            <label className="block text-[10px] uppercase tracking-wider text-text-muted mb-2">
-              Fees
-            </label>
+            <label className={labelClass}>Fees</label>
             <input
               name="fees"
               type="number"
@@ -247,7 +234,7 @@ export default function NewTradePage() {
               value={form.fees}
               onChange={handleChange}
               placeholder="0.00"
-              className="w-full px-3 py-2.5 bg-bg-input border border-border rounded-md text-xs text-text-primary placeholder:text-text-muted focus:border-accent outline-none"
+              className={inputClass}
             />
           </div>
         </div>
@@ -255,28 +242,24 @@ export default function NewTradePage() {
         {/* Entry / Exit times */}
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-[10px] uppercase tracking-wider text-text-muted mb-2">
-              Entry Time
-            </label>
+            <label className={labelClass}>Entry Time</label>
             <input
               name="entryTime"
               type="datetime-local"
               value={form.entryTime}
               onChange={handleChange}
               required
-              className="w-full px-3 py-2.5 bg-bg-input border border-border rounded-md text-xs text-text-primary focus:border-accent outline-none"
+              className={inputClass}
             />
           </div>
           <div>
-            <label className="block text-[10px] uppercase tracking-wider text-text-muted mb-2">
-              Exit Time
-            </label>
+            <label className={labelClass}>Exit Time</label>
             <input
               name="exitTime"
               type="datetime-local"
               value={form.exitTime}
               onChange={handleChange}
-              className="w-full px-3 py-2.5 bg-bg-input border border-border rounded-md text-xs text-text-primary focus:border-accent outline-none"
+              className={inputClass}
             />
           </div>
         </div>
@@ -284,37 +267,31 @@ export default function NewTradePage() {
         {/* Strategy + Tags */}
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-[10px] uppercase tracking-wider text-text-muted mb-2">
-              Strategy
-            </label>
+            <label className={labelClass}>Strategy</label>
             <input
               name="strategy"
               value={form.strategy}
               onChange={handleChange}
               placeholder="Breakout, reversal, trend..."
-              className="w-full px-3 py-2.5 bg-bg-input border border-border rounded-md text-xs text-text-primary placeholder:text-text-muted focus:border-accent outline-none"
+              className={inputClass}
             />
           </div>
           <div>
-            <label className="block text-[10px] uppercase tracking-wider text-text-muted mb-2">
-              Tags
-            </label>
+            <label className={labelClass}>Tags</label>
             <input
               name="tags"
               value={form.tags}
               onChange={handleChange}
               placeholder="Comma separated..."
-              className="w-full px-3 py-2.5 bg-bg-input border border-border rounded-md text-xs text-text-primary placeholder:text-text-muted focus:border-accent outline-none"
+              className={inputClass}
             />
           </div>
         </div>
 
         {/* Screenshot Upload */}
         <div>
-          <label className="block text-[10px] uppercase tracking-wider text-text-muted mb-2">
-            Chart Screenshots
-          </label>
-          <p className="text-[10px] text-text-muted mb-3">
+          <label className={labelClass}>Chart Screenshots</label>
+          <p className="text-[10px] text-text-muted mb-3 font-light">
             Drag & drop, click to upload, or paste from clipboard (Ctrl+V)
           </p>
 
@@ -326,10 +303,10 @@ export default function NewTradePage() {
               e.stopPropagation();
               handleFileSelect(e.dataTransfer.files);
             }}
-            className="border-2 border-dashed border-border rounded-lg p-8 text-center cursor-pointer hover:border-accent transition-colors"
+            className="border border-dashed border-border rounded-[3px] p-8 text-center cursor-pointer hover:border-accent transition-colors duration-300"
           >
-            <Camera className="w-6 h-6 text-text-muted mx-auto mb-2" />
-            <p className="text-xs text-text-muted">
+            <Camera className="w-5 h-5 text-text-muted mx-auto mb-2" />
+            <p className="text-[11px] text-text-muted font-light">
               Click or drop chart screenshots here
             </p>
           </div>
@@ -350,12 +327,12 @@ export default function NewTradePage() {
                   <img
                     src={src}
                     alt={`Screenshot ${i + 1}`}
-                    className="w-full h-32 object-cover rounded-md border border-border"
+                    className="w-full h-32 object-cover rounded-[3px] border border-border"
                   />
                   <button
                     type="button"
                     onClick={() => removeScreenshot(i)}
-                    className="absolute top-1 right-1 p-1 bg-black/60 rounded-full opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
+                    className="absolute top-1 right-1 p-1 bg-black/60 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200 cursor-pointer border-0"
                   >
                     <X className="w-3 h-3 text-white" />
                   </button>
@@ -367,27 +344,25 @@ export default function NewTradePage() {
 
         {/* Notes */}
         <div>
-          <label className="block text-[10px] uppercase tracking-wider text-text-muted mb-2">
-            Notes
-          </label>
+          <label className={labelClass}>Notes</label>
           <textarea
             name="notes"
             value={form.notes}
             onChange={handleChange}
             rows={4}
             placeholder="Why did you take this trade? What was your setup?"
-            className="w-full px-3 py-2.5 bg-bg-input border border-border rounded-md text-xs text-text-primary placeholder:text-text-muted focus:border-accent outline-none resize-none"
+            className={`${inputClass} resize-none`}
           />
         </div>
 
         {/* P&L Preview */}
         {form.entryPrice && form.exitPrice && form.quantity && (
-          <div className="bg-bg-tertiary border border-border rounded-lg p-4">
-            <span className="text-[10px] uppercase tracking-wider text-text-muted">
+          <div className="bg-bg-card border border-border rounded-[3px] p-4">
+            <span className="text-[10px] uppercase tracking-[0.06em] text-text-muted font-light">
               Estimated P&L
             </span>
             <p
-              className={`text-lg font-semibold mt-1 ${
+              className={`text-[18px] font-medium mt-1 ${
                 calculatePnl(
                   parseFloat(form.entryPrice),
                   parseFloat(form.exitPrice),
@@ -412,18 +387,18 @@ export default function NewTradePage() {
         )}
 
         {/* Submit */}
-        <div className="flex gap-3">
+        <div className="flex gap-3 pt-2">
           <button
             type="submit"
             disabled={saving}
-            className="px-6 py-2.5 bg-accent text-white rounded-md text-xs font-medium hover:bg-accent-hover transition-colors cursor-pointer disabled:opacity-50"
+            className="px-5 py-2.5 bg-accent text-white rounded-[3px] text-[11px] font-medium hover:bg-accent-hover transition-all duration-300 cursor-pointer disabled:opacity-40 border-0"
           >
             {saving ? "Saving..." : "Save Trade"}
           </button>
           <button
             type="button"
             onClick={() => router.back()}
-            className="px-6 py-2.5 bg-bg-input border border-border text-text-secondary rounded-md text-xs hover:text-text-primary transition-colors cursor-pointer"
+            className="px-5 py-2.5 bg-transparent border border-border text-text-secondary rounded-[3px] text-[11px] font-light hover:text-text-primary hover:border-border-hover transition-all duration-300 cursor-pointer"
           >
             Cancel
           </button>

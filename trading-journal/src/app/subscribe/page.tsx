@@ -56,54 +56,54 @@ export default function SubscribePage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-bg-primary px-4 py-12">
-      <div className="w-full max-w-3xl">
+      <div className="w-full max-w-[600px] animate-fade-in">
         {/* Header */}
         <div className="text-center mb-10">
           <div className="flex items-center justify-center gap-2 mb-4">
-            <TrendingUp className="w-5 h-5 text-accent" />
-            <span className="text-sm font-semibold tracking-tight">journal.kiani.vc</span>
+            <span className="w-2 h-2 rounded-full bg-accent" />
+            <span className="text-[11px] font-medium tracking-[0.06em] uppercase">journal.kiani.vc</span>
           </div>
-          <h1 className="text-xl font-semibold mb-2">Choose your plan</h1>
-          <p className="text-xs text-text-muted">
+          <h1 className="text-[18px] font-medium mb-2 tracking-tight">Choose your plan</h1>
+          <p className="text-[11px] text-text-muted font-light">
             Start journaling your trades. Cancel anytime.
           </p>
         </div>
 
         {/* Plans */}
-        <div className="grid grid-cols-2 gap-6">
+        <div className="grid grid-cols-2 gap-4">
           {plans.map((plan) => (
             <div
               key={plan.tier}
-              className={`bg-bg-card border rounded-lg p-6 relative ${
-                plan.popular ? "border-accent" : "border-border"
+              className={`bg-bg-card border rounded-[3px] p-5 relative transition-all duration-300 ${
+                plan.popular ? "border-accent" : "border-border hover:border-border-hover"
               }`}
             >
               {plan.popular && (
-                <span className="absolute -top-2.5 left-1/2 -translate-x-1/2 px-3 py-0.5 bg-accent text-white text-[10px] uppercase tracking-wider rounded-full">
-                  Most Popular
+                <span className="absolute -top-2.5 left-1/2 -translate-x-1/2 px-2.5 py-0.5 bg-accent text-white text-[9px] uppercase tracking-[1px] font-medium">
+                  Recommended
                 </span>
               )}
 
-              <h2 className="text-sm font-semibold mb-1">{plan.name}</h2>
-              <p className="text-[10px] text-text-muted mb-4">{plan.description}</p>
+              <h2 className="text-[12px] font-medium mb-1">{plan.name}</h2>
+              <p className="text-[10px] text-text-muted font-light mb-4">{plan.description}</p>
 
-              <div className="mb-6">
-                <span className="text-2xl font-bold">${plan.price}</span>
-                <span className="text-xs text-text-muted">/mo</span>
+              <div className="mb-5">
+                <span className="text-[24px] font-medium">${plan.price}</span>
+                <span className="text-[11px] text-text-muted font-light">/mo</span>
               </div>
 
-              <ul className="space-y-2.5 mb-6">
+              <ul className="space-y-2.5 mb-5">
                 {plan.features.map((feature) => (
                   <li key={feature} className="flex items-start gap-2">
-                    <Check className="w-3.5 h-3.5 text-green mt-0.5 shrink-0" />
-                    <span className="text-xs text-text-secondary">{feature}</span>
+                    <Check className="w-3 h-3 text-green mt-0.5 shrink-0" />
+                    <span className="text-[11px] text-text-secondary font-light">{feature}</span>
                   </li>
                 ))}
               </ul>
 
               <button
                 onClick={() => handleCheckout(plan.tier)}
-                className={`w-full py-2.5 rounded-md text-xs font-medium transition-colors cursor-pointer ${
+                className={`w-full py-2.5 rounded-[3px] text-[11px] font-medium transition-all duration-300 cursor-pointer border-0 ${
                   plan.popular
                     ? "bg-accent text-white hover:bg-accent-hover"
                     : "bg-bg-input border border-border text-text-primary hover:border-accent"
