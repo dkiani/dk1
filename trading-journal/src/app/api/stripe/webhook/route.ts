@@ -29,7 +29,7 @@ export async function POST(request: NextRequest) {
       const tier = session.metadata?.tier;
 
       if (userId && tier) {
-        await getAdminDb().doc(`journalUsers/${userId}`).update({
+        await getAdminDb().doc(`users/${userId}`).update({
           subscription: tier,
           stripeCustomerId: session.customer as string,
           stripeSubscriptionId: session.subscription as string,
@@ -44,7 +44,7 @@ export async function POST(request: NextRequest) {
 
       // Find user by stripeCustomerId
       const snapshot = await getAdminDb()
-        .collection("journalUsers")
+        .collection("users")
         .where("stripeCustomerId", "==", customerId)
         .limit(1)
         .get();
@@ -69,7 +69,7 @@ export async function POST(request: NextRequest) {
       const customerId = subscription.customer as string;
 
       const snapshot = await getAdminDb()
-        .collection("journalUsers")
+        .collection("users")
         .where("stripeCustomerId", "==", customerId)
         .limit(1)
         .get();

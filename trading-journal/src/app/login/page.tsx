@@ -23,7 +23,7 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
 
   async function ensureUserDoc(uid: string, email: string | null, displayName?: string | null) {
-    const ref = doc(db, "journalUsers", uid);
+    const ref = doc(db, "users", uid);
     const snap = await getDoc(ref);
     if (!snap.exists()) {
       await setDoc(ref, {

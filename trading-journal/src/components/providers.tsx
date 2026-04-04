@@ -35,7 +35,7 @@ export function Providers({ children }: { children: ReactNode }) {
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
       setUser(firebaseUser);
       if (firebaseUser) {
-        const profileDoc = await getDoc(doc(db, "journalUsers", firebaseUser.uid));
+        const profileDoc = await getDoc(doc(db, "users", firebaseUser.uid));
         if (profileDoc.exists()) {
           setProfile(profileDoc.data() as UserProfile);
         }
