@@ -77,10 +77,9 @@ export default function NewTradePage() {
     const pnl = exit ? calculatePnl(entry, exit, qty, form.direction) - fees : undefined;
     const pnlPercent = pnl && entry ? (pnl / (entry * qty)) * 100 : undefined;
 
-    // TODO: upload screenshots to Firebase Storage and get URLs
     const screenshotData = previews.map((url, i) => ({
       id: crypto.randomUUID(),
-      url, // temporary — will be replaced with Firebase Storage URL
+      url,
       uploadedAt: new Date().toISOString(),
     }));
 
@@ -108,35 +107,23 @@ export default function NewTradePage() {
     router.push("/journal");
   }
 
-  const inputClass = "w-full px-3 py-2.5 bg-bg-input border border-border rounded-[3px] text-[12px] font-light text-text-primary placeholder:text-text-muted focus:border-accent outline-none transition-colors duration-300";
-  const labelClass = "block text-[10px] uppercase tracking-[0.06em] font-light text-text-muted mb-2";
+  const inputClass = "w-full px-3 py-2.5 bg-bg-input border border-border rounded-[4px] text-[0.8rem] text-text-primary placeholder:text-text-muted focus:border-accent outline-none transition-colors duration-150";
+  const labelClass = "block text-[0.65rem] uppercase tracking-[0.1em] text-text-secondary mb-2";
 
   return (
-    <div className="max-w-[720px] animate-fade-in" onPaste={handlePaste}>
-      <h1 className="text-[13px] font-medium tracking-tight mb-10">Log Trade</h1>
+    <div className="animate-fade-in" onPaste={handlePaste}>
+      <h1 className="text-[1.5rem] font-medium mb-8">Log Trade</h1>
 
-      <form onSubmit={handleSubmit} className="space-y-5">
+      <form onSubmit={handleSubmit} className="space-y-6">
         {/* Symbol + Asset Class */}
         <div className="grid grid-cols-2 gap-4">
           <div>
             <label className={labelClass}>Symbol</label>
-            <input
-              name="symbol"
-              value={form.symbol}
-              onChange={handleChange}
-              placeholder="ES, NQ, SPY..."
-              required
-              className={inputClass}
-            />
+            <input name="symbol" value={form.symbol} onChange={handleChange} placeholder="ES, NQ, SPY..." required className={inputClass} />
           </div>
           <div>
             <label className={labelClass}>Asset Class</label>
-            <select
-              name="assetClass"
-              value={form.assetClass}
-              onChange={handleChange}
-              className={inputClass}
-            >
+            <select name="assetClass" value={form.assetClass} onChange={handleChange} className={inputClass}>
               <option value="futures">Futures</option>
               <option value="options">Options</option>
               <option value="stocks">Stocks</option>
@@ -156,12 +143,12 @@ export default function NewTradePage() {
                   key={dir}
                   type="button"
                   onClick={() => setForm((f) => ({ ...f, direction: dir }))}
-                  className={`flex-1 py-2.5 rounded-[3px] text-[11px] uppercase font-medium cursor-pointer transition-all duration-300 border-0 ${
+                  className={`flex-1 py-2.5 rounded-[4px] text-[0.75rem] uppercase tracking-[0.1em] font-medium cursor-pointer transition-colors duration-150 border ${
                     form.direction === dir
                       ? dir === "long"
-                        ? "bg-green text-white"
-                        : "bg-red text-white"
-                      : "bg-bg-input border border-border text-text-muted hover:text-text-primary"
+                        ? "bg-green text-white border-green"
+                        : "bg-red text-white border-red"
+                      : "bg-transparent border-border text-text-secondary hover:text-text-primary"
                   }`}
                 >
                   {dir}
@@ -171,12 +158,7 @@ export default function NewTradePage() {
           </div>
           <div>
             <label className={labelClass}>Time Frame</label>
-            <select
-              name="timeFrame"
-              value={form.timeFrame}
-              onChange={handleChange}
-              className={inputClass}
-            >
+            <select name="timeFrame" value={form.timeFrame} onChange={handleChange} className={inputClass}>
               {(["1m", "5m", "15m", "1h", "4h", "1d", "1w"] as TimeFrame[]).map((tf) => (
                 <option key={tf} value={tf}>{tf}</option>
               ))}
@@ -188,27 +170,11 @@ export default function NewTradePage() {
         <div className="grid grid-cols-2 gap-4">
           <div>
             <label className={labelClass}>Entry Price</label>
-            <input
-              name="entryPrice"
-              type="number"
-              step="any"
-              value={form.entryPrice}
-              onChange={handleChange}
-              required
-              className={inputClass}
-            />
+            <input name="entryPrice" type="number" step="any" value={form.entryPrice} onChange={handleChange} required className={inputClass} />
           </div>
           <div>
             <label className={labelClass}>Exit Price</label>
-            <input
-              name="exitPrice"
-              type="number"
-              step="any"
-              value={form.exitPrice}
-              onChange={handleChange}
-              placeholder="Leave blank if open"
-              className={inputClass}
-            />
+            <input name="exitPrice" type="number" step="any" value={form.exitPrice} onChange={handleChange} placeholder="Leave blank if open" className={inputClass} />
           </div>
         </div>
 
@@ -216,26 +182,11 @@ export default function NewTradePage() {
         <div className="grid grid-cols-2 gap-4">
           <div>
             <label className={labelClass}>Quantity / Contracts</label>
-            <input
-              name="quantity"
-              type="number"
-              value={form.quantity}
-              onChange={handleChange}
-              required
-              className={inputClass}
-            />
+            <input name="quantity" type="number" value={form.quantity} onChange={handleChange} required className={inputClass} />
           </div>
           <div>
             <label className={labelClass}>Fees</label>
-            <input
-              name="fees"
-              type="number"
-              step="any"
-              value={form.fees}
-              onChange={handleChange}
-              placeholder="0.00"
-              className={inputClass}
-            />
+            <input name="fees" type="number" step="any" value={form.fees} onChange={handleChange} placeholder="0.00" className={inputClass} />
           </div>
         </div>
 
@@ -243,24 +194,11 @@ export default function NewTradePage() {
         <div className="grid grid-cols-2 gap-4">
           <div>
             <label className={labelClass}>Entry Time</label>
-            <input
-              name="entryTime"
-              type="datetime-local"
-              value={form.entryTime}
-              onChange={handleChange}
-              required
-              className={inputClass}
-            />
+            <input name="entryTime" type="datetime-local" value={form.entryTime} onChange={handleChange} required className={inputClass} />
           </div>
           <div>
             <label className={labelClass}>Exit Time</label>
-            <input
-              name="exitTime"
-              type="datetime-local"
-              value={form.exitTime}
-              onChange={handleChange}
-              className={inputClass}
-            />
+            <input name="exitTime" type="datetime-local" value={form.exitTime} onChange={handleChange} className={inputClass} />
           </div>
         </div>
 
@@ -268,33 +206,20 @@ export default function NewTradePage() {
         <div className="grid grid-cols-2 gap-4">
           <div>
             <label className={labelClass}>Strategy</label>
-            <input
-              name="strategy"
-              value={form.strategy}
-              onChange={handleChange}
-              placeholder="Breakout, reversal, trend..."
-              className={inputClass}
-            />
+            <input name="strategy" value={form.strategy} onChange={handleChange} placeholder="Breakout, reversal, trend..." className={inputClass} />
           </div>
           <div>
             <label className={labelClass}>Tags</label>
-            <input
-              name="tags"
-              value={form.tags}
-              onChange={handleChange}
-              placeholder="Comma separated..."
-              className={inputClass}
-            />
+            <input name="tags" value={form.tags} onChange={handleChange} placeholder="Comma separated..." className={inputClass} />
           </div>
         </div>
 
         {/* Screenshot Upload */}
         <div>
           <label className={labelClass}>Chart Screenshots</label>
-          <p className="text-[10px] text-text-muted mb-3 font-light">
+          <p className="text-[0.7rem] text-text-muted mb-3">
             Drag & drop, click to upload, or paste from clipboard (Ctrl+V)
           </p>
-
           <div
             onClick={() => fileInputRef.current?.click()}
             onDragOver={(e) => { e.preventDefault(); e.stopPropagation(); }}
@@ -303,36 +228,24 @@ export default function NewTradePage() {
               e.stopPropagation();
               handleFileSelect(e.dataTransfer.files);
             }}
-            className="border border-dashed border-border rounded-[3px] p-8 text-center cursor-pointer hover:border-accent transition-colors duration-300"
+            className="border border-dashed border-border rounded-[6px] p-8 text-center cursor-pointer hover:border-accent transition-colors duration-150"
           >
             <Camera className="w-5 h-5 text-text-muted mx-auto mb-2" />
-            <p className="text-[11px] text-text-muted font-light">
+            <p className="text-[0.8rem] text-text-muted">
               Click or drop chart screenshots here
             </p>
           </div>
-          <input
-            ref={fileInputRef}
-            type="file"
-            accept="image/*"
-            multiple
-            onChange={(e) => handleFileSelect(e.target.files)}
-            className="hidden"
-          />
+          <input ref={fileInputRef} type="file" accept="image/*" multiple onChange={(e) => handleFileSelect(e.target.files)} className="hidden" />
 
-          {/* Preview grid */}
           {previews.length > 0 && (
             <div className="grid grid-cols-3 gap-3 mt-4">
               {previews.map((src, i) => (
                 <div key={i} className="relative group">
-                  <img
-                    src={src}
-                    alt={`Screenshot ${i + 1}`}
-                    className="w-full h-32 object-cover rounded-[3px] border border-border"
-                  />
+                  <img src={src} alt={`Screenshot ${i + 1}`} className="w-full h-32 object-cover rounded-[6px] border border-border" />
                   <button
                     type="button"
                     onClick={() => removeScreenshot(i)}
-                    className="absolute top-1 right-1 p-1 bg-black/60 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200 cursor-pointer border-0"
+                    className="absolute top-1 right-1 p-1 bg-black/60 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-150 cursor-pointer border-0"
                   >
                     <X className="w-3 h-3 text-white" />
                   </button>
@@ -357,31 +270,14 @@ export default function NewTradePage() {
 
         {/* P&L Preview */}
         {form.entryPrice && form.exitPrice && form.quantity && (
-          <div className="bg-bg-card border border-border rounded-[3px] p-4">
-            <span className="text-[10px] uppercase tracking-[0.06em] text-text-muted font-light">
+          <div className="bg-bg-surface border border-border rounded-[6px] p-6">
+            <span className="text-[0.65rem] uppercase tracking-[0.12em] text-text-secondary">
               Estimated P&L
             </span>
-            <p
-              className={`text-[18px] font-medium mt-1 ${
-                calculatePnl(
-                  parseFloat(form.entryPrice),
-                  parseFloat(form.exitPrice),
-                  parseInt(form.quantity),
-                  form.direction
-                ) - (form.fees ? parseFloat(form.fees) : 0) >= 0
-                  ? "text-green"
-                  : "text-red"
-              }`}
-            >
-              $
-              {(
-                calculatePnl(
-                  parseFloat(form.entryPrice),
-                  parseFloat(form.exitPrice),
-                  parseInt(form.quantity),
-                  form.direction
-                ) - (form.fees ? parseFloat(form.fees) : 0)
-              ).toFixed(2)}
+            <p className={`text-[1.8rem] font-semibold mt-1 leading-tight ${
+              calculatePnl(parseFloat(form.entryPrice), parseFloat(form.exitPrice), parseInt(form.quantity), form.direction) - (form.fees ? parseFloat(form.fees) : 0) >= 0 ? "text-green" : "text-red"
+            }`}>
+              ${(calculatePnl(parseFloat(form.entryPrice), parseFloat(form.exitPrice), parseInt(form.quantity), form.direction) - (form.fees ? parseFloat(form.fees) : 0)).toFixed(2)}
             </p>
           </div>
         )}
@@ -391,14 +287,14 @@ export default function NewTradePage() {
           <button
             type="submit"
             disabled={saving}
-            className="px-5 py-2.5 bg-accent text-white rounded-[3px] text-[11px] font-medium hover:bg-accent-hover transition-all duration-300 cursor-pointer disabled:opacity-40 border-0"
+            className="px-5 py-2.5 bg-accent text-white rounded-[4px] text-[0.75rem] uppercase tracking-[0.1em] font-medium hover:bg-accent-hover transition-colors duration-150 cursor-pointer disabled:opacity-40 border-0"
           >
             {saving ? "Saving..." : "Save Trade"}
           </button>
           <button
             type="button"
             onClick={() => router.back()}
-            className="px-5 py-2.5 bg-transparent border border-border text-text-secondary rounded-[3px] text-[11px] font-light hover:text-text-primary hover:border-border-hover transition-all duration-300 cursor-pointer"
+            className="px-5 py-2.5 bg-transparent border border-border text-text-secondary rounded-[4px] text-[0.75rem] uppercase tracking-[0.1em] hover:text-text-primary hover:border-border-hover transition-colors duration-150 cursor-pointer"
           >
             Cancel
           </button>
@@ -408,7 +304,6 @@ export default function NewTradePage() {
   );
 }
 
-// Helper to create a FileList-like object from an array of Files
 function createFileList(files: File[]): FileList {
   const dt = new DataTransfer();
   files.forEach((f) => dt.items.add(f));

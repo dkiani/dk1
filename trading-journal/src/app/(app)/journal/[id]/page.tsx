@@ -59,7 +59,7 @@ export default function TradeDetailPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="w-4 h-4 border-[1.5px] border-accent border-t-transparent rounded-full animate-spin" />
+        <div className="w-4 h-4 border border-accent border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
@@ -67,8 +67,8 @@ export default function TradeDetailPage() {
   if (!trade) {
     return (
       <div className="text-center py-12">
-        <p className="text-[11px] text-text-muted font-light">Trade not found</p>
-        <Link href="/journal" className="text-[11px] text-accent hover:text-accent-hover mt-2 block no-underline transition-colors duration-300">
+        <p className="text-[0.85rem] text-text-muted">Trade not found</p>
+        <Link href="/journal" className="text-[0.8rem] text-accent hover:text-accent-hover mt-2 block no-underline transition-colors duration-150">
           Back to journal
         </Link>
       </div>
@@ -78,32 +78,26 @@ export default function TradeDetailPage() {
   const isWin = (trade.pnl ?? 0) > 0;
 
   return (
-    <div className="max-w-[720px] animate-fade-in">
+    <div className="animate-fade-in">
       {/* Header */}
       <div className="flex items-center justify-between mb-8">
         <div className="flex items-center gap-4">
           <button
             onClick={() => router.back()}
-            className="p-2 rounded-[3px] hover:bg-bg-tertiary transition-all duration-200 cursor-pointer border-0 bg-transparent"
+            className="p-2 rounded-[4px] hover:bg-bg-surface-hover transition-colors duration-150 cursor-pointer border-0 bg-transparent"
           >
-            <ArrowLeft className="w-3.5 h-3.5 text-text-muted" />
+            <ArrowLeft className="w-[14px] h-[14px] text-text-secondary" />
           </button>
           <div className="flex items-center gap-3">
-            <span
-              className={`text-[9px] uppercase font-medium px-2 py-0.5 rounded-[2px] tracking-wider ${
-                trade.direction === "long" ? "bg-green-bg text-green" : "bg-red-bg text-red"
-              }`}
-            >
+            <span className={`text-[0.65rem] uppercase font-medium px-2 py-1 rounded-[4px] tracking-[0.1em] ${
+              trade.direction === "long" ? "bg-green-bg text-green" : "bg-red-bg text-red"
+            }`}>
               {trade.direction}
             </span>
-            <h1 className="text-[13px] font-medium">{trade.symbol}</h1>
-            <span
-              className={`text-[9px] uppercase px-2 py-0.5 rounded-[2px] border tracking-wider font-light ${
-                trade.status === "open"
-                  ? "border-accent text-accent"
-                  : "border-border text-text-muted"
-              }`}
-            >
+            <h1 className="text-[1.5rem] font-medium">{trade.symbol}</h1>
+            <span className={`text-[0.65rem] uppercase px-2 py-1 rounded-[4px] border tracking-[0.1em] ${
+              trade.status === "open" ? "border-accent text-accent" : "border-border text-text-muted"
+            }`}>
               {trade.status}
             </span>
           </div>
@@ -113,48 +107,46 @@ export default function TradeDetailPage() {
             <button
               onClick={handleAiAnalysis}
               disabled={analyzing}
-              className="flex items-center gap-2 px-3 py-1.5 bg-transparent border border-border rounded-[3px] text-[11px] font-light text-text-secondary hover:text-accent hover:border-accent transition-all duration-300 cursor-pointer disabled:opacity-40"
+              className="flex items-center gap-2 px-3 py-2 bg-transparent border border-border rounded-[4px] text-[0.75rem] text-text-secondary hover:text-accent hover:border-accent transition-colors duration-150 cursor-pointer disabled:opacity-40"
             >
-              <Brain className="w-3.5 h-3.5" />
+              <Brain className="w-[14px] h-[14px]" />
               {analyzing ? "Analyzing..." : "AI Analysis"}
             </button>
           )}
           <button
             onClick={handleDelete}
             disabled={deleting}
-            className="flex items-center gap-2 px-3 py-1.5 bg-transparent border border-border rounded-[3px] text-[11px] font-light text-red hover:bg-red-bg hover:border-red transition-all duration-300 cursor-pointer disabled:opacity-40"
+            className="flex items-center gap-2 px-3 py-2 bg-transparent border border-border rounded-[4px] text-[0.75rem] text-red hover:bg-red-bg hover:border-red transition-colors duration-150 cursor-pointer disabled:opacity-40"
           >
-            <Trash2 className="w-3.5 h-3.5" />
+            <Trash2 className="w-[14px] h-[14px]" />
           </button>
         </div>
       </div>
 
       {/* P&L Banner */}
       {trade.pnl !== undefined && (
-        <div
-          className={`rounded-[3px] p-5 mb-6 border ${isWin ? "bg-green-bg border-green/20" : "bg-red-bg border-red/20"}`}
-        >
+        <div className="bg-bg-surface border border-border rounded-[6px] p-6 mb-8">
           <div className="flex items-center gap-2 mb-1">
             {isWin ? (
-              <TrendingUp className="w-3.5 h-3.5 text-green" />
+              <TrendingUp className="w-[14px] h-[14px] text-green" />
             ) : (
-              <TrendingDown className="w-3.5 h-3.5 text-red" />
+              <TrendingDown className="w-[14px] h-[14px] text-red" />
             )}
-            <span className="text-[10px] uppercase tracking-[0.06em] text-text-muted font-light">
+            <span className="text-[0.65rem] uppercase tracking-[0.12em] text-text-secondary">
               Realized P&L
             </span>
           </div>
-          <p className={`text-[24px] font-medium ${isWin ? "text-green" : "text-red"}`}>
+          <p className={`text-[1.8rem] font-semibold leading-tight ${isWin ? "text-green" : "text-red"}`}>
             {trade.pnl >= 0 ? "+" : ""}${trade.pnl.toFixed(2)}
             {trade.pnlPercent && (
-              <span className="text-[12px] ml-2 font-light">({trade.pnlPercent.toFixed(2)}%)</span>
+              <span className="text-[0.8rem] ml-2 font-normal text-text-secondary">({trade.pnlPercent.toFixed(2)}%)</span>
             )}
           </p>
         </div>
       )}
 
       {/* Trade Details Grid */}
-      <div className="grid grid-cols-2 gap-3 mb-6">
+      <div className="grid grid-cols-2 gap-4 mb-8">
         <DetailCard label="Entry Price" value={`$${trade.entryPrice.toFixed(2)}`} />
         <DetailCard label="Exit Price" value={trade.exitPrice ? `$${trade.exitPrice.toFixed(2)}` : "\u2014"} />
         <DetailCard label="Quantity" value={String(trade.quantity)} />
@@ -165,14 +157,11 @@ export default function TradeDetailPage() {
         <DetailCard label="Time Frame" value={trade.timeFrame || "\u2014"} />
         <DetailCard label="Asset Class" value={trade.assetClass} />
         {trade.tags && trade.tags.length > 0 && (
-          <div className="bg-bg-card border border-border rounded-[3px] p-4">
-            <span className="text-[10px] uppercase tracking-[0.06em] text-text-muted font-light">Tags</span>
-            <div className="flex flex-wrap gap-1.5 mt-2">
+          <div className="bg-bg-surface border border-border rounded-[6px] p-6">
+            <span className="text-[0.65rem] uppercase tracking-[0.12em] text-text-secondary">Tags</span>
+            <div className="flex flex-wrap gap-2 mt-2">
               {trade.tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="text-[10px] px-2 py-0.5 bg-bg-tertiary border border-border rounded-[2px] text-text-secondary font-light"
-                >
+                <span key={tag} className="text-[0.7rem] px-2 py-1 bg-bg-surface-hover border border-border rounded-[4px] text-text-secondary">
                   {tag}
                 </span>
               ))}
@@ -183,21 +172,15 @@ export default function TradeDetailPage() {
 
       {/* Screenshots */}
       {trade.screenshots && trade.screenshots.length > 0 && (
-        <div className="mb-6">
-          <h2 className="text-[10px] font-medium uppercase tracking-[0.06em] text-text-muted mb-3">
+        <div className="mb-8">
+          <h2 className="text-[0.7rem] uppercase tracking-[0.12em] text-text-secondary mb-4">
             Chart Screenshots
           </h2>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-2 gap-4">
             {trade.screenshots.map((ss) => (
-              <div key={ss.id} className="relative">
-                <img
-                  src={ss.url}
-                  alt={ss.caption || "Chart screenshot"}
-                  className="w-full h-48 object-cover rounded-[3px] border border-border"
-                />
-                {ss.caption && (
-                  <p className="text-[10px] text-text-muted mt-1 font-light">{ss.caption}</p>
-                )}
+              <div key={ss.id}>
+                <img src={ss.url} alt={ss.caption || "Chart screenshot"} className="w-full h-48 object-cover rounded-[6px] border border-border" />
+                {ss.caption && <p className="text-[0.7rem] text-text-muted mt-1">{ss.caption}</p>}
               </div>
             ))}
           </div>
@@ -206,25 +189,23 @@ export default function TradeDetailPage() {
 
       {/* Notes */}
       {trade.notes && (
-        <div className="mb-6">
-          <h2 className="text-[10px] font-medium uppercase tracking-[0.06em] text-text-muted mb-3">
-            Notes
-          </h2>
-          <div className="bg-bg-card border border-border rounded-[3px] p-4">
-            <p className="text-[12px] text-text-secondary whitespace-pre-wrap font-light leading-relaxed">{trade.notes}</p>
+        <div className="mb-8">
+          <h2 className="text-[0.7rem] uppercase tracking-[0.12em] text-text-secondary mb-4">Notes</h2>
+          <div className="bg-bg-surface border border-border rounded-[6px] p-6">
+            <p className="text-[0.85rem] text-text-secondary whitespace-pre-wrap leading-relaxed">{trade.notes}</p>
           </div>
         </div>
       )}
 
       {/* AI Analysis */}
       {aiAnalysis && (
-        <div className="mb-6">
-          <h2 className="text-[10px] font-medium uppercase tracking-[0.06em] text-text-muted mb-3 flex items-center gap-2">
-            <Brain className="w-3.5 h-3.5 text-accent" />
+        <div className="mb-8">
+          <h2 className="text-[0.7rem] uppercase tracking-[0.12em] text-text-secondary mb-4 flex items-center gap-2">
+            <Brain className="w-[14px] h-[14px] text-accent" />
             AI Analysis
           </h2>
-          <div className="bg-bg-card border border-accent/20 rounded-[3px] p-4">
-            <p className="text-[12px] text-text-secondary whitespace-pre-wrap font-light leading-relaxed">{aiAnalysis}</p>
+          <div className="bg-bg-surface border border-border rounded-[6px] p-6">
+            <p className="text-[0.85rem] text-text-secondary whitespace-pre-wrap leading-relaxed">{aiAnalysis}</p>
           </div>
         </div>
       )}
@@ -234,9 +215,9 @@ export default function TradeDetailPage() {
 
 function DetailCard({ label, value }: { label: string; value: string }) {
   return (
-    <div className="bg-bg-card border border-border rounded-[3px] p-4">
-      <span className="text-[10px] uppercase tracking-[0.06em] text-text-muted font-light">{label}</span>
-      <p className="text-[12px] font-medium text-text-primary mt-1">{value}</p>
+    <div className="bg-bg-surface border border-border rounded-[6px] p-6">
+      <span className="text-[0.65rem] uppercase tracking-[0.12em] text-text-secondary">{label}</span>
+      <p className="text-[0.85rem] font-medium text-text-primary mt-1">{value}</p>
     </div>
   );
 }

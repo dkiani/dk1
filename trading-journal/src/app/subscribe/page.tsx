@@ -2,7 +2,7 @@
 
 import { useAuth } from "@/lib/auth-context";
 import { useRouter } from "next/navigation";
-import { Check, TrendingUp } from "lucide-react";
+import { Check } from "lucide-react";
 
 const plans = [
   {
@@ -44,7 +44,6 @@ export default function SubscribePage() {
       router.push("/login");
       return;
     }
-
     const res = await fetch("/api/stripe/checkout", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -57,56 +56,54 @@ export default function SubscribePage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-bg-primary px-4 py-12">
       <div className="w-full max-w-[600px] animate-fade-in">
-        {/* Header */}
         <div className="text-center mb-10">
           <div className="flex items-center justify-center gap-2 mb-4">
-            <span className="w-2 h-2 rounded-full bg-accent" />
-            <span className="text-[11px] font-medium tracking-[0.06em] uppercase">journal.kiani.vc</span>
+            <span className="text-accent text-sm">●</span>
+            <span className="text-[0.7rem] font-medium tracking-[0.15em] uppercase">journal.kiani.vc</span>
           </div>
-          <h1 className="text-[18px] font-medium mb-2 tracking-tight">Choose your plan</h1>
-          <p className="text-[11px] text-text-muted font-light">
+          <h1 className="text-[1.5rem] font-medium mb-2">Choose your plan</h1>
+          <p className="text-[0.8rem] text-text-muted">
             Start journaling your trades. Cancel anytime.
           </p>
         </div>
 
-        {/* Plans */}
         <div className="grid grid-cols-2 gap-4">
           {plans.map((plan) => (
             <div
               key={plan.tier}
-              className={`bg-bg-card border rounded-[3px] p-5 relative transition-all duration-300 ${
+              className={`bg-bg-surface border rounded-[6px] p-6 relative transition-colors duration-150 ${
                 plan.popular ? "border-accent" : "border-border hover:border-border-hover"
               }`}
             >
               {plan.popular && (
-                <span className="absolute -top-2.5 left-1/2 -translate-x-1/2 px-2.5 py-0.5 bg-accent text-white text-[9px] uppercase tracking-[1px] font-medium">
+                <span className="absolute -top-2.5 left-1/2 -translate-x-1/2 px-3 py-0.5 bg-accent text-white text-[0.6rem] uppercase tracking-[0.12em] font-medium rounded-[4px]">
                   Recommended
                 </span>
               )}
 
-              <h2 className="text-[12px] font-medium mb-1">{plan.name}</h2>
-              <p className="text-[10px] text-text-muted font-light mb-4">{plan.description}</p>
+              <h2 className="text-[0.85rem] font-medium mb-1">{plan.name}</h2>
+              <p className="text-[0.7rem] text-text-muted mb-4">{plan.description}</p>
 
               <div className="mb-5">
-                <span className="text-[24px] font-medium">${plan.price}</span>
-                <span className="text-[11px] text-text-muted font-light">/mo</span>
+                <span className="text-[1.8rem] font-semibold">${plan.price}</span>
+                <span className="text-[0.8rem] text-text-muted">/mo</span>
               </div>
 
               <ul className="space-y-2.5 mb-5">
                 {plan.features.map((feature) => (
                   <li key={feature} className="flex items-start gap-2">
-                    <Check className="w-3 h-3 text-green mt-0.5 shrink-0" />
-                    <span className="text-[11px] text-text-secondary font-light">{feature}</span>
+                    <Check className="w-3.5 h-3.5 text-green mt-0.5 shrink-0" />
+                    <span className="text-[0.75rem] text-text-secondary">{feature}</span>
                   </li>
                 ))}
               </ul>
 
               <button
                 onClick={() => handleCheckout(plan.tier)}
-                className={`w-full py-2.5 rounded-[3px] text-[11px] font-medium transition-all duration-300 cursor-pointer border-0 ${
+                className={`w-full py-2.5 rounded-[4px] text-[0.75rem] uppercase tracking-[0.1em] font-medium transition-colors duration-150 cursor-pointer ${
                   plan.popular
-                    ? "bg-accent text-white hover:bg-accent-hover"
-                    : "bg-bg-input border border-border text-text-primary hover:border-accent"
+                    ? "bg-accent text-white hover:bg-accent-hover border-0"
+                    : "bg-transparent border border-border text-text-primary hover:border-accent"
                 }`}
               >
                 Get Started

@@ -20,31 +20,21 @@ function StatCard({
   value,
   sub,
   icon: Icon,
-  color,
 }: {
   label: string;
   value: string;
   sub?: string;
   icon: React.ElementType;
-  color?: "green" | "red" | "accent";
 }) {
-  const colorClass =
-    color === "green"
-      ? "text-green"
-      : color === "red"
-        ? "text-red"
-        : "text-accent";
   return (
-    <div className="bg-bg-card border border-border rounded-[3px] p-5 transition-all duration-300 hover:border-border-hover">
-      <div className="flex items-center justify-between mb-4">
-        <span className="text-[10px] uppercase tracking-[0.06em] font-medium text-text-muted">
-          {label}
-        </span>
-        <Icon className={`w-3.5 h-3.5 ${colorClass} opacity-60`} />
-      </div>
-      <p className={`text-[18px] font-medium ${colorClass}`}>{value}</p>
+    <div className="bg-bg-surface border border-border rounded-[6px] p-6 relative">
+      <Icon className="w-[14px] h-[14px] text-text-muted absolute top-5 right-5" />
+      <span className="text-[0.65rem] uppercase tracking-[0.12em] text-text-secondary">
+        {label}
+      </span>
+      <p className="text-[1.8rem] font-semibold text-text-primary mt-1 leading-tight">{value}</p>
       {sub && (
-        <p className="text-[10px] text-text-muted mt-2 tracking-wide">{sub}</p>
+        <p className="text-[0.7rem] text-text-muted mt-1">{sub}</p>
       )}
     </div>
   );
@@ -58,157 +48,125 @@ export default function DashboardPage() {
   useEffect(() => {
     if (!user) return;
     getTrades(user.uid)
-      .then((t) => {
-        setTrades(t);
-      })
-      .catch((err) => {
-        console.error("Failed to fetch trades:", err);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+      .then((t) => setTrades(t))
+      .catch((err) => console.error("Failed to fetch trades:", err))
+      .finally(() => setLoading(false));
   }, [user]);
 
   const closedTrades = trades.filter((t) => t.status === "closed");
   const totalPnl = closedTrades.reduce((sum, t) => sum + (t.pnl ?? 0), 0);
   const wins = closedTrades.filter((t) => (t.pnl ?? 0) > 0);
   const losses = closedTrades.filter((t) => (t.pnl ?? 0) < 0);
-  const winRate =
-    closedTrades.length > 0
-      ? (wins.length / closedTrades.length) * 100
-      : 0;
-  const avgWin =
-    wins.length > 0
-      ? wins.reduce((s, t) => s + (t.pnl ?? 0), 0) / wins.length
-      : 0;
-  const avgLoss =
-    losses.length > 0
-      ? losses.reduce((s, t) => s + (t.pnl ?? 0), 0) / losses.length
-      : 0;
+  const winRate = closedTrades.length > 0 ? (wins.length / closedTrades.length) * 100 : 0;
+  const avgWin = wins.length > 0 ? wins.reduce((s, t) => s + (t.pnl ?? 0), 0) / wins.length : 0;
+  const avgLoss = losses.length > 0 ? losses.reduce((s, t) => s + (t.pnl ?? 0), 0) / losses.length : 0;
   const profitFactor = avgLoss !== 0 ? Math.abs(avgWin / avgLoss) : 0;
+  const tradingDays = Object.keys(getTradesByDate(closedTrades)).length;
 
   const recentTrades = trades.slice(0, 10);
 
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="w-4 h-4 border-[1.5px] border-accent border-t-transparent rounded-full animate-spin" />
+        <div className="w-4 h-4 border border-accent border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
 
   return (
-    <div className="w-full max-w-[720px] animate-fade-in">
+    <div className="animate-fade-in">
       {/* Header */}
-      <div className="flex items-center justify-between mb-10">
-        <div>
-          <h1 className="text-[13px] font-medium tracking-tight">Dashboard</h1>
-          <p className="text-[11px] text-text-muted mt-1.5 font-light">
-            {closedTrades.length} closed trade{closedTrades.length !== 1 && "s"}
-          </p>
-        </div>
+      <div className="flex items-center justify-between mb-8">
+        <h1 className="text-[1.5rem] font-medium">Dashboard</h1>
         <Link
           href="/journal/new"
-          className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-accent text-white rounded-[3px] text-[11px] font-medium hover:bg-accent-hover transition-all duration-300 no-underline"
+          className="inline-flex items-center gap-2 px-4 py-2 bg-accent text-white rounded-[4px] text-[0.75rem] uppercase tracking-[0.1em] font-medium hover:bg-accent-hover transition-colors duration-150 no-underline"
         >
-          <Plus className="w-3 h-3" />
+          <Plus className="w-3.5 h-3.5" />
           Log Trade
         </Link>
       </div>
 
-      {/* Stats Grid */}
-      <div className="grid grid-cols-2 gap-3 mb-10 animate-stagger">
-        <StatCard
-          label="Total P&L"
-          value={`$${totalPnl.toFixed(2)}`}
-          icon={totalPnl >= 0 ? TrendingUp : TrendingDown}
-          color={totalPnl >= 0 ? "green" : "red"}
-        />
+      {/* Stats Grid — 3 cards */}
+      <div className="grid grid-cols-3 gap-4 mb-8">
         <StatCard
           label="Win Rate"
           value={`${winRate.toFixed(1)}%`}
           sub={`${wins.length}W / ${losses.length}L`}
           icon={Target}
-          color={winRate >= 50 ? "green" : "red"}
         />
         <StatCard
           label="Profit Factor"
           value={profitFactor.toFixed(2)}
           icon={BarChart3}
-          color={profitFactor >= 1 ? "green" : "red"}
         />
         <StatCard
           label="Trading Days"
-          value={String(Object.keys(getTradesByDate(closedTrades)).length)}
+          value={String(tradingDays)}
           icon={CalendarDays}
-          color="accent"
         />
       </div>
 
       {/* Recent Trades */}
-      <div className="border border-border rounded-[3px] overflow-hidden">
-        <div className="px-5 py-3.5 border-b border-border bg-bg-card">
-          <h2 className="text-[10px] font-medium uppercase tracking-[0.06em] text-text-muted">
-            Recent Trades
-          </h2>
-        </div>
+      <div>
+        <h2 className="text-[0.7rem] uppercase tracking-[0.12em] text-text-secondary mb-4">
+          Recent Trades
+        </h2>
         {recentTrades.length === 0 ? (
-          <div className="py-20 text-center bg-bg-card">
-            <div className="w-10 h-10 rounded-full border border-border flex items-center justify-center mx-auto mb-5">
-              <BarChart3 className="w-4 h-4 text-text-muted" />
-            </div>
-            <p className="text-[12px] text-text-secondary mb-2 font-light">
+          <div className="border border-border rounded-[6px] py-16 text-center bg-bg-surface">
+            <p className="text-[0.85rem] text-text-muted mb-4">
               No trades logged yet
-            </p>
-            <p className="text-[10px] text-text-muted mb-6 max-w-[240px] mx-auto font-light">
-              Start tracking your trades to see performance metrics and insights here.
             </p>
             <Link
               href="/journal/new"
-              className="inline-flex items-center gap-1.5 px-4 py-2 bg-accent text-white rounded-[3px] text-[11px] font-medium hover:bg-accent-hover transition-all duration-300 no-underline"
+              className="inline-flex items-center gap-2 px-4 py-2 bg-accent text-white rounded-[4px] text-[0.75rem] uppercase tracking-[0.1em] font-medium hover:bg-accent-hover transition-colors duration-150 no-underline"
             >
-              <Plus className="w-3 h-3" />
+              <Plus className="w-3.5 h-3.5" />
               Log your first trade
             </Link>
           </div>
         ) : (
-          <div className="divide-y divide-border">
-            {recentTrades.map((trade) => (
-              <Link
-                key={trade.id}
-                href={`/journal/${trade.id}`}
-                className="flex items-center justify-between px-5 py-3 bg-bg-card hover:bg-bg-tertiary transition-all duration-200 no-underline group"
-              >
-                <div className="flex items-center gap-4">
-                  <span
-                    className={`text-[9px] uppercase font-medium px-2 py-0.5 rounded-[2px] tracking-wider ${
-                      trade.direction === "long"
-                        ? "bg-green-bg text-green"
-                        : "bg-red-bg text-red"
-                    }`}
+          <div className="border border-border rounded-[6px] overflow-hidden">
+            <table className="w-full">
+              <thead>
+                <tr className="border-b border-border">
+                  <th className="text-left px-5 py-3 text-[0.65rem] uppercase tracking-[0.1em] text-text-secondary font-medium">
+                    Symbol
+                  </th>
+                  <th className="text-left px-5 py-3 text-[0.65rem] uppercase tracking-[0.1em] text-text-secondary font-medium">
+                    Direction
+                  </th>
+                  <th className="text-left px-5 py-3 text-[0.65rem] uppercase tracking-[0.1em] text-text-secondary font-medium">
+                    Date
+                  </th>
+                  <th className="text-right px-5 py-3 text-[0.65rem] uppercase tracking-[0.1em] text-text-secondary font-medium">
+                    P&L
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {recentTrades.map((trade) => (
+                  <tr
+                    key={trade.id}
+                    className="border-b border-border last:border-b-0 bg-bg-surface hover:bg-bg-surface-hover transition-colors duration-150 cursor-pointer"
+                    onClick={() => (window.location.href = `/journal/${trade.id}`)}
                   >
-                    {trade.direction}
-                  </span>
-                  <span className="text-[12px] font-medium text-text-primary">
-                    {trade.symbol}
-                  </span>
-                  <span className="text-[10px] text-text-muted font-light">
-                    {new Date(trade.entryTime).toLocaleDateString()}
-                  </span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span
-                    className={`text-[12px] font-medium ${
-                      (trade.pnl ?? 0) >= 0 ? "text-green" : "text-red"
-                    }`}
-                  >
-                    {(trade.pnl ?? 0) >= 0 ? "+" : ""}$
-                    {(trade.pnl ?? 0).toFixed(2)}
-                  </span>
-                  <ArrowUpRight className="w-3 h-3 text-text-muted opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
-                </div>
-              </Link>
-            ))}
+                    <td className="px-5 py-3 text-[0.8rem] font-medium text-text-primary">
+                      {trade.symbol}
+                    </td>
+                    <td className="px-5 py-3 text-[0.8rem] text-text-secondary">
+                      {trade.direction}
+                    </td>
+                    <td className="px-5 py-3 text-[0.8rem] text-text-secondary">
+                      {new Date(trade.entryTime).toLocaleDateString()}
+                    </td>
+                    <td className={`px-5 py-3 text-[0.8rem] font-medium text-right ${(trade.pnl ?? 0) >= 0 ? "text-green" : "text-red"}`}>
+                      {(trade.pnl ?? 0) >= 0 ? "+" : ""}${(trade.pnl ?? 0).toFixed(2)}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         )}
       </div>

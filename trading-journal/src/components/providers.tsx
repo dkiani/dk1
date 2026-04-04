@@ -12,9 +12,9 @@ export function Providers({ children }: { children: ReactNode }) {
   // Theme — read what the blocking script in layout.tsx already set
   const [theme, setTheme] = useState<Theme>(() => {
     if (typeof window !== "undefined") {
-      return (document.documentElement.getAttribute("data-theme") as Theme) || "light";
+      return (document.documentElement.getAttribute("data-theme") as Theme) || "dark";
     }
-    return "light";
+    return "dark";
   });
 
   useEffect(() => {

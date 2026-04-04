@@ -18,7 +18,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   if (loading) {
     return (
       <div className="h-screen flex items-center justify-center bg-bg-primary">
-        <div className="w-4 h-4 border-[1.5px] border-accent border-t-transparent rounded-full animate-spin" />
+        <div className="w-4 h-4 border border-accent border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
@@ -26,9 +26,13 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   if (!user) return null;
 
   return (
-    <div className="flex min-h-screen">
+    <div className="min-h-screen bg-bg-primary">
       <Sidebar />
-      <main className="ml-[280px] flex-1 min-w-0 overflow-x-hidden px-10 py-10">{children}</main>
+      <main className="ml-[260px] px-12 py-8">
+        <div className="max-w-[900px]">
+          {children}
+        </div>
+      </main>
     </div>
   );
 }
