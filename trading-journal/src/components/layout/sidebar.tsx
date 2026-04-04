@@ -16,11 +16,11 @@ import {
 } from "lucide-react";
 
 const navItems = [
-  { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/journal", label: "Journal", icon: BookOpen },
+  { href: "/journal", label: "Dashboard", icon: LayoutDashboard },
+  { href: "/journal/trades", label: "Journal", icon: BookOpen },
   { href: "/journal/new", label: "New Trade", icon: Plus },
-  { href: "/calendar", label: "Calendar", icon: CalendarDays },
-  { href: "/settings", label: "Settings", icon: Settings },
+  { href: "/journal/calendar", label: "Calendar", icon: CalendarDays },
+  { href: "/journal/settings", label: "Settings", icon: Settings },
 ];
 
 export function Sidebar() {
@@ -32,7 +32,7 @@ export function Sidebar() {
     <aside className="fixed left-0 top-0 h-screen w-[260px] bg-bg-primary border-r border-border flex flex-col z-50">
       {/* Logo */}
       <div className="px-5 pt-6 pb-4 border-b border-border">
-        <Link href="/dashboard" className="flex items-center gap-2 no-underline mb-3">
+        <Link href="/journal" className="flex items-center gap-2 no-underline mb-3">
           <span className="text-accent text-sm">●</span>
           <span className="text-[0.65rem] font-normal text-text-primary tracking-[0.06em] uppercase">
             Trading Journal
