@@ -28,7 +28,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen bg-bg-primary">
       <Sidebar />
-      <main className="ml-[260px] px-12 py-8">
+      <main className="ml-[260px] min-w-0 overflow-x-hidden px-6 md:px-12 py-8">
         <div className="max-w-[900px]">
           {children}
         </div>

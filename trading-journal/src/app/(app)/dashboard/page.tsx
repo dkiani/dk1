@@ -88,7 +88,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Stats Grid — 3 cards */}
-      <div className="grid grid-cols-3 gap-4 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
         <StatCard
           label="Win Rate"
           value={`${winRate.toFixed(1)}%`}
