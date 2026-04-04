@@ -10,7 +10,7 @@ export async function POST(request: NextRequest) {
     return Response.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const userDoc = await getAdminDb().doc(`journalUsers/${userId}`).get();
+  const userDoc = await getAdminDb().doc(`users/${userId}`).get();
   const userData = userDoc.data();
 
   if (!userData?.stripeCustomerId) {
