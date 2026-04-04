@@ -87,6 +87,7 @@ For Google OAuth (`signInWithPopup`) to work on the deployed site:
 
 - **Framework**: Next.js 16 + React 19 + TypeScript
 - **Styling**: Tailwind CSS 4 + CSS variables for theming (dark/light)
+- **Font**: IBM Plex Mono (Google Fonts import in globals.css)
 - **Auth**: Firebase Auth (email/password + Google OAuth) - NOT NextAuth (installed but unused)
 - **Database**: Firestore (project: `kianivc`)
 - **Storage**: Firebase Storage (for chart screenshots)
@@ -118,40 +119,128 @@ For Google OAuth (`signInWithPopup`) to work on the deployed site:
 - **Future**: Tradovate API integration (auto-import trades), analytics dashboard, rule tracking
 - **Business model**: Free tier for students, Student tier ($49/mo), Premium tier ($249/mo) with AI agent coaching
 
-## Design System — Matching kiani.vc/curriculum Quality
+## Design System — KIANI Design System
 
-The trading journal must match the exact design quality and aesthetic of the `/curriculum` page on kiani.vc. This is the gold standard for all UI work.
+This app follows the KIANI design system. Reference: kiani.vc/curriculum. **Do not deviate from this.**
 
-### Core Design Principles (from curriculum)
-1. **No box shadows** — completely flat design, hierarchy comes from borders only
-2. **3px border radius** — `rounded-[3px]` everywhere, never `rounded-md` or `rounded-lg`
-3. **Font weight 300** (light) as default body weight, 500 (medium) for headings/labels
-4. **Never use `font-semibold` (600) or `font-bold` (700)** — too heavy for this aesthetic
-5. **Precise px-based sizing** — `text-[11px]`, `text-[12px]`, `text-[13px]` not Tailwind defaults
-6. **JetBrains Mono** monospace font throughout
-7. **Custom easing** — `cubic-bezier(0.16, 1, 0.3, 1)` for all major transitions
-8. **Transitions**: `0.3s` default, `0.2s` for list items, `0.5s` for major state changes
-9. **Labels**: `text-[10px] uppercase tracking-[0.06em] font-medium text-text-muted`
-10. **Content max-width**: `720px` (matching curriculum main content area)
-11. **Sidebar width**: `280px` (matching curriculum sidebar at standard breakpoint)
-12. **Warm color palette**: `#e85d2a` accent (rust orange), beige backgrounds in light mode, true blacks in dark mode
+### Colors (Dark Mode — DEFAULT)
+- Background: `#0a0a0a` (near black)
+- Surface/Cards: `#141414` (slightly lighter)
+- Surface Hover: `#1a1a1a`
+- Border: `#222222` (subtle, 1px)
+- Text Primary: `#e8e8e8` (off-white)
+- Text Secondary: `#888888` (muted grey)
+- Text Tertiary/Muted: `#555555`
+- Accent: `#e85d3a` (KIANI orange/coral — used sparingly)
+- Accent Hover: `#f06a47`
+- Green: `#4caf50` (wins)
+- Red: `#e85d3a` or `#cf4436` (losses)
+- Yellow: `#d4a843` (breakeven/caution)
 
-### CSS Variable System
-- Light: `--bg-primary: #f0ede8`, `--bg-card: #ffffff`, `--bg-tertiary: #f7f5f2`, `--bg-input: #f0ede8`
-- Dark: `--bg-primary: #0a0a0a`, `--bg-card: #111111`, `--bg-tertiary: #181818`, `--bg-input: #0a0a0a`
-- These match the curriculum's exact color tokens
+### Colors (Light Mode — toggled)
+- Background: `#fafafa`
+- Surface/Cards: `#ffffff`
+- Border: `#e0e0e0`
+- Text Primary: `#1a1a1a`
+- Text Secondary: `#666666`
+- Accent: same `#e85d3a`
 
-### What NOT To Do
-- No `rounded-lg` or `rounded-md` anywhere
-- No `box-shadow` or `var(--shadow)` — removed from the design system entirely
-- No `font-semibold` or `font-bold` — use `font-medium` (500) max
-- No `text-lg` or `text-xl` for page titles — use `text-[13px] font-medium`
-- No thick borders (`border-2`) — always `border` (1px)
-- No `bg-bg-secondary` for card backgrounds — use `bg-bg-card`
+### Typography
+- Font: `'IBM Plex Mono', monospace` — for EVERYTHING. No sans-serif.
+- Page titles: `1.5rem`, font-weight 500
+- Section headers / stat labels: `0.7rem`, uppercase, `letter-spacing: 0.12em`, text-secondary
+- Body text: `0.85rem`, line-height 1.7
+- Stat values (big numbers): `1.8rem`, font-weight 600
+- Navigation items: `0.8rem`
+- Small labels/hints: `0.7rem`
+- Table header labels: `0.65rem`, uppercase, `letter-spacing: 0.1em`
+- **NEVER** use font-weight 700/800/900. Max is 600, used sparingly.
+
+### Spacing & Layout
+- Sidebar: `260px` fixed, same bg as main, separated by 1px border-right
+- Content area: `max-width: 900px`, `px-12 py-8` padding
+- Card padding: `p-6` (1.5rem)
+- Card border-radius: `6px` (`rounded-[6px]`)
+- Card borders: `1px solid border`, NO box-shadows
+- Gap between stat cards: `gap-4` (1rem)
+- Section spacing: `mb-8` (2rem between major sections)
+
+### Sidebar Design
+- Logo: orange dot `●` + "TRADING JOURNAL" in `0.7rem`, `tracking-[0.15em]`, uppercase
+- User email in text-muted, `0.7rem`
+- Nav items: `0.8rem`, active = accent text + `bg-bg-surface-hover` + 2px left border
+- Icons: 14px Lucide icons
+- Bottom: Dark/Light toggle + Sign Out in text-muted
+
+### Buttons
+- Primary: `bg-accent text-white`, `0.75rem uppercase tracking-[0.1em]`, `rounded-[4px]`, NO shadow
+- Secondary: transparent bg, `1px border`, text-secondary
+- Hover: subtle, 150ms transitions max
+
+### Stats Cards (Dashboard)
+- 3 cards in a row: WIN RATE, PROFIT FACTOR, TRADING DAYS
+- Surface bg, 1px border, 6px radius
+- Label: `0.65rem` uppercase, `tracking-[0.12em]`, text-secondary
+- Value: `1.8rem`, font-weight 600
+- Sub-label: `0.7rem`, text-muted
+- Icon in top-right, 14px, text-muted
+- NO colored card backgrounds
+
+### Trade Log / Table
+- Subtle 1px bottom border per row
+- Header: `0.65rem` uppercase, `tracking-[0.1em]`, text-secondary
+- Cells: `0.8rem`, text-primary
+- No alternating row backgrounds
+- P&L values colored green/red
+
+### Forms / Inputs
+- Input bg: `bg-bg-input` (`#1a1a1a`), 1px border, `rounded-[4px]`
+- Text: `0.8rem`, monospace
+- Labels: `0.65rem` uppercase, `tracking-[0.1em]`, text-secondary, ABOVE input
+- Focus: border changes to accent, no glow
+- Padding: `px-3 py-2.5`
+
+### Calendar
+- Monthly grid, surface bg cells, 1px borders
+- Colored dots (green/red/yellow) for trade days
+- Current day: accent ring/border
+- Nav: `"← Month Year →"` simple arrows
+
+### Animations & Transitions
+- 150ms max transitions
+- No bouncing, sliding, or spring animations
+- Simple fade (100ms) for page transitions
+
+### General Rules — STRICT
+- **NO** box-shadows anywhere
+- **NO** gradients
+- **NO** border-radius > 8px
+- **NO** colored container backgrounds (only dots, badges, buttons)
+- **NO** JetBrains Mono (replaced by IBM Plex Mono)
+- **NO** font-semibold/bold (max font-weight: 600)
+- Aesthetic: Bloomberg terminal × minimalist. Dense but clean.
+- When in doubt, use LESS visual weight
+
+### CSS Variable Mapping (Tailwind)
+```
+bg-bg-primary     → var(--bg-primary)
+bg-bg-surface     → var(--bg-surface)
+bg-bg-surface-hover → var(--bg-surface-hover)
+bg-bg-input       → var(--bg-input)
+text-text-primary  → var(--text-primary)
+text-text-secondary → var(--text-secondary)
+text-text-muted    → var(--text-muted)
+border-border      → var(--border)
+border-border-hover → var(--border-hover)
+text-accent / bg-accent → var(--accent)
+text-green / bg-green → var(--green)
+text-red / bg-red → var(--red)
+```
 
 ## Bugs Fixed
 
-- **Dashboard redirect hijack**: The root `vercel.json` has a redirect sending `/dashboard/*` to `dashboard.kiani.vc` (for the main kiani.vc site). When we copied it into `trading-journal/vercel.json`, it hijacked the trading journal's own `/dashboard` route. Fix: `trading-journal/vercel.json` should be empty `{}` — it does NOT need the same redirects as the main site.
+- **Dashboard redirect hijack**: The root `vercel.json` has a redirect sending `/dashboard/*` to `dashboard.kiani.vc` (for the main kiani.vc site). When we copied it into `trading-journal/vercel.json`, it hijacked the trading journal's own `/dashboard` route. Fix: `trading-journal/vercel.json` should be empty `{}`.
+- **Layout width bug**: Content area was stuck at ~350px instead of filling available space. Caused by using `flex` container with a `fixed` sidebar — the flex layout was collapsing main. Fix: removed flex container, use simple `ml-[260px]` on main with `max-w-[900px]` inner container.
 
 ## Current Status
 
@@ -163,24 +252,26 @@ The trading journal must match the exact design quality and aesthetic of the `/c
 - Screenshot upload is placeholder (URLs only, no actual upload to Storage yet)
 - Tradovate integration is marked "coming soon"
 - App is deployed on Vercel with Google sign-in working
+- **Design system fully overhauled** to match kiani.vc/curriculum (IBM Plex Mono, dark mode default, KIANI color tokens)
 
 ## Change Log
 
 > **IMPORTANT**: Continue logging all updates and context changes in this file. Every significant change, bug fix, design decision, or architectural update should be documented here so context is never lost between sessions.
 
-### 2026-04-04 — Design System Overhaul (match /curriculum quality)
-- **Problem**: The trading journal UI looked low-quality compared to the curriculum page — rounded corners too large (8px), box shadows making it look soft, font weights too heavy (semibold/bold), content area too narrow (840px), sidebar too wide (256px)
-- **Root cause**: Used generic Tailwind classes (`rounded-lg`, `rounded-md`, `font-semibold`) instead of the precise, minimal design language from the curriculum
+### 2026-04-04 — Complete Design System Overhaul v2
+- **Problem**: Previous design overhaul still used wrong font (JetBrains Mono), wrong colors, wrong spacing, and had a broken layout (content stuck at 350px due to flex container bug with fixed sidebar)
+- **Root cause**: Flex layout with `fixed` sidebar caused main content to collapse. Design tokens didn't match the actual kiani.vc/curriculum system.
 - **Changes made**:
-  - `globals.css`: Removed all `--shadow` variables, changed `--bg-tertiary` to match curriculum (`#f7f5f2` light / `#181818` dark), changed `--bg-input` to match curriculum (`#f0ede8` light / `#0a0a0a` dark), added `--ease` CSS variable, added Firefox scrollbar styling
-  - `sidebar.tsx`: Changed width from `w-64` (256px) to `w-[280px]` (matching curriculum sidebar), changed font weights to `font-light` for nav items
-  - `(app)/layout.tsx`: Changed `ml-64` to `ml-[280px]`, added `min-w-0` to prevent flex overflow
-  - `dashboard/page.tsx`: Removed `box-shadow`, changed `max-w-[840px]` → `max-w-[720px]`, changed all `rounded-md/lg` → `rounded-[3px]`, changed title from `text-sm` to `text-[13px]`, changed value font from `text-lg` to `text-[18px]`
-  - `journal/page.tsx`: Changed `max-w-5xl` → `max-w-[720px]`, title to `text-[13px]`
-  - `journal/new/page.tsx`: All `rounded-md` → `rounded-[3px]`, all `font-semibold` → `font-medium`, extracted shared input/label classes, `border-2 border-dashed` → `border border-dashed`, title to `text-[13px]`
-  - `journal/[id]/page.tsx`: All `rounded-lg` → `rounded-[3px]`, all `font-semibold` → `font-medium`, `text-lg` → `text-[13px]`, `text-2xl` → `text-[24px]`, P&L banner given border instead of just bg
-  - `settings/page.tsx`: All `rounded-lg` → `rounded-[3px]`, all `font-semibold` → `font-medium`, `text-lg` → `text-[13px]`, all `text-xs` → precise px sizes, toggle switch sizing tightened
-  - `calendar/page.tsx`: `max-w-5xl` → `max-w-[720px]`, title to `text-[13px]`
-  - `subscribe/page.tsx`: All `rounded-lg/md` → `rounded-[3px]`, all `font-semibold/bold` → `font-medium`, matched pricing card style to curriculum paywall design, brand dot matches sidebar dot
-- **Files changed**: 10 files across the entire UI layer
-- **Result**: Every page now uses consistent 3px radius, no shadows, light font weights, precise sizing — identical design language to /curriculum
+  - Switched from JetBrains Mono to IBM Plex Mono (Google Fonts import)
+  - Dark mode is now DEFAULT (was light)
+  - New color tokens: `#0a0a0a` bg, `#141414` surface, `#222222` border, `#e8e8e8` text, `#e85d3a` accent
+  - Fixed layout: removed flex container, simple `ml-[260px]` with `max-w-[900px]`
+  - Sidebar: 260px, same bg as page, 1px border-right, orange dot logo
+  - Dashboard: 3 stat cards (Win Rate, Profit Factor, Trading Days), 1.8rem values
+  - All pages: consistent `1.5rem` page titles, `0.65rem` uppercase labels, 6px border-radius
+  - Forms: `0.8rem` input text, 4px radius, surface bg inputs
+  - Calendar: colored dots instead of colored cell backgrounds
+  - Login: Tailwind classes (removed inline CSS)
+  - All transitions: 150ms max
+  - Removed all box-shadows, removed all font-bold/semibold (max 600)
+- **Files changed**: globals.css, layout.tsx (root + app), sidebar.tsx, providers.tsx, dashboard, journal, journal/new, journal/[id], calendar, settings, login, subscribe — 12 files total
