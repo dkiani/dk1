@@ -34,6 +34,20 @@ service cloud.firestore {
       }
     }
 
+    // Trades collection — users can CRUD their own trades
+    match /trades/{tradeId} {
+      allow read, update, delete: if request.auth != null && resource.data.userId == request.auth.uid;
+      allow read: if isAdmin();
+      allow create: if request.auth != null && request.resource.data.userId == request.auth.uid;
+    }
+
+    // Journal entries collection — users can CRUD their own entries
+    match /journalEntries/{entryId} {
+      allow read, update, delete: if request.auth != null && resource.data.userId == request.auth.uid;
+      allow read: if isAdmin();
+      allow create: if request.auth != null && request.resource.data.userId == request.auth.uid;
+    }
+
     // Admin collection — only readable by admins, writable only via Console
     match /admin/{docId} {
       allow read: if isAdmin();

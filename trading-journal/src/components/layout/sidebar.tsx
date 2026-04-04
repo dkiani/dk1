@@ -12,7 +12,6 @@ import {
   LogOut,
   Sun,
   Moon,
-  TrendingUp,
   Plus,
 } from "lucide-react";
 
@@ -32,17 +31,17 @@ export function Sidebar() {
   return (
     <aside className="fixed left-0 top-0 h-screen w-56 bg-bg-secondary border-r border-border flex flex-col z-50">
       {/* Logo */}
-      <div className="p-5 border-b border-border">
-        <Link href="/dashboard" className="flex items-center gap-2 no-underline">
-          <TrendingUp className="w-5 h-5 text-accent" />
-          <span className="text-sm font-semibold text-text-primary tracking-tight">
+      <div className="px-5 py-6 border-b border-border">
+        <Link href="/dashboard" className="flex items-center gap-2.5 no-underline group">
+          <span className="w-2 h-2 rounded-full bg-accent" />
+          <span className="text-[11px] font-medium text-text-primary tracking-tight">
             journal.kiani.vc
           </span>
         </Link>
       </div>
 
       {/* Nav */}
-      <nav className="flex-1 py-4 px-3 space-y-1">
+      <nav className="flex-1 py-6 px-3 space-y-0.5">
         {navItems.map((item) => {
           const isActive = pathname === item.href || pathname.startsWith(item.href + "/");
           const Icon = item.icon;
@@ -50,13 +49,13 @@ export function Sidebar() {
             <Link
               key={item.href}
               href={item.href}
-              className={`flex items-center gap-3 px-3 py-2 rounded-md text-xs no-underline transition-colors ${
+              className={`flex items-center gap-3 px-3 py-2 rounded text-[11px] no-underline transition-all duration-200 ${
                 isActive
-                  ? "bg-accent/10 text-accent"
-                  : "text-text-secondary hover:bg-bg-tertiary hover:text-text-primary"
+                  ? "text-accent font-medium"
+                  : "text-text-muted hover:text-text-primary"
               }`}
             >
-              <Icon className="w-4 h-4" />
+              <Icon className="w-3.5 h-3.5" />
               {item.label}
             </Link>
           );
@@ -64,20 +63,20 @@ export function Sidebar() {
       </nav>
 
       {/* Bottom */}
-      <div className="p-3 border-t border-border space-y-2">
+      <div className="p-3 border-t border-border space-y-0.5">
         <button
           onClick={toggleTheme}
-          className="flex items-center gap-3 px-3 py-2 rounded-md text-xs text-text-secondary hover:bg-bg-tertiary hover:text-text-primary w-full transition-colors cursor-pointer"
+          className="flex items-center gap-3 px-3 py-2 rounded text-[11px] text-text-muted hover:text-text-primary w-full transition-all duration-200 cursor-pointer bg-transparent border-0"
         >
-          {theme === "dark" ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+          {theme === "dark" ? <Sun className="w-3.5 h-3.5" /> : <Moon className="w-3.5 h-3.5" />}
           {theme === "dark" ? "Light mode" : "Dark mode"}
         </button>
         {user && (
           <button
             onClick={signOut}
-            className="flex items-center gap-3 px-3 py-2 rounded-md text-xs text-text-secondary hover:bg-red-bg hover:text-red w-full transition-colors cursor-pointer"
+            className="flex items-center gap-3 px-3 py-2 rounded text-[11px] text-text-muted hover:text-red w-full transition-all duration-200 cursor-pointer bg-transparent border-0"
           >
-            <LogOut className="w-4 h-4" />
+            <LogOut className="w-3.5 h-3.5" />
             Sign out
           </button>
         )}

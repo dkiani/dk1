@@ -18,7 +18,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   if (loading) {
     return (
       <div className="h-screen flex items-center justify-center bg-bg-primary">
-        <div className="w-5 h-5 border-2 border-accent border-t-transparent rounded-full animate-spin" />
+        <div className="w-4 h-4 border-[1.5px] border-accent border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
@@ -28,7 +28,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex min-h-screen">
       <Sidebar />
-      <main className="ml-56 flex-1 p-8">{children}</main>
+      <main className="ml-56 flex-1 px-10 py-10">{children}</main>
     </div>
   );
 }
