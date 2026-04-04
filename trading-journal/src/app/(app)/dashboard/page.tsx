@@ -35,14 +35,14 @@ function StatCard({
         ? "text-red"
         : "text-accent";
   return (
-    <div className="bg-bg-card border border-border rounded-[3px] p-5 transition-all duration-200 hover:border-border-hover" style={{ boxShadow: 'var(--shadow)' }}>
+    <div className="bg-bg-card border border-border rounded-[3px] p-5 transition-all duration-300 hover:border-border-hover">
       <div className="flex items-center justify-between mb-4">
         <span className="text-[10px] uppercase tracking-[0.06em] font-medium text-text-muted">
           {label}
         </span>
         <Icon className={`w-3.5 h-3.5 ${colorClass} opacity-60`} />
       </div>
-      <p className={`text-lg font-medium ${colorClass}`}>{value}</p>
+      <p className={`text-[18px] font-medium ${colorClass}`}>{value}</p>
       {sub && (
         <p className="text-[10px] text-text-muted mt-2 tracking-wide">{sub}</p>
       )}
@@ -98,18 +98,18 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="max-w-5xl animate-fade-in">
+    <div className="max-w-[720px] animate-fade-in">
       {/* Header */}
       <div className="flex items-center justify-between mb-10">
         <div>
-          <h1 className="text-sm font-medium tracking-tight">Dashboard</h1>
-          <p className="text-[11px] text-text-muted mt-1.5">
+          <h1 className="text-[13px] font-medium tracking-tight">Dashboard</h1>
+          <p className="text-[11px] text-text-muted mt-1.5 font-light">
             {closedTrades.length} closed trade{closedTrades.length !== 1 && "s"}
           </p>
         </div>
         <Link
           href="/journal/new"
-          className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-accent text-white rounded-[3px] text-[11px] font-medium hover:bg-accent-hover transition-all duration-200 no-underline"
+          className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-accent text-white rounded-[3px] text-[11px] font-medium hover:bg-accent-hover transition-all duration-300 no-underline"
         >
           <Plus className="w-3 h-3" />
           Log Trade
@@ -146,7 +146,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Recent Trades */}
-      <div className="border border-border rounded-[3px] overflow-hidden" style={{ boxShadow: 'var(--shadow)' }}>
+      <div className="border border-border rounded-[3px] overflow-hidden">
         <div className="px-5 py-3.5 border-b border-border bg-bg-card">
           <h2 className="text-[10px] font-medium uppercase tracking-[0.06em] text-text-muted">
             Recent Trades
@@ -157,15 +157,15 @@ export default function DashboardPage() {
             <div className="w-10 h-10 rounded-full border border-border flex items-center justify-center mx-auto mb-5">
               <BarChart3 className="w-4 h-4 text-text-muted" />
             </div>
-            <p className="text-[12px] text-text-secondary mb-2">
+            <p className="text-[12px] text-text-secondary mb-2 font-light">
               No trades logged yet
             </p>
-            <p className="text-[10px] text-text-muted mb-6 max-w-[240px] mx-auto">
+            <p className="text-[10px] text-text-muted mb-6 max-w-[240px] mx-auto font-light">
               Start tracking your trades to see performance metrics and insights here.
             </p>
             <Link
               href="/journal/new"
-              className="inline-flex items-center gap-1.5 px-4 py-2 bg-accent text-white rounded-[3px] text-[11px] font-medium hover:bg-accent-hover transition-all duration-200 no-underline"
+              className="inline-flex items-center gap-1.5 px-4 py-2 bg-accent text-white rounded-[3px] text-[11px] font-medium hover:bg-accent-hover transition-all duration-300 no-underline"
             >
               <Plus className="w-3 h-3" />
               Log your first trade
@@ -192,7 +192,7 @@ export default function DashboardPage() {
                   <span className="text-[12px] font-medium text-text-primary">
                     {trade.symbol}
                   </span>
-                  <span className="text-[10px] text-text-muted">
+                  <span className="text-[10px] text-text-muted font-light">
                     {new Date(trade.entryTime).toLocaleDateString()}
                   </span>
                 </div>

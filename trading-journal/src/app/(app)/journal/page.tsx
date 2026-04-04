@@ -37,9 +37,9 @@ export default function JournalPage() {
   }
 
   return (
-    <div className="max-w-5xl animate-fade-in">
+    <div className="max-w-[720px] animate-fade-in">
       <div className="flex items-center justify-between mb-10">
-        <h1 className="text-sm font-medium tracking-tight">Trade Journal</h1>
+        <h1 className="text-[13px] font-medium tracking-tight">Trade Journal</h1>
         <Link
           href="/journal/new"
           className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-accent text-white rounded-[3px] text-[11px] font-medium hover:bg-accent-hover transition-all duration-200 no-underline"
