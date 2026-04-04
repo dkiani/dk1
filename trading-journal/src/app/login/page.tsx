@@ -101,7 +101,7 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-bg-primary">
+    <div className="min-h-screen bg-bg-primary flex items-center justify-center">
       {/* Theme toggle — top right */}
       <button
         onClick={toggleTheme}
@@ -112,7 +112,7 @@ export default function LoginPage() {
       </button>
 
       {/* Centered auth form */}
-      <div className="max-w-[400px] mx-auto px-8 min-h-screen flex flex-col justify-center">
+      <div className="w-full max-w-[400px] px-8">
         <div className="mb-10">
           <h1 className="text-[1.1rem] font-normal tracking-[-0.02em] mb-2">
             {tab === "login" ? "Welcome back" : "Create account"}
