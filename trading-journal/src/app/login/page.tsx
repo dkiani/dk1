@@ -45,7 +45,7 @@ export default function LoginPage() {
     setLoading(true);
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      router.push("/dashboard");
+      router.push("/journal");
     } catch (err: any) {
       setError(
         err.code === "auth/user-not-found" || err.code === "auth/wrong-password"
@@ -63,7 +63,7 @@ export default function LoginPage() {
     try {
       const cred = await createUserWithEmailAndPassword(auth, email, password);
       await ensureUserDoc(cred.user.uid, cred.user.email, name);
-      router.push("/dashboard");
+      router.push("/journal");
     } catch (err: any) {
       setError(
         err.code === "auth/email-already-in-use"
@@ -86,7 +86,7 @@ export default function LoginPage() {
       } catch (firestoreErr: any) {
         console.error("Firestore error after Google sign-in:", firestoreErr.code, firestoreErr.message);
       }
-      router.push("/dashboard");
+      router.push("/journal");
     } catch (err: any) {
       console.error("Google sign-in error:", err.code, err.message);
       if (err.code === "auth/unauthorized-domain") {
