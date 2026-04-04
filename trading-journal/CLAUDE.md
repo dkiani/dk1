@@ -119,122 +119,76 @@ For Google OAuth (`signInWithPopup`) to work on the deployed site:
 - **Future**: Tradovate API integration (auto-import trades), analytics dashboard, rule tracking
 - **Business model**: Free tier for students, Student tier ($49/mo), Premium tier ($249/mo) with AI agent coaching
 
-## Design System — KIANI Design System
+## Design System — KIANI JOURNAL (Premium Dark Fintech)
 
-This app follows the KIANI design system. Reference: kiani.vc/curriculum. **Do not deviate from this.**
+Premium dark fintech dashboard. Glassmorphism cards on deep dark background. Teal/cyan data accents. Bloomberg Terminal meets luxury crypto dashboard.
 
-### Colors (Dark Mode — DEFAULT)
-- Background: `#0a0a0a` (near black)
-- Surface/Cards: `#141414` (slightly lighter)
-- Surface Hover: `#1a1a1a`
-- Border: `#222222` (subtle, 1px)
-- Text Primary: `#e8e8e8` (off-white)
-- Text Secondary: `#888888` (muted grey)
-- Text Tertiary/Muted: `#555555`
-- Accent: `#e85d3a` (KIANI orange/coral — used sparingly)
-- Accent Hover: `#f06a47`
-- Green: `#4caf50` (wins)
-- Red: `#e85d3a` or `#cf4436` (losses)
-- Yellow: `#d4a843` (breakeven/caution)
-
-### Colors (Light Mode — toggled)
-- Background: `#fafafa`
-- Surface/Cards: `#ffffff`
-- Border: `#e0e0e0`
-- Text Primary: `#1a1a1a`
-- Text Secondary: `#666666`
-- Accent: same `#e85d3a`
+### Color Palette
+- **Backgrounds (layered depth)**: `#060b14` base, `#0c1220` surface, `#111827` hover, `#141c2e` elevated, `#0a1018` inputs
+- **Borders**: `rgba(255,255,255,0.06)` default, `rgba(255,255,255,0.12)` hover, `rgba(56,224,207,0.3)` active (teal glow)
+- **Text**: `#e8ecf1` primary, `#8a94a6` secondary, `#4a5568` tertiary
+- **Accent Teal**: `#38e0cf` — primary data color (charts, highlights, active states)
+- **Accent Orange**: `#e85d3a` — CTA buttons, brand moments (use sparingly)
+- **Semantic**: `#22c55e` wins, `#ef4444` losses, `#eab308` breakeven
+- **Chart**: `#38e0cf` line, `rgba(56,224,207,0.08)` area fill, `rgba(255,255,255,0.04)` grid
 
 ### Typography
-- Font: `'IBM Plex Mono', monospace` — for EVERYTHING. No sans-serif.
-- Page titles: `1.5rem`, font-weight 500
-- Section headers / stat labels: `0.7rem`, uppercase, `letter-spacing: 0.12em`, text-secondary
-- Body text: `0.85rem`, line-height 1.7
-- Stat values (big numbers): `1.8rem`, font-weight 600
-- Navigation items: `0.8rem`
-- Small labels/hints: `0.7rem`
-- Table header labels: `0.65rem`, uppercase, `letter-spacing: 0.1em`
-- **NEVER** use font-weight 700/800/900. Max is 600, used sparingly.
+- **Two fonts**: Inter (headings, UI text) + IBM Plex Mono (data, numbers, labels, code)
+- Page titles: Inter 600, 1.25rem
+- Body text: Inter 400, 0.875rem
+- Stat values: IBM Plex Mono 600, 1.75rem
+- Labels: IBM Plex Mono 400, 0.7rem, uppercase, letter-spacing 0.1em
+- Table data: IBM Plex Mono 400, 0.85rem
+- CSS utility classes: `.text-h1`, `.text-h2`, `.text-stat-value`, `.text-label`, `.text-data`, `.text-body`, `.text-small`
 
-### Spacing & Layout
-- Sidebar: `260px` fixed, same bg as main, separated by 1px border-right
-- Content area: `max-width: 900px`, `px-12 py-8` padding
-- Card padding: `p-6` (1.5rem)
-- Card border-radius: `6px` (`rounded-[6px]`)
-- Card borders: `1px solid border`, NO box-shadows
-- Gap between stat cards: `gap-4` (1rem)
-- Section spacing: `mb-8` (2rem between major sections)
+### Component Patterns
+- **Cards**: `.journal-card` class — glassmorphism, 14px radius, subtle teal glow on hover
+- **Stat Cards**: icon (teal, 18px top-left) → label (mono uppercase) → value (large mono) → trend
+- **Buttons**: Primary = orange bg, white text, `--radius-sm`. Teal pills for chart toggles
+- **Inputs**: `--bg-input` bg, mono font, teal focus border with teal dim ring
+- **Tables**: mono font data, 1px borders, hover bg, colored P&L, grade pills
 
-### Sidebar Design
-- Logo: orange dot `●` + "TRADING JOURNAL" in `0.7rem`, `tracking-[0.15em]`, uppercase
-- User email in text-muted, `0.7rem`
-- Nav items: `0.8rem`, active = accent text + `bg-bg-surface-hover` + 2px left border
-- Icons: 14px Lucide icons
-- Bottom: Dark/Light toggle + Sign Out in text-muted
+### Layout
+- Sidebar: 240px fixed left (was 260px), collapses to hamburger on mobile
+- Content: `max-width: 1200px` (wider for data dashboard), 2rem padding
+- Grid: auto-fit stat cards, 1rem gap. 2rem between sections
+- Mobile responsive at 768px breakpoint
 
-### Buttons
-- Primary: `bg-accent text-white`, `0.75rem uppercase tracking-[0.1em]`, `rounded-[4px]`, NO shadow
-- Secondary: transparent bg, `1px border`, text-secondary
-- Hover: subtle, 150ms transitions max
+### Navigation
+- Logo: orange dot + "KIANI" in mono uppercase
+- Sections: "NAVIGATION" (Dashboard, Journal, New Trade, Calendar) + "APPS" (Chart Review, Coach K, Settings)
+- Active: teal dim bg, teal left border, text-primary
+- Icons: Lucide React, 18px
 
-### Stats Cards (Dashboard)
-- 3 cards in a row: WIN RATE, PROFIT FACTOR, TRADING DAYS
-- Surface bg, 1px border, 6px radius
-- Label: `0.65rem` uppercase, `tracking-[0.12em]`, text-secondary
-- Value: `1.8rem`, font-weight 600
-- Sub-label: `0.7rem`, text-muted
-- Icon in top-right, 14px, text-muted
-- NO colored card backgrounds
+### Animations
+- `fadeInUp` 400ms on cards with 60ms stagger
+- `pulse-subtle` for loading states
+- 150ms transitions, no bouncing/spring
 
-### Trade Log / Table
-- Subtle 1px bottom border per row
-- Header: `0.65rem` uppercase, `tracking-[0.1em]`, text-secondary
-- Cells: `0.8rem`, text-primary
-- No alternating row backgrounds
-- P&L values colored green/red
-
-### Forms / Inputs
-- Input bg: `bg-bg-input` (`#1a1a1a`), 1px border, `rounded-[4px]`
-- Text: `0.8rem`, monospace
-- Labels: `0.65rem` uppercase, `tracking-[0.1em]`, text-secondary, ABOVE input
-- Focus: border changes to accent, no glow
-- Padding: `px-3 py-2.5`
-
-### Calendar
-- Monthly grid, surface bg cells, 1px borders
-- Colored dots (green/red/yellow) for trade days
-- Current day: accent ring/border
-- Nav: `"← Month Year →"` simple arrows
-
-### Animations & Transitions
-- 150ms max transitions
-- No bouncing, sliding, or spring animations
-- Simple fade (100ms) for page transitions
-
-### General Rules — STRICT
-- **NO** box-shadows anywhere
-- **NO** gradients
-- **NO** border-radius > 8px
-- **NO** colored container backgrounds (only dots, badges, buttons)
-- **NO** JetBrains Mono (replaced by IBM Plex Mono)
-- **NO** font-semibold/bold (max font-weight: 600)
-- Aesthetic: Bloomberg terminal × minimalist. Dense but clean.
-- When in doubt, use LESS visual weight
+### Key Design Rules
+- NO default library styles — custom style everything
+- Grade pills: A+ = teal, A = green, B = yellow, C/D = red
+- Direction indicators: ▲ green for long, ▼ red for short
+- Equity curve: Recharts AreaChart, teal line, gradient fill
+- Empty states: clean and inviting with prominent CTA
 
 ### CSS Variable Mapping (Tailwind)
 ```
-bg-bg-primary     → var(--bg-primary)
-bg-bg-surface     → var(--bg-surface)
+bg-bg-primary       → var(--bg-base)
+bg-bg-surface       → var(--bg-surface)
 bg-bg-surface-hover → var(--bg-surface-hover)
-bg-bg-input       → var(--bg-input)
-text-text-primary  → var(--text-primary)
+bg-bg-elevated      → var(--bg-elevated)
+bg-bg-input         → var(--bg-input)
+text-text-primary   → var(--text-primary)
 text-text-secondary → var(--text-secondary)
-text-text-muted    → var(--text-muted)
-border-border      → var(--border)
+text-text-tertiary  → var(--text-tertiary)
+text-accent-teal    → var(--accent-teal)
+bg-accent-teal-dim  → var(--accent-teal-dim)
+border-border       → var(--border-primary)
 border-border-hover → var(--border-hover)
-text-accent / bg-accent → var(--accent)
-text-green / bg-green → var(--green)
-text-red / bg-red → var(--red)
+text-accent / bg-accent → var(--accent-orange)
+text-green / bg-green   → var(--color-win)
+text-red / bg-red       → var(--color-loss)
 ```
 
 ## Bugs Fixed
@@ -244,19 +198,37 @@ text-red / bg-red → var(--red)
 
 ## Current Status
 
-- App is scaffolded and built with all core pages
+- **Phase 1 complete**: Premium dark fintech design system, all core pages rebuilt
 - Firebase Auth with Google + email/password is implemented
 - Firestore CRUD for trades and journal entries is implemented
 - Stripe subscription scaffolding exists but keys are not configured yet
-- AI analysis route exists but ANTHROPIC_API_KEY is empty
+- AI vision-based chart review with streaming SSE is implemented
 - Screenshot upload is placeholder (URLs only, no actual upload to Storage yet)
 - Tradovate integration is marked "coming soon"
 - App is deployed on Vercel with Google sign-in working
-- **Design system fully overhauled** to match kiani.vc/curriculum (IBM Plex Mono, dark mode default, KIANI color tokens)
+- **Design system**: Premium dark fintech (KIANI JOURNAL theme) — Inter + IBM Plex Mono, teal/cyan accents, glassmorphism cards, equity curve with Recharts
+- **New features**: Equity curve chart, setup grade/session/SL/TP fields, CSV export, advanced filters, mobile responsive sidebar, Coach K + Chart Review stub pages
 
 ## Change Log
 
 > **IMPORTANT**: Continue logging all updates and context changes in this file. Every significant change, bug fix, design decision, or architectural update should be documented here so context is never lost between sessions.
+
+### 2026-04-04 — KIANI JOURNAL Premium Dark Fintech Rebuild (Phase 1)
+- **Complete design system overhaul**: Moved from minimalist monospace to premium dark fintech aesthetic
+- **New design tokens**: Deep navy backgrounds (#060b14), teal/cyan accents (#38e0cf), glassmorphism cards, layered depth system
+- **Dual fonts**: Inter for UI text + IBM Plex Mono for data/numbers/labels (was mono-only before)
+- **New components**: `.journal-card` with hover glow, `.text-stat-value`, `.text-label`, `.text-data` utility classes
+- **Dashboard rebuilt**: 4 stat cards (Avg Win, Avg Loss, Win Rate, Risk Reward), equity curve with Recharts, recent trades table with grade pills
+- **Sidebar redesigned**: 240px (was 260px), two nav sections (Navigation + Apps), teal active state, mobile hamburger menu
+- **Trade form expanded**: New fields — Stop Loss, Take Profit, Session, Setup Type, Setup Grade, Account
+- **Trade table enhanced**: Advanced filters (Result, Session, Grade), CSV export, summary bar
+- **Calendar improved**: Click day to expand trades, Mon-start week, selected day highlight
+- **Settings redesigned**: Trading defaults, risk management, data export/delete sections
+- **New routes**: `/journal/review` (stub), `/journal/coach` (stub) for Phase 2-3
+- **Types updated**: Added `stopLoss`, `takeProfit`, `pnlTicks`, `result`, `setupType`, `setupGrade`, `session`, `account` to Trade interface
+- **Mobile responsive**: Sidebar collapses at 768px, cards stack vertically
+- **Dependencies**: Added `recharts` for equity curve chart
+- **Files changed**: globals.css, layout.tsx (root + app), sidebar.tsx, types/index.ts, dashboard, journal/new, journal/trades, journal/[id], calendar, settings + 2 new pages — 13 files total
 
 ### 2026-04-04 — Complete Design System Overhaul v2
 - **Problem**: Previous design overhaul still used wrong font (JetBrains Mono), wrong colors, wrong spacing, and had a broken layout (content stuck at 350px due to flex container bug with fixed sidebar)
