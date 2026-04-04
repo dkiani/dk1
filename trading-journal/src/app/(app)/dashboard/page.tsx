@@ -98,7 +98,7 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="max-w-[720px] animate-fade-in">
+    <div className="w-full max-w-[720px] animate-fade-in">
       {/* Header */}
       <div className="flex items-center justify-between mb-10">
         <div>
@@ -117,7 +117,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-10 animate-stagger">
+      <div className="grid grid-cols-2 gap-3 mb-10 animate-stagger">
         <StatCard
           label="Total P&L"
           value={`$${totalPnl.toFixed(2)}`}
