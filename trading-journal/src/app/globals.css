@@ -8,6 +8,19 @@
 
 :root,
 [data-theme="dark"] {
+  /* Dashboard.kiani.vc canonical tokens */
+  --bg: #0a0a0a;
+  --fg: #d4d4d4;
+  --muted: #525252;
+  --dim: #3a3a3a;
+  --border: #1f1f1f;
+  --accent: #e85d2a;
+  --hover: #ffffff;
+  --input-bg: #0a0a0a;
+  --error: #ef4444;
+  --success: #22c55e;
+  --font: 'IBM Plex Mono', monospace;
+  /* App-specific aliases */
   --bg-primary: #0a0a0a;
   --bg-surface: #111111;
   --bg-surface-hover: #181818;
@@ -15,9 +28,7 @@
   --text-primary: #d4d4d4;
   --text-secondary: #888888;
   --text-muted: #525252;
-  --border: #1f1f1f;
   --border-hover: #333333;
-  --accent: #e85d2a;
   --accent-hover: #f06a47;
   --btn-bg: #d4d4d4;
   --btn-fg: #0a0a0a;
@@ -29,6 +40,19 @@
 }
 
 [data-theme="light"] {
+  /* Dashboard.kiani.vc canonical tokens */
+  --bg: #f0ede8;
+  --fg: #1a1a1a;
+  --muted: #8a8a8a;
+  --dim: #b0aca6;
+  --border: #ddd9d4;
+  --accent: #e85d2a;
+  --hover: #000000;
+  --input-bg: #f0ede8;
+  --error: #dc2626;
+  --success: #16a34a;
+  --font: 'IBM Plex Mono', monospace;
+  /* App-specific aliases */
   --bg-primary: #f0ede8;
   --bg-surface: #ffffff;
   --bg-surface-hover: #f7f5f2;
@@ -36,9 +60,7 @@
   --text-primary: #1a1a1a;
   --text-secondary: #666666;
   --text-muted: #8a8a8a;
-  --border: #ddd9d4;
   --border-hover: #ccc8c2;
-  --accent: #e85d2a;
   --accent-hover: #f06a47;
   --btn-bg: #1a1a1a;
   --btn-fg: #f0ede8;

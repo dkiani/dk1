@@ -101,23 +101,66 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-bg-primary">
-      {/* Theme toggle — top right */}
+    <>
+      {/* Theme toggle — fixed top right, identical to dashboard.kiani.vc */}
       <button
         onClick={toggleTheme}
-        className="fixed top-6 right-6 z-50 bg-transparent border border-border text-text-muted text-[0.55rem] tracking-[0.06em] uppercase px-2.5 py-1.5 cursor-pointer transition-colors duration-300 hover:text-text-primary hover:border-border-hover"
-        style={{ minWidth: 44, minHeight: 44, display: "flex", alignItems: "center", justifyContent: "center" }}
+        style={{
+          position: "fixed",
+          top: "1.5rem",
+          right: "1.5rem",
+          zIndex: 100,
+          background: "none",
+          border: "1px solid var(--border)",
+          color: "var(--muted)",
+          fontFamily: "var(--font)",
+          fontSize: "0.55rem",
+          letterSpacing: "0.06em",
+          padding: "0.3rem 0.6rem",
+          cursor: "pointer",
+          transition: "all 0.3s",
+          textTransform: "uppercase" as const,
+          minWidth: 44,
+          minHeight: 44,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
       >
         {theme === "dark" ? "Light" : "Dark"}
       </button>
 
-      {/* Centered auth form */}
-      <div className="max-w-[400px] mx-auto px-8 min-h-screen flex flex-col justify-center">
-        <div className="mb-10">
-          <h1 className="text-[1.1rem] font-normal tracking-[-0.02em] mb-2">
+      {/* Auth container — exact copy of dashboard.kiani.vc .auth-container */}
+      <div
+        style={{
+          maxWidth: 400,
+          margin: "0 auto",
+          padding: "2rem",
+          minHeight: "100vh",
+          display: "flex",
+          flexDirection: "column" as const,
+          justifyContent: "center",
+        }}
+      >
+        {/* Header */}
+        <div style={{ marginBottom: "2.5rem" }}>
+          <h1
+            style={{
+              fontSize: "1.1rem",
+              fontWeight: 400,
+              letterSpacing: "-0.02em",
+              marginBottom: "0.5rem",
+            }}
+          >
             {tab === "login" ? "Welcome back" : "Create account"}
           </h1>
-          <p className="text-[0.7rem] text-text-muted font-light">
+          <p
+            style={{
+              fontSize: "0.7rem",
+              color: "var(--muted)",
+              fontWeight: 300,
+            }}
+          >
             {tab === "login"
               ? "Sign in to your trading journal."
               : "Start tracking your trades today."}
@@ -126,11 +169,27 @@ export default function LoginPage() {
 
         {/* Google sign in */}
         <button
-          className="flex items-center justify-center gap-2.5 w-full px-4 py-[0.7rem] bg-transparent border border-border text-[0.7rem] font-light text-text-primary cursor-pointer transition-colors duration-300 hover:border-border-hover disabled:opacity-40"
           onClick={handleGoogleSignIn}
           disabled={loading}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "0.6rem",
+            background: "none",
+            border: "1px solid var(--border)",
+            color: "var(--fg)",
+            fontFamily: "inherit",
+            fontSize: "0.7rem",
+            fontWeight: 300,
+            padding: "0.7rem",
+            cursor: loading ? "not-allowed" : "pointer",
+            transition: "all 0.3s",
+            width: "100%",
+            opacity: loading ? 0.4 : 1,
+          }}
         >
-          <svg viewBox="0 0 24 24" className="w-4 h-4 shrink-0">
+          <svg viewBox="0 0 24 24" style={{ width: 16, height: 16, flexShrink: 0 }}>
             <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4" />
             <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853" />
             <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05" />
@@ -140,27 +199,77 @@ export default function LoginPage() {
         </button>
 
         {/* OR divider */}
-        <div className="flex items-center gap-4 my-4">
-          <div className="flex-1 h-px bg-border" />
-          <span className="text-[0.55rem] text-text-muted font-light uppercase tracking-[0.06em]">or</span>
-          <div className="flex-1 h-px bg-border" />
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "1rem",
+            margin: "0.5rem 0",
+          }}
+        >
+          <div style={{ flex: 1, height: 1, background: "var(--border)" }} />
+          <span
+            style={{
+              fontSize: "0.55rem",
+              color: "var(--dim)",
+              fontWeight: 300,
+              letterSpacing: "0.06em",
+              textTransform: "uppercase" as const,
+            }}
+          >
+            or
+          </span>
+          <div style={{ flex: 1, height: 1, background: "var(--border)" }} />
         </div>
 
         {/* Tabs */}
-        <div className="flex border-b border-border mb-8">
+        <div
+          style={{
+            display: "flex",
+            gap: 0,
+            marginBottom: "2rem",
+            borderBottom: "1px solid var(--border)",
+          }}
+        >
           <button
-            className={`flex-1 pb-3 text-[0.65rem] font-light uppercase tracking-[0.06em] cursor-pointer bg-transparent border-0 border-b-2 transition-colors duration-300 -mb-px ${
-              tab === "login" ? "text-text-primary border-accent" : "text-text-muted border-transparent hover:text-text-primary"
-            }`}
             onClick={() => { setTab("login"); setError(""); }}
+            style={{
+              flex: 1,
+              background: "none",
+              border: "none",
+              borderBottom: `2px solid ${tab === "login" ? "var(--accent)" : "transparent"}`,
+              color: tab === "login" ? "var(--fg)" : "var(--muted)",
+              fontFamily: "inherit",
+              fontSize: "0.65rem",
+              fontWeight: 300,
+              letterSpacing: "0.06em",
+              textTransform: "uppercase" as const,
+              padding: "0.8rem 0",
+              cursor: "pointer",
+              transition: "all 0.3s",
+              marginBottom: -1,
+            }}
           >
             Sign In
           </button>
           <button
-            className={`flex-1 pb-3 text-[0.65rem] font-light uppercase tracking-[0.06em] cursor-pointer bg-transparent border-0 border-b-2 transition-colors duration-300 -mb-px ${
-              tab === "signup" ? "text-text-primary border-accent" : "text-text-muted border-transparent hover:text-text-primary"
-            }`}
             onClick={() => { setTab("signup"); setError(""); }}
+            style={{
+              flex: 1,
+              background: "none",
+              border: "none",
+              borderBottom: `2px solid ${tab === "signup" ? "var(--accent)" : "transparent"}`,
+              color: tab === "signup" ? "var(--fg)" : "var(--muted)",
+              fontFamily: "inherit",
+              fontSize: "0.65rem",
+              fontWeight: 300,
+              letterSpacing: "0.06em",
+              textTransform: "uppercase" as const,
+              padding: "0.8rem 0",
+              cursor: "pointer",
+              transition: "all 0.3s",
+              marginBottom: -1,
+            }}
           >
             Create Account
           </button>
@@ -168,44 +277,193 @@ export default function LoginPage() {
 
         {/* Login Form */}
         {tab === "login" && (
-          <form className="flex flex-col gap-4" onSubmit={handleLogin}>
-            <div className="flex flex-col gap-1.5">
-              <label className="text-[0.6rem] font-light uppercase tracking-[0.06em] text-text-muted">Email</label>
-              <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@example.com" required autoComplete="email" className="w-full px-3 py-[0.7rem] bg-bg-input border border-border text-[0.75rem] font-light text-text-primary placeholder:text-text-muted focus:border-border-hover outline-none transition-colors duration-300" />
+          <form
+            onSubmit={handleLogin}
+            style={{ display: "flex", flexDirection: "column" as const, gap: "1rem" }}
+          >
+            <div style={{ display: "flex", flexDirection: "column" as const, gap: "0.4rem" }}>
+              <label style={{ fontSize: "0.6rem", fontWeight: 300, letterSpacing: "0.06em", textTransform: "uppercase" as const, color: "var(--muted)" }}>
+                Email
+              </label>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="you@example.com"
+                required
+                autoComplete="email"
+                style={{
+                  background: "var(--input-bg)",
+                  border: "1px solid var(--border)",
+                  color: "var(--fg)",
+                  fontFamily: "inherit",
+                  fontSize: "0.75rem",
+                  fontWeight: 300,
+                  padding: "0.7rem 0.8rem",
+                  outline: "none",
+                  transition: "border-color 0.3s",
+                }}
+              />
             </div>
-            <div className="flex flex-col gap-1.5">
-              <label className="text-[0.6rem] font-light uppercase tracking-[0.06em] text-text-muted">Password</label>
-              <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="your password" required autoComplete="current-password" className="w-full px-3 py-[0.7rem] bg-bg-input border border-border text-[0.75rem] font-light text-text-primary placeholder:text-text-muted focus:border-border-hover outline-none transition-colors duration-300" />
+            <div style={{ display: "flex", flexDirection: "column" as const, gap: "0.4rem" }}>
+              <label style={{ fontSize: "0.6rem", fontWeight: 300, letterSpacing: "0.06em", textTransform: "uppercase" as const, color: "var(--muted)" }}>
+                Password
+              </label>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="your password"
+                required
+                autoComplete="current-password"
+                style={{
+                  background: "var(--input-bg)",
+                  border: "1px solid var(--border)",
+                  color: "var(--fg)",
+                  fontFamily: "inherit",
+                  fontSize: "0.75rem",
+                  fontWeight: 300,
+                  padding: "0.7rem 0.8rem",
+                  outline: "none",
+                  transition: "border-color 0.3s",
+                }}
+              />
             </div>
-            <button type="submit" disabled={loading} className="w-full py-[0.8rem] bg-btn-bg text-btn-fg border-0 text-[0.7rem] font-normal tracking-[0.02em] cursor-pointer transition-opacity duration-300 hover:opacity-85 disabled:opacity-40 mt-2">
+            <button
+              type="submit"
+              disabled={loading}
+              style={{
+                background: "var(--fg)",
+                color: "var(--bg)",
+                border: "none",
+                fontFamily: "inherit",
+                fontSize: "0.7rem",
+                fontWeight: 400,
+                letterSpacing: "0.02em",
+                padding: "0.8rem",
+                cursor: loading ? "not-allowed" : "pointer",
+                transition: "all 0.3s",
+                marginTop: "0.5rem",
+                opacity: loading ? 0.4 : 1,
+              }}
+            >
               {loading ? "..." : "Sign In"}
             </button>
-            {error && <p className="text-[0.65rem] font-light text-red text-center">{error}</p>}
+            {error && (
+              <div style={{ fontSize: "0.65rem", fontWeight: 300, textAlign: "center" as const, color: "var(--error)" }}>
+                {error}
+              </div>
+            )}
           </form>
         )}
 
         {/* Signup Form */}
         {tab === "signup" && (
-          <form className="flex flex-col gap-4" onSubmit={handleSignup}>
-            <div className="flex flex-col gap-1.5">
-              <label className="text-[0.6rem] font-light uppercase tracking-[0.06em] text-text-muted">Full Name</label>
-              <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Your name" required autoComplete="name" className="w-full px-3 py-[0.7rem] bg-bg-input border border-border text-[0.75rem] font-light text-text-primary placeholder:text-text-muted focus:border-border-hover outline-none transition-colors duration-300" />
+          <form
+            onSubmit={handleSignup}
+            style={{ display: "flex", flexDirection: "column" as const, gap: "1rem" }}
+          >
+            <div style={{ display: "flex", flexDirection: "column" as const, gap: "0.4rem" }}>
+              <label style={{ fontSize: "0.6rem", fontWeight: 300, letterSpacing: "0.06em", textTransform: "uppercase" as const, color: "var(--muted)" }}>
+                Full Name
+              </label>
+              <input
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="Your name"
+                required
+                autoComplete="name"
+                style={{
+                  background: "var(--input-bg)",
+                  border: "1px solid var(--border)",
+                  color: "var(--fg)",
+                  fontFamily: "inherit",
+                  fontSize: "0.75rem",
+                  fontWeight: 300,
+                  padding: "0.7rem 0.8rem",
+                  outline: "none",
+                  transition: "border-color 0.3s",
+                }}
+              />
             </div>
-            <div className="flex flex-col gap-1.5">
-              <label className="text-[0.6rem] font-light uppercase tracking-[0.06em] text-text-muted">Email</label>
-              <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@example.com" required autoComplete="email" className="w-full px-3 py-[0.7rem] bg-bg-input border border-border text-[0.75rem] font-light text-text-primary placeholder:text-text-muted focus:border-border-hover outline-none transition-colors duration-300" />
+            <div style={{ display: "flex", flexDirection: "column" as const, gap: "0.4rem" }}>
+              <label style={{ fontSize: "0.6rem", fontWeight: 300, letterSpacing: "0.06em", textTransform: "uppercase" as const, color: "var(--muted)" }}>
+                Email
+              </label>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="you@example.com"
+                required
+                autoComplete="email"
+                style={{
+                  background: "var(--input-bg)",
+                  border: "1px solid var(--border)",
+                  color: "var(--fg)",
+                  fontFamily: "inherit",
+                  fontSize: "0.75rem",
+                  fontWeight: 300,
+                  padding: "0.7rem 0.8rem",
+                  outline: "none",
+                  transition: "border-color 0.3s",
+                }}
+              />
             </div>
-            <div className="flex flex-col gap-1.5">
-              <label className="text-[0.6rem] font-light uppercase tracking-[0.06em] text-text-muted">Password</label>
-              <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="min 6 characters" required minLength={6} autoComplete="new-password" className="w-full px-3 py-[0.7rem] bg-bg-input border border-border text-[0.75rem] font-light text-text-primary placeholder:text-text-muted focus:border-border-hover outline-none transition-colors duration-300" />
+            <div style={{ display: "flex", flexDirection: "column" as const, gap: "0.4rem" }}>
+              <label style={{ fontSize: "0.6rem", fontWeight: 300, letterSpacing: "0.06em", textTransform: "uppercase" as const, color: "var(--muted)" }}>
+                Password
+              </label>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="min 6 characters"
+                required
+                minLength={6}
+                autoComplete="new-password"
+                style={{
+                  background: "var(--input-bg)",
+                  border: "1px solid var(--border)",
+                  color: "var(--fg)",
+                  fontFamily: "inherit",
+                  fontSize: "0.75rem",
+                  fontWeight: 300,
+                  padding: "0.7rem 0.8rem",
+                  outline: "none",
+                  transition: "border-color 0.3s",
+                }}
+              />
             </div>
-            <button type="submit" disabled={loading} className="w-full py-[0.8rem] bg-btn-bg text-btn-fg border-0 text-[0.7rem] font-normal tracking-[0.02em] cursor-pointer transition-opacity duration-300 hover:opacity-85 disabled:opacity-40 mt-2">
+            <button
+              type="submit"
+              disabled={loading}
+              style={{
+                background: "var(--fg)",
+                color: "var(--bg)",
+                border: "none",
+                fontFamily: "inherit",
+                fontSize: "0.7rem",
+                fontWeight: 400,
+                letterSpacing: "0.02em",
+                padding: "0.8rem",
+                cursor: loading ? "not-allowed" : "pointer",
+                transition: "all 0.3s",
+                marginTop: "0.5rem",
+                opacity: loading ? 0.4 : 1,
+              }}
+            >
               {loading ? "..." : "Create Account"}
             </button>
-            {error && <p className="text-[0.65rem] font-light text-red text-center">{error}</p>}
+            {error && (
+              <div style={{ fontSize: "0.65rem", fontWeight: 300, textAlign: "center" as const, color: "var(--error)" }}>
+                {error}
+              </div>
+            )}
           </form>
         )}
       </div>
-    </div>
+    </>
   );
 }
