@@ -4,7 +4,7 @@ import { useAuth } from "@/lib/auth-context";
 import { useTheme } from "@/lib/theme";
 import { Sun, Moon } from "lucide-react";
 
-export default function SettingsPage() {
+export default function JournalSettingsPage() {
   const { user, profile, subscription } = useAuth();
   const { theme, toggleTheme } = useTheme();
 
@@ -101,13 +101,13 @@ export default function SettingsPage() {
           </div>
         </section>
 
-        {/* Tradovate Integration */}
+        {/* Broker Integration */}
         <section className="bg-bg-surface border border-border p-6 opacity-40">
           <h2 className="text-[0.6rem] uppercase tracking-[0.06em] text-text-muted font-light mb-4">
-            Tradovate Integration
+            Broker Integration
           </h2>
           <p className="text-[0.75rem] text-text-muted font-light">
-            Coming soon — Connect your Tradovate account to auto-import trades.
+            Coming soon — Connect Tradovate, Rithmic, or other brokers to auto-import trades.
           </p>
         </section>
       </div>

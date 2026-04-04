@@ -36,7 +36,7 @@ export default function TradeDetailPage() {
     if (!trade || !confirm("Delete this trade? This cannot be undone.")) return;
     setDeleting(true);
     await deleteTrade(trade.id);
-    router.push("/journal");
+    router.push("/journal/trades");
   }
 
   async function handleAiAnalysis() {
@@ -68,7 +68,7 @@ export default function TradeDetailPage() {
     return (
       <div className="text-center py-12">
         <p className="text-[0.8rem] text-text-muted font-light">Trade not found</p>
-        <Link href="/journal" className="text-[0.75rem] text-accent hover:text-accent-hover mt-2 block no-underline transition-colors duration-150">
+        <Link href="/journal/trades" className="text-[0.75rem] text-accent hover:text-accent-hover mt-2 block no-underline transition-colors duration-150">
           Back to journal
         </Link>
       </div>
@@ -197,7 +197,7 @@ export default function TradeDetailPage() {
         </div>
       )}
 
-      {/* AI Analysis */}
+      {/* AI Analysis (text-based) */}
       {aiAnalysis && (
         <div className="mb-8">
           <h2 className="text-[0.6rem] uppercase tracking-[0.06em] text-text-muted font-light mb-4 flex items-center gap-2">
@@ -207,6 +207,52 @@ export default function TradeDetailPage() {
           <div className="bg-bg-surface border border-border p-6">
             <p className="text-[0.8rem] text-text-secondary font-light whitespace-pre-wrap leading-relaxed">{aiAnalysis}</p>
           </div>
+        </div>
+      )}
+
+      {/* AI Chart Review (vision-based) */}
+      {trade.aiReview && (
+        <div className="mb-8">
+          <h2 className="text-[0.6rem] uppercase tracking-[0.06em] text-text-muted font-light mb-4 flex items-center gap-2">
+            <Brain className="w-[14px] h-[14px] text-accent" />
+            AI Chart Review
+          </h2>
+          {trade.aiReview.imageUrl && (
+            <img
+              src={trade.aiReview.imageUrl}
+              alt="Reviewed chart"
+              className="w-full max-h-[400px] object-contain border border-border mb-4"
+            />
+          )}
+          <div className="bg-bg-surface border border-border p-6 mb-4">
+            <p className="text-[0.8rem] text-text-secondary font-light whitespace-pre-wrap leading-relaxed">
+              {trade.aiReview.analysis}
+            </p>
+          </div>
+          {trade.aiReview.chatHistory.length > 2 && (
+            <div className="border border-border overflow-hidden">
+              <div className="px-5 py-3 border-b border-border">
+                <span className="text-[0.6rem] uppercase tracking-[0.06em] text-text-muted font-light">
+                  Follow-up Discussion
+                </span>
+              </div>
+              {trade.aiReview.chatHistory.slice(2).map((msg, i) => (
+                <div
+                  key={i}
+                  className={`px-6 py-4 border-b border-border last:border-b-0 ${
+                    msg.role === "user" ? "bg-bg-surface-hover" : "bg-bg-surface"
+                  }`}
+                >
+                  <span className="text-[0.55rem] uppercase tracking-[0.06em] text-text-muted font-light">
+                    {msg.role === "user" ? "You" : "AI Coach"}
+                  </span>
+                  <p className="text-[0.75rem] text-text-secondary font-light mt-1 leading-relaxed whitespace-pre-wrap">
+                    {msg.content}
+                  </p>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       )}
     </div>

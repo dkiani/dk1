@@ -32,6 +32,8 @@ export interface Trade {
   notes?: string;
   // Screenshots
   screenshots?: Screenshot[];
+  // AI review
+  aiReview?: AiReview;
   // Tradovate integration (future)
   tradovateOrderId?: string;
   tradovateAccountId?: string;
@@ -110,4 +112,18 @@ export interface SubscriptionPlan {
   price: number;
   stripePriceId: string;
   features: string[];
+}
+
+// AI Trade Review
+export interface AiReview {
+  imageUrl: string;
+  analysis: string;
+  chatHistory: AiReviewMessage[];
+  createdAt: string;
+}
+
+export interface AiReviewMessage {
+  role: "user" | "assistant";
+  content: string;
+  timestamp: string;
 }

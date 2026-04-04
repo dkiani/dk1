@@ -16,7 +16,7 @@ import {
   isToday,
 } from "date-fns";
 
-export default function CalendarPage() {
+export default function JournalCalendarPage() {
   const { user } = useAuth();
   const [trades, setTrades] = useState<Trade[]>([]);
   const [loading, setLoading] = useState(true);
