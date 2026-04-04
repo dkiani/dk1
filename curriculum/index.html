@@ -1547,9 +1547,14 @@ onAuthStateChanged(fbAuth, async (user) => {
           renderContent();
         }
       } else {
-        // Students go through onboarding so they enter the database
+        // Students get direct access to curriculum
+        localStorage.setItem('curriculum_paid', 'true');
         logSession(studentName, val);
-        window.location.href = '/onboarding?source=curriculum';
+        document.getElementById('accessGate').classList.add('hidden');
+        if (typeof renderSidebar === 'function') {
+          renderSidebar();
+          renderContent();
+        }
       }
     } else {
       accessInput.classList.add('pw-error');
