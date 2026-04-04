@@ -9,13 +9,13 @@
   --bg-primary: #f0ede8;
   --bg-secondary: #e8e5e0;
   --bg-tertiary: #dedad4;
-  --bg-card: #f5f3ef;
+  --bg-card: #ffffff;
   --bg-input: #e8e5e0;
   --text-primary: #111111;
   --text-secondary: #525252;
   --text-muted: #8a8a8a;
-  --border: #d4d0ca;
-  --border-hover: #c0bbb4;
+  --border: #e5e2dd;
+  --border-hover: #d4d0ca;
   --accent: #e85d2a;
   --accent-hover: #d14f1f;
   --green: #22c55e;
@@ -64,6 +64,7 @@
   --color-green-bg: var(--green-bg);
   --color-red: var(--red);
   --color-red-bg: var(--red-bg);
+  --color-shadow: var(--shadow);
   --font-sans: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 }
