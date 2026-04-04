@@ -16,10 +16,10 @@ export default function JournalPage() {
 
   useEffect(() => {
     if (!user) return;
-    getTrades(user.uid).then((t) => {
-      setTrades(t);
-      setLoading(false);
-    });
+    getTrades(user.uid)
+      .then((t) => setTrades(t))
+      .catch((err) => console.error("Failed to fetch trades:", err))
+      .finally(() => setLoading(false));
   }, [user]);
 
   const filtered = trades.filter((t) => {
@@ -31,18 +31,18 @@ export default function JournalPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="w-5 h-5 border-2 border-accent border-t-transparent rounded-full animate-spin" />
+        <div className="w-4 h-4 border-[1.5px] border-accent border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
 
   return (
-    <div className="max-w-5xl">
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="text-lg font-semibold">Trade Journal</h1>
+    <div className="max-w-[720px] animate-fade-in">
+      <div className="flex items-center justify-between mb-10">
+        <h1 className="text-sm font-medium tracking-tight">Trade Journal</h1>
         <Link
           href="/journal/new"
-          className="flex items-center gap-2 px-4 py-2 bg-accent text-white rounded-md text-xs hover:bg-accent-hover transition-colors no-underline"
+          className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-accent text-white rounded-[3px] text-[11px] font-medium hover:bg-accent-hover transition-all duration-200 no-underline"
         >
           <Plus className="w-3 h-3" />
           Log Trade
@@ -52,23 +52,23 @@ export default function JournalPage() {
       {/* Filters */}
       <div className="flex items-center gap-3 mb-6">
         <div className="relative flex-1 max-w-xs">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-text-muted" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3 h-3 text-text-muted" />
           <input
             type="text"
             placeholder="Search by symbol..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full pl-9 pr-3 py-2 bg-bg-input border border-border rounded-md text-xs text-text-primary placeholder:text-text-muted focus:border-accent outline-none"
+            className="w-full pl-8 pr-3 py-2 bg-bg-input border border-border rounded-[3px] text-[11px] text-text-primary placeholder:text-text-muted focus:border-accent outline-none transition-colors duration-200"
           />
         </div>
-        <div className="flex items-center gap-1 border border-border rounded-md overflow-hidden">
+        <div className="flex items-center border border-border rounded-[3px] overflow-hidden">
           {(["all", "long", "short"] as const).map((dir) => (
             <button
               key={dir}
               onClick={() => setDirectionFilter(dir)}
-              className={`px-3 py-2 text-[10px] uppercase tracking-wider cursor-pointer transition-colors ${
+              className={`px-3 py-2 text-[10px] uppercase tracking-[0.06em] cursor-pointer transition-all duration-200 border-0 bg-transparent ${
                 directionFilter === dir
-                  ? "bg-accent text-white"
+                  ? "bg-accent text-white font-medium"
                   : "text-text-muted hover:text-text-primary"
               }`}
             >
@@ -80,40 +80,40 @@ export default function JournalPage() {
 
       {/* Trade List */}
       {filtered.length === 0 ? (
-        <div className="bg-bg-card border border-border rounded-lg p-12 text-center">
-          <p className="text-sm text-text-muted mb-3">
+        <div className="border border-border rounded-[3px] py-16 text-center bg-bg-card">
+          <p className="text-[11px] text-text-muted mb-4">
             {trades.length === 0 ? "No trades logged yet" : "No trades match your filters"}
           </p>
           {trades.length === 0 && (
-            <Link href="/journal/new" className="text-xs text-accent hover:underline">
+            <Link href="/journal/new" className="text-[11px] text-accent hover:text-accent-hover transition-colors no-underline">
               Log your first trade
             </Link>
           )}
         </div>
       ) : (
-        <div className="bg-bg-card border border-border rounded-lg overflow-hidden">
+        <div className="border border-border rounded-[3px] overflow-hidden">
           <table className="w-full">
             <thead>
-              <tr className="border-b border-border">
-                <th className="text-left px-5 py-3 text-[10px] uppercase tracking-wider text-text-muted font-medium">
+              <tr className="border-b border-border bg-bg-card">
+                <th className="text-left px-5 py-3 text-[10px] uppercase tracking-[0.06em] text-text-muted font-medium">
                   Date
                 </th>
-                <th className="text-left px-5 py-3 text-[10px] uppercase tracking-wider text-text-muted font-medium">
+                <th className="text-left px-5 py-3 text-[10px] uppercase tracking-[0.06em] text-text-muted font-medium">
                   Symbol
                 </th>
-                <th className="text-left px-5 py-3 text-[10px] uppercase tracking-wider text-text-muted font-medium">
+                <th className="text-left px-5 py-3 text-[10px] uppercase tracking-[0.06em] text-text-muted font-medium">
                   Direction
                 </th>
-                <th className="text-left px-5 py-3 text-[10px] uppercase tracking-wider text-text-muted font-medium">
+                <th className="text-left px-5 py-3 text-[10px] uppercase tracking-[0.06em] text-text-muted font-medium">
                   Entry
                 </th>
-                <th className="text-left px-5 py-3 text-[10px] uppercase tracking-wider text-text-muted font-medium">
+                <th className="text-left px-5 py-3 text-[10px] uppercase tracking-[0.06em] text-text-muted font-medium">
                   Exit
                 </th>
-                <th className="text-left px-5 py-3 text-[10px] uppercase tracking-wider text-text-muted font-medium">
+                <th className="text-left px-5 py-3 text-[10px] uppercase tracking-[0.06em] text-text-muted font-medium">
                   Qty
                 </th>
-                <th className="text-right px-5 py-3 text-[10px] uppercase tracking-wider text-text-muted font-medium">
+                <th className="text-right px-5 py-3 text-[10px] uppercase tracking-[0.06em] text-text-muted font-medium">
                   P&L
                 </th>
               </tr>
@@ -122,18 +122,18 @@ export default function JournalPage() {
               {filtered.map((trade) => (
                 <tr
                   key={trade.id}
-                  className="hover:bg-bg-tertiary transition-colors cursor-pointer"
+                  className="bg-bg-card hover:bg-bg-tertiary transition-all duration-200 cursor-pointer"
                   onClick={() => (window.location.href = `/journal/${trade.id}`)}
                 >
-                  <td className="px-5 py-3 text-xs text-text-secondary">
+                  <td className="px-5 py-3 text-[11px] text-text-secondary">
                     {new Date(trade.entryTime).toLocaleDateString()}
                   </td>
-                  <td className="px-5 py-3 text-xs font-medium text-text-primary">
+                  <td className="px-5 py-3 text-[11px] font-medium text-text-primary">
                     {trade.symbol}
                   </td>
                   <td className="px-5 py-3">
                     <span
-                      className={`text-[10px] uppercase font-semibold px-2 py-0.5 rounded ${
+                      className={`text-[9px] uppercase font-medium px-2 py-0.5 rounded-[2px] tracking-wider ${
                         trade.direction === "long"
                           ? "bg-green-bg text-green"
                           : "bg-red-bg text-red"
@@ -142,17 +142,17 @@ export default function JournalPage() {
                       {trade.direction}
                     </span>
                   </td>
-                  <td className="px-5 py-3 text-xs text-text-secondary">
+                  <td className="px-5 py-3 text-[11px] text-text-secondary">
                     ${trade.entryPrice.toFixed(2)}
                   </td>
-                  <td className="px-5 py-3 text-xs text-text-secondary">
-                    {trade.exitPrice ? `$${trade.exitPrice.toFixed(2)}` : "—"}
+                  <td className="px-5 py-3 text-[11px] text-text-secondary">
+                    {trade.exitPrice ? `$${trade.exitPrice.toFixed(2)}` : "\u2014"}
                   </td>
-                  <td className="px-5 py-3 text-xs text-text-secondary">
+                  <td className="px-5 py-3 text-[11px] text-text-secondary">
                     {trade.quantity}
                   </td>
                   <td
-                    className={`px-5 py-3 text-xs font-medium text-right ${
+                    className={`px-5 py-3 text-[11px] font-medium text-right ${
                       (trade.pnl ?? 0) >= 0 ? "text-green" : "text-red"
                     }`}
                   >
