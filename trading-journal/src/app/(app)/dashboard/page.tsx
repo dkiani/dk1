@@ -35,7 +35,7 @@ function StatCard({
         ? "text-red"
         : "text-accent";
   return (
-    <div className="bg-bg-card border border-border rounded-[3px] p-5 transition-all duration-200 hover:border-border-hover">
+    <div className="bg-bg-card border border-border rounded-[3px] p-5 transition-all duration-200 hover:border-border-hover" style={{ boxShadow: 'var(--shadow)' }}>
       <div className="flex items-center justify-between mb-4">
         <span className="text-[10px] uppercase tracking-[0.06em] font-medium text-text-muted">
           {label}
@@ -98,7 +98,7 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="max-w-[720px] animate-fade-in">
+    <div className="max-w-[840px] animate-fade-in">
       {/* Header */}
       <div className="flex items-center justify-between mb-10">
         <div>
@@ -117,7 +117,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-4 gap-3 mb-10 animate-stagger">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-10 animate-stagger">
         <StatCard
           label="Total P&L"
           value={`$${totalPnl.toFixed(2)}`}
@@ -146,23 +146,29 @@ export default function DashboardPage() {
       </div>
 
       {/* Recent Trades */}
-      <div className="border border-border rounded-[3px] overflow-hidden">
+      <div className="border border-border rounded-[3px] overflow-hidden" style={{ boxShadow: 'var(--shadow)' }}>
         <div className="px-5 py-3.5 border-b border-border bg-bg-card">
           <h2 className="text-[10px] font-medium uppercase tracking-[0.06em] text-text-muted">
             Recent Trades
           </h2>
         </div>
         {recentTrades.length === 0 ? (
-          <div className="py-16 text-center bg-bg-card">
-            <p className="text-[11px] text-text-muted mb-4">
+          <div className="py-20 text-center bg-bg-card">
+            <div className="w-10 h-10 rounded-full border border-border flex items-center justify-center mx-auto mb-5">
+              <BarChart3 className="w-4 h-4 text-text-muted" />
+            </div>
+            <p className="text-[12px] text-text-secondary mb-2">
               No trades logged yet
+            </p>
+            <p className="text-[10px] text-text-muted mb-6 max-w-[240px] mx-auto">
+              Start tracking your trades to see performance metrics and insights here.
             </p>
             <Link
               href="/journal/new"
-              className="inline-flex items-center gap-1.5 text-[11px] text-accent hover:text-accent-hover transition-colors no-underline"
+              className="inline-flex items-center gap-1.5 px-4 py-2 bg-accent text-white rounded-[3px] text-[11px] font-medium hover:bg-accent-hover transition-all duration-200 no-underline"
             >
+              <Plus className="w-3 h-3" />
               Log your first trade
-              <ArrowUpRight className="w-3 h-3" />
             </Link>
           </div>
         ) : (

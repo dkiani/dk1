@@ -62,7 +62,7 @@ export default function CalendarPage() {
   }
 
   return (
-    <div className="max-w-[720px] animate-fade-in">
+    <div className="max-w-[840px] animate-fade-in">
       {/* Header */}
       <div className="flex items-center justify-between mb-10">
         <div>
