@@ -44,13 +44,14 @@ export default function LoginPage() {
     setError("");
     setLoading(true);
     try {
-      await signInWithEmailAndPassword(auth, email, password);
-      router.push("/dashboard");
+      const cred = await signInWithEmailAndPassword(auth, email, password);
+      router.push("/journal");
     } catch (err: any) {
+      console.error("Login error:", err.code, err.message);
       setError(
         err.code === "auth/user-not-found" || err.code === "auth/wrong-password"
           ? "Invalid email or password"
-          : "Something went wrong. Try again."
+          : `Error: ${err.code || err.message}`
       );
     }
     setLoading(false);
@@ -62,15 +63,17 @@ export default function LoginPage() {
     setLoading(true);
     try {
       const cred = await createUserWithEmailAndPassword(auth, email, password);
-      await ensureUserDoc(cred.user.uid, cred.user.email, name);
-      router.push("/dashboard");
+      // Don't block redirect on Firestore write — providers.tsx handles profile creation as fallback
+      ensureUserDoc(cred.user.uid, cred.user.email, name).catch(() => {});
+      router.push("/journal");
     } catch (err: any) {
+      console.error("Signup error:", err.code, err.message);
       setError(
         err.code === "auth/email-already-in-use"
           ? "Email already in use"
           : err.code === "auth/weak-password"
             ? "Password must be at least 6 characters"
-            : "Something went wrong. Try again."
+            : `Error: ${err.code || err.message}`
       );
     }
     setLoading(false);
@@ -86,7 +89,7 @@ export default function LoginPage() {
       } catch (firestoreErr: any) {
         console.error("Firestore error after Google sign-in:", firestoreErr.code, firestoreErr.message);
       }
-      router.push("/dashboard");
+      router.push("/journal");
     } catch (err: any) {
       console.error("Google sign-in error:", err.code, err.message);
       if (err.code === "auth/unauthorized-domain") {

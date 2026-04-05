@@ -1,11 +1,14 @@
 // ============================================
-// Core Types — Tradovate-ready schema
+// Core Types — Trading Journal Schema
 // ============================================
 
 export type TradeDirection = "long" | "short";
 export type TradeStatus = "open" | "closed";
 export type AssetClass = "futures" | "options" | "stocks" | "forex" | "crypto";
 export type TimeFrame = "1m" | "5m" | "15m" | "1h" | "4h" | "1d" | "1w";
+export type TradeResult = "win" | "loss" | "breakeven";
+export type SetupGrade = "A+" | "A" | "B" | "C" | "D";
+export type TradingSession = "London" | "NY AM" | "NY PM" | "Asia";
 
 export interface Trade {
   id: string;
@@ -18,20 +21,30 @@ export interface Trade {
   status: TradeStatus;
   entryPrice: number;
   exitPrice?: number;
+  stopLoss?: number;
+  takeProfit?: number;
   quantity: number;
   entryTime: string; // ISO timestamp
   exitTime?: string;
   // Financials
   pnl?: number;
   pnlPercent?: number;
+  pnlTicks?: number;
   fees?: number;
-  // Metadata
+  result?: TradeResult;
+  // Setup metadata
   strategy?: string;
+  setupType?: string;
+  setupGrade?: SetupGrade;
+  session?: TradingSession;
   timeFrame?: TimeFrame;
   tags?: string[];
   notes?: string;
+  account?: string;
   // Screenshots
   screenshots?: Screenshot[];
+  // AI review
+  aiReview?: AiReview;
   // Tradovate integration (future)
   tradovateOrderId?: string;
   tradovateAccountId?: string;
@@ -61,18 +74,14 @@ export interface JournalEntry {
   id: string;
   userId: string;
   date: string; // YYYY-MM-DD
-  // Pre-session
   mood: number; // 1-5
   sleepHours?: number;
   preMarketNotes?: string;
-  // Linked trades
   tradeIds: string[];
-  // Post-session
   lessonsLearned?: string;
   mistakes?: string;
   wins?: string;
-  rating?: number; // 1-5 self-assessment
-  // Timestamps
+  rating?: number; // 1-5
   createdAt: string;
   updatedAt: string;
 }
@@ -110,4 +119,36 @@ export interface SubscriptionPlan {
   price: number;
   stripePriceId: string;
   features: string[];
+}
+
+export interface AiReview {
+  imageUrl: string;
+  analysis: string;
+  chatHistory: AiReviewMessage[];
+  createdAt: string;
+}
+
+export interface AiReviewMessage {
+  role: "user" | "assistant";
+  content: string;
+  timestamp: string;
+}
+
+export interface CoachConversation {
+  id: string;
+  userId: string;
+  title?: string;
+  messages: AiReviewMessage[];
+  tradeId?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface JournalSettings {
+  userId: string;
+  defaultInstrument: string;
+  defaultAccount?: string;
+  dailyLossLimit?: number;
+  maxTradesPerDay: number;
+  timezone: string;
 }

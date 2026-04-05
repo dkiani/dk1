@@ -21,7 +21,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="font-mono antialiased min-h-screen">
+      <body className="font-sans antialiased min-h-screen">
         <Providers>{children}</Providers>
       </body>
     </html>
