@@ -4,31 +4,56 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // Users collection — authenticated users can manage their own doc
+    // Helper: check if the requesting user is an admin
+    function isAdmin() {
+      return request.auth != null && (
+        request.auth.uid == 'Tt3oWfwFdnZi75Zvc5WlYNwcXjM2'
+        || (exists(/databases/$(database)/documents/admin/config)
+            && get(/databases/$(database)/documents/admin/config).data.adminUIDs.hasAny([request.auth.uid]))
+      );
+    }
+
+    // Users collection
     match /users/{userId} {
-      allow read, create, update: if request.auth != null && request.auth.uid == userId;
+      // Users can read their own doc; admins can read all
+      allow read: if request.auth != null && (request.auth.uid == userId || isAdmin());
+
+      // Users can create their own doc
+      allow create: if request.auth != null && request.auth.uid == userId;
+
+      // Users can update their own doc (but not products field)
+      // Admins can update any user doc (including products)
+      allow update: if request.auth != null && (
+        isAdmin() ||
+        (request.auth.uid == userId
+          && !request.resource.data.diff(resource.data).affectedKeys().hasAny(['products']))
+      );
 
       // Journal subcollection
       match /journal/{entryId} {
         allow read, write: if request.auth != null && request.auth.uid == userId;
+        allow read: if isAdmin();
       }
     }
 
     // Trades collection — users can CRUD their own trades
     match /trades/{tradeId} {
       allow read, update, delete: if request.auth != null && resource.data.userId == request.auth.uid;
+      allow read: if isAdmin();
       allow create: if request.auth != null && request.resource.data.userId == request.auth.uid;
     }
 
     // Journal entries collection — users can CRUD their own entries
     match /journalEntries/{entryId} {
       allow read, update, delete: if request.auth != null && resource.data.userId == request.auth.uid;
+      allow read: if isAdmin();
       allow create: if request.auth != null && request.resource.data.userId == request.auth.uid;
     }
 
-    // Admin collection — only readable via Console
+    // Admin collection — only readable by admins, writable only via Console
     match /admin/{docId} {
-      allow read, write: if false;
+      allow read: if isAdmin();
+      allow write: if false;
     }
   }
 }
