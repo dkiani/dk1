@@ -4,7 +4,14 @@ import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/lib/auth-context";
 import { createTrade, calculatePnl } from "@/lib/trades";
-import { TradeDirection, AssetClass, TimeFrame, AiReviewMessage } from "@/types";
+import {
+  TradeDirection,
+  AssetClass,
+  TimeFrame,
+  SetupGrade,
+  TradingSession,
+  AiReviewMessage,
+} from "@/types";
 import { X, Camera, Send } from "lucide-react";
 
 export default function NewTradePage() {
@@ -16,21 +23,26 @@ export default function NewTradePage() {
   const [saving, setSaving] = useState(false);
   const [activeTab, setActiveTab] = useState<"trade" | "review">("trade");
 
-  // Trade form state
   const [form, setForm] = useState({
     symbol: "",
     assetClass: "futures" as AssetClass,
     direction: "long" as TradeDirection,
     entryPrice: "",
     exitPrice: "",
+    stopLoss: "",
+    takeProfit: "",
     quantity: "",
     entryTime: new Date().toISOString().slice(0, 16),
     exitTime: "",
     strategy: "",
+    setupType: "",
+    setupGrade: "" as SetupGrade | "",
+    session: "" as TradingSession | "",
     timeFrame: "5m" as TimeFrame,
     tags: "",
     notes: "",
     fees: "",
+    account: "",
   });
 
   const [screenshots, setScreenshots] = useState<File[]>([]);
@@ -50,7 +62,9 @@ export default function NewTradePage() {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [chatHistory, reviewAnalysis]);
 
-  function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) {
+  function handleChange(
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+  ) {
     setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
   }
 
@@ -95,7 +109,6 @@ export default function NewTradePage() {
     reader.onload = (e) => {
       const dataUrl = e.target?.result as string;
       setReviewImage(dataUrl);
-      // Extract base64 data (remove the data:image/...;base64, prefix)
       const base64 = dataUrl.split(",")[1];
       setReviewImageBase64(base64);
     };
@@ -141,13 +154,12 @@ export default function NewTradePage() {
                 setReviewAnalysis(fullText);
               }
             } catch {
-              // skip malformed chunks
+              // skip
             }
           }
         }
       }
 
-      // Save to chat history
       setChatHistory([
         { role: "user", content: "[Chart screenshot uploaded for analysis]", timestamp: new Date().toISOString() },
         { role: "assistant", content: fullText, timestamp: new Date().toISOString() },
@@ -173,12 +185,12 @@ export default function NewTradePage() {
     setChatHistory(newHistory);
 
     try {
-      // Build simplified chat history for API (first message includes the image context)
       const apiHistory = newHistory.map((msg) => ({
         role: msg.role,
-        content: msg.content === "[Chart screenshot uploaded for analysis]"
-          ? "I uploaded a chart screenshot for analysis."
-          : msg.content,
+        content:
+          msg.content === "[Chart screenshot uploaded for analysis]"
+            ? "I uploaded a chart screenshot for analysis."
+            : msg.content,
       }));
 
       const res = await fetch("/api/journal/review", {
@@ -219,7 +231,7 @@ export default function NewTradePage() {
                 ]);
               }
             } catch {
-              // skip malformed chunks
+              // skip
             }
           }
         }
@@ -251,13 +263,14 @@ export default function NewTradePage() {
     const pnl = exit ? calculatePnl(entry, exit, qty, form.direction) - fees : undefined;
     const pnlPercent = pnl && entry ? (pnl / (entry * qty)) * 100 : undefined;
 
+    const result: "win" | "loss" | "breakeven" | undefined = pnl !== undefined ? (pnl > 0 ? "win" : pnl < 0 ? "loss" : "breakeven") : undefined;
+
     const screenshotData = previews.map((url) => ({
       id: crypto.randomUUID(),
       url,
       uploadedAt: new Date().toISOString(),
     }));
 
-    // Include AI review data if available
     const aiReview = reviewAnalysis
       ? {
           imageUrl: reviewImage || "",
@@ -275,16 +288,23 @@ export default function NewTradePage() {
       status: exit ? "closed" : "open",
       entryPrice: entry,
       exitPrice: exit,
+      stopLoss: form.stopLoss ? parseFloat(form.stopLoss) : undefined,
+      takeProfit: form.takeProfit ? parseFloat(form.takeProfit) : undefined,
       quantity: qty,
       entryTime: new Date(form.entryTime).toISOString(),
       exitTime: form.exitTime ? new Date(form.exitTime).toISOString() : undefined,
       pnl,
       pnlPercent,
+      result,
       fees,
       strategy: form.strategy || undefined,
+      setupType: form.setupType || undefined,
+      setupGrade: form.setupGrade ? (form.setupGrade as SetupGrade) : undefined,
+      session: form.session ? (form.session as TradingSession) : undefined,
       timeFrame: form.timeFrame,
       tags: form.tags ? form.tags.split(",").map((t) => t.trim()) : [],
       notes: form.notes || undefined,
+      account: form.account || undefined,
       screenshots: screenshotData.length > 0 ? screenshotData : undefined,
       aiReview,
     });
@@ -292,22 +312,25 @@ export default function NewTradePage() {
     router.push("/journal/trades");
   }
 
-  const inputClass = "w-full px-3 py-[0.7rem] bg-bg-input border border-border text-[0.75rem] font-light text-text-primary placeholder:text-text-muted focus:border-border-hover outline-none transition-colors duration-300";
-  const labelClass = "block text-[0.6rem] font-light uppercase tracking-[0.06em] text-text-muted mb-1.5";
+  const inputClass =
+    "w-full px-3 py-[0.65rem] bg-bg-input border border-border text-[0.85rem] font-mono text-text-primary placeholder:text-text-tertiary focus:border-accent-teal focus:shadow-[0_0_0_2px_var(--accent-teal-dim)] outline-none transition-all duration-150 rounded-[var(--radius-sm)]";
+  const labelClass = "text-label block mb-1.5";
+  const selectClass = `${inputClass} appearance-none`;
 
   return (
     <div className="animate-fade-in" onPaste={handlePaste}>
+      {/* Header with tabs */}
       <div className="flex items-center justify-between mb-8">
-        <h1 className="text-[1.1rem] font-normal tracking-[-0.02em]">Log Trade</h1>
-        <div className="flex items-center border border-border overflow-hidden">
+        <h1 className="text-h1">Log Trade</h1>
+        <div className="flex items-center bg-bg-elevated rounded-[var(--radius-sm)] p-1">
           {(["trade", "review"] as const).map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
-              className={`px-4 py-2 text-[0.6rem] uppercase tracking-[0.06em] cursor-pointer transition-colors duration-300 border-0 bg-transparent font-light ${
+              className={`px-4 py-2 text-[0.75rem] font-mono uppercase tracking-[0.08em] cursor-pointer transition-all duration-150 border-0 rounded-[var(--radius-sm)] ${
                 activeTab === tab
-                  ? "bg-btn-bg text-btn-fg font-normal"
-                  : "text-text-muted hover:text-text-primary"
+                  ? "bg-accent-teal text-text-inverse font-medium"
+                  : "bg-transparent text-text-tertiary hover:text-text-secondary"
               }`}
             >
               {tab === "trade" ? "Trade Details" : "AI Review"}
@@ -317,214 +340,336 @@ export default function NewTradePage() {
       </div>
 
       {activeTab === "trade" ? (
-        <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Symbol + Asset Class */}
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className={labelClass}>Symbol</label>
-              <input name="symbol" value={form.symbol} onChange={handleChange} placeholder="ES, NQ, SPY..." required className={inputClass} />
-            </div>
-            <div>
-              <label className={labelClass}>Asset Class</label>
-              <select name="assetClass" value={form.assetClass} onChange={handleChange} className={inputClass}>
-                <option value="futures">Futures</option>
-                <option value="options">Options</option>
-                <option value="stocks">Stocks</option>
-                <option value="forex">Forex</option>
-                <option value="crypto">Crypto</option>
-              </select>
-            </div>
-          </div>
-
-          {/* Direction + Time Frame */}
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className={labelClass}>Direction</label>
-              <div className="flex gap-2">
-                {(["long", "short"] as const).map((dir) => (
-                  <button
-                    key={dir}
-                    type="button"
-                    onClick={() => setForm((f) => ({ ...f, direction: dir }))}
-                    className={`flex-1 py-[0.7rem] text-[0.7rem] uppercase tracking-[0.06em] font-light cursor-pointer transition-colors duration-300 border ${
-                      form.direction === dir
-                        ? dir === "long"
-                          ? "bg-green text-white border-green"
-                          : "bg-red text-white border-red"
-                        : "bg-transparent border-border text-text-muted hover:text-text-primary"
-                    }`}
-                  >
-                    {dir}
-                  </button>
-                ))}
+        <div className="max-w-[700px] mx-auto">
+          <form onSubmit={handleSubmit} className="space-y-5">
+            {/* Row 1: Date/Time + Instrument */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className={labelClass}>Entry Time</label>
+                <input
+                  name="entryTime"
+                  type="datetime-local"
+                  value={form.entryTime}
+                  onChange={handleChange}
+                  required
+                  className={inputClass}
+                />
+              </div>
+              <div>
+                <label className={labelClass}>Symbol</label>
+                <input
+                  name="symbol"
+                  value={form.symbol}
+                  onChange={handleChange}
+                  placeholder="NQ, ES, SPY..."
+                  required
+                  className={inputClass}
+                />
               </div>
             </div>
-            <div>
-              <label className={labelClass}>Time Frame</label>
-              <select name="timeFrame" value={form.timeFrame} onChange={handleChange} className={inputClass}>
-                {(["1m", "5m", "15m", "1h", "4h", "1d", "1w"] as TimeFrame[]).map((tf) => (
-                  <option key={tf} value={tf}>{tf}</option>
-                ))}
-              </select>
-            </div>
-          </div>
 
-          {/* Entry / Exit prices */}
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className={labelClass}>Entry Price</label>
-              <input name="entryPrice" type="number" step="any" value={form.entryPrice} onChange={handleChange} required className={inputClass} />
-            </div>
-            <div>
-              <label className={labelClass}>Exit Price</label>
-              <input name="exitPrice" type="number" step="any" value={form.exitPrice} onChange={handleChange} placeholder="Leave blank if open" className={inputClass} />
-            </div>
-          </div>
-
-          {/* Quantity + Fees */}
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className={labelClass}>Quantity / Contracts</label>
-              <input name="quantity" type="number" value={form.quantity} onChange={handleChange} required className={inputClass} />
-            </div>
-            <div>
-              <label className={labelClass}>Fees</label>
-              <input name="fees" type="number" step="any" value={form.fees} onChange={handleChange} placeholder="0.00" className={inputClass} />
-            </div>
-          </div>
-
-          {/* Entry / Exit times */}
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className={labelClass}>Entry Time</label>
-              <input name="entryTime" type="datetime-local" value={form.entryTime} onChange={handleChange} required className={inputClass} />
-            </div>
-            <div>
-              <label className={labelClass}>Exit Time</label>
-              <input name="exitTime" type="datetime-local" value={form.exitTime} onChange={handleChange} className={inputClass} />
-            </div>
-          </div>
-
-          {/* Strategy + Tags */}
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className={labelClass}>Strategy</label>
-              <input name="strategy" value={form.strategy} onChange={handleChange} placeholder="Breakout, reversal, trend..." className={inputClass} />
-            </div>
-            <div>
-              <label className={labelClass}>Tags</label>
-              <input name="tags" value={form.tags} onChange={handleChange} placeholder="Comma separated..." className={inputClass} />
-            </div>
-          </div>
-
-          {/* Screenshot Upload */}
-          <div>
-            <label className={labelClass}>Chart Screenshots</label>
-            <p className="text-[0.65rem] text-text-muted font-light mb-3">
-              Drag & drop, click to upload, or paste from clipboard (Ctrl+V)
-            </p>
-            <div
-              onClick={() => fileInputRef.current?.click()}
-              onDragOver={(e) => { e.preventDefault(); e.stopPropagation(); }}
-              onDrop={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                handleFileSelect(e.dataTransfer.files);
-              }}
-              className="border border-dashed border-border p-8 text-center cursor-pointer hover:border-border-hover transition-colors duration-300"
-            >
-              <Camera className="w-5 h-5 text-text-muted mx-auto mb-2" />
-              <p className="text-[0.75rem] text-text-muted font-light">
-                Click or drop chart screenshots here
-              </p>
-            </div>
-            <input ref={fileInputRef} type="file" accept="image/*" multiple onChange={(e) => handleFileSelect(e.target.files)} className="hidden" />
-
-            {previews.length > 0 && (
-              <div className="grid grid-cols-3 gap-3 mt-4">
-                {previews.map((src, i) => (
-                  <div key={i} className="relative group">
-                    <img src={src} alt={`Screenshot ${i + 1}`} className="w-full h-32 object-cover border border-border" />
+            {/* Row 2: Direction + Session */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className={labelClass}>Direction</label>
+                <div className="flex gap-2">
+                  {(["long", "short"] as const).map((dir) => (
                     <button
+                      key={dir}
                       type="button"
-                      onClick={() => removeScreenshot(i)}
-                      className="absolute top-1 right-1 p-1 bg-black/60 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-150 cursor-pointer border-0"
+                      onClick={() => setForm((f) => ({ ...f, direction: dir }))}
+                      className={`flex-1 py-[0.65rem] text-[0.8rem] font-mono uppercase tracking-[0.06em] cursor-pointer transition-all duration-150 border rounded-[var(--radius-sm)] ${
+                        form.direction === dir
+                          ? dir === "long"
+                            ? "bg-green text-white border-green"
+                            : "bg-red text-white border-red"
+                          : "bg-transparent border-border text-text-tertiary hover:text-text-secondary hover:border-border-hover"
+                      }`}
                     >
-                      <X className="w-3 h-3 text-white" />
+                      {dir === "long" ? "▲ " : "▼ "}
+                      {dir}
                     </button>
-                  </div>
-                ))}
+                  ))}
+                </div>
+              </div>
+              <div>
+                <label className={labelClass}>Session</label>
+                <select name="session" value={form.session} onChange={handleChange} className={selectClass}>
+                  <option value="">Select session...</option>
+                  <option value="London">London</option>
+                  <option value="NY AM">NY AM</option>
+                  <option value="NY PM">NY PM</option>
+                  <option value="Asia">Asia</option>
+                </select>
+              </div>
+            </div>
+
+            {/* Row 3: Entry + Exit Price */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className={labelClass}>Entry Price</label>
+                <input
+                  name="entryPrice"
+                  type="number"
+                  step="any"
+                  value={form.entryPrice}
+                  onChange={handleChange}
+                  required
+                  className={inputClass}
+                />
+              </div>
+              <div>
+                <label className={labelClass}>Exit Price</label>
+                <input
+                  name="exitPrice"
+                  type="number"
+                  step="any"
+                  value={form.exitPrice}
+                  onChange={handleChange}
+                  placeholder="Leave blank if open"
+                  className={inputClass}
+                />
+              </div>
+            </div>
+
+            {/* Row 4: Stop Loss + Take Profit */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className={labelClass}>Stop Loss</label>
+                <input
+                  name="stopLoss"
+                  type="number"
+                  step="any"
+                  value={form.stopLoss}
+                  onChange={handleChange}
+                  className={inputClass}
+                />
+              </div>
+              <div>
+                <label className={labelClass}>Take Profit</label>
+                <input
+                  name="takeProfit"
+                  type="number"
+                  step="any"
+                  value={form.takeProfit}
+                  onChange={handleChange}
+                  className={inputClass}
+                />
+              </div>
+            </div>
+
+            {/* Row 5: Quantity + Account */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className={labelClass}>Quantity / Contracts</label>
+                <input
+                  name="quantity"
+                  type="number"
+                  value={form.quantity}
+                  onChange={handleChange}
+                  required
+                  className={inputClass}
+                />
+              </div>
+              <div>
+                <label className={labelClass}>Account</label>
+                <input
+                  name="account"
+                  value={form.account}
+                  onChange={handleChange}
+                  placeholder="e.g. Prop Firm, Live..."
+                  className={inputClass}
+                />
+              </div>
+            </div>
+
+            {/* Row 6: Setup Type + Grade */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className={labelClass}>Setup Type</label>
+                <input
+                  name="setupType"
+                  value={form.setupType}
+                  onChange={handleChange}
+                  placeholder="BOS, CHoCH, FVG, Silver Bullet..."
+                  className={inputClass}
+                />
+              </div>
+              <div>
+                <label className={labelClass}>Setup Grade</label>
+                <select name="setupGrade" value={form.setupGrade} onChange={handleChange} className={selectClass}>
+                  <option value="">Select grade...</option>
+                  <option value="A+">A+</option>
+                  <option value="A">A</option>
+                  <option value="B">B</option>
+                  <option value="C">C</option>
+                  <option value="D">D</option>
+                </select>
+              </div>
+            </div>
+
+            {/* Row 7: Timeframe + Tags */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className={labelClass}>Timeframe</label>
+                <select name="timeFrame" value={form.timeFrame} onChange={handleChange} className={selectClass}>
+                  {(["1m", "5m", "15m", "1h", "4h", "1d", "1w"] as TimeFrame[]).map((tf) => (
+                    <option key={tf} value={tf}>
+                      {tf}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className={labelClass}>Tags</label>
+                <input
+                  name="tags"
+                  value={form.tags}
+                  onChange={handleChange}
+                  placeholder="Comma separated..."
+                  className={inputClass}
+                />
+              </div>
+            </div>
+
+            {/* Chart Screenshot */}
+            <div>
+              <label className={labelClass}>Chart Screenshot</label>
+              <div
+                onClick={() => fileInputRef.current?.click()}
+                onDragOver={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                }}
+                onDrop={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  handleFileSelect(e.dataTransfer.files);
+                }}
+                className="border border-dashed border-border-hover rounded-[var(--radius-md)] p-8 text-center cursor-pointer hover:border-accent-teal hover:bg-accent-teal-glow transition-all duration-150"
+              >
+                <Camera className="w-6 h-6 text-text-tertiary mx-auto mb-2" />
+                <p className="text-body text-text-secondary">
+                  Drop chart here, click to upload, or paste (Ctrl+V)
+                </p>
+              </div>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                multiple
+                onChange={(e) => handleFileSelect(e.target.files)}
+                className="hidden"
+              />
+
+              {previews.length > 0 && (
+                <div className="grid grid-cols-3 gap-3 mt-4">
+                  {previews.map((src, i) => (
+                    <div key={i} className="relative group">
+                      <img
+                        src={src}
+                        alt={`Screenshot ${i + 1}`}
+                        className="w-full h-32 object-cover border border-border rounded-[var(--radius-sm)]"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => removeScreenshot(i)}
+                        className="absolute top-1 right-1 p-1 bg-black/60 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-150 cursor-pointer border-0"
+                      >
+                        <X className="w-3 h-3 text-white" />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Notes */}
+            <div>
+              <label className={labelClass}>Notes</label>
+              <textarea
+                name="notes"
+                value={form.notes}
+                onChange={handleChange}
+                rows={4}
+                placeholder="Why did you take this trade? What was your setup?"
+                className={`${inputClass} resize-none`}
+              />
+            </div>
+
+            {/* P&L Preview */}
+            {form.entryPrice && form.exitPrice && form.quantity && (
+              <div className="journal-card !p-5">
+                <p className="text-label mb-1">Estimated P&L</p>
+                <p
+                  className={`text-stat-value ${
+                    calculatePnl(
+                      parseFloat(form.entryPrice),
+                      parseFloat(form.exitPrice),
+                      parseInt(form.quantity),
+                      form.direction
+                    ) -
+                      (form.fees ? parseFloat(form.fees) : 0) >=
+                    0
+                      ? "text-green"
+                      : "text-red"
+                  }`}
+                >
+                  $
+                  {(
+                    calculatePnl(
+                      parseFloat(form.entryPrice),
+                      parseFloat(form.exitPrice),
+                      parseInt(form.quantity),
+                      form.direction
+                    ) - (form.fees ? parseFloat(form.fees) : 0)
+                  ).toFixed(2)}
+                </p>
               </div>
             )}
-          </div>
 
-          {/* Notes */}
-          <div>
-            <label className={labelClass}>Notes</label>
-            <textarea
-              name="notes"
-              value={form.notes}
-              onChange={handleChange}
-              rows={4}
-              placeholder="Why did you take this trade? What was your setup?"
-              className={`${inputClass} resize-none`}
-            />
-          </div>
+            {/* AI Review notice */}
+            {reviewAnalysis && (
+              <div className="journal-card !p-5 !border-accent-teal/30">
+                <p className="text-label text-accent-teal mb-1">AI Review Attached</p>
+                <p className="text-body text-text-secondary">
+                  Chart analysis and{" "}
+                  {chatHistory.length > 2
+                    ? `${Math.floor(chatHistory.length / 2)} follow-up messages`
+                    : "feedback"}{" "}
+                  will be saved with this trade.
+                </p>
+              </div>
+            )}
 
-          {/* P&L Preview */}
-          {form.entryPrice && form.exitPrice && form.quantity && (
-            <div className="bg-bg-surface border border-border p-6">
-              <span className="text-[0.6rem] uppercase tracking-[0.06em] text-text-muted font-light">
-                Estimated P&L
-              </span>
-              <p className={`text-[1.5rem] font-medium mt-1 leading-tight ${
-                calculatePnl(parseFloat(form.entryPrice), parseFloat(form.exitPrice), parseInt(form.quantity), form.direction) - (form.fees ? parseFloat(form.fees) : 0) >= 0 ? "text-green" : "text-red"
-              }`}>
-                ${(calculatePnl(parseFloat(form.entryPrice), parseFloat(form.exitPrice), parseInt(form.quantity), form.direction) - (form.fees ? parseFloat(form.fees) : 0)).toFixed(2)}
-              </p>
+            {/* Submit */}
+            <div className="flex gap-3 pt-2">
+              <button
+                type="submit"
+                disabled={saving}
+                className="px-6 py-3 bg-accent text-white text-[0.8rem] font-sans font-medium uppercase tracking-[0.05em] rounded-[var(--radius-sm)] hover:bg-accent-hover hover:shadow-[var(--shadow-glow-orange)] transition-all duration-150 cursor-pointer disabled:opacity-40 border-0"
+              >
+                {saving ? "Saving..." : "Save Trade"}
+              </button>
+              <button
+                type="button"
+                onClick={() => router.back()}
+                className="px-6 py-3 bg-transparent border border-border text-text-secondary text-[0.8rem] font-sans rounded-[var(--radius-sm)] hover:text-text-primary hover:border-border-hover transition-all duration-150 cursor-pointer"
+              >
+                Cancel
+              </button>
             </div>
-          )}
-
-          {/* AI Review Summary (if done) */}
-          {reviewAnalysis && (
-            <div className="bg-bg-surface border border-border p-6">
-              <span className="text-[0.6rem] uppercase tracking-[0.06em] text-accent font-light">
-                AI Review Attached
-              </span>
-              <p className="text-[0.75rem] text-text-secondary font-light mt-1">
-                Chart analysis and {chatHistory.length > 2 ? `${Math.floor(chatHistory.length / 2)} follow-up messages` : "feedback"} will be saved with this trade.
-              </p>
-            </div>
-          )}
-
-          {/* Submit */}
-          <div className="flex gap-3 pt-2">
-            <button
-              type="submit"
-              disabled={saving}
-              className="px-5 py-[0.7rem] bg-btn-bg text-btn-fg text-[0.7rem] tracking-[0.02em] font-normal hover:opacity-85 transition-opacity duration-300 cursor-pointer disabled:opacity-40 border-0"
-            >
-              {saving ? "Saving..." : "Save Trade"}
-            </button>
-            <button
-              type="button"
-              onClick={() => router.back()}
-              className="px-5 py-[0.7rem] bg-transparent border border-border text-text-muted text-[0.7rem] tracking-[0.02em] font-light hover:text-text-primary hover:border-border-hover transition-colors duration-300 cursor-pointer"
-            >
-              Cancel
-            </button>
-          </div>
-        </form>
+          </form>
+        </div>
       ) : (
         /* AI Review Tab */
         <div className="space-y-6">
-          {/* Chart Upload + Analysis Layout */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-6">
             {/* Left: Chart Image */}
             <div>
               <label className={labelClass}>Chart Screenshot</label>
-              <p className="text-[0.65rem] text-text-muted font-light mb-3">
-                Upload or paste a screenshot of your chart with execution marks visible
+              <p className="text-small mb-3">
+                Upload or paste a screenshot with execution marks visible
               </p>
 
               {reviewImage ? (
@@ -532,7 +677,7 @@ export default function NewTradePage() {
                   <img
                     src={reviewImage}
                     alt="Chart for review"
-                    className="w-full border border-border object-contain max-h-[500px]"
+                    className="w-full border border-border rounded-[var(--radius-md)] object-contain max-h-[500px]"
                   />
                   <button
                     type="button"
@@ -544,13 +689,16 @@ export default function NewTradePage() {
                     }}
                     className="absolute top-2 right-2 p-1.5 bg-black/60 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-150 cursor-pointer border-0"
                   >
-                    <X className="w-3.5 h-3.5 text-white" />
+                    <X className="w-4 h-4 text-white" />
                   </button>
                 </div>
               ) : (
                 <div
                   onClick={() => reviewFileInputRef.current?.click()}
-                  onDragOver={(e) => { e.preventDefault(); e.stopPropagation(); }}
+                  onDragOver={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                  }}
                   onDrop={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
@@ -559,15 +707,11 @@ export default function NewTradePage() {
                       handleReviewImageSelect(file);
                     }
                   }}
-                  className="border border-dashed border-border p-12 text-center cursor-pointer hover:border-border-hover transition-colors duration-300"
+                  className="border border-dashed border-border-hover rounded-[var(--radius-md)] p-16 text-center cursor-pointer hover:border-accent-teal hover:bg-accent-teal-glow transition-all duration-150"
                 >
-                  <Camera className="w-6 h-6 text-text-muted mx-auto mb-3" />
-                  <p className="text-[0.75rem] text-text-muted font-light mb-1">
-                    Drop chart screenshot here
-                  </p>
-                  <p className="text-[0.65rem] text-text-muted font-light">
-                    or click to browse — paste with Ctrl+V
-                  </p>
+                  <Camera className="w-8 h-8 text-text-tertiary mx-auto mb-3" />
+                  <p className="text-body text-text-secondary mb-1">Drop chart screenshot here</p>
+                  <p className="text-small">or click to browse — paste with Ctrl+V</p>
                 </div>
               )}
               <input
@@ -584,65 +728,65 @@ export default function NewTradePage() {
               {reviewImage && !analyzing && !reviewAnalysis && (
                 <button
                   onClick={handleAnalyzeChart}
-                  className="mt-4 w-full px-5 py-[0.7rem] bg-btn-bg text-btn-fg text-[0.7rem] tracking-[0.02em] font-normal hover:opacity-85 transition-opacity duration-300 cursor-pointer border-0"
+                  className="mt-4 w-full px-5 py-3 bg-accent-teal text-text-inverse text-[0.8rem] font-sans font-medium uppercase tracking-[0.05em] rounded-[var(--radius-sm)] hover:shadow-[var(--shadow-glow-teal)] transition-all duration-150 cursor-pointer border-0"
                 >
                   Analyze Execution
                 </button>
               )}
             </div>
 
-            {/* Right: Analysis / Streaming Feedback */}
+            {/* Right: Analysis */}
             <div>
               <label className={labelClass}>AI Feedback</label>
-              <div className="border border-border bg-bg-surface min-h-[300px] max-h-[500px] overflow-y-auto p-6">
+              <div className="journal-card min-h-[300px] max-h-[500px] overflow-y-auto">
                 {analyzing && !reviewAnalysis && (
-                  <p className="text-[0.75rem] text-accent font-light animate-pulse">
-                    Analyzing execution...
+                  <p className="text-body text-accent-teal animate-pulse-subtle">
+                    Analyzing your execution...
                   </p>
                 )}
 
                 {reviewAnalysis ? (
-                  <div className="text-[0.75rem] text-text-secondary font-light leading-relaxed whitespace-pre-wrap">
+                  <div className="text-body text-text-secondary leading-relaxed whitespace-pre-wrap">
                     {reviewAnalysis}
                     {analyzing && (
-                      <span className="inline-block w-1.5 h-3 bg-accent ml-0.5 animate-pulse" />
+                      <span className="inline-block w-1.5 h-4 bg-accent-teal ml-0.5 animate-pulse" />
                     )}
                   </div>
                 ) : !analyzing ? (
-                  <p className="text-[0.75rem] text-text-muted font-light">
-                    Upload a chart screenshot and click &ldquo;Analyze Execution&rdquo; to get ICT/Smart Money Concepts feedback on your trade.
+                  <p className="text-body text-text-tertiary">
+                    Upload a chart screenshot and click &ldquo;Analyze Execution&rdquo; to get ICT/Smart Money Concepts feedback.
                   </p>
                 ) : null}
               </div>
             </div>
           </div>
 
-          {/* Follow-up Chat Thread */}
+          {/* Follow-up Chat */}
           {chatHistory.length > 0 && (
             <div>
               <label className={labelClass}>Follow-up Questions</label>
-              <div className="border border-border bg-bg-surface max-h-[400px] overflow-y-auto">
+              <div className="journal-card max-h-[400px] overflow-y-auto !p-0">
                 {chatHistory.slice(2).map((msg, i) => (
                   <div
                     key={i}
-                    className={`px-6 py-4 border-b border-border last:border-b-0 ${
-                      msg.role === "user" ? "bg-bg-surface-hover" : ""
+                    className={`px-5 py-4 border-b border-border last:border-b-0 ${
+                      msg.role === "user" ? "bg-bg-elevated" : ""
                     }`}
                   >
-                    <span className="text-[0.55rem] uppercase tracking-[0.06em] text-text-muted font-light">
+                    <span className="text-[0.6rem] font-mono uppercase tracking-[0.1em] text-text-tertiary">
                       {msg.role === "user" ? "You" : "AI Coach"}
                     </span>
-                    <p className="text-[0.75rem] text-text-secondary font-light mt-1 leading-relaxed whitespace-pre-wrap">
+                    <p className="text-body text-text-secondary mt-1 whitespace-pre-wrap">
                       {msg.content}
                     </p>
                   </div>
                 ))}
                 {sendingFollowUp && (
-                  <div className="px-6 py-4">
-                    <span className="text-[0.55rem] uppercase tracking-[0.06em] text-text-muted font-light">
+                  <div className="px-5 py-4">
+                    <span className="text-[0.6rem] font-mono uppercase tracking-[0.1em] text-text-tertiary">
                       AI Coach
                     </span>
-                    <p className="text-[0.75rem] text-accent font-light mt-1 animate-pulse">
+                    <p className="text-body text-accent-teal mt-1 animate-pulse-subtle">
                       Thinking...
                     </p>
                   </div>
@@ -650,21 +794,21 @@ export default function NewTradePage() {
                 <div ref={chatEndRef} />
               </div>
 
-              <form onSubmit={handleFollowUp} className="flex gap-2 mt-2">
+              <form onSubmit={handleFollowUp} className="flex gap-2 mt-3">
                 <input
                   type="text"
                   value={followUpInput}
                   onChange={(e) => setFollowUpInput(e.target.value)}
-                  placeholder="Ask a follow-up question about this trade..."
+                  placeholder="Ask a follow-up about this trade..."
                   disabled={sendingFollowUp}
                   className={`${inputClass} flex-1`}
                 />
                 <button
                   type="submit"
                   disabled={sendingFollowUp || !followUpInput.trim()}
-                  className="px-4 py-[0.7rem] bg-btn-bg text-btn-fg text-[0.7rem] hover:opacity-85 transition-opacity duration-300 cursor-pointer disabled:opacity-40 border-0 flex items-center gap-2"
+                  className="px-4 py-[0.65rem] bg-accent-teal text-text-inverse rounded-[var(--radius-sm)] hover:shadow-[var(--shadow-glow-teal)] transition-all duration-150 cursor-pointer disabled:opacity-40 border-0 flex items-center"
                 >
-                  <Send className="w-3.5 h-3.5" />
+                  <Send className="w-4 h-4" />
                 </button>
               </form>
             </div>
@@ -672,13 +816,13 @@ export default function NewTradePage() {
 
           {/* Save with Review */}
           {reviewAnalysis && (
-            <div className="bg-bg-surface border border-border p-6">
-              <p className="text-[0.75rem] text-text-secondary font-light mb-4">
-                Switch to the &ldquo;Trade Details&rdquo; tab to fill in your trade data, then save. The AI review will be attached automatically.
+            <div className="journal-card !border-accent-teal/20">
+              <p className="text-body text-text-secondary mb-4">
+                Switch to &ldquo;Trade Details&rdquo; to fill in your trade data. The AI review will be attached automatically.
               </p>
               <button
                 onClick={() => setActiveTab("trade")}
-                className="px-5 py-[0.7rem] bg-btn-bg text-btn-fg text-[0.7rem] tracking-[0.02em] font-normal hover:opacity-85 transition-opacity duration-300 cursor-pointer border-0"
+                className="px-5 py-2.5 bg-accent text-white text-[0.8rem] font-sans font-medium uppercase tracking-[0.05em] rounded-[var(--radius-sm)] hover:bg-accent-hover transition-all duration-150 cursor-pointer border-0"
               >
                 Go to Trade Details
               </button>
