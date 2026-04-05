@@ -59,10 +59,13 @@ onAuthStateChanged(fbAuth, async (user) => {
         const progress = data.progress || {};
         const currProg = progress.curriculum || {};
 
-        // Grant or revoke access based on the product flag
-        if (products.curriculum) {
+        // Grant access based on product flag OR access code saved in progress
+        const hasAccess = products.curriculum || currProg.accessGranted;
+        if (hasAccess) {
           localStorage.setItem('curriculum_paid', 'true');
-        } else {
+        }
+        // Only revoke if user has no access AND no local access code
+        if (!hasAccess && localStorage.getItem('curriculum_paid') !== 'true') {
           localStorage.removeItem('curriculum_paid');
         }
 
@@ -70,12 +73,8 @@ onAuthStateChanged(fbAuth, async (user) => {
         const cloudLessons = currProg.completedLessons || [];
         if (typeof completedLessons !== 'undefined' && cloudLessons.length > 0) {
           const localArr = [...completedLessons];
-          if (cloudLessons.length >= localArr.length) {
-            completedLessons = new Set(cloudLessons);
-          } else {
-            // Local has more — merge both
-            cloudLessons.forEach(id => completedLessons.add(id));
-          }
+          // Merge both — take the union so no progress is lost
+          cloudLessons.forEach(id => completedLessons.add(id));
           // Save merged result locally
           localStorage.setItem('dk-curriculum-progress-v2', JSON.stringify([...completedLessons]));
 
@@ -87,18 +86,39 @@ onAuthStateChanged(fbAuth, async (user) => {
           }
         }
 
+        // Restore quiz state from cloud
+        if (currProg.quizState) {
+          const localQuiz = localStorage.getItem('dk-curriculum-quiz-v2');
+          const localQuizObj = localQuiz ? JSON.parse(localQuiz) : {};
+          // Merge: cloud wins for any module not in local
+          const merged = Object.assign({}, currProg.quizState, localQuizObj);
+          // But cloud wins for submitted quizzes (they represent real progress)
+          for (const modId in currProg.quizState) {
+            if (currProg.quizState[modId] && currProg.quizState[modId].submitted) {
+              merged[modId] = currProg.quizState[modId];
+            }
+          }
+          localStorage.setItem('dk-curriculum-quiz-v2', JSON.stringify(merged));
+          if (typeof quizState !== 'undefined') {
+            quizState = merged;
+          }
+        }
+
         // Restore position from cloud if no local position
         if (currProg.lastPosition && !localStorage.getItem('dk-curriculum-position-v2')) {
           currentView = currProg.lastPosition;
           localStorage.setItem('dk-curriculum-position-v2', JSON.stringify(currentView));
-          if (typeof renderSidebar === 'function') {
-            renderSidebar();
-            renderContent();
-          }
+        }
+
+        // Re-render with all restored state
+        if (typeof renderSidebar === 'function') {
+          renderSidebar();
+          renderContent();
+          updateProgress();
         }
       }
       // Log session location for tracking
-      if (products.curriculum) {
+      if (products.curriculum || (currProg && currProg.accessGranted)) {
         try {
           const ipResp = await fetch('https://ipapi.co/json/');
           const ipData = await ipResp.json();
@@ -1551,6 +1571,16 @@ onAuthStateChanged(fbAuth, async (user) => {
         localStorage.setItem('curriculum_paid', 'true');
         logSession(studentName, val);
         document.getElementById('accessGate').classList.add('hidden');
+        // Save access grant to Firestore so it persists across devices
+        if (window._fbUser && window._fbDb) {
+          try {
+            var fbDoc = (await import("https://www.gstatic.com/firebasejs/11.7.1/firebase-firestore.js")).doc;
+            var fbUpdate = (await import("https://www.gstatic.com/firebasejs/11.7.1/firebase-firestore.js")).updateDoc;
+            await fbUpdate(fbDoc(window._fbDb, 'users', window._fbUser.uid), {
+              'progress.curriculum.accessGranted': true
+            });
+          } catch (e) { /* silent — localStorage still works */ }
+        }
         if (typeof renderSidebar === 'function') {
           renderSidebar();
           renderContent();
@@ -4709,7 +4739,8 @@ function syncToFirestore() {
       const ref = doc(window._fbDb, 'users', window._fbUser.uid);
       await updateDoc(ref, {
         'progress.curriculum.completedLessons': [...completedLessons],
-        'progress.curriculum.lastPosition': currentView
+        'progress.curriculum.lastPosition': currentView,
+        'progress.curriculum.quizState': typeof quizState !== 'undefined' ? quizState : {}
       });
     } catch (e) {
       // Silent fail — localStorage is the fallback
@@ -5068,6 +5099,8 @@ try {
 
 function saveQuizState() {
   try { localStorage.setItem('dk-curriculum-quiz-v2', JSON.stringify(quizState)); } catch(e) {}
+  // Sync quiz state to Firestore
+  syncToFirestore();
 }
 
 function getQuizState(modId) {
