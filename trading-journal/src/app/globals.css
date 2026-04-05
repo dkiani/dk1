@@ -1,85 +1,62 @@
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=JetBrains+Mono:wght@300;400;500;600&display=swap');
 @import "tailwindcss";
 
 /* ============================================
-   KIANI JOURNAL — Premium Dark Fintech Theme
+   KIANI JOURNAL — Premium Dark Fintech
+   E8 Markets / TradeSyncer vibe
    ============================================ */
 
 :root,
 [data-theme="dark"] {
-  /* Backgrounds — layered depth system */
-  --bg-base: #060b14;
-  --bg-surface: #0c1220;
-  --bg-surface-hover: #111827;
-  --bg-elevated: #141c2e;
-  --bg-input: #0a1018;
+  --bg-base: #060d13;
+  --bg-sidebar: #0a1118;
+  --bg-surface: #0d1520;
+  --bg-surface-hover: #111c28;
+  --bg-elevated: #162232;
+  --bg-input: #0a1219;
+  --bg-card-gradient-start: #0e1825;
+  --bg-card-gradient-end: #0b1319;
 
-  /* Borders — subtle, structural */
-  --border-primary: rgba(255, 255, 255, 0.06);
-  --border-hover: rgba(255, 255, 255, 0.12);
-  --border-active: rgba(56, 224, 207, 0.3);
+  --border-primary: rgba(45, 212, 191, 0.1);
+  --border-hover: rgba(45, 212, 191, 0.2);
+  --border-active: rgba(45, 212, 191, 0.4);
+  --border-subtle: rgba(255, 255, 255, 0.04);
 
-  /* Text hierarchy */
-  --text-primary: #e8ecf1;
-  --text-secondary: #8a94a6;
-  --text-tertiary: #4a5568;
-  --text-inverse: #060b14;
+  --text-primary: #e2e8f0;
+  --text-secondary: #7c8da0;
+  --text-tertiary: #3e5168;
+  --text-inverse: #060d13;
 
-  /* Accent — Teal/Cyan */
-  --accent-teal: #38e0cf;
-  --accent-teal-dim: rgba(56, 224, 207, 0.15);
-  --accent-teal-glow: rgba(56, 224, 207, 0.08);
+  --accent-teal: #2dd4bf;
+  --accent-teal-bright: #5eead4;
+  --accent-teal-dim: rgba(45, 212, 191, 0.12);
+  --accent-teal-glow: rgba(45, 212, 191, 0.06);
 
-  /* KIANI brand accent */
   --accent-orange: #e85d3a;
   --accent-orange-hover: #f06a47;
-  --accent-orange-dim: rgba(232, 93, 58, 0.15);
+  --accent-orange-dim: rgba(232, 93, 58, 0.12);
 
-  /* Semantic colors */
   --color-win: #22c55e;
-  --color-win-dim: rgba(34, 197, 94, 0.12);
+  --color-win-dim: rgba(34, 197, 94, 0.1);
   --color-loss: #ef4444;
-  --color-loss-dim: rgba(239, 68, 68, 0.12);
+  --color-loss-dim: rgba(239, 68, 68, 0.1);
   --color-breakeven: #eab308;
-  --color-breakeven-dim: rgba(234, 179, 8, 0.12);
+  --color-breakeven-dim: rgba(234, 179, 8, 0.1);
 
-  /* Chart colors */
-  --chart-line: #38e0cf;
-  --chart-area: rgba(56, 224, 207, 0.08);
-  --chart-grid: rgba(255, 255, 255, 0.04);
+  --chart-line: #2dd4bf;
+  --chart-grid: rgba(255, 255, 255, 0.03);
 
-  /* Glassmorphism */
-  --glass-bg: rgba(12, 18, 32, 0.6);
-  --glass-border: rgba(255, 255, 255, 0.08);
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
 
-  /* Gradients */
-  --gradient-card: linear-gradient(135deg, rgba(56, 224, 207, 0.03) 0%, rgba(12, 18, 32, 0) 60%);
+  --shadow-card: 0 2px 12px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(45, 212, 191, 0.04);
+  --shadow-card-hover: 0 4px 20px rgba(0, 0, 0, 0.5), 0 0 20px rgba(45, 212, 191, 0.06);
+  --shadow-glow-teal: 0 0 24px rgba(45, 212, 191, 0.15);
+  --shadow-glow-orange: 0 0 20px rgba(232, 93, 58, 0.15);
 
-  /* Shadows */
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
-  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5);
-  --shadow-glow-teal: 0 0 20px rgba(56, 224, 207, 0.1);
-  --shadow-glow-orange: 0 0 20px rgba(232, 93, 58, 0.1);
-
-  /* Spacing */
-  --space-xs: 0.25rem;
-  --space-sm: 0.5rem;
-  --space-md: 1rem;
-  --space-lg: 1.5rem;
-  --space-xl: 2rem;
-
-  /* Border radius */
-  --radius-sm: 6px;
-  --radius-md: 10px;
-  --radius-lg: 14px;
-  --radius-xl: 20px;
-
-  /* Transitions */
-  --transition-fast: 150ms ease;
-  --transition-normal: 250ms ease;
-
-  /* Legacy aliases for existing Tailwind usage */
+  /* Legacy aliases for login page */
   --bg: var(--bg-base);
   --fg: var(--text-primary);
   --muted: var(--text-tertiary);
@@ -90,13 +67,8 @@
   --input-bg: var(--bg-input);
   --error: var(--color-loss);
   --success: var(--color-win);
-  --font: 'IBM Plex Mono', monospace;
+  --font: 'DM Sans', sans-serif;
   --bg-primary: var(--bg-base);
-  --bg-surface-val: #0c1220;
-  --bg-surface-hover-val: #111827;
-  --bg-input-val: #0a1018;
-  --text-primary-val: #e8ecf1;
-  --text-secondary-val: #8a94a6;
   --text-muted: var(--text-tertiary);
   --accent-hover: var(--accent-orange-hover);
   --btn-bg: var(--accent-orange);
@@ -106,10 +78,12 @@
   --red: var(--color-loss);
   --red-bg: var(--color-loss-dim);
   --yellow: var(--color-breakeven);
+  --border-hover-legacy: var(--border-hover);
 }
 
 @theme inline {
   --color-bg-primary: var(--bg-base);
+  --color-bg-sidebar: var(--bg-sidebar);
   --color-bg-surface: var(--bg-surface);
   --color-bg-surface-hover: var(--bg-surface-hover);
   --color-bg-elevated: var(--bg-elevated);
@@ -134,213 +108,86 @@
   --color-red: var(--color-loss);
   --color-red-bg: var(--color-loss-dim);
   --color-yellow: var(--color-breakeven);
-  --color-chart-line: var(--chart-line);
-  --color-chart-area: var(--chart-area);
-  --color-chart-grid: var(--chart-grid);
-  --font-sans: 'Inter', -apple-system, sans-serif;
-  --font-mono: 'IBM Plex Mono', monospace;
+  --font-sans: 'DM Sans', -apple-system, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
 }
 
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { background: var(--bg-base); }
 
 body {
   background: var(--bg-base);
   color: var(--text-primary);
-  font-family: 'Inter', -apple-system, sans-serif;
+  font-family: 'DM Sans', -apple-system, system-ui, sans-serif;
   font-weight: 400;
   font-size: 0.875rem;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
 }
 
 /* Scrollbar */
 * {
   scrollbar-width: thin;
-  scrollbar-color: rgba(255, 255, 255, 0.08) transparent;
+  scrollbar-color: rgba(45, 212, 191, 0.12) transparent;
 }
-::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar { width: 5px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.08); border-radius: 2px; }
-::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.15); }
+::-webkit-scrollbar-thumb { background: rgba(45, 212, 191, 0.15); border-radius: 4px; }
 
-/* Selection */
-::selection {
-  background: rgba(56, 224, 207, 0.15);
-}
+::selection { background: rgba(45, 212, 191, 0.2); }
 
-/* Focus ring */
 :focus-visible {
   outline: 1px solid var(--accent-teal);
   outline-offset: 2px;
 }
 
 /* ============================================
-   Typography utility classes
-   ============================================ */
-
-.text-display {
-  font-size: 2rem;
-  font-weight: 600;
-  font-family: 'Inter', -apple-system, sans-serif;
-  line-height: 1.2;
-}
-
-.text-stat-value {
-  font-size: 1.75rem;
-  font-weight: 600;
-  font-family: 'IBM Plex Mono', monospace;
-  line-height: 1.2;
-}
-
-.text-h1 {
-  font-size: 1.25rem;
-  font-weight: 600;
-  font-family: 'Inter', -apple-system, sans-serif;
-  line-height: 1.3;
-}
-
-.text-h2 {
-  font-size: 1rem;
-  font-weight: 600;
-  font-family: 'Inter', -apple-system, sans-serif;
-  line-height: 1.4;
-}
-
-.text-body {
-  font-size: 0.875rem;
-  font-weight: 400;
-  font-family: 'Inter', -apple-system, sans-serif;
-  line-height: 1.6;
-}
-
-.text-label {
-  font-size: 0.7rem;
-  font-weight: 400;
-  font-family: 'IBM Plex Mono', monospace;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--text-secondary);
-}
-
-.text-data {
-  font-size: 0.85rem;
-  font-weight: 400;
-  font-family: 'IBM Plex Mono', monospace;
-}
-
-.text-small {
-  font-size: 0.75rem;
-  font-weight: 400;
-  font-family: 'Inter', -apple-system, sans-serif;
-  color: var(--text-tertiary);
-}
-
-/* ============================================
-   Component patterns
-   ============================================ */
-
-.journal-card {
-  background: var(--bg-surface);
-  border: 1px solid var(--border-primary);
-  border-radius: var(--radius-lg);
-  padding: var(--space-lg);
-  position: relative;
-  overflow: hidden;
-  transition: border-color var(--transition-fast);
-}
-
-.journal-card:hover {
-  border-color: var(--border-hover);
-}
-
-.journal-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--accent-teal-dim), transparent);
-  opacity: 0;
-  transition: opacity var(--transition-normal);
-}
-
-.journal-card:hover::before {
-  opacity: 1;
-}
-
-/* ============================================
    Animations
    ============================================ */
-
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
 }
-
 @keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(8px); }
+  from { opacity: 0; transform: translateY(14px); }
   to { opacity: 1; transform: translateY(0); }
 }
-
-.animate-fade-in {
-  animation: fadeIn 0.15s ease forwards;
-}
-
-.animate-fade-in-up {
-  animation: fadeInUp 0.4s ease forwards;
-}
-
-/* Stagger children */
-.stagger-children > *:nth-child(1) { animation-delay: 0ms; }
-.stagger-children > *:nth-child(2) { animation-delay: 60ms; }
-.stagger-children > *:nth-child(3) { animation-delay: 120ms; }
-.stagger-children > *:nth-child(4) { animation-delay: 180ms; }
-.stagger-children > *:nth-child(5) { animation-delay: 240ms; }
-.stagger-children > *:nth-child(6) { animation-delay: 300ms; }
-
 @keyframes pulse-subtle {
   0%, 100% { opacity: 1; }
-  50% { opacity: 0.6; }
+  50% { opacity: 0.5; }
 }
-
-.animate-pulse-subtle {
-  animation: pulse-subtle 2s ease-in-out infinite;
-}
+.animate-fade-in { animation: fadeIn 0.25s ease forwards; }
+.animate-fade-in-up { animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; }
+.animate-pulse-subtle { animation: pulse-subtle 2s ease-in-out infinite; }
+.stagger > *:nth-child(1) { animation-delay: 0ms; }
+.stagger > *:nth-child(2) { animation-delay: 80ms; }
+.stagger > *:nth-child(3) { animation-delay: 160ms; }
+.stagger > *:nth-child(4) { animation-delay: 240ms; }
 
 /* ============================================
    Recharts overrides
    ============================================ */
-
 .recharts-cartesian-grid-horizontal line,
-.recharts-cartesian-grid-vertical line {
-  stroke: var(--chart-grid) !important;
-}
-
-.recharts-tooltip-wrapper {
-  outline: none !important;
-}
-
+.recharts-cartesian-grid-vertical line { stroke: var(--chart-grid) !important; }
+.recharts-tooltip-wrapper { outline: none !important; }
 .recharts-default-tooltip {
   background: var(--bg-elevated) !important;
   border: 1px solid var(--border-hover) !important;
-  border-radius: var(--radius-sm) !important;
-  padding: 8px 12px !important;
+  border-radius: var(--radius-md) !important;
+  padding: 10px 14px !important;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5) !important;
 }
-
 .recharts-tooltip-label {
   color: var(--text-secondary) !important;
-  font-family: 'IBM Plex Mono', monospace !important;
+  font-family: 'DM Sans', sans-serif !important;
   font-size: 0.7rem !important;
 }
-
 .recharts-tooltip-item {
   color: var(--accent-teal) !important;
-  font-family: 'IBM Plex Mono', monospace !important;
-  font-size: 0.8rem !important;
+  font-family: 'JetBrains Mono', monospace !important;
+  font-size: 0.85rem !important;
+  font-weight: 500 !important;
 }
