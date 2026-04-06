@@ -887,32 +887,32 @@
   .dash-tab-content.active { display: block; }
 
   /* ═══════════════════════════════════════════
-     JOURNAL
+     DIARY (Before the Bell entries)
      ═══════════════════════════════════════════ */
-  .journal-wrap {
+  .diary-wrap {
     max-width: 560px;
     margin: 0 auto;
   }
 
-  .journal-header {
+  .diary-header {
     text-align: center;
     margin-bottom: 2rem;
   }
 
-  .journal-header h2 {
+  .diary-header h2 {
     font-size: 1.1rem;
     font-weight: 300;
     letter-spacing: 0.04em;
     margin: 0 0 0.3rem;
   }
 
-  .journal-header p {
+  .diary-header p {
     color: var(--dim);
     font-size: 0.6rem;
     font-weight: 300;
   }
 
-  .journal-empty {
+  .diary-empty {
     text-align: center;
     color: var(--dim);
     font-size: 0.7rem;
@@ -921,18 +921,18 @@
     font-style: italic;
   }
 
-  .journal-entry {
+  .diary-entry {
     border: 1px solid var(--border);
     padding: 1.2rem 1.4rem;
     margin-bottom: 1rem;
     transition: border-color 0.3s;
   }
 
-  .journal-entry:hover {
+  .diary-entry:hover {
     border-color: var(--muted);
   }
 
-  .journal-entry-date {
+  .diary-entry-date {
     font-size: 0.55rem;
     color: var(--dim);
     text-transform: uppercase;
@@ -941,7 +941,7 @@
     margin-bottom: 0.8rem;
   }
 
-  .journal-entry-text {
+  .diary-entry-text {
     font-size: 0.75rem;
     color: var(--fg);
     font-weight: 300;
@@ -950,7 +950,7 @@
     margin-bottom: 0.8rem;
   }
 
-  .journal-entry-meta {
+  .diary-entry-meta {
     display: flex;
     flex-wrap: wrap;
     gap: 0.6rem;
@@ -959,14 +959,14 @@
     font-weight: 300;
   }
 
-  .journal-meta-tag {
+  .diary-meta-tag {
     background: var(--card-bg);
     border: 1px solid var(--border);
     padding: 0.2rem 0.5rem;
     letter-spacing: 0.03em;
   }
 
-  .journal-loading {
+  .diary-loading {
     text-align: center;
     color: var(--dim);
     font-size: 0.65rem;
@@ -1214,8 +1214,8 @@
     color: var(--center-fill);
   }
 
-  /* Journal */
-  .pmr-journal-hint {
+  /* Diary */
+  .pmr-diary-hint {
     color: var(--dim);
     font-size: 0.6rem;
     text-align: center;
@@ -1306,7 +1306,7 @@
   .pmr-warning.caution { color: #f59e0b; }
 
   /* Awareness insights */
-  .pmr-journal-quote {
+  .pmr-diary-quote {
     background: var(--card-bg);
     border: 1px solid var(--border);
     padding: 0.8rem 1rem;
@@ -1319,7 +1319,7 @@
     font-weight: 300;
   }
 
-  .pmr-journal-quote .quote-mark {
+  .pmr-diary-quote .quote-mark {
     color: var(--center-fill);
     font-size: 0.9rem;
     font-style: normal;
@@ -1701,7 +1701,7 @@
     <div class="dash-tabs">
       <button class="dash-tab active" id="tabDash" onclick="switchDashTab('main')">Dashboard</button>
       <button class="dash-tab" id="tabRoutine" onclick="switchDashTab('routine')">Before the Bell</button>
-      <button class="dash-tab" id="tabJournal" onclick="switchDashTab('journal')">Journal</button>
+      <button class="dash-tab" id="tabDiary" onclick="switchDashTab('diary')">Diary</button>
     </div>
 
     <!-- ═══ MAIN TAB ═══ -->
@@ -1749,15 +1749,15 @@
       </div>
     </div>
 
-    <!-- ═══ JOURNAL TAB ═══ -->
-    <div class="dash-tab-content" id="dashJournalContent">
-      <div class="journal-wrap">
-        <div class="journal-header">
-          <h2>Your Journal</h2>
+    <!-- ═══ DIARY TAB ═══ -->
+    <div class="dash-tab-content" id="dashDiaryContent">
+      <div class="diary-wrap">
+        <div class="diary-header">
+          <h2>Your Diary</h2>
           <p>Every pre-market check-in you complete is logged here.</p>
         </div>
-        <div id="journalEntries">
-          <div class="journal-loading">Loading entries...</div>
+        <div id="diaryEntries">
+          <div class="diary-loading">Loading entries...</div>
         </div>
       </div>
     </div>
@@ -2348,37 +2348,37 @@ window.revokeAccess = async function(uid) {
   }
 };
 
-// ─── Save PMR Journal Entry to Firestore ───
-window.saveJournalEntry = async function(data) {
+// ─── Save PMR Diary Entry to Firestore ───
+window.saveDiaryEntry = async function(data) {
   const user = auth.currentUser;
   if (!user) return;
   try {
-    const journalRef = collection(db, 'users', user.uid, 'journal');
-    await addDoc(journalRef, {
+    const diaryRef = collection(db, 'users', user.uid, 'journal');
+    await addDoc(diaryRef, {
       mood: data.mood || '',
       sleep: data.sleep || '',
       outsideStress: data.outsideStress || '',
-      journal: data.journal || '',
+      diary: data.diary || '',
       drawdownLeft: data.drawdownLeft || '',
       accountFeeling: data.accountFeeling || '',
       createdAt: serverTimestamp()
     });
   } catch (e) {
-    console.error('Failed to save journal entry:', e);
+    console.error('Failed to save diary entry:', e);
   }
 };
 
-// ─── Load PMR Journal Entries from Firestore ───
-window.loadJournalEntries = async function() {
+// ─── Load PMR Diary Entries from Firestore ───
+window.loadDiaryEntries = async function() {
   const user = auth.currentUser;
   if (!user) return [];
   try {
-    const journalRef = collection(db, 'users', user.uid, 'journal');
-    const q = query(journalRef, orderBy('createdAt', 'desc'), fsLimit(1000));
+    const diaryRef = collection(db, 'users', user.uid, 'journal');
+    const q = query(diaryRef, orderBy('createdAt', 'desc'), fsLimit(1000));
     const snap = await getDocs(q);
     return snap.docs.map(d => ({ id: d.id, ...d.data() }));
   } catch (e) {
-    console.error('Failed to load journal entries:', e);
+    console.error('Failed to load diary entries:', e);
     return [];
   }
 };
@@ -2422,28 +2422,28 @@ function friendlyError(code) {
   function switchDashTab(tab) {
     document.getElementById('tabDash').classList.toggle('active', tab === 'main');
     document.getElementById('tabRoutine').classList.toggle('active', tab === 'routine');
-    document.getElementById('tabJournal').classList.toggle('active', tab === 'journal');
+    document.getElementById('tabDiary').classList.toggle('active', tab === 'diary');
     document.getElementById('dashMainContent').classList.toggle('active', tab === 'main');
     document.getElementById('dashRoutineContent').classList.toggle('active', tab === 'routine');
-    document.getElementById('dashJournalContent').classList.toggle('active', tab === 'journal');
+    document.getElementById('dashDiaryContent').classList.toggle('active', tab === 'diary');
     if (tab === 'routine' && typeof window.initPMR === 'function') {
       window.initPMR();
     }
-    if (tab === 'journal') {
-      renderJournal();
+    if (tab === 'diary') {
+      renderDiary();
     }
   }
 
-  // ─── Render Journal Entries ───
-  async function renderJournal() {
-    const container = document.getElementById('journalEntries');
+  // ─── Render Diary Entries ───
+  async function renderDiary() {
+    const container = document.getElementById('diaryEntries');
     if (!container) return;
-    container.innerHTML = '<div class="journal-loading">Loading entries...</div>';
+    container.innerHTML = '<div class="diary-loading">Loading entries...</div>';
 
-    const entries = typeof window.loadJournalEntries === 'function' ? await window.loadJournalEntries() : [];
+    const entries = typeof window.loadDiaryEntries === 'function' ? await window.loadDiaryEntries() : [];
 
     if (!entries.length) {
-      container.innerHTML = '<div class="journal-empty">No journal entries yet. Complete a Before the Bell routine to log your first entry.</div>';
+      container.innerHTML = '<div class="diary-empty">No diary entries yet. Complete a Before the Bell routine to log your first entry.</div>';
       return;
     }
 
@@ -2456,16 +2456,17 @@ function friendlyError(code) {
       const dateStr = date.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
       const timeStr = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
-      html += '<div class="journal-entry">';
-      html += '<div class="journal-entry-date">' + dateStr + ' · ' + timeStr + '</div>';
-      if (entry.journal && entry.journal.trim()) {
-        html += '<div class="journal-entry-text">' + escapeHtml(entry.journal.trim()) + '</div>';
+      html += '<div class="diary-entry">';
+      html += '<div class="diary-entry-date">' + dateStr + ' · ' + timeStr + '</div>';
+      const diaryText = entry.diary || entry.journal || '';
+      if (diaryText.trim()) {
+        html += '<div class="diary-entry-text">' + escapeHtml(diaryText.trim()) + '</div>';
       }
-      html += '<div class="journal-entry-meta">';
-      if (entry.mood) html += '<span class="journal-meta-tag">' + (moodMap[entry.mood] || '') + ' ' + escapeHtml(entry.mood) + '</span>';
-      if (entry.sleep) html += '<span class="journal-meta-tag">Sleep: ' + (sleepMap[entry.sleep] || entry.sleep) + '</span>';
-      if (entry.outsideStress) html += '<span class="journal-meta-tag">Outside stress: ' + escapeHtml(entry.outsideStress) + '</span>';
-      if (entry.drawdownLeft) html += '<span class="journal-meta-tag">Drawdown: $' + escapeHtml(entry.drawdownLeft) + '</span>';
+      html += '<div class="diary-entry-meta">';
+      if (entry.mood) html += '<span class="diary-meta-tag">' + (moodMap[entry.mood] || '') + ' ' + escapeHtml(entry.mood) + '</span>';
+      if (entry.sleep) html += '<span class="diary-meta-tag">Sleep: ' + (sleepMap[entry.sleep] || entry.sleep) + '</span>';
+      if (entry.outsideStress) html += '<span class="diary-meta-tag">Outside stress: ' + escapeHtml(entry.outsideStress) + '</span>';
+      if (entry.drawdownLeft) html += '<span class="diary-meta-tag">Drawdown: $' + escapeHtml(entry.drawdownLeft) + '</span>';
       html += '</div>';
       html += '</div>';
     });
@@ -2510,7 +2511,7 @@ function friendlyError(code) {
       mood: null,
       sleep: null,
       outsideStress: null,
-      journal: '',
+      diary: '',
       drawdownLeft: '',
       payoutTarget: '',
       accountFeeling: null,
@@ -2560,7 +2561,7 @@ function friendlyError(code) {
     // Focus textarea if on checkin step
     if (STEPS[step] === 'checkin') {
       const ta = c.querySelector('.pmr-textarea');
-      if (ta) ta.value = answers.journal;
+      if (ta) ta.value = answers.diary;
     }
     if (STEPS[step] === 'accounts') {
       const inp = c.querySelector('.pmr-number-input');
@@ -2611,7 +2612,7 @@ function friendlyError(code) {
 
   // ─── CHECK-IN ───
   function renderCheckin() {
-    const checkinOk = answers.mood && answers.sleep && answers.outsideStress && answers.journal.trim().length > 0;
+    const checkinOk = answers.mood && answers.sleep && answers.outsideStress && answers.diary.trim().length > 0;
 
     let html = stepHeader('01', 'Mental Check-In', 'Be honest. No one sees this but you.');
 
@@ -2639,12 +2640,12 @@ function friendlyError(code) {
     });
     html += '</div></div>';
 
-    // Journal
+    // Diary
     html += `
       <div class="pmr-section">
         <label class="pmr-label">Put how you're feeling into words. Write as much as you need.</label>
-        <p class="pmr-journal-hint">Writing it forces you to acknowledge it. That's the point.</p>
-        <textarea class="pmr-textarea" placeholder="I feel..." oninput="pmrJournal(this.value)">${answers.journal}</textarea>
+        <p class="pmr-diary-hint">Writing it forces you to acknowledge it. That's the point.</p>
+        <textarea class="pmr-textarea" placeholder="I feel..." oninput="pmrDiary(this.value)">${answers.diary}</textarea>
       </div>
     `;
 
@@ -2684,8 +2685,8 @@ function friendlyError(code) {
     const insights = getInsights();
     let html = stepHeader('03', 'Your Awareness Brief', 'Here\'s what your check-in is telling you.');
 
-    if (answers.journal.trim()) {
-      html += `<div class="pmr-journal-quote"><span class="quote-mark">"</span>${answers.journal.trim()}<span class="quote-mark">"</span></div>`;
+    if (answers.diary.trim()) {
+      html += `<div class="pmr-diary-quote"><span class="quote-mark">"</span>${answers.diary.trim()}<span class="quote-mark">"</span></div>`;
     }
 
     html += '<div class="pmr-insights">';
@@ -2751,7 +2752,7 @@ function friendlyError(code) {
     const sleepLabel = SLEEP_OPTIONS.find(s => s.value === answers.sleep)?.label || '';
     const dd = parseFloat(answers.drawdownLeft);
     const ddColor = dd <= 500 ? 'var(--error)' : dd <= 1000 ? '#f59e0b' : 'var(--success)';
-    const journalSnip = answers.journal.trim().length > 60 ? answers.journal.trim().slice(0, 60) + '...' : answers.journal.trim();
+    const diarySnip = answers.diary.trim().length > 60 ? answers.diary.trim().slice(0, 60) + '...' : answers.diary.trim();
 
     return `
       <div class="pmr-ready">
@@ -2763,7 +2764,7 @@ function friendlyError(code) {
           <div class="pmr-snapshot-row"><span class="row-label">Mood</span><span class="row-value" style="color:${moodData?.color || 'var(--fg)'}">${moodData?.emoji || ''} ${answers.mood || ''}</span></div>
           <div class="pmr-snapshot-row"><span class="row-label">Sleep</span><span class="row-value">${sleepLabel}</span></div>
           <div class="pmr-snapshot-row"><span class="row-label">Drawdown Left</span><span class="row-value" style="color:${ddColor}">$${isNaN(dd) ? '0' : dd.toLocaleString()}</span></div>
-          <div class="pmr-snapshot-row"><span class="row-label">Journal</span><span class="row-value" style="font-style:italic;font-size:0.6rem;max-width:160px;text-align:right">"${journalSnip}"</span></div>
+          <div class="pmr-snapshot-row"><span class="row-label">Diary</span><span class="row-value" style="font-style:italic;font-size:0.6rem;max-width:160px;text-align:right">"${diarySnip}"</span></div>
           <div class="pmr-snapshot-row"><span class="row-label">Rules</span><span class="row-value" style="color:var(--success)">All committed ✓</span></div>
         </div>
         <p class="pmr-quote">"The goal is not to make money. The goal is to trade well."</p>
@@ -2864,13 +2865,13 @@ function friendlyError(code) {
   window.pmrNext = function() {
     if (step < STEPS.length - 1) {
       step++;
-      // Save journal entry when reaching the final "ready" step
-      if (STEPS[step] === 'ready' && typeof window.saveJournalEntry === 'function') {
-        window.saveJournalEntry({
+      // Save diary entry when reaching the final "ready" step
+      if (STEPS[step] === 'ready' && typeof window.saveDiaryEntry === 'function') {
+        window.saveDiaryEntry({
           mood: answers.mood,
           sleep: answers.sleep,
           outsideStress: answers.outsideStress,
-          journal: answers.journal,
+          diary: answers.diary,
           drawdownLeft: answers.drawdownLeft,
           accountFeeling: answers.accountFeeling
         });
@@ -2900,8 +2901,8 @@ function friendlyError(code) {
     const btn = document.querySelector('#pmrContainer .pmr-btn');
     if (btn) btn.disabled = !(answers.drawdownLeft && answers.accountFeeling);
   };
-  window.pmrJournal = function(val) {
-    answers.journal = val;
+  window.pmrDiary = function(val) {
+    answers.diary = val;
     // Update continue button state
     const btn = document.querySelector('#pmrContainer .pmr-btn');
     const ok = answers.mood && answers.sleep && answers.outsideStress && val.trim().length > 0;
