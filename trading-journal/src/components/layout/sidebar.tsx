@@ -17,11 +17,14 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 
-const navItems = [
+const mainNav = [
   { href: "/journal", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/journal/trades", label: "Journal", icon: BookOpen },
-  { href: "/journal/new", label: "New Trade", icon: Plus },
+  { href: "/journal/trades", label: "Trade Journal", icon: BookOpen },
+  { href: "/journal/new", label: "Log Trade", icon: Plus },
   { href: "/journal/calendar", label: "Calendar", icon: CalendarDays },
+];
+
+const appNav = [
   { href: "/journal/review", label: "Chart Review", icon: ScanEye },
   { href: "/journal/coach", label: "Coach K", icon: MessageSquare },
   { href: "/journal/settings", label: "Settings", icon: Settings },
@@ -32,82 +35,75 @@ export function Sidebar() {
   const { user, signOut } = useAuth();
   const [mobileOpen, setMobileOpen] = useState(false);
 
-  const sidebarContent = (
-    <>
+  function isActive(href: string) {
+    if (href === "/journal") return pathname === "/journal";
+    return pathname === href || pathname.startsWith(href + "/");
+  }
+
+  function NavItem({ href, label, icon: Icon }: { href: string; label: string; icon: React.ComponentType<{ className?: string }> }) {
+    const active = isActive(href);
+    return (
+      <Link
+        href={href}
+        onClick={() => setMobileOpen(false)}
+        className={`
+          flex items-center gap-3 px-4 py-2.5 rounded-[12px] text-[0.85rem] font-medium no-underline
+          transition-all duration-200 relative group
+          ${active
+            ? "bg-gradient-to-r from-[rgba(45,212,191,0.15)] to-[rgba(45,212,191,0.05)] text-accent-teal shadow-[inset_0_0_0_1px_rgba(45,212,191,0.15)]"
+            : "text-text-secondary hover:text-text-primary hover:bg-[rgba(255,255,255,0.03)]"
+          }
+        `}
+      >
+        <Icon className={`w-[18px] h-[18px] flex-shrink-0 ${active ? "text-accent-teal" : "text-text-tertiary group-hover:text-text-secondary"}`} />
+        <span>{label}</span>
+        {active && (
+          <span className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 bg-accent-teal rounded-r-full" />
+        )}
+      </Link>
+    );
+  }
+
+  const content = (
+    <div className="flex flex-col h-full">
       {/* Logo */}
-      <div className="px-5 pt-6 pb-5 border-b border-border">
-        <Link href="/journal" className="flex items-center gap-2.5 no-underline">
-          <span className="text-accent text-[0.5rem]">&#9679;</span>
-          <span
-            className="text-[0.7rem] font-mono font-normal text-text-primary tracking-[0.15em] uppercase"
-          >
-            KIANI
+      <div className="px-6 pt-7 pb-6">
+        <Link href="/journal" className="flex items-center gap-3 no-underline group">
+          <div className="w-8 h-8 rounded-[10px] bg-gradient-to-br from-accent-teal to-[#14b8a6] flex items-center justify-center shadow-[0_2px_8px_rgba(45,212,191,0.25)]">
+            <span className="text-[0.7rem] font-bold text-text-inverse">K</span>
+          </div>
+          <span className="text-[1rem] font-semibold text-text-primary tracking-[-0.01em]">
+            Kiani
           </span>
         </Link>
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 py-5 px-3">
-        <p className="text-[0.6rem] font-mono uppercase tracking-[0.12em] text-text-tertiary px-3 mb-3">
+      <nav className="flex-1 px-3 overflow-y-auto">
+        <p className="text-[0.65rem] font-semibold uppercase tracking-[0.1em] text-text-tertiary px-4 mb-2">
           Navigation
         </p>
-        <div className="space-y-0.5">
-          {navItems.slice(0, 4).map((item) => {
-            const isActive =
-              item.href === "/journal"
-                ? pathname === "/journal"
-                : pathname === item.href || pathname.startsWith(item.href + "/");
-            const Icon = item.icon;
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                onClick={() => setMobileOpen(false)}
-                className={`flex items-center gap-3 px-3 py-2.5 text-[0.8rem] font-sans no-underline transition-all duration-150 rounded-[var(--radius-sm)] ${
-                  isActive
-                    ? "text-text-primary bg-accent-teal-dim border-l-2 border-accent-teal"
-                    : "text-text-secondary hover:text-text-primary hover:bg-bg-surface-hover border-l-2 border-transparent"
-                }`}
-              >
-                <Icon className="w-[18px] h-[18px]" />
-                {item.label}
-              </Link>
-            );
-          })}
+        <div className="space-y-1 mb-6">
+          {mainNav.map((item) => (
+            <NavItem key={item.href} {...item} />
+          ))}
         </div>
 
-        <p className="text-[0.6rem] font-mono uppercase tracking-[0.12em] text-text-tertiary px-3 mb-3 mt-6">
+        <p className="text-[0.65rem] font-semibold uppercase tracking-[0.1em] text-text-tertiary px-4 mb-2">
           Apps
         </p>
-        <div className="space-y-0.5">
-          {navItems.slice(4).map((item) => {
-            const isActive =
-              pathname === item.href || pathname.startsWith(item.href + "/");
-            const Icon = item.icon;
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                onClick={() => setMobileOpen(false)}
-                className={`flex items-center gap-3 px-3 py-2.5 text-[0.8rem] font-sans no-underline transition-all duration-150 rounded-[var(--radius-sm)] ${
-                  isActive
-                    ? "text-text-primary bg-accent-teal-dim border-l-2 border-accent-teal"
-                    : "text-text-secondary hover:text-text-primary hover:bg-bg-surface-hover border-l-2 border-transparent"
-                }`}
-              >
-                <Icon className="w-[18px] h-[18px]" />
-                {item.label}
-              </Link>
-            );
-          })}
+        <div className="space-y-1">
+          {appNav.map((item) => (
+            <NavItem key={item.href} {...item} />
+          ))}
         </div>
       </nav>
 
-      {/* Bottom */}
-      <div className="p-3 border-t border-border">
+      {/* User / Bottom */}
+      <div className="px-3 pb-4 pt-3 border-t border-[rgba(255,255,255,0.04)]">
         {user && (
-          <div className="px-3 py-2 mb-2">
-            <p className="text-[0.7rem] text-text-tertiary font-mono truncate">
+          <div className="px-4 py-2 mb-1">
+            <p className="text-[0.7rem] text-text-tertiary truncate font-mono">
               {user.email}
             </p>
           </div>
@@ -115,22 +111,22 @@ export function Sidebar() {
         {user && (
           <button
             onClick={signOut}
-            className="flex items-center gap-3 px-3 py-2.5 text-[0.8rem] font-sans text-text-secondary hover:text-red w-full transition-colors duration-150 cursor-pointer bg-transparent border-0 rounded-[var(--radius-sm)]"
+            className="flex items-center gap-3 px-4 py-2.5 rounded-[12px] text-[0.85rem] font-medium text-text-tertiary hover:text-red w-full transition-all duration-200 cursor-pointer bg-transparent border-0 hover:bg-red-bg"
           >
             <LogOut className="w-[18px] h-[18px]" />
             Sign out
           </button>
         )}
       </div>
-    </>
+    </div>
   );
 
   return (
     <>
-      {/* Mobile hamburger */}
+      {/* Mobile toggle */}
       <button
         onClick={() => setMobileOpen(!mobileOpen)}
-        className="md:hidden fixed top-4 left-4 z-[60] p-2 bg-bg-surface border border-border rounded-[var(--radius-sm)] cursor-pointer"
+        className="md:hidden fixed top-4 left-4 z-[60] p-2.5 bg-bg-surface border border-border rounded-[var(--radius-md)] cursor-pointer shadow-[var(--shadow-card)]"
       >
         {mobileOpen ? (
           <X className="w-5 h-5 text-text-primary" />
@@ -142,18 +138,21 @@ export function Sidebar() {
       {/* Mobile overlay */}
       {mobileOpen && (
         <div
-          className="md:hidden fixed inset-0 bg-black/60 z-[49]"
+          className="md:hidden fixed inset-0 bg-black/70 backdrop-blur-sm z-[49]"
           onClick={() => setMobileOpen(false)}
         />
       )}
 
       {/* Sidebar */}
       <aside
-        className={`fixed left-0 top-0 h-screen w-[240px] bg-bg-primary border-r border-border flex flex-col z-50 transition-transform duration-250 ${
-          mobileOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
-        }`}
+        className={`
+          fixed left-0 top-0 h-screen w-[250px] z-50
+          bg-bg-sidebar border-r border-[rgba(255,255,255,0.04)]
+          transition-transform duration-300 ease-out
+          ${mobileOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"}
+        `}
       >
-        {sidebarContent}
+        {content}
       </aside>
     </>
   );
