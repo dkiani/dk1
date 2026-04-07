@@ -568,10 +568,17 @@
 
   .admin-panel.visible { display: block; }
 
+  .admin-controls-row {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+    flex-wrap: wrap;
+  }
+
   .admin-search-row {
     display: flex;
     gap: 0.5rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: 0.75rem;
   }
 
   .admin-search-row .form-input { flex: 1; }
@@ -590,6 +597,37 @@
   }
 
   .admin-search-btn:hover { border-color: var(--accent); }
+  .admin-search-btn.active { border-color: var(--accent); color: var(--accent); }
+
+  .admin-filter-btn {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: var(--font);
+    font-size: 0.55rem;
+    font-weight: 300;
+    padding: 0.35rem 0.7rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .admin-filter-btn:hover { border-color: var(--accent); color: var(--fg); }
+  .admin-filter-btn.active { border-color: var(--accent); color: var(--accent); }
+
+  .admin-sort-select {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: var(--font);
+    font-size: 0.55rem;
+    font-weight: 300;
+    padding: 0.35rem 0.5rem;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
 
   .admin-user-list {
     display: flex;
@@ -607,6 +645,18 @@
     gap: 1rem;
   }
 
+  .admin-user-card.inner-circle {
+    border-left: 3px solid #f59e0b;
+  }
+
+  .admin-user-check {
+    flex-shrink: 0;
+    width: 14px;
+    height: 14px;
+    accent-color: var(--accent);
+    cursor: pointer;
+  }
+
   .admin-user-info {
     display: flex;
     flex-direction: column;
@@ -615,12 +665,29 @@
     flex: 1;
   }
 
+  .admin-user-name-row {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
   .admin-user-name {
     font-size: 0.7rem;
     font-weight: 400;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+  }
+
+  .admin-ic-badge {
+    font-size: 0.45rem;
+    font-weight: 300;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 0.1rem 0.35rem;
+    border: 1px solid #f59e0b;
+    color: #f59e0b;
+    flex-shrink: 0;
   }
 
   .admin-user-email {
@@ -632,10 +699,17 @@
     white-space: nowrap;
   }
 
+  .admin-user-meta {
+    font-size: 0.5rem;
+    color: var(--dim);
+    font-weight: 300;
+  }
+
   .admin-user-actions {
     display: flex;
     gap: 0.5rem;
     flex-shrink: 0;
+    align-items: center;
   }
 
   .admin-action-btn {
@@ -655,6 +729,7 @@
   .admin-action-btn:hover { border-color: var(--accent); color: var(--fg); }
   .admin-action-btn.granted { border-color: var(--success); color: var(--success); }
   .admin-action-btn.revoke { border-color: var(--error); color: var(--error); }
+  .admin-action-btn.ic-active { border-color: #f59e0b; color: #f59e0b; }
 
   .admin-badge {
     font-size: 0.5rem;
@@ -665,6 +740,17 @@
     border: 1px solid var(--success);
     color: var(--success);
   }
+
+  .admin-journal-link {
+    font-size: 0.5rem;
+    color: var(--dim);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+
+  .admin-journal-link:hover { color: var(--muted); border-bottom-color: var(--muted); }
 
   .admin-stats {
     display: flex;
@@ -683,6 +769,8 @@
     font-weight: 400;
   }
 
+  .admin-stat-value.ic { color: #f59e0b; }
+
   .admin-stat-label {
     font-size: 0.55rem;
     font-weight: 300;
@@ -697,6 +785,107 @@
     color: var(--muted);
     margin-top: 0.5rem;
   }
+
+  .admin-empty-state {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: var(--dim);
+    font-size: 0.65rem;
+    font-weight: 300;
+  }
+
+  .admin-bulk-bar {
+    display: none;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    margin-bottom: 0.75rem;
+    background: var(--card-bg);
+    border: 1px solid var(--accent);
+  }
+
+  .admin-bulk-bar.visible { display: flex; }
+
+  .admin-bulk-bar span {
+    font-size: 0.6rem;
+    font-weight: 300;
+    color: var(--fg);
+  }
+
+  .admin-bulk-btn {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: var(--font);
+    font-size: 0.5rem;
+    font-weight: 300;
+    letter-spacing: 0.04em;
+    padding: 0.3rem 0.5rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-transform: uppercase;
+  }
+
+  .admin-bulk-btn:hover { border-color: var(--accent); color: var(--fg); }
+
+  /* ─── Confirm Modal ─── */
+  .confirm-modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 1001;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+  }
+
+  .confirm-modal-overlay.active { display: flex; }
+
+  .confirm-modal {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    max-width: 360px;
+    width: 100%;
+    padding: 2rem;
+    text-align: center;
+  }
+
+  .confirm-modal-title {
+    font-size: 0.85rem;
+    font-weight: 400;
+    margin-bottom: 0.5rem;
+  }
+
+  .confirm-modal-text {
+    font-size: 0.65rem;
+    font-weight: 300;
+    color: var(--muted);
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
+  }
+
+  .confirm-modal-actions {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: center;
+  }
+
+  .confirm-modal-btn {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: var(--font);
+    font-size: 0.6rem;
+    font-weight: 300;
+    padding: 0.5rem 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+
+  .confirm-modal-btn:hover { border-color: var(--accent); color: var(--fg); }
+  .confirm-modal-btn.danger { border-color: var(--error); color: var(--error); }
+  .confirm-modal-btn.danger:hover { background: var(--error); color: var(--bg); }
 
   /* ─── Onboarding Detail Modal ─── */
   .onboarding-modal-overlay {
@@ -848,6 +1037,8 @@
     .progress-bar-container { width: 60px; }
     .admin-user-card { flex-direction: column; align-items: flex-start; }
     .admin-stats { flex-wrap: wrap; }
+    .admin-controls-row { flex-direction: column; }
+    .admin-bulk-bar { flex-wrap: wrap; }
     .pw-modal { padding: 2rem 1.25rem; }
   }
 
@@ -1717,9 +1908,26 @@
         <div class="dash-section-label">Admin</div>
         <div class="admin-stats" id="adminStats"></div>
         <div class="admin-search-row">
-          <input class="form-input" type="text" id="adminSearchInput" placeholder="Search by email..." onkeydown="if(event.key==='Enter')searchUsers()">
+          <input class="form-input" type="text" id="adminSearchInput" placeholder="Search by email or name..." onkeydown="if(event.key==='Enter')searchUsers()">
           <button class="admin-search-btn" onclick="searchUsers()">Search</button>
           <button class="admin-search-btn" onclick="loadAllUsers()">All Users</button>
+        </div>
+        <div class="admin-controls-row">
+          <button class="admin-filter-btn" id="filterAll" onclick="setFilter('all')">All</button>
+          <button class="admin-filter-btn" id="filterAccess" onclick="setFilter('access')">With Access</button>
+          <button class="admin-filter-btn" id="filterIC" onclick="setFilter('ic')">Inner Circle</button>
+          <select class="admin-sort-select" id="adminSort" onchange="applySort()">
+            <option value="newest">Newest First</option>
+            <option value="progress">Most Progress</option>
+            <option value="alpha">A — Z</option>
+          </select>
+        </div>
+        <div class="admin-bulk-bar" id="adminBulkBar">
+          <span id="bulkCount">0 selected</span>
+          <button class="admin-bulk-btn" onclick="bulkAction('grantAccess')">Grant Access</button>
+          <button class="admin-bulk-btn" onclick="bulkAction('revokeAccess')">Revoke Access</button>
+          <button class="admin-bulk-btn" onclick="bulkAction('toggleIC')">Toggle IC</button>
+          <button class="admin-bulk-btn" onclick="clearSelection()">Clear</button>
         </div>
         <div class="admin-user-list" id="adminUserList"></div>
         <div class="admin-msg" id="adminMsg"></div>
@@ -1772,6 +1980,18 @@
     <div class="onboarding-modal-name" id="obModalName"></div>
     <div class="onboarding-modal-email" id="obModalEmail"></div>
     <div id="obModalAnswers"></div>
+  </div>
+</div>
+
+<!-- ═══ CONFIRM MODAL ═══ -->
+<div class="confirm-modal-overlay" id="confirmModal" onclick="if(event.target===this)closeConfirmModal()">
+  <div class="confirm-modal">
+    <div class="confirm-modal-title" id="confirmTitle">Confirm</div>
+    <div class="confirm-modal-text" id="confirmText">Are you sure?</div>
+    <div class="confirm-modal-actions">
+      <button class="confirm-modal-btn" onclick="closeConfirmModal()">Cancel</button>
+      <button class="confirm-modal-btn danger" id="confirmAction" onclick="executeConfirmedAction()">Confirm</button>
+    </div>
   </div>
 </div>
 
@@ -2208,6 +2428,13 @@ document.addEventListener('click', (e) => {
   }
 });
 
+// ─── Admin: State ───
+let _adminUsersCache = [];
+let _adminAllUsers = [];
+let _adminFilter = 'all';
+let _selectedUids = new Set();
+let _pendingConfirmAction = null;
+
 // ─── Admin: Load all users ───
 window.loadAllUsers = async function() {
   if (!isAdmin) return;
@@ -2220,16 +2447,21 @@ window.loadAllUsers = async function() {
     const snap = await getDocs(usersRef);
     const users = [];
     snap.forEach(d => users.push({ uid: d.id, ...d.data() }));
+    _adminAllUsers = users;
 
     // Stats
     const totalUsers = users.length;
     const withAccess = users.filter(u => u.products && u.products.curriculum).length;
+    const innerCircle = users.filter(u => u.products && u.products.innerCircle).length;
     stats.innerHTML = `
       <div class="admin-stat"><span class="admin-stat-value">${totalUsers}</span><span class="admin-stat-label">Total Users</span></div>
       <div class="admin-stat"><span class="admin-stat-value">${withAccess}</span><span class="admin-stat-label">With Access</span></div>
+      <div class="admin-stat"><span class="admin-stat-value ic">${innerCircle}</span><span class="admin-stat-label">Inner Circle</span></div>
     `;
 
-    renderAdminUsers(users);
+    _selectedUids.clear();
+    updateBulkBar();
+    applyFilterAndSort(users);
   } catch (e) {
     list.innerHTML = '<div class="admin-msg">Failed to load users.</div>';
   }
@@ -2254,34 +2486,96 @@ window.searchUsers = async function() {
         users.push(data);
       }
     });
-    renderAdminUsers(users);
-    if (users.length === 0) {
-      list.innerHTML = '<div class="admin-msg">No users found.</div>';
-    }
+    _adminAllUsers = users;
+    _selectedUids.clear();
+    updateBulkBar();
+    applyFilterAndSort(users);
   } catch (e) {
     list.innerHTML = '<div class="admin-msg">Search failed.</div>';
   }
 };
 
-// ─── Admin: Render user list ───
-let _adminUsersCache = [];
+// ─── Admin: Filter & Sort ───
+window.setFilter = function(filter) {
+  _adminFilter = filter;
+  document.querySelectorAll('.admin-filter-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('filter' + (filter === 'all' ? 'All' : filter === 'access' ? 'Access' : 'IC')).classList.add('active');
+  applyFilterAndSort(_adminAllUsers);
+};
 
+window.applySort = function() {
+  applyFilterAndSort(_adminAllUsers);
+};
+
+function applyFilterAndSort(users) {
+  let filtered = users;
+  if (_adminFilter === 'access') {
+    filtered = users.filter(u => u.products && u.products.curriculum);
+  } else if (_adminFilter === 'ic') {
+    filtered = users.filter(u => u.products && u.products.innerCircle);
+  }
+
+  const sort = document.getElementById('adminSort').value;
+  filtered = filtered.slice().sort(function(a, b) {
+    if (sort === 'newest') {
+      const ta = a.createdAt ? (a.createdAt.toDate ? a.createdAt.toDate() : new Date(a.createdAt)) : new Date(0);
+      const tb = b.createdAt ? (b.createdAt.toDate ? b.createdAt.toDate() : new Date(b.createdAt)) : new Date(0);
+      return tb - ta;
+    } else if (sort === 'progress') {
+      const pa = a.progress && a.progress.curriculum ? (a.progress.curriculum.completedLessons || []).length : 0;
+      const pb = b.progress && b.progress.curriculum ? (b.progress.curriculum.completedLessons || []).length : 0;
+      return pb - pa;
+    } else {
+      return (a.displayName || '').localeCompare(b.displayName || '');
+    }
+  });
+
+  renderAdminUsers(filtered);
+  // Set default filter button active
+  document.querySelectorAll('.admin-filter-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('filter' + (_adminFilter === 'all' ? 'All' : _adminFilter === 'access' ? 'Access' : 'IC')).classList.add('active');
+}
+
+// ─── Admin: Render user list ───
 function renderAdminUsers(users) {
   _adminUsersCache = users;
   const list = document.getElementById('adminUserList');
+
+  if (users.length === 0) {
+    list.innerHTML = '<div class="admin-empty-state">No users match the current filter.</div>';
+    return;
+  }
+
   list.innerHTML = users.map(u => {
     const hasAccess = u.products && u.products.curriculum;
+    const isIC = u.products && u.products.innerCircle;
     const progress = u.progress && u.progress.curriculum ? (u.progress.curriculum.completedLessons || []).length : 0;
+    const checked = _selectedUids.has(u.uid) ? 'checked' : '';
+
+    // Last active: use lastLoginAt from auth metadata or createdAt as fallback
+    let lastActive = '';
+    const lastLogin = u.lastLoginAt || u.metadata && u.metadata.lastSignInTime;
+    if (lastLogin) {
+      const d = lastLogin.toDate ? lastLogin.toDate() : new Date(lastLogin);
+      if (!isNaN(d)) lastActive = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    }
 
     return `
-      <div class="admin-user-card">
+      <div class="admin-user-card${isIC ? ' inner-circle' : ''}">
+        <input type="checkbox" class="admin-user-check" ${checked} onchange="toggleSelect('${u.uid}', this.checked)">
         <div class="admin-user-info">
-          <div class="admin-user-name clickable" onclick="showOnboardingDetail('${u.uid}')">${u.displayName || 'No name'}</div>
+          <div class="admin-user-name-row">
+            <div class="admin-user-name clickable" onclick="showOnboardingDetail('${u.uid}')">${u.displayName || 'No name'}</div>
+            ${isIC ? '<span class="admin-ic-badge">IC</span>' : ''}
+          </div>
           <div class="admin-user-email">${u.email || 'No email'} — ${progress}/59 lessons</div>
+          ${lastActive ? `<div class="admin-user-meta">Last active: ${lastActive}</div>` : ''}
         </div>
         <div class="admin-user-actions">
+          <span class="admin-journal-link" onclick="viewJournalStats('${u.uid}')">Journal</span>
+          <button class="admin-action-btn${isIC ? ' ic-active' : ''}" onclick="toggleInnerCircle('${u.uid}')">${isIC ? '★ IC' : '☆ IC'}</button>
           ${hasAccess
-            ? `<span class="admin-badge">Access</span> <button class="admin-action-btn revoke" onclick="revokeAccess('${u.uid}')">Revoke</button>`
+            ? `<span class="admin-badge">Access</span> <button class="admin-action-btn revoke" onclick="confirmRevoke('${u.uid}')">Revoke</button>`
             : `<button class="admin-action-btn" onclick="grantAccess('${u.uid}')">Grant Access</button>`
           }
         </div>
@@ -2337,7 +2631,17 @@ window.grantAccess = async function(uid) {
   }
 };
 
-// ─── Admin: Revoke access ───
+// ─── Admin: Revoke access (with confirmation) ───
+window.confirmRevoke = function(uid) {
+  const user = _adminUsersCache.find(u => u.uid === uid);
+  const name = user ? (user.displayName || user.email || uid) : uid;
+  showConfirmModal(
+    'Revoke Access',
+    `Remove curriculum access for ${name}? They will lose access immediately.`,
+    function() { revokeAccess(uid); }
+  );
+};
+
 window.revokeAccess = async function(uid) {
   try {
     const ref = doc(db, 'users', uid);
@@ -2346,6 +2650,97 @@ window.revokeAccess = async function(uid) {
   } catch (e) {
     document.getElementById('adminMsg').textContent = 'Failed to revoke access.';
   }
+};
+
+// ─── Admin: Toggle Inner Circle ───
+window.toggleInnerCircle = async function(uid) {
+  try {
+    const user = _adminUsersCache.find(u => u.uid === uid);
+    const isIC = user && user.products && user.products.innerCircle;
+    const ref = doc(db, 'users', uid);
+    await updateDoc(ref, { 'products.innerCircle': !isIC });
+    loadAllUsers();
+  } catch (e) {
+    document.getElementById('adminMsg').textContent = 'Failed to update Inner Circle status.';
+  }
+};
+
+// ─── Admin: Journal stats stub ───
+window.viewJournalStats = function(uid) {
+  alert('Journal stats page coming soon for user: ' + uid);
+};
+
+// ─── Admin: Bulk selection ───
+window.toggleSelect = function(uid, checked) {
+  if (checked) _selectedUids.add(uid); else _selectedUids.delete(uid);
+  updateBulkBar();
+};
+
+window.clearSelection = function() {
+  _selectedUids.clear();
+  updateBulkBar();
+  renderAdminUsers(_adminUsersCache);
+};
+
+function updateBulkBar() {
+  const bar = document.getElementById('adminBulkBar');
+  const count = _selectedUids.size;
+  if (count > 0) {
+    bar.classList.add('visible');
+    document.getElementById('bulkCount').textContent = count + ' selected';
+  } else {
+    bar.classList.remove('visible');
+  }
+}
+
+window.bulkAction = async function(action) {
+  if (_selectedUids.size === 0) return;
+  const uids = Array.from(_selectedUids);
+  const label = action === 'grantAccess' ? 'grant access to' : action === 'revokeAccess' ? 'revoke access for' : 'toggle Inner Circle for';
+
+  showConfirmModal(
+    'Bulk Action',
+    `${label.charAt(0).toUpperCase() + label.slice(1)} ${uids.length} user${uids.length > 1 ? 's' : ''}?`,
+    async function() {
+      try {
+        for (const uid of uids) {
+          const ref = doc(db, 'users', uid);
+          if (action === 'grantAccess') {
+            await updateDoc(ref, { 'products.curriculum': true });
+          } else if (action === 'revokeAccess') {
+            await updateDoc(ref, { 'products.curriculum': false });
+          } else if (action === 'toggleIC') {
+            const user = _adminAllUsers.find(u => u.uid === uid);
+            const isIC = user && user.products && user.products.innerCircle;
+            await updateDoc(ref, { 'products.innerCircle': !isIC });
+          }
+        }
+        _selectedUids.clear();
+        updateBulkBar();
+        loadAllUsers();
+      } catch (e) {
+        document.getElementById('adminMsg').textContent = 'Bulk action failed.';
+      }
+    }
+  );
+};
+
+// ─── Confirm Modal ───
+function showConfirmModal(title, text, onConfirm) {
+  document.getElementById('confirmTitle').textContent = title;
+  document.getElementById('confirmText').textContent = text;
+  _pendingConfirmAction = onConfirm;
+  document.getElementById('confirmModal').classList.add('active');
+}
+
+window.closeConfirmModal = function() {
+  document.getElementById('confirmModal').classList.remove('active');
+  _pendingConfirmAction = null;
+};
+
+window.executeConfirmedAction = function() {
+  if (_pendingConfirmAction) _pendingConfirmAction();
+  closeConfirmModal();
 };
 
 // ─── Save PMR Journal Entry to Firestore ───

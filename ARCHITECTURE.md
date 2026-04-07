@@ -130,9 +130,17 @@ Same as everything else — `kianivc`
 | `journalEntries/{entryId}` | Per-user (`userId` field) | Dashboard app (abandoned) | Journal entries (legacy) |
 | `admin/{docId}` | Admin only | Dashboard | Admin config (read-only via rules, write via Console) |
 
+### `products` Field Schema (`users/{userId}.products`)
+
+| Key | Type | Set By | Read By | Purpose |
+|---|---|---|---|---|
+| `curriculum` | `boolean` | Admin (dashboard) | Dashboard | Gates access to the trading curriculum |
+| `innerCircle` | `boolean` | Admin (dashboard) | Trading journal (`trade.kiani.vc`) | Gates the $69/mo "Inner Journal" pricing tier on the paywall. `true` = user sees the discounted Inner Circle pricing. Defaults to `false`/undefined. **Does NOT grant journal access on its own** — `products.journal: true` is still required for that. Inner Circle only unlocks the discounted pricing tier. |
+| `journal` | `boolean` | (TBD — Stripe/admin) | Trading journal (`trade.kiani.vc`) | Gates access to the trading journal app |
+
 ### Security Rules Summary (`firestore.rules`)
 
-- **users/{userId}**: Owner can read/create/update (but not `products` field). Admins can read and update all.
+- **users/{userId}**: Owner can read/create/update (but not `products` field). Admins can read and update all. The `products` field protection covers all keys (`curriculum`, `innerCircle`, `journal`, etc.) — no rule changes needed when adding new product flags.
 - **users/{userId}/journal/{entryId}**: Owner can read/write. Admins can read.
 - **users/{userId}/journal_trades/{tradeId}**: Owner can read/write. Admins can read.
 - **trades/{tradeId}**: Owner (matched by `userId` field) can CRUD. Admins can read.
@@ -185,4 +193,5 @@ Firebase client config is embedded in `src/firebase.js`. The Cloud Function uses
 
 | Date | Change | Commit |
 |---|---|---|
-| 2026-04-07 | Created ARCHITECTURE.md as single source of truth | _(this commit)_ |
+| 2026-04-07 | Created ARCHITECTURE.md as single source of truth | _(initial)_ |
+| 2026-04-07 | Added `products.innerCircle` field, admin panel Inner Circle controls | _(this commit)_ |
