@@ -321,11 +321,7 @@
 
 <script>
 // All known Apps Script deployment URLs for the questionnaire sheet
-const URLS = [
-  'https://script.google.com/macros/s/AKfycbw55J5iSzxxKVlPJSsr83IFU8uF3rDBFfWM3cDbcX59f7ZvXWnR36k3DBXPhIZdbD5oMQ/exec',
-  'https://script.google.com/macros/s/AKfycbwzIH8vbHcUT3EeIqKqpkIYIruEnLH9z8YHrNj9lzV98XDKyuFS0FFoXK9O93hgAMZ3jQ/exec'
-];
-let workingUrl = '';
+const SHEET_URL = 'https://script.google.com/macros/s/AKfycbzg3gSlP0xrphiu3G_FWvJvPocrSYxt3cuDuYmJpgd-06Wo49mr9Sjpy0V4Bdp77t4qAA/exec';
 let adminKey = '';
 
 // ─── Login ───
@@ -338,15 +334,15 @@ document.getElementById('keyInput').addEventListener('keydown', function(e) {
   }
 });
 
-// ─── Request helper: tries JSONP, then fetch, across all URLs ───
-function jsonp(url, params) {
+// ─── JSONP helper ───
+function jsonp(params) {
   return new Promise(function(resolve, reject) {
     var cbName = '_cb_' + Date.now() + Math.random().toString(36).slice(2,6);
     var timeout = setTimeout(function() {
       delete window[cbName];
       if (script.parentNode) script.parentNode.removeChild(script);
-      reject(new Error('JSONP timeout for ' + url));
-    }, 10000);
+      reject(new Error('Request timed out'));
+    }, 15000);
     window[cbName] = function(data) {
       clearTimeout(timeout);
       delete window[cbName];
@@ -356,71 +352,23 @@ function jsonp(url, params) {
     var qs = new URLSearchParams(params);
     qs.set('callback', cbName);
     var script = document.createElement('script');
-    script.src = url + '?' + qs.toString();
+    script.src = SHEET_URL + '?' + qs.toString();
     script.onerror = function() {
       clearTimeout(timeout);
       delete window[cbName];
       if (script.parentNode) script.parentNode.removeChild(script);
-      reject(new Error('JSONP network error for ' + url));
+      reject(new Error('Network error'));
     };
     document.body.appendChild(script);
   });
 }
 
-function fetchJson(url, params) {
-  var qs = new URLSearchParams(params);
-  return fetch(url + '?' + qs.toString(), { redirect: 'follow' })
-    .then(function(r) {
-      if (!r.ok) throw new Error('HTTP ' + r.status);
-      return r.text();
-    })
-    .then(function(text) {
-      try { return JSON.parse(text); }
-      catch(e) { throw new Error('Invalid JSON: ' + text.substring(0, 200)); }
-    });
-}
-
-function requestData(params) {
-  // If we already know a working URL, use it directly
-  if (workingUrl) {
-    return jsonp(workingUrl, params)
-      .catch(function() { return fetchJson(workingUrl, params); });
-  }
-
-  // Try each URL with JSONP first, then fetch fallback
-  var chain = Promise.reject(new Error('No URLs'));
-  URLS.forEach(function(url) {
-    chain = chain.catch(function() {
-      console.log('[responses] Trying JSONP: ' + url);
-      return jsonp(url, params).then(function(data) {
-        workingUrl = url;
-        console.log('[responses] Working URL found: ' + url);
-        return data;
-      });
-    }).catch(function() {
-      console.log('[responses] Trying fetch: ' + url);
-      return fetchJson(url, params).then(function(data) {
-        workingUrl = url;
-        console.log('[responses] Working URL found (fetch): ' + url);
-        return data;
-      });
-    });
-  });
-  return chain;
-}
-
 function tryLogin() {
-  var errEl = document.getElementById('loginError');
-  errEl.textContent = 'Connecting...';
-  errEl.classList.add('visible');
-  errEl.style.color = 'var(--muted)';
-
-  requestData({ action: 'all', key: adminKey })
+  jsonp({ action: 'all', key: adminKey })
     .then(function(data) {
-      errEl.style.color = '';
       if (data.status === 'error') {
-        errEl.textContent = 'Invalid key. Try again.';
-        errEl.classList.add('visible');
+        document.getElementById('loginError').textContent = 'Invalid key. Try again.';
+        document.getElementById('loginError').classList.add('visible');
         document.getElementById('keyInput').value = '';
         document.getElementById('keyInput').focus();
         return;
@@ -429,11 +377,9 @@ function tryLogin() {
       document.getElementById('dashboard').style.display = 'block';
       renderResponses(data.responses || []);
     })
-    .catch(function(err) {
-      console.error('[responses] All attempts failed:', err);
-      errEl.style.color = '';
-      errEl.textContent = 'All endpoints failed. Check console (F12) for details.';
-      errEl.classList.add('visible');
+    .catch(function() {
+      document.getElementById('loginError').textContent = 'Network error. Try again.';
+      document.getElementById('loginError').classList.add('visible');
     });
 }
 
@@ -441,13 +387,12 @@ function loadResponses() {
   var container = document.getElementById('cards');
   container.innerHTML = '<div class="loading">Loading responses...</div>';
 
-  requestData({ action: 'all', key: adminKey })
+  jsonp({ action: 'all', key: adminKey })
     .then(function(data) {
       if (data.status === 'ok') renderResponses(data.responses || []);
     })
-    .catch(function(err) {
-      console.error('[responses] Refresh failed:', err);
-      container.innerHTML = '<div class="empty-state">Failed to load. Check console for details.</div>';
+    .catch(function() {
+      container.innerHTML = '<div class="empty-state">Failed to load. Try refreshing.</div>';
     });
 }
 
