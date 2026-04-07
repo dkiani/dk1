@@ -12,10 +12,12 @@
         "firestore.rules",
         "firestore.indexes.json",
         ".firebaserc",
+        "vercel.json",
         "**/.*",
         "**/node_modules/**",
         "dashboard/**",
-        "trading-journal/**"
+        "trading-journal/**",
+        "index (3).html"
       ],
       "redirects": [
         {
