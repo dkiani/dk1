@@ -334,40 +334,38 @@ document.getElementById('keyInput').addEventListener('keydown', function(e) {
 });
 
 function tryLogin() {
-  const cbName = '_loginCheck' + Date.now();
-  window[cbName] = function(data) {
-    delete window[cbName];
-    if (data.status === 'error') {
+  fetch(SHEET_URL + '?action=all&key=' + encodeURIComponent(adminKey))
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      if (data.status === 'error') {
+        document.getElementById('loginError').textContent = 'Invalid key. Try again.';
+        document.getElementById('loginError').classList.add('visible');
+        document.getElementById('keyInput').value = '';
+        document.getElementById('keyInput').focus();
+        return;
+      }
+      document.getElementById('loginScreen').style.display = 'none';
+      document.getElementById('dashboard').style.display = 'block';
+      renderResponses(data.responses || []);
+    })
+    .catch(function() {
+      document.getElementById('loginError').textContent = 'Network error. Try again.';
       document.getElementById('loginError').classList.add('visible');
-      document.getElementById('keyInput').value = '';
-      document.getElementById('keyInput').focus();
-      return;
-    }
-    document.getElementById('loginScreen').style.display = 'none';
-    document.getElementById('dashboard').style.display = 'block';
-    renderResponses(data.responses || []);
-  };
-  const s = document.createElement('script');
-  s.src = SHEET_URL + '?action=all&key=' + encodeURIComponent(adminKey) + '&callback=' + cbName;
-  s.onerror = function() {
-    document.getElementById('loginError').textContent = 'Network error. Try again.';
-    document.getElementById('loginError').classList.add('visible');
-  };
-  document.body.appendChild(s);
+    });
 }
 
 function loadResponses() {
   const container = document.getElementById('cards');
   container.innerHTML = '<div class="loading">Loading responses...</div>';
 
-  const cbName = '_refresh' + Date.now();
-  window[cbName] = function(data) {
-    delete window[cbName];
-    if (data.status === 'ok') renderResponses(data.responses || []);
-  };
-  const s = document.createElement('script');
-  s.src = SHEET_URL + '?action=all&key=' + encodeURIComponent(adminKey) + '&callback=' + cbName;
-  document.body.appendChild(s);
+  fetch(SHEET_URL + '?action=all&key=' + encodeURIComponent(adminKey))
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      if (data.status === 'ok') renderResponses(data.responses || []);
+    })
+    .catch(function() {
+      container.innerHTML = '<div class="empty-state">Failed to load. Try refreshing.</div>';
+    });
 }
 
 function renderResponses(responses) {
