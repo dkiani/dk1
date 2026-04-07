@@ -400,6 +400,11 @@ function renderResponses(responses) {
   const container = document.getElementById('cards');
   const countEl = document.getElementById('dashCount');
 
+  // Filter out onboarding email log rows (not questionnaire responses)
+  responses = responses.filter(function(r) {
+    return r.timestamp !== 'onboarding_welcome' && r.trading_experience !== 'Email sent';
+  });
+
   const complete = responses.filter(r => r.ready).length;
   countEl.innerHTML = '<span>' + responses.length + '</span> total &middot; <span>' + complete + '</span> completed';
 
