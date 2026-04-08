@@ -675,7 +675,8 @@ function goTo(index) {
 }
 
 function syncToSheet() {
-  const payload = {
+  const params = new URLSearchParams({
+    action: 'write',
     session_id: sessionId,
     timestamp: new Date().toISOString(),
     name: answers['1'] || '',
@@ -685,14 +686,12 @@ function syncToSheet() {
     ninety_day_success: answers['5'] || '',
     mentorship_cost: answers['6'] || '',
     ready: answers['7'] || ''
-  };
-
-  fetch(SHEET_URL, {
-    method: 'POST',
-    mode: 'no-cors',
-    headers: { 'Content-Type': 'text/plain' },
-    body: JSON.stringify(payload)
-  }).catch(err => console.error('Submit error:', err));
+  });
+  const s = document.createElement('script');
+  s.src = SHEET_URL + '?' + params.toString();
+  s.onload = () => s.remove();
+  s.onerror = () => s.remove();
+  document.body.appendChild(s);
 }
 
 function nextQuestion() {

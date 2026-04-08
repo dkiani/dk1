@@ -101,6 +101,45 @@ function doGet(e) {
   var action = (e && e.parameter && e.parameter.action) ? e.parameter.action : '';
   var callback = (e && e.parameter && e.parameter.callback) ? e.parameter.callback : null;
 
+  // ─── Write a response via GET (avoids CORS / redirect issues with POST) ───
+  if (action === 'write') {
+    var sessionId = e.parameter.session_id || '';
+    var row = findRowBySessionId(sheet, sessionId);
+    var values = [
+      sessionId,
+      e.parameter.timestamp || new Date().toISOString(),
+      e.parameter.name || '',
+      e.parameter.instagram || '',
+      e.parameter.trading_experience || '',
+      e.parameter.why_trading || '',
+      e.parameter.ninety_day_success || '',
+      e.parameter.mentorship_cost || '',
+      e.parameter.ready || ''
+    ];
+    if (row > 0) {
+      sheet.getRange(row, 1, 1, values.length).setValues([values]);
+    } else {
+      sheet.appendRow(values);
+    }
+
+    // Send email when the final answer (ready) comes in
+    if (NOTIFY_EMAIL && e.parameter.ready) {
+      var subject = 'New Journey Response — ' + (e.parameter.name || 'Unknown');
+      var body = 'Name: ' + (e.parameter.name || '—') + '\n'
+        + 'Instagram: ' + (e.parameter.instagram || '—') + '\n'
+        + 'Trading Experience: ' + (e.parameter.trading_experience || '—') + '\n'
+        + 'Why Trading: ' + (e.parameter.why_trading || '—') + '\n'
+        + '90-Day Success: ' + (e.parameter.ninety_day_success || '—') + '\n'
+        + 'Mentorship Cost: ' + (e.parameter.mentorship_cost || '—') + '\n'
+        + 'Ready: ' + (e.parameter.ready || '—');
+      MailApp.sendEmail(NOTIFY_EMAIL, subject, body);
+    }
+
+    var ok = JSON.stringify({ status: 'ok' });
+    if (callback) return ContentService.createTextOutput(callback + '(' + ok + ')').setMimeType(ContentService.MimeType.JAVASCRIPT);
+    return ContentService.createTextOutput(ok).setMimeType(ContentService.MimeType.JSON);
+  }
+
   // ─── Return all responses (protected by admin key) ───
   if (action === 'all') {
     var key = (e && e.parameter && e.parameter.key) ? e.parameter.key : '';
