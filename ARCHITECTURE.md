@@ -55,6 +55,7 @@ dk1/
 ├── .firebaserc                 # Project & target mappings
 ├── firestore.rules             # Security rules (shared across all apps)
 ├── firestore.indexes.json      # Firestore indexes
+├── storage.rules               # Firebase Storage security rules
 ├── vercel.json                 # Legacy Vercel redirects (kiani.vc)
 ├── ARCHITECTURE.md             # ← This file
 │
@@ -257,6 +258,12 @@ These fields appear after the relevant lifecycle event fires. None are required.
 
 > **Note**: The `stripeWebhook` and `coachK` Cloud Functions write via `firebase-admin` SDK, which **bypasses Firestore security rules**. This is intentional — security rules govern client writes; Cloud Functions are server-side privileged code.
 
+### Storage Rules (`storage.rules`)
+
+- `users/{uid}/trade_charts/{tradeId}` — Owner-only read/write (authenticated, `auth.uid == uid`). Used by the journal app for trade chart screenshot uploads.
+
+Deploy with `firebase deploy --only storage` from `~/dk1/`.
+
 ### Admin Access
 
 1. Hardcoded UID: `Tt3oWfwFdnZi75Zvc5WlYNwcXjM2`
@@ -324,3 +331,4 @@ Manually resending a `checkout.session.completed` event from Stripe dashboard re
 | 2026-04-07 | Created ARCHITECTURE.md as single source of truth | _(initial)_ |
 | 2026-04-07 | Added `products.innerCircle` field, admin panel Inner Circle controls | _(this commit)_ |
 | 2026-04-08 | Merged journal repo updates: `stripeWebhook` function, `coachK` auth + usage caps, new Firestore fields, new secrets, known issues | _(this commit)_ |
+| 2026-04-08 | Added `storage.rules` for trade chart uploads, added KIANI Journal product card to dashboard | _(this commit)_ |

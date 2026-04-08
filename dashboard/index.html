@@ -2053,6 +2053,13 @@ const PRODUCTS = [
     description: '59 lessons across 12 modules',
     url: '/curriculum',
     totalLessons: 59,
+  },
+  {
+    id: 'journal',
+    title: 'KIANI Journal',
+    description: 'Your trading journal and AI mentor. Log trades, review charts, talk to Coach K.',
+    url: 'https://trade.kiani.vc',
+    external: true,
   }
 ];
 
@@ -2263,25 +2270,31 @@ function renderProducts(products, progress) {
   const container = document.getElementById('productCards');
 
   container.innerHTML = PRODUCTS.map(p => {
-    const hasAccess = products[p.id] === true || localStorage.getItem('curriculum_paid') === 'true';
+    const hasAccess = products[p.id] === true || (p.id === 'curriculum' && localStorage.getItem('curriculum_paid') === 'true');
     const prog = progress[p.id] || {};
     const completed = (prog.completedLessons || []).length;
     const pct = p.totalLessons ? Math.round((completed / p.totalLessons) * 100) : 0;
 
     if (hasAccess) {
-      return `
-        <a class="product-card" href="${p.url}">
-          <div class="product-card-info">
-            <div class="product-card-title">${p.title}</div>
-            <div class="product-card-meta">${p.description}</div>
-          </div>
+      const linkAttrs = p.external ? `href="${p.url}" target="_blank" rel="noopener"` : `href="${p.url}"`;
+      const progressHtml = p.totalLessons ? `
           <div class="product-card-progress">
             <div class="progress-bar-container">
               <div class="progress-bar-fill" style="width: ${pct}%"></div>
             </div>
             <span class="progress-text">${pct}%</span>
             <svg class="product-card-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
+          </div>` : `
+          <div class="product-card-progress">
+            <svg class="product-card-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
+          </div>`;
+      return `
+        <a class="product-card" ${linkAttrs}>
+          <div class="product-card-info">
+            <div class="product-card-title">${p.title}</div>
+            <div class="product-card-meta">${p.description}</div>
           </div>
+          ${progressHtml}
         </a>
       `;
     } else {
