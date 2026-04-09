@@ -656,11 +656,13 @@ function syncToSheet() {
     mentorship_cost: answers['6'] || '',
     ready: answers['7'] || ''
   });
-  const s = document.createElement('script');
-  s.src = SHEET_URL + '?' + params.toString();
-  s.onload = () => s.remove();
-  s.onerror = () => s.remove();
-  document.body.appendChild(s);
+  const url = SHEET_URL + '?' + params.toString();
+
+  // Primary: fetch GET (follows redirects, no CORS issues)
+  fetch(url, { mode: 'no-cors' }).catch(() => {});
+
+  // Fallback: image beacon (proven cross-origin technique)
+  new Image().src = url;
 }
 
 function nextQuestion() {
