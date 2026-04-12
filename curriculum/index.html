@@ -5160,7 +5160,8 @@ function getQuizState(modId) {
 
 function isModulePassed(modId) {
   const qs = quizState[modId];
-  return qs && qs.submitted && qs.score >= 80;
+  if (!qs) return false;
+  return (qs.submitted && qs.score >= 80) || qs.previouslyPassed;
 }
 
 // ─── Quiz Rendering ───
@@ -5301,7 +5302,7 @@ function renderQuizResults(mod, qs, quiz) {
       <div class="quiz-results-text">${passed
         ? 'You passed! The next module is now unlocked.'
         : `You need ${quiz.passingScore}% to pass. Review the lessons and try again.`}</div>
-      ${!passed ? `<button class="quiz-retry-btn" onclick="retryQuiz(${mi})">Retry Quiz</button>` : ''}
+      ${!passed ? `<button class="quiz-retry-btn" onclick="retryQuiz(${mi})">Retry Quiz</button>` : `<button class="quiz-retry-btn" onclick="retryQuiz(${mi})">Retake Test</button>`}
       ${passed && hasNextModule ? `<button class="quiz-submit-btn" onclick="goToLesson(${mi + 1}, 0)" style="margin-top:1rem;">Continue to Next Module <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></button>` : ''}
     </div>
   `;
@@ -5344,7 +5345,9 @@ function submitQuiz(mi) {
 
 function retryQuiz(mi) {
   const mod = CURRICULUM[mi];
-  quizState[mod.id] = { answers: {}, submitted: false, score: 0 };
+  const prev = quizState[mod.id];
+  const wasPassed = prev && prev.submitted && prev.score >= 80;
+  quizState[mod.id] = { answers: {}, submitted: false, score: 0, previouslyPassed: wasPassed || (prev && prev.previouslyPassed) || false };
   saveQuizState();
   renderQuizContent(mi);
 }
