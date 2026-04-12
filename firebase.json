@@ -35,6 +35,7 @@
     {
       "target": "dashboard",
       "public": "dashboard",
+      "predeploy": ["cp curriculum/index.html dashboard/curriculum/index.html"],
       "ignore": [
         "firebase.json",
         "**/.*",

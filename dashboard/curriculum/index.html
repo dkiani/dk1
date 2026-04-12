@@ -5302,7 +5302,7 @@ function renderQuizResults(mod, qs, quiz) {
       <div class="quiz-results-text">${passed
         ? 'You passed! The next module is now unlocked.'
         : `You need ${quiz.passingScore}% to pass. Review the lessons and try again.`}</div>
-      ${!passed ? `<button class="quiz-retry-btn" onclick="retryQuiz(${mi})">Retry Quiz</button>` : `<button class="quiz-retry-btn" onclick="retryQuiz(${mi})">Retake Test</button>`}
+      ${!passed ? `<button class="quiz-retry-btn" onclick="retryQuiz(${mi})">Retry Quiz</button>` : `<button class="quiz-retry-btn" onclick="retryQuiz(${mi})">Retake Quiz</button>`}
       ${passed && hasNextModule ? `<button class="quiz-submit-btn" onclick="goToLesson(${mi + 1}, 0)" style="margin-top:1rem;">Continue to Next Module <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></button>` : ''}
     </div>
   `;
