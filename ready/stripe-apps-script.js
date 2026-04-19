@@ -35,15 +35,31 @@ var DISCOUNT_CODES = {
   // Add more codes as needed
 };
 
+function getOrCreateProduct() {
+  var props = PropertiesService.getScriptProperties();
+  var productId = props.getProperty('STRIPE_PRODUCT_ID');
+  if (productId) return productId;
+
+  var response = UrlFetchApp.fetch('https://api.stripe.com/v1/products', {
+    method: 'post',
+    headers: { 'Authorization': 'Bearer ' + STRIPE_SECRET_KEY },
+    contentType: 'application/x-www-form-urlencoded',
+    payload: 'name=' + encodeURIComponent("Kiani's Inner Circle")
+  });
+  var product = JSON.parse(response.getContentText());
+  props.setProperty('STRIPE_PRODUCT_ID', product.id);
+  return product.id;
+}
+
 function doGet(e) {
   var p = e.parameter || {};
   var action = p.action || '';
   var callback = p.callback || '';
   var result = {};
 
-  // ─── Create PaymentIntent ───
+  // ─── Create PaymentIntent (one-time) ───
   if (action === 'create_payment') {
-    var amount = parseInt(p.amount) || 777700;
+    var amount = parseInt(p.amount) || 699700;
     try {
       var payload = 'amount=' + amount
         + '&currency=usd'
@@ -59,6 +75,55 @@ function doGet(e) {
       result = { clientSecret: pi.client_secret, id: pi.id };
     } catch (err) {
       result = { error: 'Payment creation failed: ' + err.message };
+    }
+  }
+
+  // ─── Create Subscription ───
+  else if (action === 'create_subscription') {
+    var amount = parseInt(p.amount) || 84400;
+    var interval = p.interval || 'month';
+    var intervalCount = parseInt(p.interval_count) || 1;
+    var email = p.email || '';
+
+    try {
+      var custPayload = 'metadata[source]=kiani.vc';
+      if (email) custPayload += '&email=' + encodeURIComponent(email);
+      var custResponse = UrlFetchApp.fetch('https://api.stripe.com/v1/customers', {
+        method: 'post',
+        headers: { 'Authorization': 'Bearer ' + STRIPE_SECRET_KEY },
+        contentType: 'application/x-www-form-urlencoded',
+        payload: custPayload
+      });
+      var customer = JSON.parse(custResponse.getContentText());
+
+      var productId = getOrCreateProduct();
+
+      var subPayload = 'customer=' + customer.id
+        + '&items[0][price_data][currency]=usd'
+        + '&items[0][price_data][unit_amount]=' + amount
+        + '&items[0][price_data][recurring][interval]=' + interval
+        + '&items[0][price_data][recurring][interval_count]=' + intervalCount
+        + '&items[0][price_data][product]=' + productId
+        + '&payment_behavior=default_incomplete'
+        + '&payment_settings[save_default_payment_method]=on_subscription'
+        + '&expand[0]=latest_invoice.payment_intent'
+        + '&metadata[source]=kiani.vc';
+
+      var subResponse = UrlFetchApp.fetch('https://api.stripe.com/v1/subscriptions', {
+        method: 'post',
+        headers: { 'Authorization': 'Bearer ' + STRIPE_SECRET_KEY },
+        contentType: 'application/x-www-form-urlencoded',
+        payload: subPayload
+      });
+      var subscription = JSON.parse(subResponse.getContentText());
+
+      result = {
+        clientSecret: subscription.latest_invoice.payment_intent.client_secret,
+        subscriptionId: subscription.id,
+        customerId: customer.id
+      };
+    } catch (err) {
+      result = { error: 'Subscription creation failed: ' + err.message };
     }
   }
 
@@ -98,7 +163,7 @@ function doGet(e) {
     if (!discount) {
       result = { valid: false };
     } else {
-      var baseAmount = parseInt(p.base_amount) || 149700;
+      var baseAmount = parseInt(p.base_amount) || 699700;
       var newAmount = baseAmount;
       if (discount.percent_off) {
         newAmount = Math.round(baseAmount * (1 - discount.percent_off / 100));
@@ -124,6 +189,23 @@ function doGet(e) {
       result = { status: 'updated' };
     } catch (err) {
       result = { error: 'Update failed: ' + err.message };
+    }
+  }
+
+  // ─── Update Customer (email) ───
+  else if (action === 'update_customer') {
+    var custId = p.customer_id || '';
+    var email = p.email || '';
+    try {
+      UrlFetchApp.fetch('https://api.stripe.com/v1/customers/' + custId, {
+        method: 'post',
+        headers: { 'Authorization': 'Bearer ' + STRIPE_SECRET_KEY },
+        contentType: 'application/x-www-form-urlencoded',
+        payload: 'email=' + encodeURIComponent(email)
+      });
+      result = { status: 'updated' };
+    } catch (err) {
+      result = { error: 'Customer update failed: ' + err.message };
     }
   }
 
