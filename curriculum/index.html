@@ -1513,6 +1513,9 @@ onAuthStateChanged(fbAuth, async (user) => {
       <a href="/apply" style="font-size:13px;color:var(--muted);text-decoration:underline;margin-top:0.25rem;">Apply for 1:1 Coaching &rarr;</a>
     </div>
     <p class="paywall-already">Already paid? <a onclick="showAccessGate()">Enter your access code</a></p>
+    <p class="paywall-already" id="paywallAccountRow" style="display:none;margin-top:0.5rem;font-size:12px;">
+      Signed in as <span id="paywallSignedInAs" style="color:var(--fg);"></span> — <a onclick="paywallSignOut()">not you? sign out</a>
+    </p>
   </div>
 </div>
 
@@ -1670,14 +1673,73 @@ onAuthStateChanged(fbAuth, async (user) => {
     }
   });
 
-  // Paywall controls
-  window.showPaywall = function() {
-    if (window._fbReady && !window._fbUser) {
+  // Wait for Firebase auth state to be resolved (at most ~3s)
+  function _waitForFbReady() {
+    return new Promise(function(resolve) {
+      if (window._fbReady) return resolve();
+      var elapsed = 0;
+      var iv = setInterval(function() {
+        elapsed += 50;
+        if (window._fbReady || elapsed >= 3000) {
+          clearInterval(iv);
+          resolve();
+        }
+      }, 50);
+    });
+  }
+
+  // Paywall controls — re-verifies Firestore access before actually showing the paywall
+  // so a signed-in student with products.curriculum=true never sees a "buy" prompt.
+  window.showPaywall = async function() {
+    await _waitForFbReady();
+
+    // Not signed in → show sign-in gate
+    if (!window._fbUser) {
       document.getElementById('signinGate').classList.remove('hidden');
       document.getElementById('signinEmail').focus();
       return;
     }
+
+    // Signed in → authoritative Firestore check before paywall (handles race
+    // where the page rendered before products.curriculum loaded).
+    try {
+      var fbMod = await import("https://www.gstatic.com/firebasejs/11.7.1/firebase-firestore.js");
+      var ref = fbMod.doc(window._fbDb, 'users', window._fbUser.uid);
+      var snap = await fbMod.getDoc(ref);
+      if (snap.exists()) {
+        var data = snap.data();
+        var products = data.products || {};
+        var currProg = (data.progress || {}).curriculum || {};
+        if (products.curriculum || currProg.accessGranted) {
+          localStorage.setItem('curriculum_paid', 'true');
+          if (typeof renderSidebar === 'function') {
+            renderSidebar();
+            renderContent();
+            updateProgress();
+          }
+          return; // Has access — never show the paywall
+        }
+      }
+    } catch (e) { /* fall through to paywall */ }
+
+    // Signed in with no access — show paywall, plus a "wrong account" escape hatch
+    var emailEl = document.getElementById('paywallSignedInAs');
+    if (emailEl && window._fbUser && window._fbUser.email) {
+      emailEl.textContent = window._fbUser.email;
+      var wrapper = document.getElementById('paywallAccountRow');
+      if (wrapper) wrapper.style.display = '';
+    }
     document.getElementById('paywallOverlay').classList.add('visible');
+  };
+
+  // Sign out from the paywall (in case user is signed into the wrong account)
+  window.paywallSignOut = async function() {
+    try {
+      var authMod = await import("https://www.gstatic.com/firebasejs/11.7.1/firebase-auth.js");
+      await authMod.signOut(window._fbAuth);
+      localStorage.removeItem('curriculum_paid');
+      location.reload();
+    } catch (e) { /* ignore */ }
   };
   window.closePaywall = function() {
     document.getElementById('paywallOverlay').classList.remove('visible');
@@ -5480,6 +5542,28 @@ function retryQuiz(mi) {
 renderSidebar();
 renderContent();
 updateProgress();
+
+// Re-render once Firebase auth resolves so signed-in students with
+// products.curriculum=true never see a flash of locked modules from
+// the synchronous initial paint (race fix for the paywall bug).
+(function awaitAuthThenRerender() {
+  if (window._fbReady) {
+    renderSidebar();
+    renderContent();
+    updateProgress();
+    return;
+  }
+  var elapsed = 0;
+  var iv = setInterval(function() {
+    elapsed += 50;
+    if (window._fbReady || elapsed >= 3000) {
+      clearInterval(iv);
+      renderSidebar();
+      renderContent();
+      updateProgress();
+    }
+  }, 50);
+})();
 </script>
 </body>
 </html>
